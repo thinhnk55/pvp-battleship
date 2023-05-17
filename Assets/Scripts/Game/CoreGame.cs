@@ -201,21 +201,22 @@ public class CoreGame : Singleton<CoreGame>
     public void Attack(bool attackShip)
     {
         List<Ship> shipList;
-        if (!attackShip)
-        {
-            playerTurn = !playerTurn;
-        }
         if (playerTurn)
         {
-            shipList = opponent.ships;
-
+            shipList = Instance.opponent.ships;
+            Debug.Log(opponent.ships.Count);
         }
         else
         {
             shipList = player.ships;
+            Debug.Log(player.ships.Count);
         }
-        bool isEnd = shipList.Count == 0;
-        if (isEnd)
+        if (!attackShip)
+        {
+            playerTurn = !playerTurn;
+        }
+
+        if (shipList.Count == 0)
         {
             Debug.Log("End");
             stateMachine.CurrentState = GameState.Out;
