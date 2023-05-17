@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2633c311359dae4b9e0b9da2d1e4818, type: 3}
+  m_Name: SpriteFactory
+  m_EditorClassIdentifier: 
+  octile: {fileID: 21300000, guid: 5bac55bd13f7d204f9b59c20c1ab5551, type: 3}
+  occupied: {fileID: 21300000, guid: 7ef54da7650ae4940a8eb05bec5f7d7d, type: 3}
+  unoccupiable: {fileID: 21300000, guid: bfe2c2e5cc654fe4eac86ba5300c2ba8, type: 3}
+  attacked: {fileID: 21300000, guid: faf8fdca018feaf428204ff1eced0510, type: 3}
+  destroyed: {fileID: 21300000, guid: 96c65ce528677ac458dbcc84f297b82c, type: 3}
+  playerTurn: {fileID: 21300000, guid: c0f8874088f6c614fa0605b35deeb002, type: 3}
+  opponentTurn: {fileID: 21300000, guid: ac1a6566fc58f3843915223a3a4b4bc9, type: 3}
