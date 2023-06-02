@@ -2,14 +2,14 @@ namespace Framework
 {
     public static class PResourceExtensions
     {
-        public static PData<int> GetData(this PResourceType type)
+        public static PDataUnit<int> GetData(this PResourceType type)
         {
             return PDataResource.GetResourceData(type);
         }
 
         public static int GetValue(this PResourceType type)
         {
-            PData<int> data = type.GetData();
+            PDataUnit<int> data = type.GetData();
 
             return data.Data;
         }

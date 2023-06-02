@@ -23,6 +23,7 @@ namespace Framework
         #endregion
 
         [SerializeField] private GameObject octile; public static GameObject Octile { get { return Instance.octile; } }
+        [SerializeField] private GameObject[] ships; public static GameObject[] Ships { get { return Instance.ships; } }
 
     }
 }

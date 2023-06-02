@@ -4,25 +4,25 @@ namespace Framework
 {
     public class PDataResource : PDataBlock<PDataResource>
     {
-        [SerializeField] PData<int> _resourceCoin;
-        [SerializeField] PData<int> _resourceGem;
+        [SerializeField] PDataUnit<int> _resourceDiamond;
+        [SerializeField] PDataUnit<int> _resourceBeri;
 
         protected override void Init()
         {
             base.Init();
 
-            _resourceCoin = _resourceCoin ?? new PData<int>(InitializationConfig.InitCoin);
-            _resourceGem = _resourceGem ?? new PData<int>(InitializationConfig.InitGem);
+            _resourceDiamond = _resourceDiamond ?? new PDataUnit<int>(InitializationConfig.InitCoin);
+            _resourceBeri = _resourceBeri ?? new PDataUnit<int>(InitializationConfig.InitGem);
         }
 
-        public static PData<int> GetResourceData(PResourceType type)
+        public static PDataUnit<int> GetResourceData(PResourceType type)
         {
             switch (type)
             {
-                case PResourceType.Coin:
-                    return Instance._resourceCoin;
-                case PResourceType.Gem:
-                    return Instance._resourceGem;
+                case PResourceType.Diamond:
+                    return Instance._resourceDiamond;
+                case PResourceType.Beri:
+                    return Instance._resourceBeri;
             }
 
             return null;

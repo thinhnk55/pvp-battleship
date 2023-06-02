@@ -1,0 +1,16 @@
+name: Build and Deploy
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: Setup Unity
+      uses: game-ci/unity-setup@v2
+      with:
+        unity-version: 2020.3.10f1
+    - name: Build project
+      run: |
+        chmod +x ./Scripts/build.sh
+        ./Scripts/build.sh

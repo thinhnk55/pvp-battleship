@@ -1,6 +1,8 @@
+﻿using DG.Tweening;
 using Framework;
 using Lean.Common;
 using Lean.Touch;
+using SimpleJSON;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -15,16 +17,26 @@ public class Ship : CacheMonoBehaviour
     [SerializeField] SpriteRenderer occupyRenderer;
     LeanDragTranslate leanDrag;
     public bool onSelecting;
+    public float timeSelecting;
+    public Vector2Int initRot;
+    public Vector3 initPos;
     public Vector3 previousPos;
+    public Vector2Int previousIndex;
     public List<Octile> octilesOccupy;
     public List<Octile> octilesComposition;
+    Tween tweenMove;
+    Tween tweenRotate;
+    float tweenTime = 0.5f;
+    public bool isDestroyed;
+    #region Transform
+
     public List<Vector2Int> poses;
     public List<Vector2Int> currentPoses
     {
         get
         {
-            List<Vector2Int> curPoses= new List<Vector2Int>(poses);
-            if (dir.x !=0)
+            List<Vector2Int> curPoses = new List<Vector2Int>(poses);
+            if (dir.x != 0)
             {
                 for (int i = 0; i < poses.Count; i++)
                 {
@@ -42,7 +54,6 @@ public class Ship : CacheMonoBehaviour
         }
     }
 
-    public bool isDestroyed;
     public int leftMost
     {
         get
@@ -51,8 +62,8 @@ public class Ship : CacheMonoBehaviour
             int most = curPoses[0].x;
             for (int i = 0; i < curPoses.Count; i++)
             {
-                if (curPoses[i].x< most)
-                    most = curPoses[i].x;   
+                if (curPoses[i].x < most)
+                    most = curPoses[i].x;
             }
             return most;
         }
@@ -99,8 +110,10 @@ public class Ship : CacheMonoBehaviour
             return most;
         }
     }
-    [SerializeField] Vector2Int dir;  public Vector2Int Dir { 
-        get {
+    [SerializeField] Vector2Int dir; public Vector2Int Dir
+    {
+        get
+        {
             int rot = (int)((EulerAngles.z % 360) / 90);
             switch (rot)
             {
@@ -115,59 +128,61 @@ public class Ship : CacheMonoBehaviour
                 default:
                     return Vector2Int.left;
             }
-        } set {
+        }
+        set
+        {
             dir = value;
-            if (value == Vector2Int.left)
+            Vector3 angle = Vector3.zero;
+            if (dir == Vector2Int.left)
             {
-                Vector3 angle = Quaternion.identity.eulerAngles; 
+                angle = Quaternion.identity.eulerAngles;
                 angle.z = 0;
-                transform.rotation = Quaternion.Euler(angle);
+                //transform.rotation = Quaternion.Euler(angle);
             }
-            else if (value == Vector2Int.up)
+            else if (dir == Vector2Int.up)
             {
-                Vector3 angle = Quaternion.identity.eulerAngles;
-                angle.z = 270   ;
-                transform.rotation = Quaternion.Euler(angle);
+                angle = Quaternion.identity.eulerAngles;
+                angle.z = 270;
+                //transform.rotation = Quaternion.Euler(angle);
             }
-            else if (value == Vector2Int.right)
+            else if (dir == Vector2Int.right)
             {
-                Vector3 angle = Quaternion.identity.eulerAngles;
+                angle = Quaternion.identity.eulerAngles;
                 angle.z = 180;
-                transform.rotation = Quaternion.Euler(angle);
+                //transform.rotation = Quaternion.Euler(angle);
             }
-            else if (value == Vector2Int.down)
+            else if (dir == Vector2Int.down)
             {
-                Vector3 angle = Quaternion.identity.eulerAngles;
+                angle = Quaternion.identity.eulerAngles;
                 angle.z = 90;
-                transform.rotation = Quaternion.Euler(angle);
+                //transform.rotation = Quaternion.Euler(angle);
             }
+            tweenRotate.Kill();
+            tweenRotate = transform.DORotate(angle, tweenTime);
+
         }
     }
 
+    #endregion
     private void Start()
     {
+        initRot = Dir;
+        initPos = Position;   
         leanDrag = GetComponent<LeanDragTranslate>();
-        previousPos = transform.position;
-        
+        previousPos = Position;
     }
 
     private void Update()
     {
-
         if (onSelecting)
         {
+            timeSelecting += Time.deltaTime;
             int x = (int)((LeanTouch.Fingers[0].GetLastWorldPosition(0).x - CoreGame.Instance.player.transform.position.x + CoreGame.Instance.player.width / 2) / CoreGame.Instance.player.cellWidth);
             int y = (int)((LeanTouch.Fingers[0].GetLastWorldPosition(0).y - CoreGame.Instance.player.transform.position.y + CoreGame.Instance.player.height / 2) / CoreGame.Instance.player.cellHieght);
-            CheckShip(CoreGame.Instance.player, x, y, out int _x, out int _y, out bool inside);
+            CheckShip(CoreGame.Instance.player, x, y, out int _x, out int _y, out bool inside, timeSelecting > LeanTouch.CurrentTapThreshold);
         }
     }
-    private void OnEnable()
-    {
-    }
 
-    private void OnDisable()
-    {
-    }
     public void BeingAttacked(Octile octile)
     {
         for (int i = 0; i < octilesComposition.Count; i++)
@@ -192,16 +207,22 @@ public class Ship : CacheMonoBehaviour
         }
         for (int i = 0; i < octilesComposition.Count; i++)
         {
-            octilesComposition[i].attackSpriteRenderer.sprite = SpriteFactory.Destroyed;
+            octilesComposition[i].attackSpriteRenderer.sprite = null;
+            ObjectPoolManager.GenerateObject<ParticleSystem>(VFXFactory.Explosion, octilesComposition[i].Position);
         }
+        ObjectPoolManager.GenerateObject<ParticleSystem>(VFXFactory.Smoke, octilesComposition[0].Position, gameObject);
     }
 
-    public void OnSelected(LeanSelectByFinger leanSelectByFinger,LeanFinger leanSelect)
+    public void OnSelected(LeanSelectByFinger leanSelectByFinger,LeanFinger leanFinger)
     {
         if (CoreGame.Instance.stateMachine.CurrentState != GameState.Pre)
             return;
+        timeSelecting = 0;
+        if (octilesOccupy.Count > 0)
+            previousIndex = octilesOccupy[0].pos;
+        previousPos = Position;
         onSelecting = true;
-        previousPos = transform.position;
+        Position = leanFinger.GetLastWorldPosition(-CoreGame.Instance.cam.transform.position.z);
         if (octilesOccupy.Count>0)
         {
             List<Vector2Int> curPoses = currentPoses;
@@ -219,7 +240,6 @@ public class Ship : CacheMonoBehaviour
                             {
                                 CoreGame.Instance.player.octiles[posY][posX].Occupied = 0;
                                 CoreGame.Instance.player.octiles[posY][posX].ship = null;
-                                CoreGame.Instance.player.ships.Remove(this);
                             }
                         }
                     }
@@ -227,8 +247,9 @@ public class Ship : CacheMonoBehaviour
                 }
             }
             octilesOccupy.Clear();
+            CoreGame.Instance.player.ships.Remove(this);
         }
-
+        /**/
         foreach (Ship ship in CoreGame.Instance.player.ships)
         {
             List<Vector2Int> curPoses = ship.currentPoses;
@@ -255,42 +276,57 @@ public class Ship : CacheMonoBehaviour
         }
     }
 
-    public void CheckAndAssignShip(LeanSelectByFinger leanSelectByFinger, LeanFinger leanSelect)
+    public void CheckAndAssignShip(LeanSelectByFinger leanSelectByFinger, LeanFinger leanFinger)
     {
+        onSelecting = false;
+        if (leanFinger.Age < LeanTouch.CurrentTapThreshold)
+            return;
         if (CoreGame.Instance.stateMachine.CurrentState != GameState.Pre)
             return;
-        onSelecting = false;
-        int x = (int)((leanSelect.GetLastWorldPosition(0).x - CoreGame.Instance.player.transform.position.x + CoreGame.Instance.player.width / 2) / CoreGame.Instance.player.cellWidth);
-        int y = (int)((leanSelect.GetLastWorldPosition(0).y - CoreGame.Instance.player.transform.position.y + CoreGame.Instance.player.height / 2) / CoreGame.Instance.player.cellHieght);
+        int x = (int)((leanFinger.GetLastWorldPosition(0).x - CoreGame.Instance.player.transform.position.x + CoreGame.Instance.player.width / 2) / CoreGame.Instance.player.cellWidth);
+        int y = (int)((leanFinger.GetLastWorldPosition(0).y - CoreGame.Instance.player.transform.position.y + CoreGame.Instance.player.height / 2) / CoreGame.Instance.player.cellHieght);
+        Debug.Log("fingerup");
         CheckAndAssignShip(CoreGame.Instance.player, x, y, true);
     }
-    public bool CheckAndAssignShip(Board board,int x, int y, bool assignBackup)
+    public bool CheckAndAssignShip(Board board,int x, int y, bool assignBackup, bool isRotate = false)
     {
         if (CoreGame.Instance.stateMachine.CurrentState != GameState.Pre && CoreGame.Instance.stateMachine.CurrentState != GameState.Search)
             return false;
+        tweenMove.Kill();
         if (CheckShip(board, x, y, out int _x, out int _y, out bool inside))
         {
             board.AssignShip(this, _x, _y);
             occupyRenderer.enabled = false;
             transform.parent = board.shipRoot.transform;
-            Position = board.octiles[_y][_x].Position;
+            tweenMove = transform.DOMove(board.octiles[_y][_x].Position, tweenTime);
             return true;
         }
         else
         {
-            Position = previousPos;
-            _x = (int)((Position.x - CoreGame.Instance.player.transform.position.x + CoreGame.Instance.player.width / 2) / CoreGame.Instance.player.cellWidth);
-            _y = (int)((Position.y - CoreGame.Instance.player.transform.position.y + CoreGame.Instance.player.height / 2) / CoreGame.Instance.player.cellHieght);
-            if (CheckShip(board, _x, _y, out _x, out _y, out inside) && inside || assignBackup)
-            {
-                board.AssignShip(this, _x, _y);
-            }
             occupyRenderer.enabled = false;
+            if (!inside && !isRotate)
+            {
+                transform.parent = CoreGame.Instance.shipListPlayer.transform;
+                tweenMove = transform.DOMove(initPos, tweenTime);
+                Dir = initRot;
+                octilesOccupy.Clear();
+                octilesComposition.Clear();
+                return false;
+            }
+            else
+            {
+                tweenMove = transform.DOMove(initPos, tweenTime);
+            }
+            if (previousIndex!=null && assignBackup)
+            {
+                board.AssignShip(this, previousIndex.x, previousIndex.y);
+                return false;
+            }
             return false;
         }
 
     }
-    public bool CheckShip(Board board, int x, int y, out int _x, out int _y, out bool inside)
+    public bool CheckShip(Board board, int x, int y, out int _x, out int _y, out bool inside, bool hold = false)
     {
         _x = x;
         _y = y;
@@ -320,12 +356,33 @@ public class Ship : CacheMonoBehaviour
         }
         if (inside)
         {
-            Position = board.octiles[y][x].Position;
+            if (hold)
+            {
+                occupyRenderer.enabled = true;
+                Position = board.octiles[_y][_x].Position;
+            }
+            else
+            {
+                tweenMove.Kill();
+                tweenMove = transform.DOMove(board.octiles[_y][_x].Position, tweenTime);
+            }
+
             if (leanDrag)
             {
                 leanDrag.enabled = false;
-                leanDrag = null;
             }
+        }
+        else
+        {
+            if (onSelecting)
+            {
+                Position = LeanTouch.Fingers[0].GetLastWorldPosition(-CoreGame.Instance.cam.transform.position.z);
+            }
+            if (leanDrag && !leanDrag.enabled)
+            {
+                leanDrag.enabled = true;
+            }
+            return false;
         }
         occupyRenderer.enabled = true;
         _x = x;
@@ -342,31 +399,197 @@ public class Ship : CacheMonoBehaviour
     {
         if (CoreGame.Instance.stateMachine.CurrentState != GameState.Pre)
             return;
-        if (leanFinger.Age<0.1f)
+        if (leanFinger.Age< LeanTouch.CurrentTapThreshold)
         {
-            //Debug.Log("Tap");
+            var direct = Vector2Int.up;
             if (Dir == Vector2Int.left)
             {
-                Dir = Vector2Int.up;
+                direct = Vector2Int.up;
             }
             else if (Dir == Vector2Int.up)
             {
-                Dir = Vector2Int.right;
+                direct = Vector2Int.right;
             }
             else if (Dir == Vector2Int.right)
             {
-                Dir = Vector2Int.down;
+                direct = Vector2Int.down;
             }
             else if (Dir == Vector2Int.down)
             {
-                Dir = Vector2Int.left;
+                direct = Vector2Int.left;
+            }
+            Dir = direct;
+            int x = previousIndex.x;
+            int y = previousIndex.y;
+            OnSelected(null, leanFinger);
+            if (octilesComposition.Count == 0)
+            {
+
+            }
+            else if ( !CheckAndAssignShip(CoreGame.Instance.player, x, y, false, true))
+            {
+                for (int i = 1; i < 10; i++)
+                {
+                    for (int j = 0; j <= i; j++)
+                    {
+                        OnSelected(null, leanFinger);
+
+                        if (CheckAndAssignShip(CoreGame.Instance.player, x + i, y + j, false, true))
+                        {
+                            Debug.Log("Find" + i +"_"+ j);
+                            return;
+                        }
+                        OnSelected(null, leanFinger);
+
+                        if (CheckAndAssignShip(CoreGame.Instance.player, x + j, y + i, false, true))
+                        {
+                            Debug.Log("Find" + i + "_" + j);
+
+                            return;
+                        }
+                        OnSelected(null, leanFinger);
+
+                        if (CheckAndAssignShip(CoreGame.Instance.player, x - i, y - j, false, true))
+                        {
+                            Debug.Log("Find" + i + "_" + j);
+
+                            return;
+                        }
+                        OnSelected(null, leanFinger);
+
+                        if (CheckAndAssignShip(CoreGame.Instance.player, x - j, y - i, false, true))
+                        {
+                            Debug.Log("Find" + i + "_" + j);
+
+                            return;
+                        }
+                        OnSelected(null, leanFinger);
+
+                        if (CheckAndAssignShip(CoreGame.Instance.player, x + i, y - j, false, true))
+                        {
+                            Debug.Log("Find" + i + "_" + j);
+
+                            return;
+                        }
+                        OnSelected(null, leanFinger);
+
+                        if (CheckAndAssignShip(CoreGame.Instance.player, x + j, y - i, false, true))
+                        {
+                            Debug.Log("Find" + i + "_" + j);
+
+                            return;
+                        }
+                        OnSelected(null, leanFinger);
+
+                        if (CheckAndAssignShip(CoreGame.Instance.player, x - i, y + j, false, true))
+                        {
+                            Debug.Log("Find" + i + "_" + j);
+
+                            return;
+                        }
+                        OnSelected(null, leanFinger);
+
+                        if (CheckAndAssignShip(CoreGame.Instance.player, x - j, y + i, false, true))
+                        {
+                            Debug.Log("Find" + i + "_" + j);
+
+                            return;
+                        }
+                    }
+                }
+                OnSelected(null, leanFinger);
+                CheckAndAssignShip(CoreGame.Instance.player, x, y, false, true);
+                Debug.Log("NotFind");
+            }
+            else
+            {
+                Debug.Log("Assigned");
             }
         }
-        if (octilesOccupy.Count>0)
-        {
-            OnSelected(null,null);
-            CheckAndAssignShip(CoreGame.Instance.player ,octilesOccupy[0].pos.x, octilesOccupy[0].pos.y, true);
-        }
+
     }
 
+    public JSONClass ToJson() {
+        int d = 0;
+        int dir = ((int)(EulerAngles.z % 360) / 90);
+        switch (dir)
+        {
+            case 0:
+                d = 0;
+                break;
+            case 1:
+                d = 3;
+                break;
+            case 2:
+                d = 2;
+                break;
+            case 3:
+                d = 1;
+                break;
+            default:
+                break;
+        }
+        JSONClass json = new JSONClass
+        {
+            { "type", (poses.Count - 1).ToJson()  },
+            { "x", octilesComposition[0].pos.x.ToJson()  },
+            { "y", octilesComposition[0].pos.y.ToJson()  },
+            { "dir", d.ToJson()  }
+        };
+        return json;
+    }
+
+    public Ship FromJson(JSONNode json)
+    {
+        poses = CoreGame.shipConfigs[int.Parse(json["type"])];
+        int dir = int.Parse(json["dir"]);
+        switch (dir)
+        {
+            case 0:
+                Dir = Vector2Int.left;
+                break;
+            case 1:
+                Dir = Vector2Int.up;
+                break;
+            case 2:
+                Dir = Vector2Int.right;
+                break;
+            case 3:
+                Dir = Vector2Int.down;
+                break;
+            default:
+                break;
+        }
+        Position = board.octiles[int.Parse(json["y"])][int.Parse(json["x"])].Position;
+        tweenRotate.Kill();
+        Vector3 angle = Vector3.zero;
+        if (this.dir == Vector2Int.left)
+        {
+            angle = Quaternion.identity.eulerAngles;
+            angle.z = 0;
+            //transform.rotation = Quaternion.Euler(angle);
+        }
+        else if (this.dir == Vector2Int.up)
+        {
+            angle = Quaternion.identity.eulerAngles;
+            angle.z = 270;
+            //transform.rotation = Quaternion.Euler(angle);
+        }
+        else if (this.dir == Vector2Int.right)
+        {
+            angle = Quaternion.identity.eulerAngles;
+            angle.z = 180;
+            //transform.rotation = Quaternion.Euler(angle);
+        }
+        else if (this.dir == Vector2Int.down)
+        {
+            angle = Quaternion.identity.eulerAngles;
+            angle.z = 90;
+            //transform.rotation = Quaternion.Euler(angle);
+        }
+        EulerAngles = angle;
+        transform.parent = board.shipRoot.transform;
+        board.AssignShip(this, int.Parse(json["x"]), int.Parse(json["y"]));
+        return this;
+    }
 }

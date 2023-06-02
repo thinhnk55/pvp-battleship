@@ -1,3 +1,4 @@
+using DG.Tweening;
 using Framework;
 using Lean.Touch;
 using System.Collections;
@@ -35,10 +36,7 @@ public class Octile : CacheMonoBehaviour
             attacked = value;
             if (attacked)
             {
-                if (ship)
-                    attackSpriteRenderer.sprite = SpriteFactory.Attacked;
-                else
-                    spriteRenderer.sprite = SpriteFactory.Occupied;
+                DOVirtual.DelayedCall(1.25f, ()=> spriteRenderer.sprite = SpriteFactory.Occupied, true);
             }
             else
             {
@@ -50,16 +48,22 @@ public class Octile : CacheMonoBehaviour
     public Ship ship;
     public SpriteRenderer spriteRenderer;
     public SpriteRenderer attackSpriteRenderer;
-    public bool BeingAttacked()
+    public bool BeingAttacked(bool hitShip)
     {
         Attacked = true;
-        if (ship)
+        ObjectPoolManager.GenerateObject<ParticleSystem>(VFXFactory.SplashWater, Position);
+        if (hitShip)
         {
-            ship.BeingAttacked(this);
+            Debug.Log("hitShip");
+            ObjectPoolManager.GenerateObject<ParticleSystem>(VFXFactory.Explosion, Position);
+            attackSpriteRenderer.sprite = SpriteFactory.Attacked;
+            //ship.BeingAttacked(this);
             return true;
         }
         else
+        {
             return false;
+        }
     }
     public static bool Check(Board board, int x, int y, out int _x, out int _y)
     {

@@ -57,7 +57,7 @@ public class AudioManager : Singleton<AudioManager>
         audioSrc = ObjectPoolManager.GenerateObject<AudioSource>(PrefabFactory.AudioSourcePrefab, audioTracker.gameObject);
         audioSrc.transform.parent = audioTracker.transform;
         audioSrc.clip = clipConfig.clip;
-        audioSrc.spatialBlend = AudioConfigs.SoundConfigs[sound].spatial;
+        audioSrc.spatialBlend = AudioConfig.SoundConfigs[sound].spatial;
         Debug.Log(clipConfig.volumn);
         audioSrc.volume = clipConfig.volumn;
         audioSrc.Play();

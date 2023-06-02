@@ -27,6 +27,6 @@ public class AudioTracker : CacheMonoBehaviour
 
     public bool IsFullActiveSound()
     {
-        return ActiveSound == AudioConfigs.SoundConfigs[type].maxActiveSound;
+        return ActiveSound == AudioConfig.SoundConfigs[type].maxActiveSound;
     }
 }

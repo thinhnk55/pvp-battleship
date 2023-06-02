@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Framework
 {
-    public class AudioConfigs : SingletonScriptableObject<AudioConfigs>
+    public class AudioConfig : SingletonScriptableObject<AudioConfig>
     {
         [SerializeField] private MusicConfigDictionary musicConfigs; public static MusicConfigDictionary MusicConfigs { get { return Instance.musicConfigs; } }
         [SerializeField] private SoundConfigDictionary soundConfigs; public static SoundConfigDictionary SoundConfigs { get { return Instance.soundConfigs; } }

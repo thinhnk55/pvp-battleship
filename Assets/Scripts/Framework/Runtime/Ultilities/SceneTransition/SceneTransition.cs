@@ -7,7 +7,9 @@ namespace Framework
 {
     public enum ESceneName
     {
+        PreHome,
         Home,
+        Bet,
         MainGame,
     }
     public class SceneTransition : CacheMonoBehaviour

@@ -1,11 +1,11 @@
 using Framework;
 using Lean.Common;
 using Lean.Touch;
+using SimpleJSON;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
+using TMPro;
 using UnityEngine;
-using UnityEngine.Assertions;
+using UnityEngine.UI;
 
 public class Board : CacheMonoBehaviour
 {
@@ -16,28 +16,34 @@ public class Board : CacheMonoBehaviour
     public List<List<Octile>> octiles;
     [SerializeField] GameObject octileRoot;
     [SerializeField] public GameObject shipRoot;
+    public GameObject horzLine;
+    public GameObject vertLine;
+
+    public Image avatar;
+    public TextMeshProUGUI name;
+    public TextMeshProUGUI diamond;
+    public TextMeshProUGUI beri;
+    public TextMeshProUGUI point;
     Camera cam;
     private void Awake()
     {
-        Debug.Log(0);
+    }
+    void Start()
+    {
         if (octiles.IsNullOrEmpty())
         {
             InitBoard(10, 10);
         }
-        Debug.Log(1);
-    }
-    void Start()
-    {
     }
     public void InitBoard(int row, int column)
     {
+        octileRoot.DestroyChildrenImmediate();
         octiles = new List<List<Octile>>();
         cam = Camera.main;
         this.row = row;
         this.column = column;
         float size = cam.orthographicSize * 1.2f;
         width = height = size;
-        transform.localScale = new Vector3(size,size);
         cellHieght = height / row;
         cellWidth = width / column;
 
@@ -59,12 +65,32 @@ public class Board : CacheMonoBehaviour
         int y = (int)((leanFinger.GetLastWorldPosition(0).y - transform.position.y + height / 2) / cellHieght);
         if (Octile.Check(this, x, y , out int _x, out int _y) && !octiles[_y][_x].Attacked)
         {
-            Messenger.Broadcast(GameEvent.Attack, BeingAttacked(_x, _y));
+            WSClient.AttackOpponent(CoreGame.Instance.roomId, _x, _y);
+            LeanTouch.OnFingerUp -= BeingAttacked;
+            LeanTouch.OnFingerUpdate -= SelectingTarget;
         }
+        horzLine.SetActive(false);
+        vertLine.SetActive(false);
     }
-    public bool BeingAttacked(int x, int y)
+
+    public void SelectingTarget(LeanFinger leanFinger)
     {
-        return octiles[y][x].BeingAttacked();
+        int x = (int)((leanFinger.GetLastWorldPosition(0).x - transform.position.x + width / 2) / cellWidth);
+        int y = (int)((leanFinger.GetLastWorldPosition(0).y - transform.position.y + height / 2) / cellHieght);
+        if (Octile.Check(this, x, y, out int _x, out int _y))
+        {
+            horzLine.SetActive(true);
+            vertLine.SetActive(true);
+            horzLine.transform.position = new Vector2(horzLine.transform.position.x, octiles[_y][_x].Position.y);
+            vertLine.transform.position = new Vector2(octiles[_y][_x].Position.x, vertLine.transform.position.y);
+        }
+        else
+        {
+            horzLine.SetActive(false);
+            vertLine.SetActive(false);
+        }
+
+
     }
 
     public void AssignShip(Ship ship,int x,int y)
@@ -76,6 +102,7 @@ public class Board : CacheMonoBehaviour
         ship.board = this;
         // assign new pos
         ship.octilesOccupy.Add(octiles[y][x]);
+        ship.octilesComposition.Add(octiles[y][x]);
         for (int i = 0; i < curPoses.Count; i++)
         {
             for (int j = -1; j < 2; j++)
@@ -88,6 +115,7 @@ public class Board : CacheMonoBehaviour
                         int posX = x + curPoses[i].x + k;
                         if (posX >= 0 && posX < column)
                         {
+
                             octiles[posY][posX].Occupied = 1;
                             if (posY != y || posX != x)
                             {
@@ -95,14 +123,21 @@ public class Board : CacheMonoBehaviour
                                 {
                                     ship.octilesOccupy.Add(octiles[posY][posX]);
                                 }
+
                             }
+
+                            if (j == 0 && k == 0)
+                            {
+                                octiles[posY][posX].ship = ship;
+                                if (!ship.octilesComposition.Contains(octiles[posY][posX]))
+                                {
+                                    ship.octilesComposition.Add(octiles[posY][posX]);
+                                }
+                            }
+
                         }
 
-                        if (j ==0 && k == 0)
-                        {
-                            octiles[posY][posX].ship = ship;
-                            ship.octilesComposition.Add(octiles[posY][posX]);
-                        }
+
                     }
                 }
             }
