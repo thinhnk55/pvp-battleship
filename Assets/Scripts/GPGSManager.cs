@@ -5,6 +5,8 @@ using GooglePlayGames.BasicApi;
 using GooglePlayGames;
 using TMPro;
 
+
+#if UNITY_ANDROID || UNITY_IOS
 public class GPGSManager : MonoBehaviour
 {
     PlayGamesClientConfiguration config;
@@ -50,3 +52,4 @@ public class GPGSManager : MonoBehaviour
         PlayGamesPlatform.Instance.SignOut();
     }
 }
+#endif

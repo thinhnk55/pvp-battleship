@@ -131,8 +131,8 @@ namespace Framework
             _stateMachine.AddState(State.FadeOut, State_OnFadeOutStart);
             _stateMachine.AddState(State.Idle);
             _stateMachine.CurrentState = State.Idle;
-            _fadein += ()=> gameObject.SetChildrenRecursively<Image>((img) => { img.DOFade(1, SceneTransitionConfigSO.FadeInDuration); });
-            _fadeout += ()=> GetComponent<Image>().DOFade(0,SceneTransitionConfigSO.FadeOutDuration);
+            //_fadein += ()=> gameObject.SetChildrenRecursively<Image>((img) => { img.DOFade(1, SceneTransitionConfigSO.FadeInDuration); });
+            //_fadeout += ()=> GetComponent<Image>().DOFade(0,SceneTransitionConfigSO.FadeOutDuration);
         }
 
         #endregion

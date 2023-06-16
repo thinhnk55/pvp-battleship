@@ -1,24 +1,32 @@
 using Framework;
 using SimpleJSON;
-using Spine;
 using System;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Playables;
 using WebSocketSharp;
+using System.Data.SqlTypes;
+using System.Data.Common;
 
 namespace Framework {
-    public abstract class WSClientBase : Singleton<WSClientBase> 
+    public abstract class WSClientBase : Singleton<WSClientBase>
     {
         public WebSocket ws;
+        public float curTime;
         protected virtual void Start()
         {
-            ws = new WebSocket(ServerConfig.WebSocketURL + "?id="+ ServerConfig.Id + "&token=");
-            ws.Connect();
+            ws = new WebSocket(ServerConfig.WebSocketURL + "?id="+ PDataAuth.AuthData.userId + "&token=" + PDataAuth.AuthData.token);
             ws.OnOpen += OnOpen;
             ws.OnMessage += OnMessage;
             ws.OnError += OnError;
+            ws.Connect();
 
+        }
+        protected void Update()
+        {
+            curTime += Time.deltaTime;
+            if (curTime>= 15) {
+                curTime = 0;
+                ws.Ping();
+            }
         }
         protected override void OnDestroy()
         {
@@ -27,9 +35,9 @@ namespace Framework {
             ws.OnMessage -= OnMessage;
             ws.OnError -= OnError;
         }
-        public static void Send(JSONNode json)
+        public void Send(JSONNode json)
         {
-            Instance.ws.Send(json.ToString());
+            ws.Send(json.ToString());
             Debug.Log(json);
         }
         public void OnOpen(object sender, EventArgs e)
@@ -38,7 +46,7 @@ namespace Framework {
         }
         public void OnMessage(object sender, MessageEventArgs e)
         {
-            Debug.Log("Data " + JSON.Parse(e.Data)["id"] + " :" + e.Data);
+            Debug.Log(e.Data);
             MainThreadDispatcher.ExecuteOnMainThread(() =>
             {
                 JSONNode idJson = JSON.Parse(e.Data)["id"];

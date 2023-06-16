@@ -6,6 +6,8 @@ namespace Framework
 {
     public class PDataTime : PDataBlock<PDataTime>
     {
+        public static long Hour = 3600;
+        public static long Day = 84400;
         public static long FirstOpenGameTime { get { return Instance.firstOpenGameTime; } set { Instance.firstOpenGameTime = value; } } [SerializeField] long firstOpenGameTime;
         public static long OpenGameTime { get { return Instance.openGameTime; } set { Instance.openGameTime = value; } } [SerializeField] long openGameTime;
         /// <summary>/// total time first open to now/// </summary>

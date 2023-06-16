@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#if UNITY_ANDROID || UNITY_IOS
 
 using UnityEngine;
 using System.Collections;
@@ -102,3 +103,4 @@ public class MainGui : MonoBehaviour
         }
     }
 }
+#endif

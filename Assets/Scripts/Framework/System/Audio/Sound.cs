@@ -7,6 +7,10 @@ namespace Framework
     {
         WIN,
         LOSE,
+        SHIP_EXPLOSION,
+        SHIP_HIT,
+        SHIP_MISS,
+        COIN_VFX,
         COUNT,
     }
     [Serializable]

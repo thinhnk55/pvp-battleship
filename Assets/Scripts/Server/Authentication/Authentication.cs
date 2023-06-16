@@ -8,6 +8,7 @@ using Unity.Services.Authentication;
 using Unity.Services.Core;
 using UnityEngine;
 
+
 namespace Framework
 {
     public class Authentication : Singleton<Authentication>, IAuthentication
@@ -29,27 +30,36 @@ namespace Framework
             SetupEvents();
 
             auths = new Dictionary<SocialAuthType, ISocialAuth>();
-            for (int i = 0; i < (int)SocialAuthType.Anonymous; i++)
+            for (int i = 0; i <= (int)SocialAuthType.Anonymous; i++)
             {
                 ISocialAuth auth = null;
                 switch ((SocialAuthType)i)
                 {
                     case SocialAuthType.Google:
+#if UNITY_ANDROID || UNITY_IOS
                         auth = new GoogleAuth();
+#endif
                         break;
                     case SocialAuthType.GooglePlay:
+#if UNITY_ANDROID
                         auth = new GooglePlayAuth();
+#endif
                         break;
                     case SocialAuthType.Facebook:
+#if UNITY_ANDROID || UNITY_IOS
                         auth = new FacebookAuth();
+#endif
                         break;
                     case SocialAuthType.Apple:
+#if UNITY_IOS
                         auth = new ApleAuth();
+#endif
                         break;
                     case SocialAuthType.Anonymous:
+                        auth = new AnonymousAuth();
                         break;
                     default:
-                        auth = new GoogleAuth();
+                        auth = new AnonymousAuth();
                         break;
                 }
                 if (auth != null)

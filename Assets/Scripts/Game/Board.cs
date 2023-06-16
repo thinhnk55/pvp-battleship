@@ -42,7 +42,7 @@ public class Board : CacheMonoBehaviour
         cam = Camera.main;
         this.row = row;
         this.column = column;
-        float size = cam.orthographicSize * 1.2f;
+        float size = cam.orthographicSize * 1.5f;
         width = height = size;
         cellHieght = height / row;
         cellWidth = width / column;

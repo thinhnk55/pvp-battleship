@@ -9,6 +9,8 @@ using Unity.Services.Authentication;
 using Unity.Services.Core;
 using System.Threading.Tasks;
 
+#if UNITY_ANDROID || UNITY_IOS
+
 public class GoogleAuth : ISocialAuth
 {
     public void Initialize()
@@ -107,3 +109,4 @@ public class GoogleAuth : ISocialAuth
         throw new NotImplementedException();
     }
 }
+#endif

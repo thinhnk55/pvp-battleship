@@ -15,6 +15,7 @@ public class Ship : CacheMonoBehaviour
     public Board board;
     public SpriteRenderer renderer;
     [SerializeField] SpriteRenderer occupyRenderer;
+    [SerializeField] Sprite destroyedSprite;
     LeanDragTranslate leanDrag;
     public bool onSelecting;
     public float timeSelecting;
@@ -198,8 +199,10 @@ public class Ship : CacheMonoBehaviour
     public void BeingDestroyed()
     {
         isDestroyed = true;
+        renderer.sprite = destroyedSprite;
         board.ships.Remove(this);
         Debug.Log("Destroyed");
+        SoundType.SHIP_EXPLOSION.PlaySound();
         for (int i = 0; i < octilesOccupy.Count; i++)
         {
             octilesOccupy[i].Attacked = true;
@@ -209,8 +212,11 @@ public class Ship : CacheMonoBehaviour
         {
             octilesComposition[i].attackSpriteRenderer.sprite = null;
             ObjectPoolManager.GenerateObject<ParticleSystem>(VFXFactory.Explosion, octilesComposition[i].Position);
+            if (i==0 || i == 2)
+            {
+                ObjectPoolManager.GenerateObject<ParticleSystem>(VFXFactory.Smoke, octilesComposition[i].Position, gameObject);
+            }
         }
-        ObjectPoolManager.GenerateObject<ParticleSystem>(VFXFactory.Smoke, octilesComposition[0].Position, gameObject);
     }
 
     public void OnSelected(LeanSelectByFinger leanSelectByFinger,LeanFinger leanFinger)

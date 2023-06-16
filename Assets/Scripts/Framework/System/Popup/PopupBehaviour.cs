@@ -46,7 +46,7 @@ namespace Framework
 
             // Get canvas group component and disable UI constrol at begin
             _canvasGroup = GetComponent<CanvasGroup>();
-            _canvasGroup.interactable = false;
+            //_canvasGroup.interactable = false;
 
             // Init transition sequence
             _transitionSequence = DOTween.Sequence()

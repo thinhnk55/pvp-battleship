@@ -8,18 +8,22 @@ public class BetCollection : CardCollectionBase<BetInfo>
     private void Awake()
     {
         List<BetInfo> infos = new List<BetInfo>();
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < CoreGame.bets.Count; i++)
         {
+            int _i = i;
             infos.Add(new BetInfo()
             {
-                RewardAmount = (i + 1) * 1000000,
-                EntryStake = (i + 1) * 500000
+                RewardAmount = CoreGame.bets[i] * 2,
+                EntryStake = CoreGame.bets[i],
+                onClick = () =>
+                {
+                    if (CoreGame.bets[_i] <= PResourceType.Beri.GetValue())
+                    {
+                        SceneTransitionHelper.Load(ESceneName.MainGame);
+                    }
+                }
             });
         }
-        BuildUI(infos);
-        for (int i = 0; i < cards.Count; i++)
-        {
-            cards[i].Button.onClick.AddListener(() => {  CoreGame.bet = cards.Count - i; SceneTransitionHelper.Load(ESceneName.MainGame); });
-        }
+        BuildUIs(infos);
     }
 }

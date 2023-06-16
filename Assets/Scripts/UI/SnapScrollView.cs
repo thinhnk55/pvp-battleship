@@ -17,13 +17,15 @@ public class SnapScrollView : MonoBehaviour
     private bool isScrolling;
     private bool isDragging;
     private bool isSnapping;
-    private float closestPosition;
+    [SerializeField] private float closestPosition;
 
     private void Start()
     {
-        layoutGroup.padding.left = Screen.width / 2;
-        layoutGroup.padding.right = Screen.width / 2;
-        snapThreshold = Screen.width/2;
+        Debug.Log(Display.main.systemWidth);
+        Debug.Log(Display.main.systemHeight);
+        Debug.Log(Screen.width);
+        Debug.Log(Screen.height);
+        snapThreshold = Screen.width * 3 / 5;
         scrollRect = GetComponent<ScrollRect>();
         contentRect = scrollRect.content;
         childRects = new RectTransform[contentRect.childCount];
@@ -33,8 +35,9 @@ public class SnapScrollView : MonoBehaviour
         {
             childRects[i] = contentRect.GetChild(i).GetComponent<RectTransform>();
         }
-        contentRect.anchoredPosition = - childRects[0].anchoredPosition + Screen.width / 2 * Vector2.right;
-        Debug.Log(-childRects[0].anchoredPosition - Screen.width / 2 * Vector2.right);
+        contentRect.anchoredPosition = childRects[0].anchoredPosition * Vector2.right;
+        layoutGroup.padding.left = Screen.width / 2;
+        layoutGroup.padding.right = Screen.width / 2;
         LeanTouch.OnFingerDown += OnSelected;
         LeanTouch.OnFingerUp += OnUnselected;
     }
@@ -46,7 +49,7 @@ public class SnapScrollView : MonoBehaviour
     private void Update()
     {
         // Check if scrolling is in progress
-        isScrolling = Mathf.Abs(scrollRect.velocity.x) > Mathf.Abs(snapSpeed / 20);
+        isScrolling = Mathf.Abs(scrollRect.velocity.x) > Mathf.Abs(snapSpeed * closestPosition/ 8);
 
         // Check if scrolling has ended or user interaction stopped
         if (!isDragging)
@@ -56,7 +59,7 @@ public class SnapScrollView : MonoBehaviour
             foreach (RectTransform childRect in childRects)
             {
                 float childPos = childRect.anchoredPosition.x;
-                float distance = Mathf.Abs(childPos + currentScrollPos - Screen.width / 2);
+                float distance = Mathf.Abs(childPos + currentScrollPos - Screen.width/2 );
 
                 if (distance < Mathf.Abs(closestPosition))
                     closestPosition = childPos + currentScrollPos - Screen.width / 2;
@@ -64,7 +67,6 @@ public class SnapScrollView : MonoBehaviour
 
             if (isSnapping)
             {
-                scrollRect.movementType = ScrollRect.MovementType.Elastic;
                 if (Mathf.Abs(closestPosition) < 25f)
                 {
                     closestPosition = float.MaxValue;
@@ -72,10 +74,7 @@ public class SnapScrollView : MonoBehaviour
                     scrollRect.StopMovement();
                 }
             }
-            else
-            {
-                scrollRect.movementType = ScrollRect.MovementType.Elastic;
-            }
+
         }
         if (!isScrolling)
         {

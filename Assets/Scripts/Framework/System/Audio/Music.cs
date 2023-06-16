@@ -7,6 +7,7 @@ namespace Framework
     {
         INGAME,
         MAINMENU,
+        RADAR
     }
     [Serializable]
     public struct MusicConfig

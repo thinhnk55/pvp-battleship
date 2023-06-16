@@ -8,6 +8,7 @@ public enum GoodType
 {
     BERI,
     DIAMOND,
+    AVATAR,
     REMOVE_ADS,
 }
 public enum CostType
@@ -43,7 +44,6 @@ public class TransactionCard : CardBase<TransactionInfo>
 
     public override void BuildUI(TransactionInfo info)
     {
-        base.BuildUI(info);
         if (Title)
             Title.text = info.Title;
         if (GoodIcon)

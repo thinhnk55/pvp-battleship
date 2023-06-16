@@ -2,9 +2,7 @@
 {
     public enum GameEvent
     {
-        Game_Start,
-        Game_End,
-
-        Attack,       
+        SELECT_ACHIEVEMENT,
+    
     }
 }

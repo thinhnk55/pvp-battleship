@@ -9,8 +9,7 @@ namespace Framework
     public class ServerConfig : SingletonScriptableObject<ServerConfig>
     {
         [SerializeField] private string webSocketURL; public static string WebSocketURL { get { return Instance.webSocketURL; } }
-        [SerializeField] private string id; public static string Id { get { return Instance.id; } }
-        [SerializeField] private string dataBaseURL; public static string DataBaseURL { get { return Instance.dataBaseURL; } }
+        [SerializeField] private string httpURL; public static string HttpURL { get { return Instance.httpURL; } }
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         static void Init()

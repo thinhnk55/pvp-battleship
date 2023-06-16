@@ -58,7 +58,6 @@ public class AudioManager : Singleton<AudioManager>
         audioSrc.transform.parent = audioTracker.transform;
         audioSrc.clip = clipConfig.clip;
         audioSrc.spatialBlend = AudioConfig.SoundConfigs[sound].spatial;
-        Debug.Log(clipConfig.volumn);
         audioSrc.volume = clipConfig.volumn;
         audioSrc.Play();
     }

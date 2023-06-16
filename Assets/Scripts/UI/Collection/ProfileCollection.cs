@@ -7,11 +7,13 @@ using UnityEngine.UI;
 
 public class ProfileCollection : CardCollectionBase<ProfileData>
 {
+    [SerializeField] bool isPlayer;
     [SerializeField] Image avatar;
     [SerializeField] TextMeshProUGUI username;
     [SerializeField] Image rankIcon;
     [SerializeField] TextMeshProUGUI rank;
     [SerializeField] Slider rankProgress;
+    [SerializeField] TextMeshProUGUI battles;
     [SerializeField] TextMeshProUGUI shipDestroyed;
     [SerializeField] TextMeshProUGUI perfectGame;
     [SerializeField] TextMeshProUGUI winStreak;
@@ -21,31 +23,53 @@ public class ProfileCollection : CardCollectionBase<ProfileData>
     [SerializeField] TextMeshProUGUI winRate;
     private void Awake()
     {
-
-        BuildUI(GameData.Player);
+        if (isPlayer)
+        {
+            BuildUI(GameData.Player);
+        }
+        else
+        {
+            BuildUI(GameData.Opponent);
+        }
     }
 
-    protected void BuildUI(ProfileData infos)
+    public void BuildUI(ProfileData infos)
     {
+        if (avatar)
+        {
+            if (infos.Avatar == -1)
+            {
+                avatar.sprite = SpriteFactory.Unknown;
+            }
+            else
+            {
+                avatar.sprite = SpriteFactory.Avatars[infos.Avatar];
+
+            }
+        }
         if (username)
         {
             username.text = infos.Username;
         }
         if (rank)
         {
-            rank.text = infos.Point.ToString();
+            rank.text = infos.Rank.ToString();
         }
         if (rankIcon)
         {
-            rankIcon.sprite = null;
+            rankIcon.sprite = SpriteFactory.Ranks[infos.Rank%12];
         }
         if (rankProgress)
         {
             rankProgress.value = 0;
         }
+        if (battles)
+        {
+            battles.text = (infos.Wins + infos.Losts).ToString();
+        }
         if (shipDestroyed)
         {
-            shipDestroyed.text = infos.ShipDestroyed.ToString();
+            shipDestroyed.text = infos.AchievementConfig[AchievementType.ENVOVY_OF_WAR].Progress.ToString();
         }
         if (perfectGame)
         {
@@ -53,23 +77,23 @@ public class ProfileCollection : CardCollectionBase<ProfileData>
         }
         if (winStreak)
         {
-            perfectGame.text = infos.PerfectGame.ToString();
+            winStreak.text = infos.WinStreak.ToString();
         }
         if (winStreakMax)
         {
-            perfectGame.text = infos.PerfectGame.ToString();
+            winStreakMax.text = infos.WinStreakMax.ToString();
         }
         if (wins)
         {
-            perfectGame.text = infos.PerfectGame.ToString();
+            wins.text = infos.Wins.ToString();
         }
         if (losts)
         {
-            perfectGame.text = infos.PerfectGame.ToString();
+            losts.text = infos.Losts.ToString();
         }
         if (winRate)
         {
-            perfectGame.text = infos.PerfectGame.ToString();
+            winRate.text = infos.WinRate.ToString("F2");
         }
     }
 }

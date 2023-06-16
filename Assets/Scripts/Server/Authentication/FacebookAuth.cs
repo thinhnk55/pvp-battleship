@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Unity.Services.Authentication;
 using Unity.Services.Core;
 using UnityEngine;
+#if UNITY_ANDROID || UNITY_IOS
 
 public class FacebookAuth : ISocialAuth
 {
@@ -100,3 +101,4 @@ public class FacebookAuth : ISocialAuth
         }
     }
 }
+#endif

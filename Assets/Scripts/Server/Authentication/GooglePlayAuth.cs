@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Unity.Services.Authentication;
 using Unity.Services.Core;
 using UnityEngine;
+#if UNITY_ANDROID || UNITY_IOS
 
 public class GooglePlayAuth : ISocialAuth
 {
@@ -117,3 +118,4 @@ public class GooglePlayAuth : ISocialAuth
         throw new System.NotImplementedException();
     }
 }
+#endif

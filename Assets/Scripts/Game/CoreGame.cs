@@ -25,6 +25,7 @@ public class CoreGame : Singleton<CoreGame>
 {
     public static int timeInit;
     public static int bet;
+    public static List<int> bets;
     public int roomId;
     public int playerChair;
     public static List<List<Vector2Int>> shipConfigs = new List<List<Vector2Int>>()
@@ -47,7 +48,7 @@ public class CoreGame : Singleton<CoreGame>
 
     [SerializeField] GameObject preUI;
     [SerializeField] GameObject ingameUI;
-    [SerializeField] GameObject searchUI;
+    [SerializeField] SearchUI searchUI;
     [SerializeField] PostUI postUI;
     [SerializeField] TextMeshProUGUI betAmountSearch;
     public StateMachine<GameState> stateMachine;
@@ -87,7 +88,13 @@ public class CoreGame : Singleton<CoreGame>
             }
         }
     }
-
+    void CoinVfx(Transform target, Vector3 src1, Vector3 src2)
+    {
+        CoinVFX coin1 = ObjectPoolManager.GenerateObject<CoinVFX>(VFXFactory.Coin, src1);
+        CoinVFX coin2 = ObjectPoolManager.GenerateObject<CoinVFX>(VFXFactory.Coin, src2);
+        coin1.target = target;
+        coin2.target = target;
+    }
     #region Mono
     protected override void Awake()
     {
@@ -106,12 +113,12 @@ public class CoreGame : Singleton<CoreGame>
         stateMachine.AddState(GameState.Turn, StartTurn, UpdateTurn, EndTurn);
         stateMachine.AddState(GameState.Out, null, null, null);
         stateMachine.CurrentState = GameState.Pre;
-        ServerMessenger.AddListener<JSONNode>(GameServerEvent.START, GameStart);
-        ServerMessenger.AddListener<JSONNode>(GameServerEvent.ENEMY_OUT_GAME, EnemyOutGame);
-        ServerMessenger.AddListener<JSONNode>(GameServerEvent.ENDGAME, EndGame);
-        ServerMessenger.AddListener<JSONNode>(GameServerEvent.NEW_TURN, EndTurn);
-        ServerMessenger.AddListener<JSONNode>(GameServerEvent.COUNTDOWN, CountDown);
-        ServerMessenger.AddListener<JSONNode>(GameServerEvent.BEINGATTACKED, HandleBeingAttacked);
+        ServerMessenger.AddListener<JSONNode>(GameServerEvent.START, Instance.GameStart);
+        ServerMessenger.AddListener<JSONNode>(GameServerEvent.ENEMY_OUT_GAME, Instance.EnemyOutGame);
+        ServerMessenger.AddListener<JSONNode>(GameServerEvent.ENDGAME, Instance.EndGame);
+        ServerMessenger.AddListener<JSONNode>(GameServerEvent.NEW_TURN, Instance.EndTurn);
+        ServerMessenger.AddListener<JSONNode>(GameServerEvent.COUNTDOWN, Instance.CountDown);
+        ServerMessenger.AddListener<JSONNode>(GameServerEvent.BEINGATTACKED, Instance.HandleBeingAttacked);
         //ServerMessenger.AddListener<JSONNode>(GameServerEvent.BEINGATTACKED, Attack);
     }
 
@@ -126,6 +133,13 @@ public class CoreGame : Singleton<CoreGame>
         Instance.opponent.horzLine.gameObject.SetActive(false);
         Instance.opponent.vertLine.gameObject.SetActive(false);
         stateMachine.CurrentState = GameState.Out;
+        ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.START, Instance.GameStart);
+        ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.ENEMY_OUT_GAME, Instance.EnemyOutGame);
+        ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.ENDGAME, Instance.EndGame);
+        ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.NEW_TURN, Instance.EndTurn);
+        ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.COUNTDOWN, Instance.CountDown);
+        ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.BEINGATTACKED, Instance.HandleBeingAttacked);
+        Debug.Log("Destroyed");
         base.OnDestroy();
     }
     #endregion
@@ -135,17 +149,13 @@ public class CoreGame : Singleton<CoreGame>
     {
         float sizeWidth = cam.orthographicSize * cam.aspect * 2;
         preUI.SetActive(true);
+        postUI.gameObject.SetActive(false);
+        searchUI.gameObject.SetActive(false);
+        ingameUI.gameObject.SetActive(false);
         shipListPlayer.gameObject.SetActive(true);
         opponent.gameObject.SetActive(false);
-        player.Position = Vector3.right * ( sizeWidth * 7 / 16 - player.width/2 - sizeWidth/2);
-        opponent.Position = Vector3.right * ( sizeWidth * 14 / 16 - opponent.width/2 - sizeWidth / 2);
-        for (int i = 0; i < lines.Count; i++)
-        {
-            for (int j = 0; j < lines[i].Count; j++)
-            {
-
-            }
-        }
+        player.Position = Vector3.right * ( - sizeWidth * 1 / 32 - player.width/2 );
+        opponent.Position = Vector3.right * ( sizeWidth * 15 / 32 - opponent.width/2 );
     }
     void EndPregame()
     {
@@ -159,7 +169,10 @@ public class CoreGame : Singleton<CoreGame>
         opponent.InitBoard(10,10);
         opponent.RandomShip(shipsOpponent);
         preUI.SetActive(false);
-        searchUI.SetActive(true);
+        searchUI.gameObject.SetActive(true);
+        var profile = new ProfileData();
+        profile.Avatar = -1;
+        searchUI.opponentProfile.BuildUI(profile);
         shipListPlayer.gameObject.SetActive(false);
     }
     void UpdateSearch()
@@ -168,8 +181,7 @@ public class CoreGame : Singleton<CoreGame>
     }
     void EndSearch()
     {
-        searchUI.SetActive(false);
-        ingameUI.SetActive(true);
+        searchUI.gameObject.SetActive(false);
     }
     void StartTurn()
     {
@@ -205,6 +217,7 @@ public class CoreGame : Singleton<CoreGame>
     {
         if (shipListPlayer.transform.childCount == 0)
         {
+            searchUI.gameObject.SetActive(true);
             stateMachine.CurrentState = GameState.Search;
         }
     }
@@ -215,10 +228,10 @@ public class CoreGame : Singleton<CoreGame>
     public void QuitSearch()
     {
         stateMachine.CurrentState = GameState.Pre;
-        ingameUI.SetActive(false);
+        searchUI.gameObject.SetActive(false);
         preUI.SetActive(true);
-
         searchTween.Kill();
+        WSClient.QuitSearch(bet);
     }
     public void QuitAfter()
     {
@@ -230,19 +243,36 @@ public class CoreGame : Singleton<CoreGame>
         SceneTransitionHelper.Load(ESceneName.Home);
         WSClient.QuitGame(roomId);
     }
+    public void Rematch()
+    {
+
+    }
+    public void NewMatch()
+    {
+        SceneTransitionHelper.Reload();
+    }
     #endregion
 
     #region CallBackServer
     void GameStart(JSONNode json)
     {
+        ProfileData profile = GameData.Opponent;
+        GameData.Opponent = ProfileData.FromJson(ref profile, json);
+        Debug.Log(GameData.Opponent.Username);
+        Instance.ingameUI.SetActive(true);
         roomId = int.Parse(json["r"]);
         playerChair = int.Parse(json["c"]);
-        opponent.name.text = json["n"];
+        Instance.searchUI.opponentProfile.BuildUI( GameData.Opponent);
+        CoinVfx(Instance.searchUI.tresure.transform, Instance.searchUI.avatar1.transform.position, Instance.searchUI.avatar2.transform.position);
+        PResourceType.Beri.AddValue(-bets[bet]);
         //opponent.diamond.text = json["d"];
         //opponent.beri.text = json["b"];
         //opponent.point.text = json["p"];
-        playerTurn = int.Parse(json["turn"]) == playerChair;
-        stateMachine.CurrentState = GameState.Turn;
+        DOVirtual.DelayedCall(1.5f, () =>
+        {
+            playerTurn = int.Parse(json["turn"]) == playerChair;
+            stateMachine.CurrentState = GameState.Turn;
+        });
     }
 
     void HandleBeingAttacked(JSONNode json)
@@ -297,6 +327,20 @@ public class CoreGame : Singleton<CoreGame>
             Instance.ingameUI.SetActive(false);
             Instance.postUI.gameObject.SetActive(true);
             postUI.amount.text = json["w"];
+            if (int.Parse(json["c"]) == playerChair)
+            {
+                PResourceType.Beri.AddValue(int.Parse(json["w"]));
+                postUI.ResultPlayer.sprite = SpriteFactory.Win;
+                postUI.ResultOpponent.sprite = SpriteFactory.Lose;
+                CoinVfx(searchUI.avatar1.transform, searchUI.tresure.transform.position, searchUI.tresure.transform.position);
+            }
+            else
+            {
+                PResourceType.Beri.AddValue(-int.Parse(json["w"]));
+                postUI.ResultPlayer.sprite = SpriteFactory.Lose;
+                postUI.ResultOpponent.sprite = SpriteFactory.Win;
+                CoinVfx(searchUI.avatar2.transform, searchUI.tresure.transform.position, searchUI.tresure.transform.position);
+            }
         });
     }
     void EnemyOutGame(JSONNode json)

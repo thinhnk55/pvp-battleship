@@ -1,15 +1,18 @@
 using Framework;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+[Serializable]
 public struct RewardInfo
 {
     public Sprite Background;
     public Sprite ObtainedIndicator;
     public string Title;
+    public GoodType GoodType;
     public TransactionItemInfo Reward;
 }
 
@@ -22,7 +25,6 @@ public class RewardCard : CardBase<RewardInfo>
     public TextMeshProUGUI Amount;
     public override void BuildUI(RewardInfo info)
     {
-        base.BuildUI(info);
         if (Background)
             Background.sprite = info.Background;
         if (Icon)
