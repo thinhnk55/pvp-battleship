@@ -17,7 +17,7 @@ public class BetCollection : CardCollectionBase<BetInfo>
                 EntryStake = CoreGame.bets[i],
                 onClick = () =>
                 {
-                    if (CoreGame.bets[_i] <= PResourceType.Beri.GetValue())
+                    if (CoreGame.bets[_i] <= PResourceType.BERI.GetValue())
                     {
                         SceneTransitionHelper.Load(ESceneName.MainGame);
                     }

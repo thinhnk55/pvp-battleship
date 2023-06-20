@@ -1,14 +1,15 @@
 using Framework;
+using SimpleJSON;
 using System;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public struct GoodInfo
 {
-    public Sprite Icon;
     public int Number;
-    public PResourceType Type;
+    public PGoodType Type;
 }
 
 public struct TransactionInfo
@@ -16,6 +17,37 @@ public struct TransactionInfo
     public string Title;
     public GoodInfo[] Cost;
     public GoodInfo[] Product;
+
+    public static TransactionInfo FromJson(JSONNode data)
+    {
+        TransactionInfo transactionInfo = new TransactionInfo();
+        for (int i = 0; i < data["cost"].Count; i++)
+        {
+            transactionInfo.Cost[i] = new GoodInfo()
+            {
+                Number = int.Parse(data["cost"][i]),
+                Type = data["cost_type"][i].ToEnum<PGoodType>(),
+            };
+        }
+        for (int i = 0; i < data["product"].Count; i++)
+        {
+            transactionInfo.Cost[i] = new GoodInfo()
+            {
+                Number = int.Parse(data["product"][i]),
+                Type = data["product_type"][i].ToEnum<PGoodType>(),
+            };
+        }
+        return transactionInfo;
+    }
+    public static List<TransactionInfo> ListFromJson(JSONNode data)
+    {
+        List<TransactionInfo> transactionInfos = new List<TransactionInfo>();
+        for (int i = 0; i < data.Count; i++)
+        {
+            transactionInfos.Add(TransactionInfo.FromJson(data[i]));
+        }
+        return transactionInfos;
+    }
 }
 
 public class TransactionCard : CardBase<TransactionInfo>
@@ -34,11 +66,11 @@ public class TransactionCard : CardBase<TransactionInfo>
         if (Title)
             Title.text = info.Title;
         if (GoodIcon)
-            GoodIcon.sprite = info.Product[0].Icon;
+            GoodIcon.sprite = SpriteFactory.ResourceIcons[(int)info.Product[0].Type];
         if (GoodAmount)
             GoodAmount.text = info.Product[0].Number.ToString();
         if (CostIcon)
-            CostIcon.sprite = info.Cost[0].Icon;
+            CostIcon.sprite = SpriteFactory.ResourceIcons[(int)info.Cost[0].Type];
         if (CostAmount)
             CostAmount.text = info.Cost[0].Number.ToString();
     }

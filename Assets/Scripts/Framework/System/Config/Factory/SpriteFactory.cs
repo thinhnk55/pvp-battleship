@@ -25,6 +25,7 @@ namespace Framework
         [SerializeField] private Sprite[] ranks; public static Sprite[] Ranks { get { return Instance.ranks; } }
         [SerializeField] private ListSprite[] achievements; public static ListSprite[] Achievements { get { return Instance.achievements; } }
         [SerializeField] private Sprite[] avatars; public static Sprite[] Avatars { get { return Instance.avatars; } }
+        [SerializeField] private Sprite[] resourceIcons; public static Sprite[] ResourceIcons { get { return Instance.resourceIcons; } }
         [SerializeField] private Sprite unKnowmAvatar; public static Sprite Unknown { get { return Instance.unKnowmAvatar; } }
         [SerializeField] private Sprite x; public static Sprite X { get { return Instance.x; } }
         [SerializeField] private Sprite win; public static Sprite Win { get { return Instance.win; } }

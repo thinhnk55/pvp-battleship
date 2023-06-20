@@ -29,7 +29,7 @@ public class RewardCard : CardBase<RewardInfo>
         if (Background)
             Background.sprite = info.Background;
         if (Icon)
-            Icon.sprite = info.Reward.Icon;
+            Icon.sprite = SpriteFactory.ResourceIcons[(int)info.Reward.Type];
         if (ObtainedIndicator)
             ObtainedIndicator.sprite = info.ObtainedIndicator;
         if (Title)

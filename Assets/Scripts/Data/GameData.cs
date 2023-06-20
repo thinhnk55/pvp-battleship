@@ -8,14 +8,14 @@ using UnityEngine;
 
 public class GameData : PDataBlock<GameData>
 {
+    [SerializeField] private string text; public static string Text { get { return Instance.text; } set { Instance.text = value; } }
     [SerializeField] private int version; public static int Version { get { return Instance.version; } set { Instance.version = value; } }
     [SerializeField] private int isBuyDiamondFirst; public static int IsBuyDiamondFirst { get { return Instance.isBuyDiamondFirst; } set { Instance.isBuyDiamondFirst = value; } }
     [SerializeField] private ProfileData player; public static ProfileData Player { get { return Instance.player; } set { Instance.player = value; } }
     [SerializeField] private ProfileData opponent; public static ProfileData Opponent { get { return Instance.opponent; } set { Instance.opponent = value; } }
     [SerializeField] private List<int> luckyShotConfig; public static List<int> LuckyShotConfig { get { return Instance.luckyShotConfig; } set { Instance.luckyShotConfig = value; } }
     [SerializeField] private List<int> luckyShotResult; public static List<int> LuckyShotResult { get { return Instance.luckyShotResult; } set { Instance.luckyShotResult = value; } }
-
-
+    [SerializeField] private Dictionary<TransactionType,List<TransactionInfo>> transactionConfigs; public static Dictionary<TransactionType, List<TransactionInfo>> TransactionConfigs { get { return Instance.transactionConfigs; } set { Instance.transactionConfigs = value; } }
     [SerializeField] private List<RankConfig> rankConfigs; public static List<RankConfig> RankConfigs { get { return Instance.rankConfigs; } set { Instance.rankConfigs = value; } }
     [SerializeField] private int rocketCount; public static int RocketCount { get { return Instance.rocketCount; } set { Instance.rocketCount = value; } }
     [SerializeField] private long lastLuckyShot; public static long LastLuckyShot { get { return Instance.lastLuckyShot; } set { Instance.lastLuckyShot = value; } }
@@ -35,6 +35,7 @@ public class GameData : PDataBlock<GameData>
         Instance.luckyShotResult = Instance.luckyShotResult ?? new List<int>();
         Instance.luckyShotConfig = Instance.luckyShotConfig ?? new List<int>();
         Instance.player.AchievementSelected = Instance.player.AchievementSelected ?? new int[3] { -1, -1, -1 };
+        Instance.transactionConfigs = Instance.transactionConfigs ?? new Dictionary<TransactionType, List<TransactionInfo>>();
         Instance.rankConfigs = Instance.rankConfigs ?? new List<RankConfig>();
         restoreRocketInterval = 60;
     }
@@ -109,8 +110,8 @@ public struct ProfileData
 [Serializable]
 public class RankConfig
 {
+    public int Id;
     public string Title;
-    public Sprite Icon;
     public int Point;
 
 }

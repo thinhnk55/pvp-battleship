@@ -16,6 +16,7 @@ public class WSClient : WSClientBase
         ServerMessenger.AddListener<JSONNode>(GameServerEvent.LOGIN, OnLogin);
         ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECIEVE_ACHIEVEMENT, ReceiveAchievementConfig);
         ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECIEVE_LUCKY_SHOT_CONFIG, ReceiveLuckyShotConfig);
+        ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECIEVE_SHOP_CONFIG, ReceiveLuckyShotConfig);
     }
     protected override void OnDestroy()
     {
@@ -23,11 +24,12 @@ public class WSClient : WSClientBase
         ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.LOGIN, OnLogin);
         ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.RECIEVE_ACHIEVEMENT, ReceiveAchievementConfig);
         ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.RECIEVE_LUCKY_SHOT_CONFIG, ReceiveLuckyShotConfig);
+        ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.RECIEVE_SHOP_CONFIG, ReceiveLuckyShotConfig);
     }
     public void OnLogin(JSONNode data)
     {
-        PResourceType.Diamond.SetValue(int.Parse(data["d"]));
-        PResourceType.Beri.SetValue(int.Parse(data["b"]));
+        PResourceType.GEM.SetValue(int.Parse(data["d"]));
+        PResourceType.BERI.SetValue(int.Parse(data["b"]));
         // GameData.IsBuyDiamondFirst = int.Parse(data["_p"]);
         ProfileData profile = GameData.Player;
         GameData.Player = ProfileData.FromJson(ref profile, data);
@@ -39,7 +41,7 @@ public class WSClient : WSClientBase
             RequestAchievementConfig();
             RequestLuckyShotConfig();
         }
-
+        RequestShopConfig();
 
         CoreGame.timeInit = int.Parse(data["t"]);
         CoreGame.bets = data["bet"].ToList();
@@ -88,6 +90,7 @@ public class WSClient : WSClientBase
     {
         for (int i = 0; i < data.Count; i++)
         {
+            GameData.TransactionConfigs[(TransactionType)i].AddRange(TransactionInfo.ListFromJson(data[i]));
 
         }
     }
@@ -107,7 +110,7 @@ public class WSClient : WSClientBase
         {
             jsonArray.Add(ship.ToJson());
         }
-        jsonNode.Add("id", GameServerEvent.SEARCHOPPONENT.ToJson() );
+        jsonNode.Add("id", GameServerEvent.SEARCH_OPPONENT.ToJson() );
         jsonNode.Add("b", bet.ToJson());
         jsonNode.Add("ship", jsonArray);
         Instance.Send(jsonNode);
@@ -137,7 +140,7 @@ public class WSClient : WSClientBase
     {
         JSONNode jsonNode = new JSONClass
         {
-            { "id", GameServerEvent.QUIT_GAME.ToJson() },
+            { "id", GameServerEvent.QUIT_GAME_REQUEST.ToJson() },
             { "r", room.ToJson() },
         };
         Instance.Send(jsonNode);

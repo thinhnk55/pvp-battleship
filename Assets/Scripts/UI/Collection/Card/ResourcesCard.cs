@@ -11,8 +11,8 @@ public class ResourcesCard : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        beri.text = PResourceType.Beri.GetValue().ToString();
-        diamond.text = PResourceType.Diamond.GetValue().ToString();
+        beri.text = PResourceType.BERI.GetValue().ToString();
+        diamond.text = PResourceType.GEM.GetValue().ToString();
     }
 
     // Update is called once per frame

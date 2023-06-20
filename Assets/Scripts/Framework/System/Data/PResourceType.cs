@@ -3,8 +3,16 @@
     [System.Serializable]
     public enum PResourceType
     {
-        Free = 0,
-        Diamond = 1,
-        Beri = 2,
+        GEM,
+        BERI,
+    }
+    public enum PGoodType
+    {
+        USD,
+        GEM,
+        BERI,
+        AVATAR,
+        AVATAR_FRAME,
+        SHIP_SKIN
     }
 }

@@ -44,11 +44,11 @@ public class LuckyShot : Singleton<LuckyShot>
         {
             rewards.Add(new RewardInfo()
             {
-                GoodType = PResourceType.Beri,
+                GoodType = PResourceType.BERI,
                 Reward = new GoodInfo()
                 {
                     Number = GameData.LuckyShotResult[i],
-                    Icon = SpriteFactory.Beri,
+                    Type = PGoodType.BERI,
                 }
             });
         }
@@ -84,11 +84,11 @@ public class LuckyShot : Singleton<LuckyShot>
             GameData.LuckyShotResult.Add(amount);
             rewards.Add(new RewardInfo()
             {
-                GoodType = PResourceType.Beri,
+                GoodType = PResourceType.BERI,
                 Reward = new GoodInfo()
                 {
                     Number = GameData.LuckyShotResult[0],
-                    Icon = SpriteFactory.Beri,
+                    Type = PGoodType.BERI,
                 }
             });
         }
@@ -97,16 +97,16 @@ public class LuckyShot : Singleton<LuckyShot>
             GameData.LuckyShotResult[0] = amount + GameData.LuckyShotResult[0];
             rewards[0] = new RewardInfo()
             {
-                GoodType = PResourceType.Beri,
+                GoodType = PResourceType.BERI,
                 Reward = new GoodInfo()
                 {
                     Number = GameData.LuckyShotResult[0],
-                    Icon = SpriteFactory.Beri,
+                    Type = PGoodType.BERI,
                 }
             };
         }
         
-        PResourceType.Beri.AddValue(amount);
+        PResourceType.BERI.AddValue(amount);
         shots[indexShot].GetComponent<Image>().sprite = SpriteFactory.Attacked;
         rewardCollection.BuildUIs(rewards);
         StartCoroutine(Suffle());

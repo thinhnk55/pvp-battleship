@@ -7,29 +7,29 @@ using UnityEngine.UI;
 
 public class PurchaseDiamondCard : CardBase<TransactionInfo>
 {
-    [SerializeField] TextMeshProUGUI goodAmount;
-    [SerializeField] Image goodIcon;
+    [SerializeField] TextMeshProUGUI productAmount;
+    [SerializeField] Image productIcon;
     [SerializeField] TextMeshProUGUI costAmount;
     [SerializeField] Image costIcon;
 
     public override void BuildUI(TransactionInfo info)
     {
         base.BuildUI(info);
-        if (goodAmount)
+        if (productAmount)
         {
-            goodAmount.text = info.Product[0].Number.ToString();
+            productAmount.text = info.Product[0].Number.ToString();
         }
         if (costAmount)
         {
             costAmount.text = info.Cost[0].Number.ToString();
         }
-        if (goodIcon)
+        if (productIcon)
         {
-            goodIcon.sprite = info.Product[0].Icon;
+            productIcon.sprite = SpriteFactory.ResourceIcons[(int)info.Product[0].Type];
         }
         if (costIcon)
         {
-            costIcon.sprite = info.Cost[0].Icon;
+            costIcon.sprite = SpriteFactory.ResourceIcons[(int)info.Cost[0].Type];
         }
         if (Button)
         {

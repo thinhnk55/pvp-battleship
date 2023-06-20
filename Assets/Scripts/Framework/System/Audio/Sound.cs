@@ -11,6 +11,7 @@ namespace Framework
         SHIP_HIT,
         SHIP_MISS,
         COIN_VFX,
+        AUDIO,
         COUNT,
     }
     [Serializable]

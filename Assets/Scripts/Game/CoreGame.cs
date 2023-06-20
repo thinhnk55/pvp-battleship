@@ -265,7 +265,7 @@ public class CoreGame : Singleton<CoreGame>
         playerChair = int.Parse(json["c"]);
         Instance.searchUI.opponentProfile.BuildUI( GameData.Opponent);
         CoinVfx(Instance.searchUI.tresure.transform, Instance.searchUI.avatar1.transform.position, Instance.searchUI.avatar2.transform.position);
-        PResourceType.Beri.AddValue(-bets[bet]);
+        PResourceType.BERI.AddValue(-bets[bet]);
         //opponent.diamond.text = json["d"];
         //opponent.beri.text = json["b"];
         //opponent.point.text = json["p"];
@@ -330,14 +330,14 @@ public class CoreGame : Singleton<CoreGame>
             postUI.amount.text = json["w"];
             if (int.Parse(json["c"]) == playerChair)
             {
-                PResourceType.Beri.AddValue(int.Parse(json["w"]));
+                PResourceType.BERI.AddValue(int.Parse(json["w"]));
                 postUI.ResultPlayer.sprite = SpriteFactory.Win;
                 postUI.ResultOpponent.sprite = SpriteFactory.Lose;
                 CoinVfx(searchUI.avatar1.transform, searchUI.tresure.transform.position, searchUI.tresure.transform.position);
             }
             else
             {
-                PResourceType.Beri.AddValue(-int.Parse(json["w"]));
+                PResourceType.BERI.AddValue(-int.Parse(json["w"]));
                 postUI.ResultPlayer.sprite = SpriteFactory.Lose;
                 postUI.ResultOpponent.sprite = SpriteFactory.Win;
                 CoinVfx(searchUI.avatar2.transform, searchUI.tresure.transform.position, searchUI.tresure.transform.position);

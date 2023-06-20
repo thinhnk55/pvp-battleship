@@ -19,9 +19,9 @@ namespace Framework
         {
             switch (type)
             {
-                case PResourceType.Diamond:
+                case PResourceType.GEM:
                     return Instance._resourceDiamond;
-                case PResourceType.Beri:
+                case PResourceType.BERI:
                     return Instance._resourceBeri;
             }
 

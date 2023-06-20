@@ -1,8 +1,10 @@
 using Framework;
 using SimpleJSON;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting.YamlDotNet.Core.Tokens;
 using UnityEngine;
 
 public static class JsonExtension
@@ -30,5 +32,10 @@ public static class JsonExtension
             }
         }
         return list;
+    }
+
+    public static T ToEnum<T>(this JSONNode json) where T : Enum
+    {
+        return (T)Enum.ToObject(typeof(T), json.AsInt);
     }
 }
