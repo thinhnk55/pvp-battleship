@@ -27,7 +27,6 @@ public enum AchievementType
 [Serializable]
 public struct AchievementUnit
 {
-    public Sprite Icon;
     public int Task;
     public PResourceType RewardType;
     public int RewardAmount;
@@ -50,7 +49,6 @@ public struct AchievementInfo
         {
             achievementUnits.Add(new AchievementUnit()
             {
-                Icon = SpriteFactory.Achievements[id].sprites[i],
                 Task = int.Parse(jsonUnits[i]["require"]),
                 RewardAmount = int.Parse(jsonUnits[i]["reward"]),
                 Description = GetDescription((AchievementType)id, int.Parse(jsonUnits[i]["require"])),
@@ -141,7 +139,7 @@ public class AchievementCard : CardBase<AchievementInfo>
 
         //show unobtained info
         if (Icon != null)
-            Icon.sprite = info.AchivementUnits[obtain].Icon;
+            Icon.sprite = SpriteFactory.Achievements[info.Id].sprites[obtain];
         if (Title)
             Title.text = info.Title;
         if (Description)

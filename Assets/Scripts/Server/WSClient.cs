@@ -40,9 +40,9 @@ public class WSClient : WSClientBase
             RequestLuckyShotConfig();
         }
 
+
         CoreGame.timeInit = int.Parse(data["t"]);
         CoreGame.bets = data["bet"].ToList();
-        GameData.LuckyShotConfig.Log();
     }
     public void ReceiveAchievementConfig(JSONNode data)
     {
@@ -58,8 +58,7 @@ public class WSClient : WSClientBase
     {
         List<int> luckyShots = data["list"].ToList();
         GameData.LuckyShotConfig = luckyShots;
-
-        Debug.Log(data);
+        GameData.LuckyShotConfig.Log();
     }
     public static void RequestLuckyShotConfig()
     {
@@ -73,7 +72,7 @@ public class WSClient : WSClientBase
     {
         JSONNode jsonNode = new JSONClass()
         {
-            { "id", GameServerEvent.RECIEVE_SHOP_CONFIG.ToJson() },
+            { "id", GameServerEvent.REQUEST_ACHIEVEMENT.ToJson() },
         };
         Instance.Send(jsonNode);
     }

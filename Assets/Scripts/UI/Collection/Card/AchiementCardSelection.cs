@@ -25,7 +25,7 @@ public class AchiementCardSelection : AchievementCard
 
         //show unobtained info
         if (Icon != null)
-            Icon.sprite = info.AchivementUnits[obtain].Icon;
+            Icon.sprite = SpriteFactory.Achievements[info.Id].sprites[obtain];
         if (Title)
             Title.text = info.Title;
         if (Description)
