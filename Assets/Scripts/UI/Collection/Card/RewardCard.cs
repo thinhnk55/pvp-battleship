@@ -12,8 +12,8 @@ public struct RewardInfo
     public Sprite Background;
     public Sprite ObtainedIndicator;
     public string Title;
-    public GoodType GoodType;
-    public TransactionItemInfo Reward;
+    public PResourceType GoodType;
+    public GoodInfo Reward;
 }
 
 public class RewardCard : CardBase<RewardInfo>
@@ -25,6 +25,7 @@ public class RewardCard : CardBase<RewardInfo>
     public TextMeshProUGUI Amount;
     public override void BuildUI(RewardInfo info)
     {
+        base.BuildUI(info);
         if (Background)
             Background.sprite = info.Background;
         if (Icon)
@@ -32,9 +33,9 @@ public class RewardCard : CardBase<RewardInfo>
         if (ObtainedIndicator)
             ObtainedIndicator.sprite = info.ObtainedIndicator;
         if (Title)
-        Title.text = info.Title;
+            Title.text = info.Title;
         if (Amount)
-            Amount.text = info.Reward.Amount.ToString();
+            Amount.text = info.Reward.Number.ToString();
     }
 
     protected override void OnClicked(RewardInfo info)

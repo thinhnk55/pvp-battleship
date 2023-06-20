@@ -8,9 +8,9 @@ public struct StatiticInfo
 }
 public class StatisticCard : CardBase<StatiticInfo>
 {
-    [SerializeField]TextMeshProUGUI Info;
     public override void BuildUI(StatiticInfo info)
     {
+        base.BuildUI(info);
     }
 
     protected override void OnClicked(StatiticInfo info)

@@ -104,6 +104,7 @@ public class CoreGame : Singleton<CoreGame>
         shipsPlayer = shipListPlayer.GetComponentsInChildren<Ship>().ToList();
         shipsPlayer.Reverse();
         shipsOpponent = shipListOpponent.GetComponentsInChildren<Ship>().ToList();
+        ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECIEVE_RECONNECT, Instance.GameStart);
     }
     void Start()
     {

@@ -44,10 +44,10 @@ public class LuckyShot : Singleton<LuckyShot>
         {
             rewards.Add(new RewardInfo()
             {
-                GoodType = GoodType.BERI,
-                Reward = new TransactionItemInfo()
+                GoodType = PResourceType.Beri,
+                Reward = new GoodInfo()
                 {
-                    Amount = GameData.LuckyShotResult[i],
+                    Number = GameData.LuckyShotResult[i],
                     Icon = SpriteFactory.Beri,
                 }
             });
@@ -84,10 +84,10 @@ public class LuckyShot : Singleton<LuckyShot>
             GameData.LuckyShotResult.Add(amount);
             rewards.Add(new RewardInfo()
             {
-                GoodType = GoodType.BERI,
-                Reward = new TransactionItemInfo()
+                GoodType = PResourceType.Beri,
+                Reward = new GoodInfo()
                 {
-                    Amount = GameData.LuckyShotResult[0],
+                    Number = GameData.LuckyShotResult[0],
                     Icon = SpriteFactory.Beri,
                 }
             });
@@ -97,10 +97,10 @@ public class LuckyShot : Singleton<LuckyShot>
             GameData.LuckyShotResult[0] = amount + GameData.LuckyShotResult[0];
             rewards[0] = new RewardInfo()
             {
-                GoodType = GoodType.BERI,
-                Reward = new TransactionItemInfo()
+                GoodType = PResourceType.Beri,
+                Reward = new GoodInfo()
                 {
-                    Amount = GameData.LuckyShotResult[0],
+                    Number = GameData.LuckyShotResult[0],
                     Icon = SpriteFactory.Beri,
                 }
             };

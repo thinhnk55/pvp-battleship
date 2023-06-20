@@ -15,6 +15,16 @@ public class AchievementCollection : CardCollectionBase<AchievementInfo>
     [SerializeField] AchievementCard previewCard;
     private void Start()
     {
+        if (!isSelection)
+            OnChangeCard += (oldCard, newCard) =>
+            {
+                if(oldCard && ((AchievementCard)oldCard).BG)
+                    ((AchievementCard)oldCard).BG.sprite = SpriteFactory.UnselectedAchievementBG;
+                if (((AchievementCard)newCard).BG)
+                    ((AchievementCard)newCard).BG.sprite = SpriteFactory.SelectedAchievementBG;
+                SetCardPreview(newCard.Info);
+                Debug.Log("Change");
+            };
         infos = new List<AchievementInfo>();
         var list = isPlayer == 1 ? GameData.Player.AchievementConfig.ToList() : GameData.Player.AchievementConfig.ToList().GetRange(0, numberOfChild);
         for (int i = 0; i < list.Count; i++)
@@ -46,7 +56,7 @@ public class AchievementCollection : CardCollectionBase<AchievementInfo>
         BuildUIs(infos);
         if (previewCard != null)
         {
-            SetCardPreview(infos[0]);
+            selectedCard = cards[0];
             ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECIEVE_OBTAIN_ACHIEVEMENT, RecieveObtainAchievemnt);
         }
 

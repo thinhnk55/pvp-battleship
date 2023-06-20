@@ -23,8 +23,8 @@ public class SnapScrollView : MonoBehaviour
     {
         Debug.Log(Display.main.systemWidth);
         Debug.Log(Display.main.systemHeight);
-        Debug.Log(Screen.width);
-        Debug.Log(Screen.height);
+        Debug.Log(Screen.currentResolution.width);
+        Debug.Log(Screen.currentResolution.height);
         snapThreshold = Screen.width * 3 / 5;
         scrollRect = GetComponent<ScrollRect>();
         contentRect = scrollRect.content;
@@ -36,8 +36,8 @@ public class SnapScrollView : MonoBehaviour
             childRects[i] = contentRect.GetChild(i).GetComponent<RectTransform>();
         }
         contentRect.anchoredPosition = childRects[0].anchoredPosition * Vector2.right;
-        layoutGroup.padding.left = Screen.width / 2;
-        layoutGroup.padding.right = Screen.width / 2;
+        layoutGroup.padding.left = Screen.currentResolution.width / 2;
+        layoutGroup.padding.right = Screen.currentResolution.width / 2;
         LeanTouch.OnFingerDown += OnSelected;
         LeanTouch.OnFingerUp += OnUnselected;
     }
@@ -59,10 +59,10 @@ public class SnapScrollView : MonoBehaviour
             foreach (RectTransform childRect in childRects)
             {
                 float childPos = childRect.anchoredPosition.x;
-                float distance = Mathf.Abs(childPos + currentScrollPos - Screen.width/2 );
+                float distance = Mathf.Abs(childPos + currentScrollPos - Screen.currentResolution.width / 2 );
 
                 if (distance < Mathf.Abs(closestPosition))
-                    closestPosition = childPos + currentScrollPos - Screen.width / 2;
+                    closestPosition = childPos + currentScrollPos - Screen.currentResolution.width / 2;
             }
 
             if (isSnapping)
@@ -80,8 +80,7 @@ public class SnapScrollView : MonoBehaviour
         {
             if (!isDragging)
             {
-                // Find the closest snap position
-
+                // Find the closest snap position when not scrolling and dragging
                // Debug.Log(closestPosition);
                 // Snap to the closest position if it's within the snap threshold
                 if (Mathf.Abs(closestPosition) < snapThreshold && Mathf.Abs(closestPosition) > 10f)
@@ -104,14 +103,15 @@ public class SnapScrollView : MonoBehaviour
 
     public void OnUnselected(LeanFinger leanFinger)
     {
+        // Find the closest snap position when release
         float currentScrollPos = contentRect.anchoredPosition.x;
         foreach (RectTransform childRect in childRects)
         {
             float childPos = childRect.anchoredPosition.x;
-            float distance = Mathf.Abs(childPos + currentScrollPos - Screen.width / 2);
+            float distance = Mathf.Abs(childPos + currentScrollPos - Screen.currentResolution.width / 2);
 
             if (distance < Mathf.Abs(closestPosition) && distance > 50f)
-                closestPosition = childPos + currentScrollPos - Screen.width / 2;
+                closestPosition = childPos + currentScrollPos - Screen.currentResolution.width / 2;
         }
         isDragging = false;
     }

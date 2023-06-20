@@ -29,6 +29,8 @@ namespace Framework
         [SerializeField] private Sprite x; public static Sprite X { get { return Instance.x; } }
         [SerializeField] private Sprite win; public static Sprite Win { get { return Instance.win; } }
         [SerializeField] private Sprite lose; public static Sprite Lose { get { return Instance.lose; } }
+        [SerializeField] private Sprite selectedAchievementBG; public static Sprite SelectedAchievementBG { get { return Instance.selectedAchievementBG; } }
+        [SerializeField] private Sprite unselectedAchievementBG; public static Sprite UnselectedAchievementBG { get { return Instance.unselectedAchievementBG; } }
 
 
     }

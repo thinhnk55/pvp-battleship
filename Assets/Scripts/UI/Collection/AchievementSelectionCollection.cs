@@ -18,11 +18,11 @@ public class AchievementSelectionCollection : AchievementCollection
     {
         if (slot >= contentRoot.childCount)
         {
-            BuildNewUI(GameData.Player.AchievementConfig[(AchievementType)idNewSelect]);
+            AddUI(GameData.Player.AchievementConfig[(AchievementType)idNewSelect]);
         }
         else
         {
-            RebuildUI(slot, GameData.Player.AchievementConfig[(AchievementType)idNewSelect]);
+            ModifyUI(slot, GameData.Player.AchievementConfig[(AchievementType)idNewSelect]);
         }
         GameData.Player.AchievementSelected[slot] = idNewSelect;
     }

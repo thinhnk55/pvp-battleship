@@ -29,7 +29,7 @@ public struct AchievementUnit
 {
     public Sprite Icon;
     public int Task;
-    public GoodType RewardType;
+    public PResourceType RewardType;
     public int RewardAmount;
     public string Description;
 }
@@ -113,14 +113,16 @@ public struct AchievementInfo
 public class AchievementCard : CardBase<AchievementInfo>
 {
     [HideInInspector] public int Id;
-    public Image Icon ;
-    public TextMeshProUGUI Title;
-    public TextMeshProUGUI Description;
-    public TextMeshProUGUI RewardAmount;
-    public Slider Progress;
-    public TextMeshProUGUI TextProgress;
+    public Image BG;
+    [SerializeField] protected Image Icon ;
+    [SerializeField] protected TextMeshProUGUI Title;
+    [SerializeField] protected TextMeshProUGUI Description;
+    [SerializeField] protected TextMeshProUGUI RewardAmount;
+    [SerializeField] protected Slider Progress;
+    [SerializeField] protected TextMeshProUGUI TextProgress;
     public override void BuildUI(AchievementInfo info)
     {
+        base.BuildUI(info);
         Id = info.Id;
         int completed = 0;
         if (info.Title == null)
@@ -155,16 +157,18 @@ public class AchievementCard : CardBase<AchievementInfo>
         {
             TextProgress.text = info.Progress.ToString() + "/" + info.AchivementUnits[obtain].Task.ToString();
         }
-        onClick = info.onClick;
+        OnClick = info.onClick;
         if (Button)
         {
             Button.onClick.RemoveAllListeners();
             Button.onClick.AddListener(() =>
             {
+                if (Collection)
+                    Collection.SelectedCard = this;
                 OnClicked(info);
             });
         }
-        if (onClick == null)
+        if (OnClick == null && Button.onClick == null)
         {
             gameObject.SetChildrenRecursively<Image>((img) =>
             {
@@ -175,6 +179,6 @@ public class AchievementCard : CardBase<AchievementInfo>
 
     protected override void OnClicked(AchievementInfo info)
     {
-        onClick?.Invoke();
+        OnClick?.Invoke();
     }
 }

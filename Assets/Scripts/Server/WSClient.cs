@@ -23,16 +23,18 @@ public class WSClient : WSClientBase
         ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.LOGIN, OnLogin);
         ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.RECIEVE_ACHIEVEMENT, ReceiveAchievementConfig);
         ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.RECIEVE_LUCKY_SHOT_CONFIG, ReceiveLuckyShotConfig);
-
     }
     public void OnLogin(JSONNode data)
     {
         PResourceType.Diamond.SetValue(int.Parse(data["d"]));
         PResourceType.Beri.SetValue(int.Parse(data["b"]));
+        // GameData.IsBuyDiamondFirst = int.Parse(data["_p"]);
         ProfileData profile = GameData.Player;
         GameData.Player = ProfileData.FromJson(ref profile, data);
+        Debug.Log(GameData.Player.ToString());
         if (GameData.Version != int.Parse(data["v"]) || GameData.Player.AchievementConfig == null || GameData.Player.AchievementConfig.Count==0)
         {
+            Debug.Log("RequestConfig");
             GameData.Version = int.Parse(data["v"]);
             RequestAchievementConfig();
             RequestLuckyShotConfig();
@@ -51,11 +53,10 @@ public class WSClient : WSClientBase
         {
             GameData.Player.AchievementConfig.Add((AchievementType)i, AchievementInfo.FromJson(data["achie"][i], i));
         }
-        Debug.Log(GameData.Player.ToString());
     }
     public void ReceiveLuckyShotConfig(JSONNode data)
     {
-        List<int> luckyShots = data["list"].ToList(true);
+        List<int> luckyShots = data["list"].ToList();
         GameData.LuckyShotConfig = luckyShots;
 
         Debug.Log(data);
@@ -72,9 +73,24 @@ public class WSClient : WSClientBase
     {
         JSONNode jsonNode = new JSONClass()
         {
-            { "id", GameServerEvent.REQUEST_ACHIEVEMENT.ToJson() },
+            { "id", GameServerEvent.RECIEVE_SHOP_CONFIG.ToJson() },
         };
         Instance.Send(jsonNode);
+    }
+    public static void RequestShopConfig()
+    {
+        JSONNode jsonNode = new JSONClass()
+        {
+            { "id", GameServerEvent.REQUEST_SHOP_CONFIG.ToJson() },
+        };
+        Instance.Send(jsonNode);
+    }
+    public void ReceiveShopConfig(JSONNode data)
+    {
+        for (int i = 0; i < data.Count; i++)
+        {
+
+        }
     }
     public static void RequestShot()
     {
@@ -145,5 +161,9 @@ public class WSClient : WSClientBase
             { "id", GameServerEvent.REQUEST_LUCKY_SHOT.ToJson() },
         };
         Instance.Send(jsonNode);
+    }
+    public static void Reconnect(JSONNode data)
+    {
+        
     }
 }

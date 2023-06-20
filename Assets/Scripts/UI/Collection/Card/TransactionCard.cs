@@ -4,32 +4,18 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public enum GoodType
-{
-    BERI,
-    DIAMOND,
-    AVATAR,
-    REMOVE_ADS,
-}
-public enum CostType
-{
-    BERI,
-    DIAMOND,
-    MONEY,
-    ADS
-}
-
-public struct TransactionItemInfo
+public struct GoodInfo
 {
     public Sprite Icon;
-    public int Amount;
+    public int Number;
+    public PResourceType Type;
 }
 
 public struct TransactionInfo
 {
     public string Title;
-    public TransactionItemInfo GoodItem;
-    public TransactionItemInfo CostItem;
+    public GoodInfo[] Cost;
+    public GoodInfo[] Product;
 }
 
 public class TransactionCard : CardBase<TransactionInfo>
@@ -44,16 +30,17 @@ public class TransactionCard : CardBase<TransactionInfo>
 
     public override void BuildUI(TransactionInfo info)
     {
+        base.BuildUI(info);
         if (Title)
             Title.text = info.Title;
         if (GoodIcon)
-            GoodIcon.sprite = info.GoodItem.Icon;
+            GoodIcon.sprite = info.Product[0].Icon;
         if (GoodAmount)
-            GoodAmount.text = info.GoodItem.Amount.ToString();
+            GoodAmount.text = info.Product[0].Number.ToString();
         if (CostIcon)
-            CostIcon.sprite = info.CostItem.Icon;
+            CostIcon.sprite = info.Cost[0].Icon;
         if (CostAmount)
-            CostAmount.text = info.CostItem.Amount.ToString();
+            CostAmount.text = info.Cost[0].Number.ToString();
     }
 
     protected override void OnClicked(TransactionInfo info)

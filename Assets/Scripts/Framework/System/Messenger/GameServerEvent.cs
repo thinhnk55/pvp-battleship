@@ -3,6 +3,7 @@
     public enum GameServerEvent
     {
         SEARCHOPPONENT = 4001,
+        REQUEST_RECONNECT = 4002,
         QUIT_GAME = 4003,
         ATTACK = 4004,
         QUIT_SEARCH = 4005,
@@ -11,8 +12,10 @@
         REQUEST_LUCKY_SHOT_CONFIG = 4016,
         REQUEST_LUCKY_SHOT = 4017,
         REQUEST_REMATCH = 4018,
+        REQUEST_SHOP_CONFIG = 4022,
 
         START = 4501,
+        RECIEVE_RECONNECT = 4502,
         ENEMY_OUT_GAME = 4503,
         BEINGATTACKED = 4504,
         NEW_TURN = 4507,
@@ -22,7 +25,8 @@
         RECIEVE_ACHIEVEMENT = 4515,
         RECIEVE_LUCKY_SHOT_CONFIG = 4516,
         RECIEVE_LUCKY_SHOT = 4517,
-        RECIEVE_REMATCH = 4018,
+        RECIEVE_REMATCH = 4518,
+        RECIEVE_SHOP_CONFIG = 4522,
         LOGIN = 4999,
 
     }

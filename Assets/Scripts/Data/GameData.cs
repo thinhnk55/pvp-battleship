@@ -9,13 +9,14 @@ using UnityEngine;
 public class GameData : PDataBlock<GameData>
 {
     [SerializeField] private int version; public static int Version { get { return Instance.version; } set { Instance.version = value; } }
+    [SerializeField] private int isBuyDiamondFirst; public static int IsBuyDiamondFirst { get { return Instance.isBuyDiamondFirst; } set { Instance.isBuyDiamondFirst = value; } }
     [SerializeField] private ProfileData player; public static ProfileData Player { get { return Instance.player; } set { Instance.player = value; } }
     [SerializeField] private ProfileData opponent; public static ProfileData Opponent { get { return Instance.opponent; } set { Instance.opponent = value; } }
     [SerializeField] private List<int> luckyShotConfig; public static List<int> LuckyShotConfig { get { return Instance.luckyShotConfig; } set { Instance.luckyShotConfig = value; } }
     [SerializeField] private List<int> luckyShotResult; public static List<int> LuckyShotResult { get { return Instance.luckyShotResult; } set { Instance.luckyShotResult = value; } }
 
 
-
+    [SerializeField] private List<RankConfig> rankConfigs; public static List<RankConfig> RankConfigs { get { return Instance.rankConfigs; } set { Instance.rankConfigs = value; } }
     [SerializeField] private int rocketCount; public static int RocketCount { get { return Instance.rocketCount; } set { Instance.rocketCount = value; } }
     [SerializeField] private long lastLuckyShot; public static long LastLuckyShot { get { return Instance.lastLuckyShot; } set { Instance.lastLuckyShot = value; } }
     [SerializeField] private int restoreRocketInterval; public static int RestoreRocketInterval { get { return Instance.restoreRocketInterval; } set { Instance.restoreRocketInterval = value; } }
@@ -34,6 +35,7 @@ public class GameData : PDataBlock<GameData>
         Instance.luckyShotResult = Instance.luckyShotResult ?? new List<int>();
         Instance.luckyShotConfig = Instance.luckyShotConfig ?? new List<int>();
         Instance.player.AchievementSelected = Instance.player.AchievementSelected ?? new int[3] { -1, -1, -1 };
+        Instance.rankConfigs = Instance.rankConfigs ?? new List<RankConfig>();
         restoreRocketInterval = 60;
     }
 }
@@ -44,11 +46,20 @@ public struct ProfileData
 {
     public string Username;
     public int Avatar;
-    [SerializeField] private int point; public int Point { get { return point; } set { point = value; rank = point; } }
-    [SerializeField] private int rank; public int Rank { get { return rank; }}
-    public int PerfectGame;
+    [SerializeField] private int point; public int Point { get { return point; } set { point = value; } }
+    [SerializeField] private int rank; 
+    public int Rank { get {
+            List<int> rankMilestone = new List<int>();
+            for (int i = 0; i < GameData.RankConfigs.Count; i++)
+            {
+                rankMilestone.Add(GameData.RankConfigs[i].Point);
+            }
+            rank = rankMilestone.GetMileStone(point);
+            return rank; 
+        }}
+    public int PerfectGame { get { return GameData.Player.AchievementConfig[AchievementType.TACTICAL_GENIUS].Progress; } }
     public int WinStreak;
-    public int WinStreakMax;
+    public int WinStreakMax { get { return GameData.Player.AchievementConfig[AchievementType.DOMINATOR].Progress; } }
     [SerializeField] private int wins; public int Wins { get { return wins; } set { wins = value; winRate = wins / (wins + losts + 0.001f); } }
     [SerializeField] private int losts; public int Losts { get { return losts; } set { losts = value; winRate = wins / (wins + losts + 0.001f); } }
     public int Battles;
@@ -61,20 +72,16 @@ public struct ProfileData
 
     public static ProfileData FromJson(ref ProfileData profileData, JSONNode data)
     {
-        var profile = new ProfileData();
-        profile.Username = data["n"];
-        profile.Point = int.Parse(data["p"]);
-        profile.Avatar = int.Parse(data["a"]);
-        profile.PerfectGame = 0; //int.Parse(data["pG"]);
-        profile.WinStreak = int.Parse(data["wSN"]);
-        profile.WinStreakMax = int.Parse(data["wSM"]);
-        profile.Wins = int.Parse(data["wC"]);
-        profile.Losts = int.Parse(data["lC"]);
-        profile.Battles = profileData.Wins + profileData.Losts;
-        profile.Achievement = profileData.Achievement ?? data["achie"].ToList();
-        profile.AchievementObtained = profileData.AchievementObtained ?? data["achie_r"].ToList();
-        profile.AchievementSelected = profileData.AchievementSelected?? new int[3] {-1,-1,-1};
-        profileData = profile;
+        profileData.Username = data["n"];
+        profileData.Point = int.Parse(data["p"]);
+        profileData.Avatar = int.Parse(data["a"]);
+        profileData.WinStreak = int.Parse(data["wSN"]);
+        profileData.Wins = int.Parse(data["wC"]);
+        profileData.Losts = int.Parse(data["lC"]);
+        profileData.Battles = profileData.Wins + profileData.Losts;
+        profileData.Achievement = data["achie"].ToList();
+        profileData.AchievementObtained = data["achie_r"].ToList();
+        profileData.AchievementSelected = profileData.AchievementSelected ?? new int[3] {-1,-1,-1};
         return profileData;
     }
     public override string ToString()
@@ -91,10 +98,19 @@ public struct ProfileData
             s += item.ToString() + "_";
         }
         s += "achieConfig";
-        foreach (var item in AchievementConfig)
-        {
-            s += item.Value.ToString() + "_";
-        }
+        //foreach (var item in AchievementConfig)
+        //{
+        //    s += item.Value.ToString() + "_";
+        //}
         return s;
     }
+}
+
+[Serializable]
+public class RankConfig
+{
+    public string Title;
+    public Sprite Icon;
+    public int Point;
+
 }

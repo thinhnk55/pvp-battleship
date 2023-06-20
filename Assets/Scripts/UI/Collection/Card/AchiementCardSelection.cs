@@ -7,6 +7,7 @@ public class AchiementCardSelection : AchievementCard
 {
     public override void BuildUI(AchievementInfo info)
     {
+        base.BuildUI(info);
         Id = info.Id;
         int completed = 0;
 
@@ -47,7 +48,7 @@ public class AchiementCardSelection : AchievementCard
             Button.onClick.AddListener(() =>
             {
                 Debug.Log(transform.GetSiblingIndex());
-                ((AchievementSelectionCollection)collection).Select(transform.GetSiblingIndex());
+                ((AchievementSelectionCollection)Collection).Select(transform.GetSiblingIndex());
             });
         }
 

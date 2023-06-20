@@ -93,7 +93,7 @@ public class ProfileCollection : CardCollectionBase<ProfileData>
         }
         if (winRate)
         {
-            winRate.text = infos.WinRate.ToString("F2");
+            winRate.text = (infos.WinRate * 100).ToString("F1") + "%";
         }
     }
 }

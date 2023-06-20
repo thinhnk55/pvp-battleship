@@ -24,7 +24,7 @@ public class BetCard : CardBase<BetInfo>
         base.BuildUI(info);
         RewardAmount.text = info.RewardAmount.ToString();
         EntryStake.text = info.EntryStake.ToString();
-        onClick += info.onClick;
+        OnClick += info.onClick;
 
         Button.onClick.AddListener(() =>
         {
@@ -33,7 +33,7 @@ public class BetCard : CardBase<BetInfo>
     }
     protected override void OnClicked(BetInfo info)
     {
-        onClick?.Invoke();
+        OnClick?.Invoke();
     }
     private void Awake()
     {
@@ -42,7 +42,7 @@ public class BetCard : CardBase<BetInfo>
     }
     private void Update()
     {
-        float scale = 1 + (1 - Mathf.Clamp01( Mathf.Pow((rectTransform.anchoredPosition.x + contentTransform.anchoredPosition.x - Screen.width/2) / (Screen.height / 2), 2)) ) * 0.5f;
+        float scale = 1 + (1 - Mathf.Clamp01( Mathf.Pow((rectTransform.anchoredPosition.x + contentTransform.anchoredPosition.x - Screen.currentResolution.width / 2) / (Screen.currentResolution.height / 2), 2)) ) * 0.5f;
         transform.localScale = scale * Vector3.one;
     }
 }
