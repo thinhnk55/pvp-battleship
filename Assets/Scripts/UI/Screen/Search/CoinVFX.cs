@@ -4,7 +4,6 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using static UnityEngine.ParticleSystem;
 
 [RequireComponent(typeof(ParticleSystem))]
 public class CoinVFX : CacheMonoBehaviour
@@ -35,7 +34,10 @@ public class CoinVFX : CacheMonoBehaviour
         if ( isForce)
         {
             SoundType.COIN_VFX.PlaySound();
-            particleSys.DirectToTarget(target.position, multiplier);
+            if (target)
+            {
+                particleSys.DirectToTarget(target.position, multiplier);
+            }
         }
 
     }
@@ -43,6 +45,14 @@ public class CoinVFX : CacheMonoBehaviour
     private void OnDisable()
     {
         isForce = false;
+    }
+
+    public static void CoinVfx(Transform target, Vector3 src1, Vector3 src2)
+    {
+        CoinVFX coin1 = ObjectPoolManager.GenerateObject<CoinVFX>(VFXFactory.Coin, src1, target.gameObject);
+        CoinVFX coin2 = ObjectPoolManager.GenerateObject<CoinVFX>(VFXFactory.Coin, src2, target.gameObject);
+        coin1.target = target;
+        coin2.target = target;
     }
 }
     

@@ -87,7 +87,7 @@ namespace Framework
                 _animator.SetTrigger(AnimID_Idle);
         }
 
-        void ResourceValue_OnDataChanged(int newValue)
+        void ResourceValue_OnDataChanged(int oldValue, int newValue)
         {
             if (newValue != _value)
                 AddValue(newValue - _value);

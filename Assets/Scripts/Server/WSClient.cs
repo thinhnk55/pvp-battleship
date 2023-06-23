@@ -16,7 +16,9 @@ public class WSClient : WSClientBase
         ServerMessenger.AddListener<JSONNode>(GameServerEvent.LOGIN, OnLogin);
         ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECIEVE_ACHIEVEMENT, ReceiveAchievementConfig);
         ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECIEVE_LUCKY_SHOT_CONFIG, ReceiveLuckyShotConfig);
-        ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECIEVE_SHOP_CONFIG, ReceiveLuckyShotConfig);
+        ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECIEVE_SHOP_CONFIG, ReceiveShopConfig);
+        ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECIEVE_TRANSACTION, RecieveTransaction);
+        ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECEIVE_RANK_CONFIG, ReceiveRankConfig);
     }
     protected override void OnDestroy()
     {
@@ -24,7 +26,9 @@ public class WSClient : WSClientBase
         ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.LOGIN, OnLogin);
         ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.RECIEVE_ACHIEVEMENT, ReceiveAchievementConfig);
         ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.RECIEVE_LUCKY_SHOT_CONFIG, ReceiveLuckyShotConfig);
-        ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.RECIEVE_SHOP_CONFIG, ReceiveLuckyShotConfig);
+        ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.RECIEVE_SHOP_CONFIG, ReceiveShopConfig);
+        ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.RECIEVE_TRANSACTION, RecieveTransaction);
+        ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.RECEIVE_RANK_CONFIG, ReceiveRankConfig);
     }
     public void OnLogin(JSONNode data)
     {
@@ -34,17 +38,47 @@ public class WSClient : WSClientBase
         ProfileData profile = GameData.Player;
         GameData.Player = ProfileData.FromJson(ref profile, data);
         Debug.Log(GameData.Player.ToString());
-        if (GameData.Version != int.Parse(data["v"]) || GameData.Player.AchievementConfig == null || GameData.Player.AchievementConfig.Count==0)
+        for (int i = 0; i < data["v"].Count; i++)
         {
-            Debug.Log("RequestConfig");
-            GameData.Version = int.Parse(data["v"]);
-            RequestAchievementConfig();
-            RequestLuckyShotConfig();
+            if (GameData.Versions[i] != int.Parse(data["v"][i]))
+            {
+                GameData.Versions[i] = int.Parse(data["v"][i]);
+                switch ((ConfigVersion)i)
+                {
+                    case ConfigVersion.RANK:
+                        RequestRankConfig();
+                        break;
+                    case ConfigVersion.ACHIEVEMENT:
+                        RequestAchievementConfig();
+                        break;
+                    case ConfigVersion.LUCKY_SHOT:
+                        RequestLuckyShotConfig();
+                        break;
+                    case ConfigVersion.GIFT:
+                        RequestGiftConfig();
+                        break;
+                    case ConfigVersion.SHOP:
+                        RequestShopConfig();
+                        break;
+                    case ConfigVersion.TRESURE:
+                        break;
+                    default:
+                        break;
+                }
+            }
         }
-        RequestShopConfig();
-
+        Timer<LuckyShot>.Instance.LastTime = long.Parse(data["lfb"]).NowFrom0001From1970();
+        Timer<Gift>.Instance.LastTime = long.Parse(data["lcr"]).NowFrom0001From1970();
+        Timer<RankCollection>.Instance.LastTime = long.Parse(data["WRC"]).NowFrom0001From1970();
+        Debug.Log(Timer<RankCollection>.Instance.LastTime);
         CoreGame.timeInit = int.Parse(data["t"]);
         CoreGame.bets = data["bet"].ToList();
+    }
+    public static void RecieveTransaction(JSONNode data)
+    {
+        TransactionType id = data["itemId"].ToEnum<TransactionType>();
+        int index = int.Parse(data["itemIndex"]);
+        GameData.TransactionConfigs[id][index].Transact();
     }
     public void ReceiveAchievementConfig(JSONNode data)
     {
@@ -61,6 +95,19 @@ public class WSClient : WSClientBase
         List<int> luckyShots = data["list"].ToList();
         GameData.LuckyShotConfig = luckyShots;
         GameData.LuckyShotConfig.Log();
+    }
+    public void ReceiveRankConfig(JSONNode data)
+    {
+        Debug.Log(data);
+        GameData.RankConfigs = RankConfig.ListFromJson(data);
+    }
+    public void RequestRankConfig()
+    {
+        JSONNode jsonNode = new JSONClass()
+        {
+            { "id", GameServerEvent.REQUEST_RANK_CONFIG.ToJson() },
+        };
+        Instance.Send(jsonNode);
     }
     public static void RequestLuckyShotConfig()
     {
@@ -90,7 +137,14 @@ public class WSClient : WSClientBase
     {
         for (int i = 0; i < data.Count; i++)
         {
-            GameData.TransactionConfigs[(TransactionType)i].AddRange(TransactionInfo.ListFromJson(data[i]));
+            if (GameData.TransactionConfigs.ContainsKey((TransactionType)i))
+            {
+                GameData.TransactionConfigs[(TransactionType)i] = TransactionInfo.ListFromJson(data["list"][i], i);
+            }
+            else
+            {
+                GameData.TransactionConfigs.Add((TransactionType)i, TransactionInfo.ListFromJson(data["list"][i], i));
+            }
 
         }
     }
@@ -164,8 +218,45 @@ public class WSClient : WSClientBase
         };
         Instance.Send(jsonNode);
     }
-    public static void Reconnect(JSONNode data)
+
+    public static void RequestReconnect()
     {
-        
+        JSONNode jsonNode = new JSONClass()
+        {
+            { "id", GameServerEvent.REQUEST_RECONNECT.ToJson() },
+        };
+        Instance.Send(jsonNode);
+    }
+    public static void RequestGift()
+    {
+        JSONNode jsonNode = new JSONClass()
+        {
+            { "id", GameServerEvent.REQUEST_GIFT.ToJson() },
+        };
+        Instance.Send(jsonNode);
+    }
+    public static void RequestGiftConfig()
+    {
+        JSONNode jsonNode = new JSONClass()
+        {
+            { "id", GameServerEvent.REQUEST_GIFT_CONFIG.ToJson() },
+        };
+        Instance.Send(jsonNode);
+    }
+    public static void ReceiveGiftConfig(JSONNode json)
+    {
+        GameData.GiftConfig = new List<int>();
+        for (int i = 0; i < json["list"].Count; i++)
+        {
+            GameData.GiftConfig.Add(int.Parse(json["list"][i]));
+        }
+    }
+    public static void RequestRank()
+    {
+        JSONNode jsonNode = new JSONClass()
+        {
+            { "id", GameServerEvent.REQUEST_RANK.ToJson() },
+        };
+        Instance.Send(jsonNode);
     }
 }

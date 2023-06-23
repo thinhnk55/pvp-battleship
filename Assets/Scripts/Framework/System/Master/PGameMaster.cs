@@ -66,7 +66,7 @@ namespace Framework
 #if TAPTIC
             Taptic.Taptic.tapticOn = PDataSettings.VibrationEnabled;
 
-            PDataSettings.VibrationEnabledData.OnDataChanged += (enabled) => { Taptic.Taptic.tapticOn = enabled; };
+            PDataSettings.VibrationEnabledData.OnDataChanged += (disable, enabled) => { Taptic.Taptic.tapticOn = enabled; };
 #endif
         }
 

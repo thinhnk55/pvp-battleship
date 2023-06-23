@@ -5,54 +5,58 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class LuckyShot : Singleton<LuckyShot>
 {
+    
     public int indexShot;
     public List<GameObject> rockets;
     public List<Button> shots;
-    public List<RewardInfo> rewards;
 
     [SerializeField] GameObject rocketRoot;
     [SerializeField] GameObject rocketPrefab;
     [SerializeField] GameObject shotRoot;
-    [SerializeField] RewardCollection rewardCollection;
+    [SerializeField] GameObject resourceUI;
+    [SerializeField] TextMeshProUGUI countDown;
+
     private void Start()
     {
         ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECIEVE_LUCKY_SHOT, Instance.RecieveLuckyShot);
-        double totalSecond = TimeSpan.FromTicks(DateTime.UtcNow.Ticks - GameData.LastLuckyShot).TotalSeconds;
+        GameData.RocketCount.OnDataChanged += Instance.OnRocketChange;
+        Timer<LuckyShot>.Instance.OnTrigger +=  Instance.OnTriggerTimer;
+        Timer<LuckyShot>.Instance.OnElapse +=  Instance.OnElapseTimer;
+        Timer<LuckyShot>.Instance.TriggerIntervalInSecond = 60;
+        Debug.Log(Timer<LuckyShot>.Instance.RemainTimeInsecond + "_" + Timer<LuckyShot>.Instance.TriggerCountFromTimePoint +"_"+ GameData.RocketCount.Data);
 
-        var rocketC = Mathf.FloorToInt(Mathf.Clamp((float)totalSecond, 0, 10000000)) / GameData.RestoreRocketInterval;
-        var rocketR = Mathf.FloorToInt(Mathf.Clamp((float)totalSecond, 0, 10000000)) % GameData.RestoreRocketInterval;
-        GameData.RocketCount = Mathf.Clamp(GameData.RocketCount + rocketC, 0, 3);
-        Debug.Log(rocketC +"_"+ GameData.RocketCount);
-        GameData.LastLuckyShot = DateTime.UtcNow.Ticks - TimeSpan.FromSeconds((long)TimeSpan.FromTicks(DateTime.UtcNow.Ticks - GameData.LastLuckyShot).TotalSeconds / 60).Ticks;
-        for (int i = 0; i < GameData.RocketCount; i++)
+        GameData.RocketCount.Data = Mathf.Clamp(GameData.RocketCount.Data + Timer<LuckyShot>.Instance.TriggerCountFromTimePoint, 0, 3);
+
+        int count = rockets.Count;
+        for (int i = 0; i <  GameData.RocketCount.Data - count; i++)
         {
             rockets.Add(Instantiate(rocketPrefab, rocketRoot.transform));
         }
         shots = shotRoot.GetComponentsInChildren<Button>().ToList();
         StartCoroutine(Init());
     }
+    private void Update()
+    {
+        Timer<LuckyShot>.Instance.Elasping();        
+    }
+    protected override void OnDestroy()
+    {
 
+        ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.RECIEVE_LUCKY_SHOT, Instance.RecieveLuckyShot);
+        GameData.RocketCount.OnDataChanged -= Instance.OnRocketChange;
+        Timer<LuckyShot>.Instance.OnTrigger -= Instance.OnTriggerTimer;
+        Timer<LuckyShot>.Instance.OnElapse -= Instance.OnElapseTimer;
+        Timer<LuckyShot>.Instance.TimePoint = DateTime.UtcNow.Ticks;
+        base.OnDestroy();
+    }
     IEnumerator Init()
     {
-        rewards = new List<RewardInfo>();
-        for (int i = 0; i < GameData.LuckyShotResult.Count; i++)
-        {
-            rewards.Add(new RewardInfo()
-            {
-                GoodType = PResourceType.BERI,
-                Reward = new GoodInfo()
-                {
-                    Number = GameData.LuckyShotResult[i],
-                    Type = PGoodType.BERI,
-                }
-            });
-        }
-        rewardCollection.BuildUIs(rewards);
         for (int i = 0; i < GameData.LuckyShotConfig.Count; i++)
         {
             var list = new List<int>(GameData.LuckyShotConfig);
@@ -68,56 +72,58 @@ public class LuckyShot : Singleton<LuckyShot>
     }
     private void RecieveLuckyShot(JSONNode node)
     {
-        Destroy(Instance.rockets[0]);
-        Instance.rockets.Remove(rockets[0]);
-        if (GameData.RocketCount == 3)
-        {
-            GameData.LastLuckyShot = DateTime.UtcNow.Ticks;
-        }
-        GameData.RocketCount--;
-
+        GameData.RocketCount.Data--;
         int amount = GameData.LuckyShotConfig[int.Parse(node["index"])];
         Debug.Log(GameData.LuckyShotConfig[int.Parse(node["index"])]);
-        GameData.LuckyShotConfig.Count();
-        if (rewards.Count == 0)
+        
+        PResourceType.BERI.AddValue(amount);
+        CoinVFX.CoinVfx(Instance.resourceUI.transform, Instance.shots[indexShot].transform.position, Instance.shots[indexShot].transform.position);
+        Instance.shots[indexShot].GetComponent<Image>().sprite = SpriteFactory.Attacked;
+        StartCoroutine(Instance.Suffle());
+    }
+
+    public void OnRocketChange(int oldValue, int newValue)
+    {
+        if (newValue > oldValue)
         {
-            GameData.LuckyShotResult.Add(amount);
-            rewards.Add(new RewardInfo()
+            for (int i = 0; i < newValue - oldValue; i++)
             {
-                GoodType = PResourceType.BERI,
-                Reward = new GoodInfo()
-                {
-                    Number = GameData.LuckyShotResult[0],
-                    Type = PGoodType.BERI,
-                }
-            });
+                Debug.Log("New Rocket");
+                rockets.Add(Instantiate(rocketPrefab, rocketRoot.transform));
+            }
         }
         else
         {
-            GameData.LuckyShotResult[0] = amount + GameData.LuckyShotResult[0];
-            rewards[0] = new RewardInfo()
+            if (oldValue == 3)
             {
-                GoodType = PResourceType.BERI,
-                Reward = new GoodInfo()
-                {
-                    Number = GameData.LuckyShotResult[0],
-                    Type = PGoodType.BERI,
-                }
-            };
+                Timer<LuckyShot>.Instance.LastTime = DateTime.UtcNow.Ticks; 
+            }
+            for (int i = 0; i < oldValue - newValue; i++)
+            {
+                Destroy(Instance.rockets[0]);
+                Instance.rockets.RemoveAt(0);
+            }
         }
-        
-        PResourceType.BERI.AddValue(amount);
-        shots[indexShot].GetComponent<Image>().sprite = SpriteFactory.Attacked;
-        rewardCollection.BuildUIs(rewards);
-        StartCoroutine(Suffle());
     }
-
-    public void Obtain()
+    public void OnTriggerTimer()
     {
-        rewards.Clear();
-        rewardCollection.BuildUIs(rewards);
-    }
+        if (GameData.RocketCount.Data<3)
+        {
+            GameData.RocketCount.Data++;
 
+        }
+    }
+    public void OnElapseTimer()
+    {
+        if (GameData.RocketCount.Data >= 3)
+        {
+            countDown.text = "Full";
+        }
+        else
+        {
+            countDown.text = $"Free Rocket - {Timer<LuckyShot>.Instance.RemainTimeInsecond.Hour_Minute_Second_1()}";
+        }
+    }
     public IEnumerator Suffle()
     {
         yield return new WaitForSeconds(0.5f);
@@ -144,7 +150,7 @@ public class LuckyShot : Singleton<LuckyShot>
             int _i = i;
             shots[i].onClick.AddListener(() =>
             {
-                if (GameData.RocketCount>0)
+                if (GameData.RocketCount.Data > 0)
                 {
                     indexShot = _i;
                     WSClient.RequestShot();

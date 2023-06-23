@@ -20,7 +20,6 @@ public class Board : CacheMonoBehaviour
     public GameObject vertLine;
 
     public Image avatar;
-    public TextMeshProUGUI name;
     public TextMeshProUGUI diamond;
     public TextMeshProUGUI beri;
     public TextMeshProUGUI point;
@@ -43,7 +42,7 @@ public class Board : CacheMonoBehaviour
         this.row = row;
         this.column = column;
         float size = cam.orthographicSize * 1.5f;
-        width = height = size;
+        width = height = size/2;
         cellHieght = height / row;
         cellWidth = width / column;
 

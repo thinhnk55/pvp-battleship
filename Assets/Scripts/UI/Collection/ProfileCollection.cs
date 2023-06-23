@@ -9,6 +9,8 @@ public class ProfileCollection : CardCollectionBase<ProfileData>
 {
     [SerializeField] bool isPlayer;
     [SerializeField] Image avatar;
+    [SerializeField] Image frame;
+    [SerializeField] Image frameTail;
     [SerializeField] TextMeshProUGUI username;
     [SerializeField] Image rankIcon;
     [SerializeField] TextMeshProUGUI rank;

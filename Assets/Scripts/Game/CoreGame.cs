@@ -54,7 +54,7 @@ public class CoreGame : Singleton<CoreGame>
     public StateMachine<GameState> stateMachine;
 
     bool playerTurn;
-    float turnTime; float TurnTime { get { return turnTime; } set { turnTime = Mathf.Clamp(value,0,timeInit); turnTimeText.text = ((int)turnTime).ToString(); } }
+    float turnTime; float TurnTime { get { return turnTime; } set { turnTime = Mathf.Clamp(value, 0, timeInit); turnTimeText.text = ((int)turnTime).ToString(); } }
     [SerializeField] TextMeshProUGUI turnTimeText;
     [SerializeField] Image turnImage;
 
@@ -66,7 +66,7 @@ public class CoreGame : Singleton<CoreGame>
         {
             reveal = value;
             OnRevealed();
-        } 
+        }
     }
     void OnRevealed()
     {
@@ -88,13 +88,7 @@ public class CoreGame : Singleton<CoreGame>
             }
         }
     }
-    void CoinVfx(Transform target, Vector3 src1, Vector3 src2)
-    {
-        CoinVFX coin1 = ObjectPoolManager.GenerateObject<CoinVFX>(VFXFactory.Coin, src1);
-        CoinVFX coin2 = ObjectPoolManager.GenerateObject<CoinVFX>(VFXFactory.Coin, src2);
-        coin1.target = target;
-        coin2.target = target;
-    }
+
     #region Mono
     protected override void Awake()
     {
@@ -104,7 +98,6 @@ public class CoreGame : Singleton<CoreGame>
         shipsPlayer = shipListPlayer.GetComponentsInChildren<Ship>().ToList();
         shipsPlayer.Reverse();
         shipsOpponent = shipListOpponent.GetComponentsInChildren<Ship>().ToList();
-        ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECIEVE_RECONNECT, Instance.GameStart);
     }
     void Start()
     {
@@ -155,8 +148,8 @@ public class CoreGame : Singleton<CoreGame>
         ingameUI.gameObject.SetActive(false);
         shipListPlayer.gameObject.SetActive(true);
         opponent.gameObject.SetActive(false);
-        player.Position = Vector3.right * ( - sizeWidth * 1 / 32 - player.width/2 );
-        opponent.Position = Vector3.right * ( sizeWidth * 15 / 32 - opponent.width/2 );
+        player.Position = Vector3.right * (-sizeWidth * 1 / 32 - player.width / 2);
+        opponent.Position = Vector3.right * (sizeWidth * 15 / 32 - opponent.width / 2);
     }
     void EndPregame()
     {
@@ -167,7 +160,7 @@ public class CoreGame : Singleton<CoreGame>
     {
         WSClient.SearchOpponent(bet, player.ships);
         opponent.gameObject.SetActive(true);
-        opponent.InitBoard(10,10);
+        opponent.InitBoard(10, 10);
         opponent.RandomShip(shipsOpponent);
         preUI.SetActive(false);
         searchUI.gameObject.SetActive(true);
@@ -178,7 +171,7 @@ public class CoreGame : Singleton<CoreGame>
     }
     void UpdateSearch()
     {
-        
+
     }
     void EndSearch()
     {
@@ -202,7 +195,7 @@ public class CoreGame : Singleton<CoreGame>
     }
     void UpdateTurn()
     {
-        TurnTime-= Time.deltaTime;
+        TurnTime -= Time.deltaTime;
     }
     void EndTurn()
     {
@@ -263,8 +256,8 @@ public class CoreGame : Singleton<CoreGame>
         Instance.ingameUI.SetActive(true);
         roomId = int.Parse(json["r"]);
         playerChair = int.Parse(json["c"]);
-        Instance.searchUI.opponentProfile.BuildUI( GameData.Opponent);
-        CoinVfx(Instance.searchUI.tresure.transform, Instance.searchUI.avatar1.transform.position, Instance.searchUI.avatar2.transform.position);
+        Instance.searchUI.opponentProfile.BuildUI(GameData.Opponent);
+        CoinVFX.CoinVfx(Instance.searchUI.tresure.transform, Instance.searchUI.avatar1.transform.position, Instance.searchUI.avatar2.transform.position);
         PResourceType.BERI.AddValue(-bets[bet]);
         //opponent.diamond.text = json["d"];
         //opponent.beri.text = json["b"];
@@ -308,9 +301,9 @@ public class CoreGame : Singleton<CoreGame>
             board.octiles[y][x].BeingAttacked(false);
         }
         //board.HandleAttacked(x,y,status, ship);
-
     }
-    void EndTurn(JSONNode json)
+
+    public void EndTurn(JSONNode json)
     {
         playerTurn = playerChair == int.Parse(json["c"]);
         stateMachine.CurrentState = GameState.Turn;
@@ -321,7 +314,7 @@ public class CoreGame : Singleton<CoreGame>
     }
     void EndGame(JSONNode json)
     {
-        DOVirtual.DelayedCall(1, () =>
+        DOVirtual.DelayedCall(3, () =>
         {
             Debug.Log("End");
             stateMachine.CurrentState = GameState.Out;
@@ -333,14 +326,14 @@ public class CoreGame : Singleton<CoreGame>
                 PResourceType.BERI.AddValue(int.Parse(json["w"]));
                 postUI.ResultPlayer.sprite = SpriteFactory.Win;
                 postUI.ResultOpponent.sprite = SpriteFactory.Lose;
-                CoinVfx(searchUI.avatar1.transform, searchUI.tresure.transform.position, searchUI.tresure.transform.position);
+                CoinVFX.CoinVfx(searchUI.avatar1.transform, searchUI.tresure.transform.position, searchUI.tresure.transform.position);
             }
             else
             {
                 PResourceType.BERI.AddValue(-int.Parse(json["w"]));
                 postUI.ResultPlayer.sprite = SpriteFactory.Lose;
                 postUI.ResultOpponent.sprite = SpriteFactory.Win;
-                CoinVfx(searchUI.avatar2.transform, searchUI.tresure.transform.position, searchUI.tresure.transform.position);
+                CoinVFX.CoinVfx(searchUI.avatar2.transform, searchUI.tresure.transform.position, searchUI.tresure.transform.position);
             }
         });
     }

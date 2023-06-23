@@ -3,8 +3,6 @@ using SimpleJSON;
 using System;
 using UnityEngine;
 using WebSocketSharp;
-using System.Data.SqlTypes;
-using System.Data.Common;
 
 namespace Framework {
     public abstract class WSClientBase : Singleton<WSClientBase>
@@ -18,6 +16,7 @@ namespace Framework {
             ws.OnMessage += OnMessage;
             ws.OnError += OnError;
             ws.Connect();
+           
 
         }
         protected void Update()
@@ -64,7 +63,6 @@ namespace Framework {
         {
             Debug.Log("Error : " + e.Exception);
         }
-
 
     }
 }

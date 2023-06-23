@@ -7,8 +7,9 @@ public class InGame : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI username;
     [SerializeField] TextMeshProUGUI opponentUsername;
-    private void Awake()
+    private void Start()
     {
         username.text = GameData.Player.Username;
+
     }
 }

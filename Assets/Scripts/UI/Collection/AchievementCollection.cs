@@ -56,7 +56,7 @@ public class AchievementCollection : CardCollectionBase<AchievementInfo>
         BuildUIs(infos);
         if (previewCard != null)
         {
-            selectedCard = cards[0];
+            SelectedCard = cards[0];
             ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECIEVE_OBTAIN_ACHIEVEMENT, RecieveObtainAchievemnt);
         }
 

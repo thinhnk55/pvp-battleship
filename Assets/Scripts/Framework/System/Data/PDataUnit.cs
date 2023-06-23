@@ -14,13 +14,13 @@ namespace Framework
             {
                 if (!_data.Equals(value))
                 {
+                    OnDataChanged?.Invoke(_data , value);
                     _data = value;
-                    OnDataChanged?.Invoke(_data);
                 }
             }
         }
 
-        public event Callback<T> OnDataChanged;
+        public event Callback<T, T> OnDataChanged;
 
         public PDataUnit(T defaultValue)
         {

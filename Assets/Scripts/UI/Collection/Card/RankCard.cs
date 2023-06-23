@@ -7,9 +7,11 @@ using UnityEngine;
 using UnityEngine.UI;
 public struct RankInfo
 {
+    public int Id;
     public string Title;
     public Sprite Icon;
     public int Point;
+    public Callback OnClick;
 
 }
 public class RankCard : CardBase<RankInfo>
@@ -30,6 +32,14 @@ public class RankCard : CardBase<RankInfo>
         if(icon) icon.sprite = info.Icon;
         if (slider)
         {
+            if (info.Id == GameData.Player.Rank)
+            {
+                slider.gameObject.SetActive(true);
+            }
+            else
+            {
+                slider.gameObject.SetActive(false);
+            }
             slider.maxValue = GameData.RankConfigs[GameData.Player.Rank].Point;
             slider.value = GameData.Player.Point; 
         }
@@ -38,8 +48,9 @@ public class RankCard : CardBase<RankInfo>
             Button.onClick.RemoveAllListeners();
             Button.onClick.AddListener(() =>
             {
-
+                info.OnClick?.Invoke();
             });
         }
     }
+
 }

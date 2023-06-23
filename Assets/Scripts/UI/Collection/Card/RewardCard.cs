@@ -35,7 +35,7 @@ public class RewardCard : CardBase<RewardInfo>
         if (Title)
             Title.text = info.Title;
         if (Amount)
-            Amount.text = info.Reward.Number.ToString();
+            Amount.text = info.Reward.Value.ToString();
     }
 
     protected override void OnClicked(RewardInfo info)

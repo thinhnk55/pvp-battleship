@@ -14,14 +14,14 @@ public class HTTPClient : Singleton<HTTPClient>
     public void LoginDeviceId()
     {
         string deviceId = SystemInfo.deviceUniqueIdentifier;
-        SHA256 sha256 = SHA256.Create();
+/*        SHA256 sha256 = SHA256.Create();
         byte[] hashBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(deviceId));
         StringBuilder builder = new StringBuilder();
         foreach (byte b in hashBytes)
         {
             builder.Append(b.ToString("x2")); // Convert each byte to a hexadecimal string
         }
-        string hash = builder.ToString();
+        string hash = builder.ToString();*/
         JSONNode json = new JSONClass()
         {
             {"deviceId", deviceId},
