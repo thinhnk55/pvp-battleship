@@ -19,6 +19,8 @@ public class GameData : PDataBlock<GameData>
     [SerializeField] private Dictionary<TransactionType,List<TransactionInfo>> transactionConfigs; public static Dictionary<TransactionType, List<TransactionInfo>> TransactionConfigs { get { return Instance.transactionConfigs; } set { Instance.transactionConfigs = value; } }
     [SerializeField] private List<RankConfig> rankConfigs; public static List<RankConfig> RankConfigs { get { return Instance.rankConfigs; } set { Instance.rankConfigs = value; } }
     [SerializeField] private PDataUnit<int> rocketCount; public static PDataUnit<int> RocketCount { get { return Instance.rocketCount; } set { Instance.rocketCount = value; } }
+    [SerializeField] private List<TreasureConfig> treasureConfigs; public static List<TreasureConfig> TreasureConfigs { get { return Instance.treasureConfigs; } set { Instance.treasureConfigs = value; } }
+    [SerializeField] private JoinTreasureRoom joinTreasureRoom; public static JoinTreasureRoom JoinTreasureRoom { get { return Instance.joinTreasureRoom; } set { Instance.joinTreasureRoom = value; } }
     [SerializeField] private long lastLuckyShot; public static long LastLuckyShot { get { return Instance.lastLuckyShot; } set { Instance.lastLuckyShot = value; } }
     [SerializeField] private long lastSalaryObtained; public static long LastSalaryObtained { get { return Instance.lastSalaryObtained; } set { Instance.lastSalaryObtained = value; } }
     [SerializeField] private long lastDailyReward; public static long LastDailyReward { get { return Instance.lastDailyReward; } set { Instance.lastDailyReward = value; } }
@@ -40,6 +42,9 @@ public class GameData : PDataBlock<GameData>
         Instance.rocketCount = new PDataUnit<int>(0);
         Instance.lastLuckyShot = Instance.lastLuckyShot != 0 ? Instance.lastLuckyShot : 0;
         Instance.versions = Instance.versions ?? new List<int>(6) { 0,0,0,0,0,0};
+        Instance.treasureConfigs = Instance.treasureConfigs ?? new List<TreasureConfig>();
+        Instance.joinTreasureRoom = Instance.joinTreasureRoom ?? new JoinTreasureRoom();
+        Instance.joinTreasureRoom.Board = Instance.joinTreasureRoom.Board ?? new List<List<int>>();
     }
 }
 
@@ -143,3 +148,21 @@ public enum ConfigVersion
     TRESURE,
 
 }
+
+[Serializable]
+public class TreasureConfig
+{
+    public int Id;
+    public int PrizeAmount;
+}
+
+[Serializable]
+//Goi tin duoc server tra ve khi join vao treasurehunt room
+public class JoinTreasureRoom
+{
+    public int Id;
+    public int IsSuccess;
+    public int CurrentPrize;
+    public List<List<int>> Board; //Trang thai cac o trong dao kho bau
+}
+
