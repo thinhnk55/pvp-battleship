@@ -17,6 +17,8 @@ public class WSClient : WSClientBase
         ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECIEVE_ACHIEVEMENT, ReceiveAchievementConfig);
         ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECIEVE_LUCKY_SHOT_CONFIG, ReceiveLuckyShotConfig);
         ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECIEVE_SHOP_CONFIG, ReceiveLuckyShotConfig);
+        ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECIEVE_TREASURE_CONFIG, ReceiveTreasureConfig);
+        ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECIEVE_JOIN_TREASURE_ROOM, ReceiveJoinTreasureRoom);
     }
     protected override void OnDestroy()
     {
@@ -25,6 +27,8 @@ public class WSClient : WSClientBase
         ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.RECIEVE_ACHIEVEMENT, ReceiveAchievementConfig);
         ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.RECIEVE_LUCKY_SHOT_CONFIG, ReceiveLuckyShotConfig);
         ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.RECIEVE_SHOP_CONFIG, ReceiveLuckyShotConfig);
+        ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.RECIEVE_TREASURE_CONFIG, ReceiveTreasureConfig);
+        ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.RECIEVE_JOIN_TREASURE_ROOM, ReceiveJoinTreasureRoom);
     }
     public void OnLogin(JSONNode data)
     {
@@ -34,14 +38,15 @@ public class WSClient : WSClientBase
         ProfileData profile = GameData.Player;
         GameData.Player = ProfileData.FromJson(ref profile, data);
         Debug.Log(GameData.Player.ToString());
-        if (GameData.Version != int.Parse(data["v"]) || GameData.Player.AchievementConfig == null || GameData.Player.AchievementConfig.Count==0)
+       /* if (GameData.Version != int.Parse(data["v"]) || GameData.Player.AchievementConfig == null || GameData.Player.AchievementConfig.Count==0)*/
         {
             Debug.Log("RequestConfig");
-            GameData.Version = int.Parse(data["v"]);
+        //  GameData.Version = int.Parse(data["v"]);
             RequestAchievementConfig();
             RequestLuckyShotConfig();
         }
         RequestShopConfig();
+        RequestTreasureConfig();
 
         CoreGame.timeInit = int.Parse(data["t"]);
         CoreGame.bets = data["bet"].ToList();
@@ -102,6 +107,63 @@ public class WSClient : WSClientBase
         };
         Instance.Send(jsonNode);
     }
+
+    #region TREASUREHUNT
+
+    public static void RequestTreasureConfig()
+    {
+        JSONNode jsonNode = new JSONClass()
+        {
+            {"id", GameServerEvent.REQUEST_TREASURE_CONFIG.ToJson() },
+        };
+        Instance.Send(jsonNode);
+    }
+
+    public static void ReceiveTreasureConfig(JSONNode data)
+    {
+        GameData.TreasureConfigs.Clear();
+        for(int i=0; i<data.Count; i++)
+        {
+            TreasureConfig treasureConfig = new TreasureConfig()
+            {
+                Id = int.Parse(data["list"][i]["id"]),
+                PrizeAmount = int.Parse(data["list"][i]["re"]),
+            };
+            GameData.TreasureConfigs.Add(treasureConfig);
+        }
+    }
+
+    public static void RequestJoinTreasureRoom(int rom)
+    {
+        Debug.Log("Request:");
+        JSONNode jsonNode = new JSONClass()
+        {
+            {"id", GameServerEvent.REQUEST_JOIN_TREASURE_ROOM.ToJson() },
+            {"b" , rom.ToJson() },
+        };
+        Instance.Send(jsonNode);
+    }
+
+    public static void ReceiveJoinTreasureRoom(JSONNode data)
+    {
+        Debug.Log("Receive :"+ data);
+        GameData.JoinTreasureRoom.Id = int.Parse(data["id"]);
+        GameData.JoinTreasureRoom.IsSuccess = int.Parse(data["s"]);
+        GameData.JoinTreasureRoom.CurrentPrize = int.Parse(data["beri"]);
+
+        for(int row=0; row<10; row++)
+        {
+            List<int> rowList = new List<int>();
+            for(int col=0; col<10; col++)
+            {
+                rowList.Add(int.Parse(data["board"][col][row]));
+            }
+            GameData.JoinTreasureRoom.Board.Add(rowList);
+        }
+    }
+
+    #endregion
+
     public static void SearchOpponent(int bet, List<Ship> ships)
     {
         JSONNode jsonNode = new JSONClass();

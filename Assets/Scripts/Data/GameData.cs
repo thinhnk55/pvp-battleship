@@ -17,6 +17,8 @@ public class GameData : PDataBlock<GameData>
     [SerializeField] private List<int> luckyShotResult; public static List<int> LuckyShotResult { get { return Instance.luckyShotResult; } set { Instance.luckyShotResult = value; } }
     [SerializeField] private Dictionary<TransactionType,List<TransactionInfo>> transactionConfigs; public static Dictionary<TransactionType, List<TransactionInfo>> TransactionConfigs { get { return Instance.transactionConfigs; } set { Instance.transactionConfigs = value; } }
     [SerializeField] private List<RankConfig> rankConfigs; public static List<RankConfig> RankConfigs { get { return Instance.rankConfigs; } set { Instance.rankConfigs = value; } }
+    [SerializeField] private List<TreasureConfig> treasureConfigs; public static List<TreasureConfig> TreasureConfigs { get { return Instance.treasureConfigs; } set { Instance.treasureConfigs = value; } }
+    [SerializeField] private JoinTreasureRoom joinTreasureRoom; public static JoinTreasureRoom JoinTreasureRoom { get { return Instance.joinTreasureRoom; } set { Instance.joinTreasureRoom = value; } }
     [SerializeField] private int rocketCount; public static int RocketCount { get { return Instance.rocketCount; } set { Instance.rocketCount = value; } }
     [SerializeField] private long lastLuckyShot; public static long LastLuckyShot { get { return Instance.lastLuckyShot; } set { Instance.lastLuckyShot = value; } }
     [SerializeField] private int restoreRocketInterval; public static int RestoreRocketInterval { get { return Instance.restoreRocketInterval; } set { Instance.restoreRocketInterval = value; } }
@@ -37,6 +39,9 @@ public class GameData : PDataBlock<GameData>
         Instance.player.AchievementSelected = Instance.player.AchievementSelected ?? new int[3] { -1, -1, -1 };
         Instance.transactionConfigs = Instance.transactionConfigs ?? new Dictionary<TransactionType, List<TransactionInfo>>();
         Instance.rankConfigs = Instance.rankConfigs ?? new List<RankConfig>();
+        Instance.treasureConfigs = Instance.treasureConfigs ?? new List<TreasureConfig>();
+        Instance.joinTreasureRoom = Instance.joinTreasureRoom ?? new JoinTreasureRoom();
+        Instance.joinTreasureRoom.Board = Instance.joinTreasureRoom.Board ?? new List<List<int>>();
         restoreRocketInterval = 60;
     }
 }
@@ -115,3 +120,21 @@ public class RankConfig
     public int Point;
 
 }
+
+[Serializable]
+public class TreasureConfig
+{
+    public int Id;
+    public int PrizeAmount;
+}
+
+[Serializable]
+//Goi tin duoc server tra ve khi join vao treasurehunt room
+public class JoinTreasureRoom
+{
+    public int Id;
+    public int IsSuccess;
+    public int CurrentPrize;
+    public List<List<int>> Board; //Trang thai cac o trong dao kho bau
+}
+
