@@ -1,4 +1,5 @@
 using Framework;
+using PlasticGui.WorkspaceWindow.PendingChanges;
 using SimpleJSON;
 using System;
 using System.Collections.Generic;
@@ -7,19 +8,10 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 namespace Framework{
-    public enum PGoodType
-    {
-        USD,
-        GEM,
-        BERI,
-        AVATAR,
-        AVATAR_FRAME,
-        SHIP_SKIN
-    }
     public struct GoodInfo
     {
         public float Value;
-        public PGoodType Type;
+        public int Type;
     }
 
     public struct TransactionInfo
@@ -29,6 +21,7 @@ namespace Framework{
         public string Title;
         public GoodInfo[] Cost;
         public GoodInfo[] Product;
+        public int Bonus;
         public static TransactionInfo FromJson(JSONNode data, int id, int index)
         {
             TransactionInfo transactionInfo = new TransactionInfo();
@@ -36,12 +29,13 @@ namespace Framework{
             transactionInfo.Index = index;
             transactionInfo.Cost = new GoodInfo[data["cost"].Count];
             transactionInfo.Product = new GoodInfo[data["product"].Count];
+            transactionInfo.Bonus = (int)(float.Parse(data["bonus"]) * 100);
             for (int i = 0; i < data["cost"].Count; i++)
             {
                 transactionInfo.Cost[i] = new GoodInfo()
                 {
                     Value = float.Parse(data["cost"][i]),
-                    Type = data["cost_type"][i].ToEnum<PGoodType>(),
+                    Type = int.Parse(data["cost_type"][i]),
                 };
             }
             for (int i = 0; i < data["product"].Count; i++)
@@ -49,7 +43,7 @@ namespace Framework{
                 transactionInfo.Product[i] = new GoodInfo()
                 {
                     Value = float.Parse(data["product"][i]),
-                    Type = data["product_type"][i].ToEnum<PGoodType>(),
+                    Type = int.Parse(data["product_type"][i]),
                 };
             }
             return transactionInfo;
@@ -93,40 +87,60 @@ namespace Framework{
 
     public class TransactionCard : CardBase<TransactionInfo>
     {
-        [SerializeField] protected TextMeshProUGUI Title;
+        [SerializeField] protected TextMeshProUGUI title;
 
-        [SerializeField] protected Image[] ProductIcon;
-        [SerializeField] protected TextMeshProUGUI[] ProductAmount;
+        [SerializeField] protected Image[] productIcon;
+        [SerializeField] protected TextMeshProUGUI[] productAmount;
 
-        [SerializeField] protected Image[] CostIcon;
-        [SerializeField] protected TextMeshProUGUI[] CostAmount;
+        [SerializeField] protected Image[] costIcon;
+        [SerializeField] protected TextMeshProUGUI[] costAmount;
+
+        [SerializeField] protected TextMeshProUGUI bonus;
+        [SerializeField] protected TextMeshProUGUI status;
 
         public override void BuildUI(TransactionInfo info)
         {
             base.BuildUI(info);
-            if (Title)
-                Title.text = info.Title;
-            if (ProductIcon[0])
-                ProductIcon[0].sprite = SpriteFactory.ResourceIcons[(int)info.Product[0].Type];
-            if (ProductAmount[0])
-                ProductAmount[0].text = info.Product[0].Value.ToString();
-            if (CostIcon[0])
-                CostIcon[0].sprite = SpriteFactory.ResourceIcons[(int)info.Cost[0].Type];
-            if (CostAmount[0])
+            if (title)
+                title.text = info.Title;
+            for (int i = 0; i < productIcon.Length; i++)
             {
-                if (info.Cost[0].Value == (int)info.Cost[0].Value)
+                productIcon[i].sprite = SpriteFactory.ResourceIcons[(int)info.Product[i].Type].sprites.GetLoop((int)info.Product[i].Value);
+            }
+            for (int i = 0; i < productAmount.Length; i++)
+            {
+                productAmount[i].text = info.Product[i].Value.ToString();
+            }
+            for (int i = 0; i < costIcon.Length; i++)
+            {
+                costIcon[i].sprite = SpriteFactory.ResourceIcons[(int)info.Cost[i].Type].sprites.GetLoop((int)info.Cost[i].Value);
+            }
+            for (int i = 0; i < costAmount.Length; i++)
+            {
+                if (info.Cost[i].Value == (int)info.Cost[i].Value)
                 {
-                    CostAmount[0].text = info.Cost[0].Value.ToString("F0");
+                    costAmount[i].text = info.Cost[i].Value.ToString("F0");
                 }
                 else
                 {
-                    CostAmount[0].text = info.Cost[0].Value.ToString("F2");
+                    costAmount[i].text = info.Cost[i].Value.ToString("F2");
                 }
+            }
 
+            if (bonus)
+            {
+                bonus.text = "Bonus " + info.Bonus.ToString() + "%";
+            }
+            if (status)
+            {
+                status.text = GetStatus(info);
             }
             if (Button)
-                Button.onClick.AddListener(
-                    TransactionAction(info.TransactionType, this)
+                Button.onClick.AddListener(() =>
+                {
+                    //PopupHelper.CreateConfirm();
+                    TransactionAction(info.TransactionType, info)?.Invoke();
+                }
                 );
         }
 
@@ -134,45 +148,31 @@ namespace Framework{
         {
             throw new System.NotImplementedException();
         }
-        public static UnityAction TransactionAction(TransactionType transactionType, TransactionCard card)
+        protected virtual string GetStatus(TransactionInfo info)
+        {
+            return "";
+        }
+        public static UnityAction TransactionAction(TransactionType transactionType, TransactionInfo Info)
         {
             UnityAction action = null;
             action += () => { };
-            bool affordable = true;
-            switch (transactionType)
+            if (transactionType == TransactionType.USD_GEM)
             {
-                case TransactionType.USD_GEM:
-                    break;
-                case TransactionType.GEM_BERI:
-                    action = () => {
-                        for (int i = 0; i < card.Info.Cost.Length; i++)
-                        {
-                            var cost = card.Info.Cost[i];
-                            affordable = cost.Type.IsAffordable((int)cost.Value);
-                            if (!affordable)
-                            {
-                                break;
-                            }
-                        }
-                        if (affordable)
-                        {
-                            RequestTransaction((int)card.Info.TransactionType, card.Info.Index);
-                        }
-                        else
-                        {
-                            Debug.Log("unaffordable");
-                        }
-                            
-                    };
-                    break;
-                case TransactionType.BERI_AVATAR:
-                    break;
-                case TransactionType.BERI_AVATAR_FRAME:
-                    break;
-                case TransactionType.BERI_SKIN_SHIP:
-                    break;
-                default:
-                    break;
+
+            }
+            else
+            {
+                action = () => {
+                    if (Info.IsAffordble())
+                    {
+                        RequestTransaction((int)Info.TransactionType, Info.Index);
+                    }
+                    else
+                    {
+                        Debug.Log("unaffordable");
+                    }
+
+                };
             }
             return action;
         }

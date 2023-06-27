@@ -28,7 +28,7 @@ public enum AchievementType
 public struct AchievementUnit
 {
     public int Task;
-    public PResourceType RewardType;
+    public PConsumableType RewardType;
     public int RewardAmount;
     public string Description;
 }
@@ -37,6 +37,7 @@ public struct AchievementInfo
 {
     public int Id;
     public string Title;
+    public int Obtained;
     public Callback onClick;
     [SerializeField] private int progress; public int Progress { get { return progress; } set { progress = value; } }
     public AchievementUnit[] AchivementUnits;
@@ -57,13 +58,11 @@ public struct AchievementInfo
         }
 
         string title = jsonUnits[0]["name"];
-
         AchievementInfo info = new AchievementInfo()
         {
             Id = id,
             Title = title.Substring(0, title.Length - 1),
             AchivementUnits = achievementUnits.ToArray(),
-            Progress = GameData.Player.Achievement[id],
         };
         return info;
     }
@@ -166,7 +165,7 @@ public class AchievementCard : CardBase<AchievementInfo>
                 OnClicked(info);
             });
         }
-        if (OnClick == null && Button.onClick == null)
+        if (OnClick == null || Button.onClick == null)
         {
             gameObject.SetChildrenRecursively<Image>((img) =>
             {

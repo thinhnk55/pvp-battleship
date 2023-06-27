@@ -1,5 +1,6 @@
 using Framework;
 using SimpleJSON;
+using Sirenix.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +17,7 @@ public class AchievementCollection : CardCollectionBase<AchievementInfo>
     private void Start()
     {
         if (!isSelection)
-            OnChangeCard += (oldCard, newCard) =>
+            OnSelectedCard += (oldCard, newCard) =>
             {
                 if(oldCard && ((AchievementCard)oldCard).BG)
                     ((AchievementCard)oldCard).BG.sprite = SpriteFactory.UnselectedAchievementBG;
@@ -26,18 +27,21 @@ public class AchievementCollection : CardCollectionBase<AchievementInfo>
                 Debug.Log("Change");
             };
         infos = new List<AchievementInfo>();
-        var list = isPlayer == 1 ? GameData.Player.AchievementConfig.ToList() : GameData.Player.AchievementConfig.ToList().GetRange(0, numberOfChild);
+        var list = isPlayer == 1 ? GameData.AchievementConfig.ToList() : GameData.AchievementConfig.ToList().GetRange(0, numberOfChild);
         for (int i = 0; i < list.Count; i++)
         {
             AchievementInfo info = list[i].Value;
             if (isSelection)
             {
-                if (!GameData.Player.AchievementSelected.Contains(info.Id))
+                if (!GameData.Player.AchievementSelected.Any((select) => select/100 == info.Id))
                 {
                     info.onClick = () =>
                     {
-                        AchievementSelectionCollection.idNewSelect = info.Id;
-                        Messenger.Broadcast(GameEvent.SELECT_ACHIEVEMENT);
+                        AchievementSelectionCollection.idNewSelect = info.Id * 100 + Mathf.Clamp(GameData.Player.AchievementObtained[info.Id], 0, 4);
+                        int[] arr = new int[3];
+                        arr = GameData.Player.AchievementSelected;
+                        arr[AchievementSelectionCollection.slot] = info.Id * 100 + Mathf.Clamp(GameData.Player.AchievementObtained[info.Id], 0, 4);
+                        WSClient.RequestChangeAchievement(arr);
                         popup.ForceClose();
                     };
                 }
@@ -75,7 +79,7 @@ public class AchievementCollection : CardCollectionBase<AchievementInfo>
 
     void RecieveObtainAchievemnt(JSONNode json)
     {
-        AchievementInfo info = GameData.Player.AchievementConfig[(AchievementType)int.Parse(json["achieId"])];
+        AchievementInfo info = GameData.AchievementConfig[(AchievementType)int.Parse(json["achieId"])];
         if (int.Parse(json["s"]) == 1)
         {
             GameData.Player.AchievementObtained[int.Parse(json["achieId"])] = GameData.Player.AchievementObtained[int.Parse(json["achieId"])] + 1;

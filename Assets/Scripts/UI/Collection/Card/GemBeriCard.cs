@@ -6,7 +6,6 @@ using Framework;
 
 public class GemBeriCard : TransactionCard
 {
-    float bonus;
     [SerializeField] TextMeshProUGUI bonusText;
     public override void BuildUI(TransactionInfo info)
     {

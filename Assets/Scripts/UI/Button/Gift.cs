@@ -54,7 +54,7 @@ public class Gift : CacheMonoBehaviour
 
     void ReceiveGift(JSONNode json)
     {
-        PResourceType.BERI.AddValue(int.Parse(json["value"]));
+        PConsumableType.BERI.AddValue(int.Parse(json["value"]));
         CoinVFX.CoinVfx(resource, Position, Position);
         obtain.onClick.RemoveAllListeners();
         Timer<Gift>.Instance.LastTime = DateTime.UtcNow.Ticks;

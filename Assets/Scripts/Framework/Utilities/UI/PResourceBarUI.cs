@@ -16,7 +16,7 @@ namespace Framework
         [SerializeField] protected TextMeshProUGUI _txtValue;
 
         [Header("Config")]
-        [SerializeField] protected PResourceType _type;
+        [SerializeField] protected PConsumableType _type;
         [SerializeField] protected bool _manualConstruct;
 
         Animator _animator;

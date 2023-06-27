@@ -71,7 +71,7 @@ public class ProfileCollection : CardCollectionBase<ProfileData>
         }
         if (shipDestroyed)
         {
-            shipDestroyed.text = infos.AchievementConfig[AchievementType.ENVOVY_OF_WAR].Progress.ToString();
+            shipDestroyed.text = infos.Achievement[(int)AchievementType.ENVOVY_OF_WAR].ToString();
         }
         if (perfectGame)
         {

@@ -13,12 +13,12 @@ namespace Framework
 
         [HorizontalGroup]
         [HideLabel]
-        [SerializeField] PResourceType _type;
+        [SerializeField] PConsumableType _type;
 
-        public PResourceType Type { get { return _type; } }
+        public PConsumableType Type { get { return _type; } }
         public int Count { get { return _count; } }
 
-        public PResourceValue(PResourceType resource, int value)
+        public PResourceValue(PConsumableType resource, int value)
         {
             _type = resource;
             _count = value;

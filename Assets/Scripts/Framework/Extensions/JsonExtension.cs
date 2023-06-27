@@ -37,4 +37,6 @@ public static class JsonExtension
     {
         return (T)Enum.ToObject(typeof(T), json.AsInt);
     }
+
+
 }

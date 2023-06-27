@@ -8,7 +8,6 @@ namespace Framework {
     public abstract class WSClientBase : Singleton<WSClientBase>
     {
         public WebSocket ws;
-        public float curTime;
         protected virtual void Start()
         {
             ws = new WebSocket(ServerConfig.WebSocketURL + "?id="+ PDataAuth.AuthData.userId + "&token=" + PDataAuth.AuthData.token);
@@ -16,16 +15,12 @@ namespace Framework {
             ws.OnMessage += OnMessage;
             ws.OnError += OnError;
             ws.Connect();
-           
+            InvokeRepeating("Ping", 10, 14);
 
         }
-        protected void Update()
+        void Ping()
         {
-            curTime += Time.deltaTime;
-            if (curTime>= 15) {
-                curTime = 0;
-                ws.Ping();
-            }
+             ws.Ping();
         }
         protected override void OnDestroy()
         {

@@ -31,8 +31,8 @@ public class SnapScrollView : MonoBehaviour
             childRects[i] = contentRect.GetChild(i).GetComponent<RectTransform>();
         }
         contentRect.anchoredPosition = childRects[0].anchoredPosition * Vector2.right;
-        layoutGroup.padding.left = Screen.currentResolution.width / 2;
-        layoutGroup.padding.right = Screen.currentResolution.width / 2;
+        layoutGroup.padding.left = Screen.width / 2;
+        layoutGroup.padding.right = Screen.width / 2;
         LeanTouch.OnFingerDown += OnSelected;
         LeanTouch.OnFingerUp += OnUnselected;
     }
@@ -54,10 +54,10 @@ public class SnapScrollView : MonoBehaviour
             foreach (RectTransform childRect in childRects)
             {
                 float childPos = childRect.anchoredPosition.x;
-                float distance = Mathf.Abs(childPos + currentScrollPos - Screen.currentResolution.width / 2 );
+                float distance = Mathf.Abs(childPos + currentScrollPos - Screen.width / 2 );
 
                 if (distance < Mathf.Abs(closestPosition))
-                    closestPosition = childPos + currentScrollPos - Screen.currentResolution.width / 2;
+                    closestPosition = childPos + currentScrollPos - Screen.width / 2;
             }
 
             if (isSnapping)

@@ -12,7 +12,7 @@ public struct RewardInfo
     public Sprite Background;
     public Sprite ObtainedIndicator;
     public string Title;
-    public PResourceType GoodType;
+    public PConsumableType GoodType;
     public GoodInfo Reward;
 }
 
@@ -29,7 +29,7 @@ public class RewardCard : CardBase<RewardInfo>
         if (Background)
             Background.sprite = info.Background;
         if (Icon)
-            Icon.sprite = SpriteFactory.ResourceIcons[(int)info.Reward.Type];
+            Icon.sprite = SpriteFactory.ResourceIcons[(int)info.Reward.Type].sprites.GetLoop((int)info.Reward.Value);
         if (ObtainedIndicator)
             ObtainedIndicator.sprite = info.ObtainedIndicator;
         if (Title)

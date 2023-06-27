@@ -11,13 +11,16 @@ public class BetCollection : CardCollectionBase<BetInfo>
         for (int i = 0; i < CoreGame.bets.Count; i++)
         {
             int _i = i;
+            bool isQualified = GameData.Player.Rank >= _i;
             infos.Add(new BetInfo()
             {
+                Index = _i,
+                IsQualified = isQualified,
                 RewardAmount = CoreGame.bets[i] * 2,
                 EntryStake = CoreGame.bets[i],
-                onClick = () =>
+                OnClick = () =>
                 {
-                    if (CoreGame.bets[_i] <= PResourceType.BERI.GetValue())
+                    if (CoreGame.bets[_i] <= PConsumableType.BERI.GetValue())
                     {
                         SceneTransitionHelper.Load(ESceneName.MainGame);
                     }

@@ -19,7 +19,6 @@ public class WSClient : WSClientBase
         ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECIEVE_SHOP_CONFIG, ReceiveShopConfig);
         ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECIEVE_TRANSACTION, RecieveTransaction);
         ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECEIVE_RANK_CONFIG, ReceiveRankConfig);
-        ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECIEVE_SHOP_CONFIG, ReceiveLuckyShotConfig);
         ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECIEVE_TREASURE_CONFIG, ReceiveTreasureConfig);
         ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECIEVE_JOIN_TREASURE_ROOM, ReceiveJoinTreasureRoom);
     }
@@ -32,14 +31,15 @@ public class WSClient : WSClientBase
         ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.RECIEVE_SHOP_CONFIG, ReceiveShopConfig);
         ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.RECIEVE_TRANSACTION, RecieveTransaction);
         ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.RECEIVE_RANK_CONFIG, ReceiveRankConfig);
-        ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.RECIEVE_SHOP_CONFIG, ReceiveLuckyShotConfig);
         ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.RECIEVE_TREASURE_CONFIG, ReceiveTreasureConfig);
         ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.RECIEVE_JOIN_TREASURE_ROOM, ReceiveJoinTreasureRoom);
     }
     public void OnLogin(JSONNode data)
     {
-        PResourceType.GEM.SetValue(int.Parse(data["d"]));
-        PResourceType.BERI.SetValue(int.Parse(data["b"]));
+        PConsumableType.GEM.SetValue(int.Parse(data["profile"]["d"]));
+        PConsumableType.BERI.SetValue(int.Parse(data["profile"]["b"]));
+        PNonConsumableType.AVATAR.FromJson(data["statistics"]["a_a"]);
+        PNonConsumableType.AVATAR_FRAME.FromJson(data["statistics"]["a_f"]);
         // GameData.IsBuyDiamondFirst = int.Parse(data["_p"]);
         ProfileData profile = GameData.Player;
         GameData.Player = ProfileData.FromJson(ref profile, data);
@@ -73,19 +73,12 @@ public class WSClient : WSClientBase
                 }
             }
         }
-        Timer<LuckyShot>.Instance.LastTime = long.Parse(data["lfb"]).NowFrom0001From1970();
-        Timer<Gift>.Instance.LastTime = long.Parse(data["lcr"]).NowFrom0001From1970();
-        Timer<RankCollection>.Instance.LastTime = long.Parse(data["WRC"]).NowFrom0001From1970();
-        Debug.Log(Timer<RankCollection>.Instance.LastTime);
-       /* if (GameData.Version != int.Parse(data["v"]) || GameData.Player.AchievementConfig == null || GameData.Player.AchievementConfig.Count==0)*/
-        {
-            Debug.Log("RequestConfig");
-        //  GameData.Version = int.Parse(data["v"]);
-            RequestAchievementConfig();
-            RequestLuckyShotConfig();
-        }
         RequestShopConfig();
-        RequestTreasureConfig();
+        
+        Timer<LuckyShot>.Instance.LastTime = long.Parse(data["timer"]["lfb"]).NowFrom0001From1970();
+        Timer<Gift>.Instance.LastTime = long.Parse(data["timer"]["lcr"]).NowFrom0001From1970();
+        Timer<RankCollection>.Instance.LastTime = long.Parse(data["timer"]["WRC"]).NowFrom0001From1970();
+        Debug.Log(Timer<RankCollection>.Instance.LastTime);
 
         CoreGame.timeInit = int.Parse(data["t"]);
         CoreGame.bets = data["bet"].ToList();
@@ -98,12 +91,10 @@ public class WSClient : WSClientBase
     }
     public void ReceiveAchievementConfig(JSONNode data)
     {
-        var achie = GameData.Player;
-        achie.AchievementConfig = new Dictionary<AchievementType, AchievementInfo>();
-        GameData.Player = achie;
+        GameData.AchievementConfig = new Dictionary<AchievementType, AchievementInfo>();
         for (int i = 0; i < data["achie"].Count; i++)
         {
-            GameData.Player.AchievementConfig.Add((AchievementType)i, AchievementInfo.FromJson(data["achie"][i], i));
+            GameData.AchievementConfig.Add((AchievementType)i, AchievementInfo.FromJson(data["achie"][i], i));
         }
     }
     public void ReceiveLuckyShotConfig(JSONNode data)
@@ -151,7 +142,7 @@ public class WSClient : WSClientBase
     }
     public void ReceiveShopConfig(JSONNode data)
     {
-        for (int i = 0; i < data.Count; i++)
+        for (int i = 0; i < data["list"].Count; i++)
         {
             if (GameData.TransactionConfigs.ContainsKey((TransactionType)i))
             {
@@ -329,6 +320,53 @@ public class WSClient : WSClientBase
         JSONNode jsonNode = new JSONClass()
         {
             { "id", GameServerEvent.REQUEST_RANK.ToJson() },
+        };
+        Instance.Send(jsonNode);
+    }
+    public static void RequestChangeAchievement(int[] indexs)
+    {
+        JSONArray array = new JSONArray();
+        for (int i = 0; i < indexs.Length; i++)
+        {
+            array.Add(indexs[i].ToString());
+        }
+        JSONNode jsonNode = new JSONClass()
+        {
+            { "id", GameServerEvent.REQUEST_ACHIEVEMENT_CHANGE.ToJson() },
+            { "outst", array },
+        };
+        Instance.Send(jsonNode);
+    }
+
+    public static void RequestChangeName()
+    {
+        JSONNode jsonNode = new JSONClass()
+        {
+            { "id", GameServerEvent.REQUEST_CHANGE_NAME.ToJson() },
+        };
+        Instance.Send(jsonNode);
+    }
+    public static void ReceiveChangeName(JSONNode json)
+    {
+        JSONNode jsonNode = new JSONClass()
+        {
+            { "id", GameServerEvent.RECIEVE_CHANGE_NAME.ToJson() },
+        };
+        Instance.Send(jsonNode);
+    }
+    public static void RequestChangeAvatar(int i)
+    {
+        JSONNode jsonNode = new JSONClass()
+        {
+            { "id", GameServerEvent.REQUEST_CHANGE_AVATAR.ToJson() },
+        };
+        Instance.Send(jsonNode);
+    }
+    public static void RequestChangeFrame(int i)
+    {
+        JSONNode jsonNode = new JSONClass()
+        {
+            { "id", GameServerEvent.REQUEST_AVATAR_FRAME.ToJson() },
         };
         Instance.Send(jsonNode);
     }

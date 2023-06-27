@@ -7,7 +7,7 @@ public class AchiementCardSelection : AchievementCard
 {
     public override void BuildUI(AchievementInfo info)
     {
-        base.BuildUI(info);
+        //base.BuildUI(info);
         Id = info.Id;
         int completed = 0;
 
@@ -21,33 +21,30 @@ public class AchiementCardSelection : AchievementCard
                 break;
         }
 
-        int obtain = Mathf.Clamp(GameData.Player.AchievementObtained[info.Id], 0, 4);
 
         //show unobtained info
         if (Icon != null)
-            Icon.sprite = SpriteFactory.Achievements[info.Id].sprites[obtain];
+            Icon.sprite = SpriteFactory.Achievements[info.Id].sprites[info.Obtained];
         if (Title)
             Title.text = info.Title;
         if (Description)
-            Description.text = info.AchivementUnits[obtain].Description;
+            Description.text = info.AchivementUnits[info.Obtained].Description;
         if (RewardAmount != null)
-            RewardAmount.text = "x " + info.AchivementUnits[obtain].RewardAmount.ToString();
+            RewardAmount.text = "x " + info.AchivementUnits[info.Obtained].RewardAmount.ToString();
         if (Progress != null)
         {
-            Progress.maxValue = info.AchivementUnits[obtain].Task;
+            Progress.maxValue = info.AchivementUnits[info.Obtained].Task;
             Progress.value = info.Progress;
         }
         if (TextProgress)
         {
-            TextProgress.text = info.Progress.ToString() + "/" + info.AchivementUnits[obtain].Task.ToString();
+            TextProgress.text = info.Progress.ToString() + "/" + info.AchivementUnits[info.Obtained].Task.ToString();
         }
         if (Button)
         {
             Button.onClick.RemoveAllListeners();
-            Debug.Log(transform.GetSiblingIndex());
             Button.onClick.AddListener(() =>
             {
-                Debug.Log(transform.GetSiblingIndex());
                 ((AchievementSelectionCollection)Collection).Select(transform.GetSiblingIndex());
             });
         }

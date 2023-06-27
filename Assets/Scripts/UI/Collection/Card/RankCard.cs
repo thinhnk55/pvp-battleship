@@ -16,6 +16,7 @@ public struct RankInfo
 }
 public class RankCard : CardBase<RankInfo>
 {
+    public Image BG;
     [SerializeField] TextMeshProUGUI title;
     [SerializeField] Image icon;
     [SerializeField] Slider slider;

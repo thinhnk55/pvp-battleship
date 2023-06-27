@@ -1,4 +1,5 @@
 using Framework;
+using SimpleJSON;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,27 +9,10 @@ using UnityEngine;
 public class AchievementSelectionCollection : AchievementCollection
 {
     public static int slot, idOldSelect, idNewSelect;
-    List<int> selection;
-    public void Select(int slot)
-    {
-        AchievementSelectionCollection.slot = slot;
-        PopupHelper.Create(popup.gameObject);
-    }
-    void SelectAchievement()
-    {
-        if (slot >= contentRoot.childCount)
-        {
-            AddUI(GameData.Player.AchievementConfig[(AchievementType)idNewSelect]);
-        }
-        else
-        {
-            ModifyUI(slot, GameData.Player.AchievementConfig[(AchievementType)idNewSelect]);
-        }
-        GameData.Player.AchievementSelected[slot] = idNewSelect;
-    }
+
     private void Start()
     {
-        Messenger.AddListener(GameEvent.SELECT_ACHIEVEMENT, SelectAchievement);
+        ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECIEVE_ACHIEVEMENT_CHANGE, ReceiveChangeAchievement);
         List<AchievementInfo> infosArr = new List<AchievementInfo>();
         if (isPlayer == 1)
         {
@@ -36,7 +20,9 @@ public class AchievementSelectionCollection : AchievementCollection
             {
                 if (GameData.Player.AchievementSelected[i]>=0)
                 {
-                    infosArr.Add(GameData.Player.AchievementConfig[(AchievementType)GameData.Player.AchievementSelected[i]]);
+                    AchievementInfo info = GameData.AchievementConfig[(AchievementType)(GameData.Player.AchievementSelected[i] / 100)];
+                    info.Obtained = GameData.Player.AchievementObtained[GameData.Player.AchievementSelected[i] / 100];
+                    infosArr.Add(info);
                 }
             }
         }
@@ -46,7 +32,9 @@ public class AchievementSelectionCollection : AchievementCollection
             {
                 if (GameData.Opponent.AchievementSelected[i] >= 0)
                 {
-                    infosArr.Add(GameData.Opponent.AchievementConfig[(AchievementType)GameData.Opponent.AchievementSelected[i]]);
+                    AchievementInfo info = GameData.AchievementConfig[(AchievementType)(GameData.Opponent.AchievementSelected[i] / 100)];
+                    info.Obtained = GameData.Opponent.AchievementObtained[GameData.Opponent.AchievementSelected[i] / 100];
+                    infosArr.Add(info);
                 }
             }
         }
@@ -56,6 +44,27 @@ public class AchievementSelectionCollection : AchievementCollection
 
     private void OnDestroy()
     {
-        Messenger.RemoveListener(GameEvent.SELECT_ACHIEVEMENT, SelectAchievement);
+        ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.RECIEVE_ACHIEVEMENT_CHANGE, ReceiveChangeAchievement);
+    }
+
+    public void Select(int slot)
+    {
+        AchievementSelectionCollection.slot = slot;
+        PopupHelper.Create(popup.gameObject);
+    }
+
+    public void ReceiveChangeAchievement(JSONNode json)
+    {
+        var info = GameData.AchievementConfig[(AchievementType)(idNewSelect / 100)];
+        info.Obtained = GameData.Player.AchievementObtained[idNewSelect / 100];
+        if (slot >= contentRoot.childCount)
+        {
+            AddUI(info);
+        }
+        else
+        {
+            ModifyUIAt(slot, info);
+        }
+        GameData.Player.AchievementSelected[slot] = idNewSelect;
     }
 }

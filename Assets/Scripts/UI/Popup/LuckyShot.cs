@@ -76,7 +76,7 @@ public class LuckyShot : Singleton<LuckyShot>
         int amount = GameData.LuckyShotConfig[int.Parse(node["index"])];
         Debug.Log(GameData.LuckyShotConfig[int.Parse(node["index"])]);
         
-        PResourceType.BERI.AddValue(amount);
+        PConsumableType.BERI.AddValue(amount);
         CoinVFX.CoinVfx(Instance.resourceUI.transform, Instance.shots[indexShot].transform.position, Instance.shots[indexShot].transform.position);
         Instance.shots[indexShot].GetComponent<Image>().sprite = SpriteFactory.Attacked;
         StartCoroutine(Instance.Suffle());

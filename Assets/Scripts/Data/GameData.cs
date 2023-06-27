@@ -25,6 +25,7 @@ public class GameData : PDataBlock<GameData>
     [SerializeField] private long lastSalaryObtained; public static long LastSalaryObtained { get { return Instance.lastSalaryObtained; } set { Instance.lastSalaryObtained = value; } }
     [SerializeField] private long lastDailyReward; public static long LastDailyReward { get { return Instance.lastDailyReward; } set { Instance.lastDailyReward = value; } }
     [SerializeField] private int restoreDailyInterval; public static int RestoreDailyInterval { get { return Instance.restoreDailyInterval; } set { Instance.restoreDailyInterval = value; } }
+    [SerializeField] private Dictionary<AchievementType, AchievementInfo> achievementConfig; public static Dictionary<AchievementType, AchievementInfo> AchievementConfig { get { return Instance.achievementConfig; } set { Instance.achievementConfig = value; } }
 
 
     protected override void Init()
@@ -32,7 +33,7 @@ public class GameData : PDataBlock<GameData>
         base.Init();
         Instance.player.Achievement = Instance.player.Achievement ?? new List<int>();
         Instance.player.AchievementObtained = Instance.player.AchievementObtained ?? new List<int>();
-        Instance.player.AchievementConfig = Instance.player.AchievementConfig ?? new Dictionary<AchievementType, AchievementInfo>();
+        Instance.achievementConfig = Instance.achievementConfig ?? new Dictionary<AchievementType, AchievementInfo>();
         Instance.luckyShotResult = Instance.luckyShotResult ?? new List<int>();
         Instance.luckyShotConfig = Instance.luckyShotConfig ?? new List<int>();
         Instance.giftConfig = Instance.giftConfig ?? new List<int>();
@@ -54,6 +55,7 @@ public struct ProfileData
 {
     public string Username;
     public int Avatar;
+    public int FrameAvatar;
     [SerializeField] private int point; public int Point { get { return point; } set { point = value; } }
     [SerializeField] private int rank; 
     public int Rank { get {
@@ -65,9 +67,9 @@ public struct ProfileData
             rank = rankMilestone.GetMileStone(point);
             return rank; 
         }}
-    public int PerfectGame { get { return GameData.Player.AchievementConfig[AchievementType.TACTICAL_GENIUS].Progress; } }
+    public int PerfectGame { get { return GameData.AchievementConfig[AchievementType.TACTICAL_GENIUS].Progress; } }
     public int WinStreak;
-    public int WinStreakMax { get { return GameData.Player.AchievementConfig[AchievementType.DOMINATOR].Progress; } }
+    public int WinStreakMax { get { return GameData.AchievementConfig[AchievementType.DOMINATOR].Progress; } }
     [SerializeField] private int wins; public int Wins { get { return wins; } set { wins = value; winRate = wins / (wins + losts + 0.001f); } }
     [SerializeField] private int losts; public int Losts { get { return losts; } set { losts = value; winRate = wins / (wins + losts + 0.001f); } }
     public int Battles;
@@ -75,21 +77,22 @@ public struct ProfileData
     public List<int> Achievement;
     public int []AchievementSelected;
     public List<int> AchievementObtained;
-    public Dictionary<AchievementType, AchievementInfo> AchievementConfig;
+    public List<int> AchievementProgress;
 
 
     public static ProfileData FromJson(ref ProfileData profileData, JSONNode data)
     {
-        profileData.Username = data["n"];
-        profileData.Point = int.Parse(data["p"]);
-        profileData.Avatar = int.Parse(data["a"]);
-        profileData.WinStreak = int.Parse(data["wSN"]);
-        profileData.Wins = int.Parse(data["wC"]);
-        profileData.Losts = int.Parse(data["lC"]);
+        profileData.Username = data["profile"]["n"];
+        profileData.Point = int.Parse(data["profile"]["p"]);
+        profileData.Avatar = int.Parse(data["profile"]["a"]);
+        profileData.FrameAvatar = int.Parse(data["profile"]["f"]);
+        profileData.WinStreak = int.Parse(data["statistics"]["wSN"]);
+        profileData.Wins = int.Parse(data["statistics"]["wC"]);
+        profileData.Losts = int.Parse(data["statistics"]["lC"]);
         profileData.Battles = profileData.Wins + profileData.Losts;
-        profileData.Achievement = data["achie"].ToList();
-        profileData.AchievementObtained = data["achie_r"].ToList();
-        profileData.AchievementSelected = profileData.AchievementSelected ?? new int[3] {-1,-1,-1};
+        profileData.Achievement = data["statistics"]["achie"].ToList();
+        profileData.AchievementObtained = data["statistics"]["achie_r"].ToList();
+        profileData.AchievementSelected = data["statistics"]["outst"].ToList().ToArray();
         return profileData;
     }
     public override string ToString()
@@ -119,6 +122,7 @@ public class RankConfig
 {
     public string Title;
     public int Point;
+    public int Reward;
 
     public static List<RankConfig> ListFromJson(JSONNode json)
     {
@@ -128,7 +132,8 @@ public class RankConfig
             RankConfig rankConfig = new RankConfig()
             {
                 Point = int.Parse(json["p"][i]),
-                Title = json["n"][i]
+                Title = json["n"][i],
+                Reward = int.Parse(json["list"][i])
             };
             rankConfigs.Add(rankConfig);
 

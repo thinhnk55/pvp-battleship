@@ -7,29 +7,49 @@ using UnityEngine.UI;
 
 public struct BetInfo
 {
+    public int Index;
+    public bool IsQualified;
     public int RewardAmount;
     public int EntryStake;
-    public Callback onClick;
+    public Callback OnClick;
 }
 
 public class BetCard : CardBase<BetInfo>
 {
-    
-    [SerializeField] TextMeshProUGUI RewardAmount;
-    [SerializeField] TextMeshProUGUI EntryStake;
+    [SerializeField] Image BG;
+    [SerializeField] Image lockedImage;
+    [SerializeField] TextMeshProUGUI rewardAmount;
+    [SerializeField] TextMeshProUGUI entryStake;
     RectTransform rectTransform;
     RectTransform contentTransform;
     public override void BuildUI(BetInfo info)
     {
         base.BuildUI(info);
-        RewardAmount.text = info.RewardAmount.ToString();
-        EntryStake.text = info.EntryStake.ToString();
-        OnClick += info.onClick;
-
-        Button.onClick.AddListener(() =>
+        if (rewardAmount)
         {
-            OnClicked(info);
-        });
+            rewardAmount.text = info.RewardAmount.ToString();
+        }
+        if (entryStake)
+        {
+            entryStake.text = info.EntryStake.ToString();
+        }
+        OnClick += info.OnClick;
+        if (info.IsQualified)
+        {
+            Button.onClick.AddListener(() =>
+            {
+                OnClicked(info);
+            });
+        }
+        else
+        {
+            lockedImage.SetAlpha(0);
+        }
+        if (BG)
+        {
+            BG.sprite = SpriteFactory.Bets.GetLoop(info.Index);
+        }
+
     }
     protected override void OnClicked(BetInfo info)
     {
@@ -42,7 +62,8 @@ public class BetCard : CardBase<BetInfo>
     }
     private void Update()
     {
-        float scale = 1 + (1 - Mathf.Clamp01( Mathf.Pow((rectTransform.anchoredPosition.x + contentTransform.anchoredPosition.x - Screen.currentResolution.width / 2) / (Screen.currentResolution.height / 2), 2)) ) * 0.5f;
+        rectTransform.position += Vector3.right * Time.deltaTime;
+        float scale = 1 + (1 - Mathf.Clamp01( Mathf.Pow((rectTransform.anchoredPosition.x + contentTransform.anchoredPosition.x - Screen.width / 2) / (Screen.height / 2), 2)) ) * 0.5f;
         transform.localScale = scale * Vector3.one;
     }
 }

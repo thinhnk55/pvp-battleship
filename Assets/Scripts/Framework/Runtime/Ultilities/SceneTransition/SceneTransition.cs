@@ -40,6 +40,7 @@ namespace Framework
         Tween _tween;
         Callback _fadein;
         Callback _fadeout;
+        public Callback OnLoaded;
 
         #region MonoBehaviour
 
@@ -99,6 +100,7 @@ namespace Framework
             {
                 _stateMachine.CurrentState = State.Idle;
                 CacheGameObject.SetActive(false);
+                OnLoaded?.Invoke();
             }, true);
         }
 
@@ -162,7 +164,16 @@ namespace Framework
             LazyInit();
             _instance.Load(eSceneValue);
         }
-
+        public static void LoadCall(ESceneName eSceneValue, Callback callback)
+        {
+            LazyInit();
+            _instance.Load(eSceneValue);
+            _instance.OnLoaded = () =>
+            {
+                callback?.Invoke();
+                _instance.OnLoaded = null;
+            };
+        }
         public static void Reload()
         {
             LazyInit();

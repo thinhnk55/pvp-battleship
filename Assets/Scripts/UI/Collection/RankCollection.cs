@@ -1,8 +1,10 @@
+using Facebook.Unity;
 using Framework;
 using SimpleJSON;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Net.NetworkInformation;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,9 +16,19 @@ public class RankCollection : CardCollectionBase<RankInfo>
     [SerializeField] Image indicator;
     [SerializeField] float offsetIndicator;
     [SerializeField] TextMeshProUGUI countDown;
+    [SerializeField] TextMeshProUGUI reward;
     [SerializeField] Transform resource;
     private void Start()
     {
+        OnSelectedCard += (oldCard, newCard) =>
+        {
+            if (oldCard && ((RankCard)oldCard).BG)
+                ((RankCard)oldCard).BG.sprite = SpriteFactory.UnselectedRankBG;
+            if (((RankCard)newCard).BG)
+                ((RankCard)newCard).BG.sprite = SpriteFactory.SelectedRankBG;
+            SetCardPreview(newCard.Info);
+            Debug.Log("Change");
+        };
         List<RankInfo> infos = new List<RankInfo>();
         for (int i = 0; i < GameData.RankConfigs.Count; i++)
         {
@@ -43,36 +55,52 @@ public class RankCollection : CardCollectionBase<RankInfo>
 
         ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECIEVE_RANK, ReceiveRank);
     }
+    private void OnDestroy()
+    {
+        ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.RECIEVE_RANK, ReceiveRank);
 
+    }
     public void SetCardPreview(RankInfo info)
     {
         info.OnClick = () =>
         {
             WSClient.RequestRank();
         };
+        selectedCard = cards[info.Id];
+        reward.text = GameData.RankConfigs[info.Id].Reward.ToString();
+        if (info.Id < GameData.Player.Rank)
+        {
+            countDown.text = "Received";
+        }
+        else if (info.Id > GameData.Player.Rank)
+        {
+            countDown.text = "Unlocked when reaching " + GameData.RankConfigs[info.Id].Point;
+        }
         previewCard.BuildUI(info);
     }
 
     private void OnTrigger()
     {
-        countDown.text = Timer<Gift>.Instance.TriggerCountTotal >= 1 ? "Obtain" : Timer<Gift>.Instance.RemainTimeInsecond.Hour_Minute_Second_1();
-        previewCard.Button.onClick.RemoveAllListeners();
+        //countDown.text = Timer<RankCollection>.Instance.TriggerCountTotal >= 1 ? "Obtain" : Timer<RankCollection>.Instance.RemainTimeInsecond.Hour_Minute_Second_1();
     }
 
     private void OnElapse()
     {
-        countDown.text = Timer<Gift>.Instance.TriggerCountTotal >= 1 ? "Obtain" : Timer<Gift>.Instance.RemainTimeInsecond.Hour_Minute_Second_1();
+        countDown.text = Timer<RankCollection>.Instance.TriggerCountTotal >= 1 ? "Obtain" : "Received salary in " + Timer<RankCollection>.Instance.RemainTimeInsecond.Hour_Minute_Second_1();
     }
 
     void ReceiveRank(JSONNode json)
     {
-        PResourceType.BERI.AddValue(int.Parse(json["value"]));
+        PConsumableType.BERI.AddValue(int.Parse(json["value"]));
         CoinVFX.CoinVfx(resource, Position, Position);
         Timer<RankCollection>.Instance.LastTime = DateTime.UtcNow.Ticks;
     }
     // Update is called once per frame
     void Update()
     {
-        Timer<RankCollection>.Instance.Elasping();
+        if (previewCard.Info.Id == GameData.Player.Rank)
+        {
+            Timer<RankCollection>.Instance.Elasping();
+        }
     }
 }
