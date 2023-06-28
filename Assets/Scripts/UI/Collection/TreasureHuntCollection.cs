@@ -1,10 +1,21 @@
 using Framework;
+using SimpleJSON;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class TreasureHuntCollection : CardCollectionBase<TreasureHuntInfo>
 {
+    private void OnEnable()
+    {
+        ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECIEVE_JOIN_TREASURE_ROOM, ReceiveJoinTreasureRoom);
+    }
+
+    private void OnDisable()
+    {
+        ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.RECIEVE_JOIN_TREASURE_ROOM, ReceiveJoinTreasureRoom);
+    }
+
     private void Awake()
     {
         List<TreasureHuntInfo> infos = new List<TreasureHuntInfo>();
@@ -25,9 +36,26 @@ public class TreasureHuntCollection : CardCollectionBase<TreasureHuntInfo>
     {
         if (GameData.JoinTreasureRoom.IsSuccess == 0)
         {
-            Debug.Log("don't enough beri !!!");
+            Debug.Log("Not enough beri !!!");
             return;
         }
-        SceneTransitionHelper.Load(ESceneName.TreasureHuntGame);
+    }
+
+    void ReceiveJoinTreasureRoom(JSONNode data)
+    {
+        Debug.Log("Receive :" + data);
+        GameData.JoinTreasureRoom.Id = int.Parse(data["id"]);
+        GameData.JoinTreasureRoom.IsSuccess = int.Parse(data["s"]);
+        GameData.JoinTreasureRoom.CurrentPrize = int.Parse(data["beri"]);
+
+        for (int row = 0; row < 10; row++)
+        {
+            List<int> rowList = new List<int>();
+            for (int col = 0; col < 10; col++)
+            {
+                rowList.Add(int.Parse(data["board"][col][row]));
+            }
+            GameData.JoinTreasureRoom.Board.Add(rowList);
+        }
     }
 }

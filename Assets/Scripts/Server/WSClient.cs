@@ -20,7 +20,7 @@ public class WSClient : WSClientBase
         ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECIEVE_TRANSACTION, RecieveTransaction);
         ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECEIVE_RANK_CONFIG, ReceiveRankConfig);
         ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECIEVE_TREASURE_CONFIG, ReceiveTreasureConfig);
-        ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECIEVE_JOIN_TREASURE_ROOM, ReceiveJoinTreasureRoom);
+        //ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECIEVE_JOIN_TREASURE_ROOM, ReceiveJoinTreasureRoom);
     }
     protected override void OnDestroy()
     {
@@ -32,7 +32,7 @@ public class WSClient : WSClientBase
         ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.RECIEVE_TRANSACTION, RecieveTransaction);
         ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.RECEIVE_RANK_CONFIG, ReceiveRankConfig);
         ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.RECIEVE_TREASURE_CONFIG, ReceiveTreasureConfig);
-        ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.RECIEVE_JOIN_TREASURE_ROOM, ReceiveJoinTreasureRoom);
+        //ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.RECIEVE_JOIN_TREASURE_ROOM, ReceiveJoinTreasureRoom);
     }
     public void OnLogin(JSONNode data)
     {
@@ -66,7 +66,8 @@ public class WSClient : WSClientBase
                     case ConfigVersion.SHOP:
                         RequestShopConfig();
                         break;
-                    case ConfigVersion.TRESURE:
+                    case ConfigVersion.TREASURE:
+                        RequestTreasureConfig();
                         break;
                     default:
                         break;
@@ -74,7 +75,8 @@ public class WSClient : WSClientBase
             }
         }
         RequestShopConfig();
-        
+        RequestTreasureConfig();
+
         Timer<LuckyShot>.Instance.LastTime = long.Parse(data["timer"]["lfb"]).NowFrom0001From1970();
         Timer<Gift>.Instance.LastTime = long.Parse(data["timer"]["lcr"]).NowFrom0001From1970();
         Timer<RankCollection>.Instance.LastTime = long.Parse(data["timer"]["WRC"]).NowFrom0001From1970();
@@ -178,7 +180,7 @@ public class WSClient : WSClientBase
     public static void ReceiveTreasureConfig(JSONNode data)
     {
         GameData.TreasureConfigs.Clear();
-        for(int i=0; i<data.Count; i++)
+        for(int i=0; i<data["list"].Count; i++)
         {
             TreasureConfig treasureConfig = new TreasureConfig()
             {

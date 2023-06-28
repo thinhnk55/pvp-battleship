@@ -13,7 +13,6 @@ namespace Framework
         Bet,
         MainGame,
         TreasureHunt,
-        TreasureHuntGame,
     }
     public class SceneTransition : CacheMonoBehaviour
     {

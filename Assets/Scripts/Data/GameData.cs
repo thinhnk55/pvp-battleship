@@ -150,7 +150,7 @@ public enum ConfigVersion
     LUCKY_SHOT,
     GIFT,
     SHOP,
-    TRESURE,
+    TREASURE,
 
 }
 
