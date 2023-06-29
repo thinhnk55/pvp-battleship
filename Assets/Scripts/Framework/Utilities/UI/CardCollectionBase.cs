@@ -13,6 +13,7 @@ namespace Framework
 
         [SerializeField] protected GameObject cardPrefab;
         [SerializeField] protected Transform contentRoot;
+        public abstract void UpdateUIs();
         public virtual void BuildUIs(List<T> infos)
         {
             contentRoot.DestroyChildrenImmediate();

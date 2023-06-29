@@ -29,20 +29,23 @@ namespace Framework
             }
             if (_goodType == PResourceType.Nonconsumable)
             {
-    
                 return callback2.Invoke((PNonConsumableType)goodType);
             }
             return false;
         }
         public static void Transact(this int goodType, int value)
         {
-            ProcessResource(goodType, (_goodType)=> { _goodType.AddValue(value); return true; }, 
-                (_goodType) => { _goodType.AddValue(value); return true; });
+            ProcessResource(goodType, 
+                (_goodType) => { _goodType.AddValue(value); return true; }, 
+                (_goodType) => { _goodType.AddValue(value); return true; }
+                );
         }
 
         public static bool IsAffordable(this int goodType, int value)
         {
-            return ProcessResource(goodType, (_goodType) => { return _goodType.GetValue() >= value; }, (_goodType) =>true );
+            return ProcessResource(goodType, 
+                (_goodType) => { return _goodType.GetValue() >= value; }, 
+                (_goodType) =>true );
         }
     }
 }

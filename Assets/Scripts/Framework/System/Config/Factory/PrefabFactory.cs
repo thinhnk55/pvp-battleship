@@ -24,7 +24,7 @@ namespace Framework
 
         [SerializeField] private GameObject octile; public static GameObject Octile { get { return Instance.octile; } }
         [SerializeField] private GameObject[] ships; public static GameObject[] Ships { get { return Instance.ships; } }
-        [SerializeField] private GameObject[] popupConfirm; public static GameObject[] PopupConfirm { get { return Instance.popupConfirm; } }
+        [SerializeField] private GameObject popupConfirm; public static GameObject PopupConfirm { get { return Instance.popupConfirm; } }
 
 
     }

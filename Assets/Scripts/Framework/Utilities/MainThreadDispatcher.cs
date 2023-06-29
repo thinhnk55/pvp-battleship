@@ -2,7 +2,7 @@ using System;
 using System.Collections.Concurrent;
 using UnityEngine;
 
-public class MainThreadDispatcher : Singleton<MainThreadDispatcher>
+public class MainThreadDispatcher : SingletonMono<MainThreadDispatcher>
 {
     private readonly ConcurrentQueue<Action> actions = new ConcurrentQueue<Action>();
     private void Update()

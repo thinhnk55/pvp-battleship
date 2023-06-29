@@ -5,7 +5,7 @@ using UnityEngine;
 using WebSocketSharp;
 
 namespace Framework {
-    public abstract class WSClientBase : Singleton<WSClientBase>
+    public abstract class WSClientBase : SingletonMono<WSClientBase>
     {
         public WebSocket ws;
         protected virtual void Start()

@@ -5,6 +5,11 @@ using UnityEngine;
 
 public class BetCollection : CardCollectionBase<BetInfo>
 {
+    public override void UpdateUIs()
+    {
+        throw new System.NotImplementedException();
+    }
+
     private void Awake()
     {
         List<BetInfo> infos = new List<BetInfo>();

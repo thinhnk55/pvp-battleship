@@ -7,20 +7,8 @@ using UnityEngine;
 
 namespace Framework
 {
-    public class Timer<T>
+    public class Timer<T> : Singleton<Timer<T>>
     {
-        public static Timer<T> Instance
-        {
-            get
-            {
-                if (instance == null)
-                {
-                    instance = new Timer<T>();
-                }
-                return instance;
-            }
-        }
-        private static Timer<T> instance = null;
         private int triggerIntervalInSecond; public int TriggerIntervalInSecond { get { return triggerIntervalInSecond; } set { triggerIntervalInSecond = value; } }
         private long lastTime; public long LastTime
         {
@@ -60,8 +48,7 @@ namespace Framework
         public Callback OnTrigger;
         public Callback OnElapse;
 
-        public void Init(int interval ,Callback onTrigger, Callback onElapse){
-            TriggerIntervalInSecond = interval;
+        public void Init(Callback onTrigger, Callback onElapse){
             OnTrigger = onTrigger;
             OnElapse = onElapse;
         }

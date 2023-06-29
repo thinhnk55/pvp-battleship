@@ -8,6 +8,7 @@ using UnityEngine;
 
 public class GameData : PDataBlock<GameData>
 {
+    [SerializeField] private int progressGift; public static int ProgressGift { get { return Instance.progressGift; } set { Instance.progressGift = value % 6; } }
     [SerializeField] private string text; public static string Text { get { return Instance.text; } set { Instance.text = value; } }
     [SerializeField] private List<int> versions; public static List<int> Versions { get { return Instance.versions; } set { Instance.versions = value; } }
     [SerializeField] private int isBuyDiamondFirst; public static int IsBuyDiamondFirst { get { return Instance.isBuyDiamondFirst; } set { Instance.isBuyDiamondFirst = value; } }
@@ -21,16 +22,13 @@ public class GameData : PDataBlock<GameData>
     [SerializeField] private PDataUnit<int> rocketCount; public static PDataUnit<int> RocketCount { get { return Instance.rocketCount; } set { Instance.rocketCount = value; } }
     [SerializeField] private List<TreasureConfig> treasureConfigs; public static List<TreasureConfig> TreasureConfigs { get { return Instance.treasureConfigs; } set { Instance.treasureConfigs = value; } }
     [SerializeField] private JoinTreasureRoom joinTreasureRoom; public static JoinTreasureRoom JoinTreasureRoom { get { return Instance.joinTreasureRoom; } set { Instance.joinTreasureRoom = value; } }
-    [SerializeField] private long lastLuckyShot; public static long LastLuckyShot { get { return Instance.lastLuckyShot; } set { Instance.lastLuckyShot = value; } }
-    [SerializeField] private long lastSalaryObtained; public static long LastSalaryObtained { get { return Instance.lastSalaryObtained; } set { Instance.lastSalaryObtained = value; } }
-    [SerializeField] private long lastDailyReward; public static long LastDailyReward { get { return Instance.lastDailyReward; } set { Instance.lastDailyReward = value; } }
-    [SerializeField] private int restoreDailyInterval; public static int RestoreDailyInterval { get { return Instance.restoreDailyInterval; } set { Instance.restoreDailyInterval = value; } }
     [SerializeField] private Dictionary<AchievementType, AchievementInfo> achievementConfig; public static Dictionary<AchievementType, AchievementInfo> AchievementConfig { get { return Instance.achievementConfig; } set { Instance.achievementConfig = value; } }
 
 
     protected override void Init()
     {
         base.Init();
+        Instance.player = Instance.player ?? new ProfileData();
         Instance.player.Achievement = Instance.player.Achievement ?? new List<int>();
         Instance.player.AchievementObtained = Instance.player.AchievementObtained ?? new List<int>();
         Instance.achievementConfig = Instance.achievementConfig ?? new Dictionary<AchievementType, AchievementInfo>();
@@ -41,8 +39,7 @@ public class GameData : PDataBlock<GameData>
         Instance.transactionConfigs = Instance.transactionConfigs ?? new Dictionary<TransactionType, List<TransactionInfo>>();
         Instance.rankConfigs = Instance.rankConfigs ?? new List<RankConfig>();
         Instance.rocketCount = new PDataUnit<int>(0);
-        Instance.lastLuckyShot = Instance.lastLuckyShot != 0 ? Instance.lastLuckyShot : 0;
-        Instance.versions = Instance.versions ?? new List<int>(6) { 0,0,0,0,0,0};
+        Instance.versions = Instance.versions ?? new List<int>(8) { 0,0,0,0,0,0,0,0};
         Instance.treasureConfigs = Instance.treasureConfigs ?? new List<TreasureConfig>();
         Instance.joinTreasureRoom = Instance.joinTreasureRoom ?? new JoinTreasureRoom();
         Instance.joinTreasureRoom.Board = Instance.joinTreasureRoom.Board ?? new List<List<int>>();
@@ -51,11 +48,13 @@ public class GameData : PDataBlock<GameData>
 
 
 [Serializable]
-public struct ProfileData
+public class ProfileData
 {
-    public string Username;
-    public int Avatar;
-    public int FrameAvatar;
+    public PDataUnit<string> Username;
+    public PDataUnit<int> Avatar;
+    public PDataUnit<int> FrameAvatar;
+    public PDataUnit<int> BattleField;
+    public PDataUnit<int> SkinShip;
     [SerializeField] private int point; public int Point { get { return point; } set { point = value; } }
     [SerializeField] private int rank; 
     public int Rank { get {
@@ -80,12 +79,14 @@ public struct ProfileData
     public List<int> AchievementProgress;
 
 
-    public static ProfileData FromJson(ref ProfileData profileData, JSONNode data)
+    public static ProfileData FromJson(ProfileData profileData, JSONNode data)
     {
-        profileData.Username = data["profile"]["n"];
+        profileData.Username = new PDataUnit<string>(data["profile"]["n"]);
         profileData.Point = int.Parse(data["profile"]["p"]);
-        profileData.Avatar = int.Parse(data["profile"]["a"]);
-        profileData.FrameAvatar = int.Parse(data["profile"]["f"]);
+        profileData.Avatar = new PDataUnit<int>(int.Parse(data["profile"]["a"]));
+        profileData.FrameAvatar = new PDataUnit<int>(int.Parse(data["profile"]["f"]));
+        profileData.BattleField = new PDataUnit<int>(int.Parse(data["profile"]["ba"]));
+        profileData.SkinShip = new PDataUnit<int>(int.Parse(data["profile"]["sk"]));
         profileData.WinStreak = int.Parse(data["statistics"]["wSN"]);
         profileData.Wins = int.Parse(data["statistics"]["wC"]);
         profileData.Losts = int.Parse(data["statistics"]["lC"]);
@@ -150,8 +151,9 @@ public enum ConfigVersion
     LUCKY_SHOT,
     GIFT,
     SHOP,
-    TREASURE,
-
+    TRESURE,
+    COUNT_DOWN,
+    ROYAL_PASS,
 }
 
 [Serializable]

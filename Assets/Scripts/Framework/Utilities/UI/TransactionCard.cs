@@ -7,7 +7,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
-namespace Framework{
+namespace Framework {
     public struct GoodInfo
     {
         public float Value;
@@ -111,37 +111,56 @@ namespace Framework{
             {
                 productAmount[i].text = info.Product[i].Value.ToString();
             }
-            for (int i = 0; i < costIcon.Length; i++)
-            {
-                costIcon[i].sprite = SpriteFactory.ResourceIcons[(int)info.Cost[i].Type].sprites.GetLoop((int)info.Cost[i].Value);
-            }
-            for (int i = 0; i < costAmount.Length; i++)
-            {
-                if (info.Cost[i].Value == (int)info.Cost[i].Value)
-                {
-                    costAmount[i].text = info.Cost[i].Value.ToString("F0");
-                }
-                else
-                {
-                    costAmount[i].text = info.Cost[i].Value.ToString("F2");
-                }
-            }
-
-            if (bonus)
-            {
-                bonus.text = "Bonus " + info.Bonus.ToString() + "%";
-            }
             if (status)
             {
                 status.text = GetStatus(info);
             }
-            if (Button)
-                Button.onClick.AddListener(() =>
+            if (info.Cost[0].Type >= 0)
+            {
+                for (int i = 0; i < costIcon.Length; i++)
                 {
-                    //PopupHelper.CreateConfirm();
-                    TransactionAction(info.TransactionType, info)?.Invoke();
+                    costIcon[i].sprite = SpriteFactory.ResourceIcons[(int)info.Cost[i].Type].sprites.GetLoop((int)info.Cost[i].Value);
                 }
-                );
+                for (int i = 0; i < costAmount.Length; i++)
+                {
+                    if (info.Cost[i].Value == (int)info.Cost[i].Value)
+                    {
+                        costAmount[i].text = info.Cost[i].Value.ToString("F0");
+                    }
+                    else
+                    {
+                        costAmount[i].text = info.Cost[i].Value.ToString("F2");
+                    }
+                }
+
+                if (bonus)
+                {
+                    bonus.text = "Bonus " + info.Bonus.ToString() + "%";
+                }
+
+                if (Button)
+                    Button.onClick.AddListener(() =>
+                    {
+                        PopupHelper.CreateConfirm(PrefabFactory.PopupConfirm, "Buy?", "Buy?", (confirm) => {
+                            if (confirm)
+                            {
+                                TransactionAction(info.TransactionType, info)?.Invoke();
+                                Collection.UpdateUIs();
+                            }
+                        });
+                    }
+                    );
+            }
+            else
+            {
+                for (int i = 0; i < costAmount.Length; i++)
+                {
+                    costAmount[i].text = "Royal Pass";
+                }
+            }
+
+
+
         }
 
         protected override void OnClicked(TransactionInfo info)

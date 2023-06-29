@@ -8,6 +8,10 @@ public class TreasureHuntCollection : CardCollectionBase<TreasureHuntInfo>
 {
     [SerializeField] GameObject treasureHuntPopup;
 
+    public override void UpdateUIs()
+    {
+        throw new System.NotImplementedException();
+    }
     private void OnEnable()
     {
         ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECIEVE_JOIN_TREASURE_ROOM, ReceiveJoinTreasureRoom);

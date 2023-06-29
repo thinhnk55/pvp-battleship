@@ -1,6 +1,7 @@
 using SimpleJSON;
 using Sirenix.Utilities;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Framework
 {
@@ -45,7 +46,10 @@ namespace Framework
 
         public static void AddValue(this PNonConsumableType type, int value)
         {
-            type.GetData().Data.Add(value);
+            var set = new HashSet<int>();
+            set.AddRange(type.GetData().Data);
+            set.Add(value);
+            type.GetData().Data = set;
         }
 
         public static void SetValue(this PNonConsumableType type, List<int> value)

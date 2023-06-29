@@ -24,7 +24,6 @@ public class AchievementCollection : CardCollectionBase<AchievementInfo>
                 if (((AchievementCard)newCard).BG)
                     ((AchievementCard)newCard).BG.sprite = SpriteFactory.SelectedAchievementBG;
                 SetCardPreview(newCard.Info);
-                Debug.Log("Change");
             };
         infos = new List<AchievementInfo>();
         var list = isPlayer == 1 ? GameData.AchievementConfig.ToList() : GameData.AchievementConfig.ToList().GetRange(0, numberOfChild);
@@ -83,6 +82,11 @@ public class AchievementCollection : CardCollectionBase<AchievementInfo>
         if (int.Parse(json["s"]) == 1)
         {
             GameData.Player.AchievementObtained[int.Parse(json["achieId"])] = GameData.Player.AchievementObtained[int.Parse(json["achieId"])] + 1;
+            if (previewCard != null)
+                info.onClick = () =>
+                {
+                    SetCardPreview(info);
+                };
             cards[int.Parse(json["achieId"])].BuildUI(info);
         }
         SetCardPreview(info);
@@ -94,5 +98,10 @@ public class AchievementCollection : CardCollectionBase<AchievementInfo>
         {
             ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.RECIEVE_OBTAIN_ACHIEVEMENT, RecieveObtainAchievemnt);
         }
+    }
+
+    public override void UpdateUIs()
+    {
+        throw new NotImplementedException();
     }
 }

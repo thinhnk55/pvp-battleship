@@ -11,7 +11,7 @@ using UnityEngine;
 
 namespace Framework
 {
-    public class Authentication : Singleton<Authentication>, IAuthentication
+    public class Authentication : SingletonMono<Authentication>, IAuthentication
     {
         public string Token;
         public TextMeshProUGUI Error;

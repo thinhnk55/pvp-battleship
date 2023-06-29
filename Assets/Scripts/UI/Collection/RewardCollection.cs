@@ -10,6 +10,11 @@ public class RewardCollection : CardCollectionBase<RewardInfo>
         base.BuildUIs(infos);
     }
 
+    public override void UpdateUIs()
+    {
+        throw new System.NotImplementedException();
+    }
+
     public void ObtainRewards()
     {
 
