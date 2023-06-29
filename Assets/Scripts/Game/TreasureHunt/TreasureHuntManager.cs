@@ -9,7 +9,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TreasureHuntManager : Singleton<TreasureHuntManager>
+public class TreasureHuntManager : SingletonMono<TreasureHuntManager>
 {
     [SerializeField] TreasureBoardCell cellPrefab;
     [SerializeField] Transform treasureGrid;
