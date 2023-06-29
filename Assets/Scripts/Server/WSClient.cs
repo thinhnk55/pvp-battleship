@@ -93,7 +93,9 @@ public class WSClient : WSClientBase
             }
         }
         SceneTransitionHelper.Load(ESceneName.Home);
-
+        Timer<LuckyShot>.Instance.TriggerIntervalInSecond = GameData.LuckyShotCoolDown;
+        Timer<Gift>.Instance.TriggerIntervalInSecond = GameData.GiftCoolDown;
+        Timer<RankCollection>.Instance.TriggerIntervalInSecond = GameData.RankReceiveCoolDown;
     }
     public void LoadHomeScene()
     {
@@ -121,6 +123,9 @@ public class WSClient : WSClientBase
     }
     private void ReceiveCountDownConfig(JSONNode data)
     {
+        GameData.LuckyShotCoolDown = int.Parse(data["lucky_shot"]) / 1000;
+        GameData.RankReceiveCoolDown = int.Parse(data["rank_receive"]) / 1000;
+        GameData.GiftCoolDown = int.Parse(data["consolation_gift"]) / 1000;
         Timer<LuckyShot>.Instance.TriggerIntervalInSecond = int.Parse(data["lucky_shot"]) / 1000;
         Timer<Gift>.Instance.TriggerIntervalInSecond = int.Parse(data["consolation_gift"]) / 1000;
         Timer<RankCollection> .Instance.TriggerIntervalInSecond = int.Parse(data["rank_receive"]) / 1000;

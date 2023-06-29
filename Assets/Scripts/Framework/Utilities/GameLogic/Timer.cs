@@ -9,7 +9,7 @@ namespace Framework
 {
     public class Timer<T> : Singleton<Timer<T>>
     {
-        private int triggerIntervalInSecond; public int TriggerIntervalInSecond { get { return triggerIntervalInSecond; } set { triggerIntervalInSecond = value; } }
+        private int triggerIntervalInSecond; public int TriggerIntervalInSecond { get { return triggerIntervalInSecond; } set { triggerIntervalInSecond = Mathf.Clamp(value, 1, int.MaxValue); } }
         private long lastTime; public long LastTime
         {
             get { return lastTime; }

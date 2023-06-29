@@ -10,7 +10,18 @@ public class TreasureHuntCollection : CardCollectionBase<TreasureHuntInfo>
 
     public override void UpdateUIs()
     {
-        throw new System.NotImplementedException();
+        List<TreasureHuntInfo> infos = new List<TreasureHuntInfo>();
+        for (int i = 0; i < GameData.TreasureConfigs.Count; i++)
+        {
+            infos.Add(new TreasureHuntInfo()
+            {
+                Id = GameData.TreasureConfigs[i].Id,
+                PrizeAmount = GameData.TreasureConfigs[i].PrizeAmount,
+                OnClick = TryJoinRoom
+            });
+        }
+
+        BuildUIs(infos);
     }
     private void OnEnable()
     {
@@ -24,18 +35,7 @@ public class TreasureHuntCollection : CardCollectionBase<TreasureHuntInfo>
 
     private void Awake()
     {
-        List<TreasureHuntInfo> infos = new List<TreasureHuntInfo>();
-        for(int i=0; i<GameData.TreasureConfigs.Count; i++)
-        {
-            infos.Add(new TreasureHuntInfo()
-            {
-                Id = GameData.TreasureConfigs[i].Id,
-                PrizeAmount = GameData.TreasureConfigs[i].PrizeAmount,
-                OnClick = TryJoinRoom
-            }) ;
-        }
-
-        BuildUIs(infos);
+        UpdateUIs();
     }
 
     private void TryJoinRoom()
