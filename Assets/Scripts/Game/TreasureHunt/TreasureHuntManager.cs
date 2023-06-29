@@ -9,13 +9,15 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TreasureHuntManager : Singleton<TreasureHuntManager>
+public class TreasureHuntManager : SingletonMono<TreasureHuntManager>
 {
     [SerializeField] TreasureBoardCell cellPrefab;
     [SerializeField] Transform treasureGrid;
     [SerializeField] GameObject resourceUI;
     [SerializeField] GameObject blockInteract;
     [SerializeField] TextMeshProUGUI countDown;
+    [SerializeField] TextMeshProUGUI message;
+    [SerializeField] List<GameObject> treasureDigits;
 
     Dictionary<Vector2, TreasureBoardCell> cells = new Dictionary<Vector2, TreasureBoardCell>();
 
