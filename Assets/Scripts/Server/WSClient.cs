@@ -78,7 +78,8 @@ public class WSClient : WSClientBase
                     case ConfigVersion.SHOP:
                         RequestShopConfig();
                         break;
-                    case ConfigVersion.TRESURE:
+                    case ConfigVersion.TREASURE:
+                        RequestTreasureConfig();
                         break;
                     case ConfigVersion.COUNT_DOWN:
                         RequestCountDownConfig();
@@ -223,7 +224,7 @@ public class WSClient : WSClientBase
     public static void ReceiveTreasureConfig(JSONNode data)
     {
         GameData.TreasureConfigs.Clear();
-        for(int i=0; i<data.Count; i++)
+        for(int i=0; i<data["list"].Count; i++)
         {
             TreasureConfig treasureConfig = new TreasureConfig()
             {
