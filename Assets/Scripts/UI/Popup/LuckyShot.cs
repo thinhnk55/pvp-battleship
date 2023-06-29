@@ -9,7 +9,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class LuckyShot : Singleton<LuckyShot>
+public class LuckyShot : SingletonMono<LuckyShot>
 {
     
     public int indexShot;
@@ -26,9 +26,7 @@ public class LuckyShot : Singleton<LuckyShot>
     {
         ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECIEVE_LUCKY_SHOT, Instance.RecieveLuckyShot);
         GameData.RocketCount.OnDataChanged += Instance.OnRocketChange;
-        Timer<LuckyShot>.Instance.OnTrigger +=  Instance.OnTriggerTimer;
-        Timer<LuckyShot>.Instance.OnElapse +=  Instance.OnElapseTimer;
-        Timer<LuckyShot>.Instance.TriggerIntervalInSecond = 60;
+        Timer<LuckyShot>.Instance.Init(Instance.OnTriggerTimer, Instance.OnElapseTimer);
         Debug.Log(Timer<LuckyShot>.Instance.RemainTimeInsecond + "_" + Timer<LuckyShot>.Instance.TriggerCountFromTimePoint +"_"+ GameData.RocketCount.Data);
 
         GameData.RocketCount.Data = Mathf.Clamp(GameData.RocketCount.Data + Timer<LuckyShot>.Instance.TriggerCountFromTimePoint, 0, 3);

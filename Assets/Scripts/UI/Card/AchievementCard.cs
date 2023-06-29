@@ -160,9 +160,9 @@ public class AchievementCard : CardBase<AchievementInfo>
             Button.onClick.RemoveAllListeners();
             Button.onClick.AddListener(() =>
             {
+                OnClicked(info);
                 if (Collection)
                     Collection.SelectedCard = this;
-                OnClicked(info);
             });
         }
         if (OnClick == null || Button.onClick == null)

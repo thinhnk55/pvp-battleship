@@ -8,6 +8,6 @@ public class Home : MonoBehaviour
     [SerializeField]TextMeshProUGUI username;
     private void Start()
     {
-        username.text = GameData.Player.Username;
+        username.text = GameData.Player.Username.Data;
     }
 }

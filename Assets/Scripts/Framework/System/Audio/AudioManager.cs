@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AudioManager : Singleton<AudioManager>
+public class AudioManager : SingletonMono<AudioManager>
 {
     public AudioSource audioSource;
     AudioTrackerDictionary audioTrackers = new AudioTrackerDictionary();

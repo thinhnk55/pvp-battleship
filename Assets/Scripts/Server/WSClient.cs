@@ -20,7 +20,11 @@ public class WSClient : WSClientBase
         ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECIEVE_TRANSACTION, RecieveTransaction);
         ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECEIVE_RANK_CONFIG, ReceiveRankConfig);
         ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECIEVE_TREASURE_CONFIG, ReceiveTreasureConfig);
+        ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECEIVE_COUNTDOWN_CONFIG, ReceiveCountDownConfig);
+        ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECIEVE_ROYAL_CONFIG, ReceiveRoyalPassConfig);
         ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECIEVE_JOIN_TREASURE_ROOM, ReceiveJoinTreasureRoom);
+
+
     }
     protected override void OnDestroy()
     {
@@ -32,6 +36,8 @@ public class WSClient : WSClientBase
         ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.RECIEVE_TRANSACTION, RecieveTransaction);
         ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.RECEIVE_RANK_CONFIG, ReceiveRankConfig);
         ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.RECIEVE_TREASURE_CONFIG, ReceiveTreasureConfig);
+        ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.RECEIVE_COUNTDOWN_CONFIG, ReceiveCountDownConfig);
+        ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.RECIEVE_ROYAL_CONFIG, ReceiveRoyalPassConfig);
         ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.RECIEVE_JOIN_TREASURE_ROOM, ReceiveJoinTreasureRoom);
     }
     public void OnLogin(JSONNode data)
@@ -40,10 +46,16 @@ public class WSClient : WSClientBase
         PConsumableType.BERI.SetValue(int.Parse(data["profile"]["b"]));
         PNonConsumableType.AVATAR.FromJson(data["statistics"]["a_a"]);
         PNonConsumableType.AVATAR_FRAME.FromJson(data["statistics"]["a_f"]);
-        // GameData.IsBuyDiamondFirst = int.Parse(data["_p"]);
-        ProfileData profile = GameData.Player;
-        GameData.Player = ProfileData.FromJson(ref profile, data);
+        PNonConsumableType.BATTLE_FIELD.FromJson(data["statistics"]["bfA"]);
+        PNonConsumableType.SKIN_SHIP.FromJson(data["statistics"]["ssA"]);
+        GameData.Player = ProfileData.FromJson(GameData.Player, data);
         Debug.Log(GameData.Player.ToString());
+        Timer<LuckyShot>.Instance.LastTime = long.Parse(data["timer"]["lfb"]).NowFrom0001From1970();
+        Timer<Gift>.Instance.LastTime = long.Parse(data["timer"]["lcr"]).NowFrom0001From1970();
+        Timer<RankCollection>.Instance.LastTime = long.Parse(data["timer"]["WRC"]).NowFrom0001From1970();
+        GameData.ProgressGift = int.Parse(data["timer"]["cr"]);
+        CoreGame.timeInit = int.Parse(data["t"]);
+        CoreGame.bets = data["bet"].ToList();
         for (int i = 0; i < data["v"].Count; i++)
         {
             if (GameData.Versions[i] != int.Parse(data["v"][i]))
@@ -68,20 +80,50 @@ public class WSClient : WSClientBase
                         break;
                     case ConfigVersion.TRESURE:
                         break;
+                    case ConfigVersion.COUNT_DOWN:
+                        RequestCountDownConfig();
+                        break;
+                    case ConfigVersion.ROYAL_PASS:
+                        RequestRoyalPassConfig();
+                        break;
                     default:
                         break;
                 }
             }
         }
-        RequestShopConfig();
-        
-        Timer<LuckyShot>.Instance.LastTime = long.Parse(data["timer"]["lfb"]).NowFrom0001From1970();
-        Timer<Gift>.Instance.LastTime = long.Parse(data["timer"]["lcr"]).NowFrom0001From1970();
-        Timer<RankCollection>.Instance.LastTime = long.Parse(data["timer"]["WRC"]).NowFrom0001From1970();
-        Debug.Log(Timer<RankCollection>.Instance.LastTime);
+        SceneTransitionHelper.Load(ESceneName.Home);
 
-        CoreGame.timeInit = int.Parse(data["t"]);
-        CoreGame.bets = data["bet"].ToList();
+    }
+    public void LoadHomeScene()
+    {
+
+    }
+    private void RequestRoyalPassConfig()
+    {
+        JSONNode jsonNode = new JSONClass()
+        {
+            { "id", GameServerEvent.REQUEST_COUNTDOWN_CONFIG.ToJson() },
+        };
+        Instance.Send(jsonNode);
+    }
+    private void ReceiveRoyalPassConfig(JSONNode data)
+    {
+        SceneTransitionHelper.Load(ESceneName.Home);
+    }
+    private void RequestCountDownConfig()
+    {
+        JSONNode jsonNode = new JSONClass()
+        {
+            { "id", GameServerEvent.REQUEST_ROYAL_CONFIG.ToJson() },
+        };
+        Instance.Send(jsonNode);
+    }
+    private void ReceiveCountDownConfig(JSONNode data)
+    {
+        Timer<LuckyShot>.Instance.TriggerIntervalInSecond = int.Parse(data["lucky_shot"]) / 1000;
+        Timer<Gift>.Instance.TriggerIntervalInSecond = int.Parse(data["consolation_gift"]) / 1000;
+        Timer<RankCollection> .Instance.TriggerIntervalInSecond = int.Parse(data["rank_receive"]) / 1000;
+        SceneTransitionHelper.Load(ESceneName.Home);
     }
     public static void RecieveTransaction(JSONNode data)
     {
@@ -96,17 +138,19 @@ public class WSClient : WSClientBase
         {
             GameData.AchievementConfig.Add((AchievementType)i, AchievementInfo.FromJson(data["achie"][i], i));
         }
+        SceneTransitionHelper.Load(ESceneName.Home);
     }
     public void ReceiveLuckyShotConfig(JSONNode data)
     {
         List<int> luckyShots = data["list"].ToList();
         GameData.LuckyShotConfig = luckyShots;
         GameData.LuckyShotConfig.Log();
+        SceneTransitionHelper.Load(ESceneName.Home);
     }
     public void ReceiveRankConfig(JSONNode data)
     {
-        Debug.Log(data);
         GameData.RankConfigs = RankConfig.ListFromJson(data);
+        SceneTransitionHelper.Load(ESceneName.Home);
     }
     public void RequestRankConfig()
     {
@@ -154,6 +198,7 @@ public class WSClient : WSClientBase
             }
 
         }
+        SceneTransitionHelper.Load(ESceneName.Home);
     }
     public static void RequestShot()
     {
@@ -187,6 +232,7 @@ public class WSClient : WSClientBase
             };
             GameData.TreasureConfigs.Add(treasureConfig);
         }
+        SceneTransitionHelper.Load(ESceneName.Home);
     }
 
     public static void RequestJoinTreasureRoom(int rom)
@@ -338,27 +384,22 @@ public class WSClient : WSClientBase
         Instance.Send(jsonNode);
     }
 
-    public static void RequestChangeName()
+    public static void RequestChangeName(string name)
     {
         JSONNode jsonNode = new JSONClass()
         {
             { "id", GameServerEvent.REQUEST_CHANGE_NAME.ToJson() },
+            { "n", name.ToString()}
         };
         Instance.Send(jsonNode);
     }
-    public static void ReceiveChangeName(JSONNode json)
-    {
-        JSONNode jsonNode = new JSONClass()
-        {
-            { "id", GameServerEvent.RECIEVE_CHANGE_NAME.ToJson() },
-        };
-        Instance.Send(jsonNode);
-    }
+
     public static void RequestChangeAvatar(int i)
     {
         JSONNode jsonNode = new JSONClass()
         {
             { "id", GameServerEvent.REQUEST_CHANGE_AVATAR.ToJson() },
+            { "a", i.ToString()}
         };
         Instance.Send(jsonNode);
     }
@@ -366,7 +407,26 @@ public class WSClient : WSClientBase
     {
         JSONNode jsonNode = new JSONClass()
         {
-            { "id", GameServerEvent.REQUEST_AVATAR_FRAME.ToJson() },
+            { "id", GameServerEvent.REQUEST_CHANGE_FRAME.ToJson() },
+            { "f", i.ToString()}
+        };
+        Instance.Send(jsonNode);
+    }
+    public static void RequestChangeBattleField(int i)
+    {
+        JSONNode jsonNode = new JSONClass()
+        {
+            { "id", GameServerEvent.REQUEST_CHANGE_BATTLEFIELD.ToJson() },
+            { "a", i.ToString()}
+        };
+        Instance.Send(jsonNode);
+    }
+    public static void RequestChangeSkinShip(int i)
+    {
+        JSONNode jsonNode = new JSONClass()
+        {
+            { "id", GameServerEvent.REQUEST_CHANGE_SKIN_SHIP.ToJson() },
+            { "f", i.ToString()}
         };
         Instance.Send(jsonNode);
     }

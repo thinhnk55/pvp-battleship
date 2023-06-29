@@ -21,7 +21,7 @@ public enum GameState
     Anim,
     Out,
 }
-public class CoreGame : Singleton<CoreGame>
+public class CoreGame : SingletonMono<CoreGame>
 {
     public static int timeInit;
     public static int bet;
@@ -164,8 +164,10 @@ public class CoreGame : Singleton<CoreGame>
         opponent.RandomShip(shipsOpponent);
         preUI.SetActive(false);
         searchUI.gameObject.SetActive(true);
-        var profile = new ProfileData();
-        profile.Avatar = -1;
+        var profile = new ProfileInfo()
+        {
+            Avatar = -1,
+        };
         searchUI.opponentProfile.BuildUI(profile);
         shipListPlayer.gameObject.SetActive(false);
     }
@@ -250,13 +252,12 @@ public class CoreGame : Singleton<CoreGame>
     #region CallBackServer
     void GameStart(JSONNode json)
     {
-        ProfileData profile = GameData.Opponent;
-        GameData.Opponent = ProfileData.FromJson(ref profile, json);
+        GameData.Opponent = ProfileData.FromJson(GameData.Opponent, json);
         Debug.Log(GameData.Opponent.Username);
         Instance.ingameUI.SetActive(true);
         roomId = int.Parse(json["r"]);
         playerChair = int.Parse(json["c"]);
-        Instance.searchUI.opponentProfile.BuildUI(GameData.Opponent);
+        Instance.searchUI.opponentProfile.UpdateUIs();
         CoinVFX.CoinVfx(Instance.searchUI.tresure.transform, Instance.searchUI.avatar1.transform.position, Instance.searchUI.avatar2.transform.position);
         PConsumableType.BERI.AddValue(-bets[bet]);
         //opponent.diamond.text = json["d"];

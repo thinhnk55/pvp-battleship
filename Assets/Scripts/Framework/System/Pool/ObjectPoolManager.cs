@@ -2,7 +2,7 @@ using Framework;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ObjectPoolManager : Singleton<ObjectPoolManager>
+public class ObjectPoolManager : SingletonMono<ObjectPoolManager>
 {
     static Dictionary<GameObject, BasePool> objectPoolDict = new Dictionary<GameObject, BasePool>();
     [SerializeField] List<GameObject> beforeLoadObject;

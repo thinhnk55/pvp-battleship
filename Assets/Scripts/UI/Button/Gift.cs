@@ -12,10 +12,11 @@ public class Gift : CacheMonoBehaviour
 {
     [SerializeField] Transform resource;
     [SerializeField] TextMeshProUGUI countDown;
+    [SerializeField] TextMeshProUGUI progress;
     [SerializeField] Button obtain;
     void Start()
     {
-        Timer<Gift>.Instance.TriggerIntervalInSecond = 60;
+        progress.text = $"{GameData.ProgressGift}/5";
         Timer<Gift>.Instance.OnTrigger += OnTrigger;
         Timer<Gift>.Instance.OnElapse += OnElapse;
         ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECIEVE_GIFT, ReceiveGift);
@@ -58,6 +59,8 @@ public class Gift : CacheMonoBehaviour
         CoinVFX.CoinVfx(resource, Position, Position);
         obtain.onClick.RemoveAllListeners();
         Timer<Gift>.Instance.LastTime = DateTime.UtcNow.Ticks;
+        GameData.ProgressGift++;
+        progress.text = $"{GameData.ProgressGift}/5";
     }
     // Update is called once per frame
     void Update()

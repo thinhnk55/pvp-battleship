@@ -13,6 +13,7 @@ namespace Framework
         GEM_BERI,
         BERI_AVATAR,
         BERI_AVATAR_FRAME,
+        BERI_BATTLE_FIELD,
         BERI_SKIN_SHIP,
     }
     public class TransactionCollection : CardCollectionBase<TransactionInfo>
@@ -23,7 +24,10 @@ namespace Framework
             base.BuildUIs(infos);
         }
 
-
+        public override void UpdateUIs()
+        {
+            contentRoot.DestroyChildrenImmediate();
+        }
     }
 
 }

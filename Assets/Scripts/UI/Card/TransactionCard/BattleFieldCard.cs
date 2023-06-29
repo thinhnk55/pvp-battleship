@@ -3,19 +3,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AvatarCard : TransactionCard
+public class BattleFieldCard : TransactionCard
 {
     public override void BuildUI(TransactionInfo info)
     {
         base.BuildUI(info);
         if (Button)
         {
-            if (PNonConsumableType.AVATAR.GetValue().Contains(info.Index))
+            if (PNonConsumableType.BATTLE_FIELD.GetValue().Contains(info.Index))
             {
                 Button.onClick.RemoveAllListeners();
                 Button.onClick.AddListener(() =>
                 {
-                    WSClient.RequestChangeAvatar(info.Index);
+                    WSClient.RequestChangeBattleField(info.Index);
                 });
             }
         }
@@ -23,7 +23,7 @@ public class AvatarCard : TransactionCard
     }
     protected override string GetStatus(TransactionInfo info)
     {
-        if (info.Index == GameData.Player.Avatar)
+        if (info.Index == GameData.Player.BattleField.Data)
         {
             return "Using";
         }

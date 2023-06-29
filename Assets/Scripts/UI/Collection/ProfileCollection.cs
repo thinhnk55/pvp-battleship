@@ -1,11 +1,25 @@
 using Framework;
+using SimpleJSON;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ProfileCollection : CardCollectionBase<ProfileData>
+public struct ProfileInfo
+{
+    public int Avatar;
+    public string Username;
+    public int Rank;
+    public int Wins;
+    public int Losts;
+    public float WinRate;
+    public int WinStreak;
+    public int WinStreakMax;
+    public int PerfectGame;
+    public List<int> Achievement;
+}
+public class ProfileCollection : CardCollectionBase<ProfileInfo>
 {
     [SerializeField] bool isPlayer;
     [SerializeField] Image avatar;
@@ -25,17 +39,26 @@ public class ProfileCollection : CardCollectionBase<ProfileData>
     [SerializeField] TextMeshProUGUI winRate;
     private void Awake()
     {
-        if (isPlayer)
-        {
-            BuildUI(GameData.Player);
-        }
-        else
-        {
-            BuildUI(GameData.Opponent);
-        }
+        UpdateUIs();
+        GameData.Player.Avatar.OnDataChanged += OnDataChanged;
+        GameData.Player.FrameAvatar.OnDataChanged += OnDataChanged;
+        GameData.Player.Username.OnDataChanged += OnDataChanged;
     }
-
-    public void BuildUI(ProfileData infos)
+    private void OnDestroy()
+    {
+        GameData.Player.Avatar.OnDataChanged -= OnDataChanged;
+        GameData.Player.FrameAvatar.OnDataChanged -= OnDataChanged;
+        GameData.Player.Username.OnDataChanged -= OnDataChanged;
+    }
+    private void OnDataChanged(int arg1, int arg2)
+    {
+        UpdateUIs();
+    }
+    private void OnDataChanged(string arg1, string arg2)
+    {
+        UpdateUIs();
+    }
+    public void BuildUI(ProfileInfo infos)
     {
         if (avatar)
         {
@@ -46,7 +69,6 @@ public class ProfileCollection : CardCollectionBase<ProfileData>
             else
             {
                 avatar.sprite = SpriteFactory.Avatars[infos.Avatar];
-
             }
         }
         if (username)
@@ -55,7 +77,7 @@ public class ProfileCollection : CardCollectionBase<ProfileData>
         }
         if (rank)
         {
-            rank.text = infos.Rank.ToString();
+            rank.text = GameData.RankConfigs[infos.Rank].Title;
         }
         if (rankIcon)
         {
@@ -97,5 +119,32 @@ public class ProfileCollection : CardCollectionBase<ProfileData>
         {
             winRate.text = (infos.WinRate * 100).ToString("F1") + "%";
         }
+    }
+
+    public override void UpdateUIs()
+    {
+        var profile = new ProfileData();
+        if (isPlayer)
+        {
+            profile = GameData.Player;
+        }
+        else
+        {
+            profile = GameData.Opponent;
+        }
+        ProfileInfo info = new ProfileInfo()
+        {
+            Avatar = profile.Avatar.Data,
+            Username = profile.Username.Data,
+            Rank = profile.Rank,
+            Wins = profile.Wins,
+            Losts = profile.Losts,
+            WinRate = profile.WinRate,
+            WinStreak = profile.WinStreak,
+            WinStreakMax = profile.WinStreakMax,
+            PerfectGame = profile.PerfectGame,
+            Achievement = profile.Achievement,
+        };
+        BuildUI(info);
     }
 }

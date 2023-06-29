@@ -5,7 +5,7 @@ using Framework;
     /// Inherit from this base class to create a singleton.
     /// e.g. public class MyClassName : Singleton<MyClassName> {}
     /// </summary>
-    public class Singleton<T> : CacheMonoBehaviour where T : CacheMonoBehaviour
+    public class SingletonMono<T> : CacheMonoBehaviour where T : CacheMonoBehaviour
     {
         static object _lock = new object();
         static T _instance;

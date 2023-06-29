@@ -2,7 +2,7 @@
 
 namespace Framework
 {
-    public class PCoroutine : HardSingleton<PCoroutine>
+    public class PCoroutine : HardSingletonMono<PCoroutine>
     {
         public static void PStartCoroutine(IEnumerator coroutine)
         {

@@ -5,6 +5,11 @@ using UnityEngine;
 
 public class TreasureHuntCollection : CardCollectionBase<TreasureHuntInfo>
 {
+    public override void UpdateUIs()
+    {
+        throw new System.NotImplementedException();
+    }
+
     private void Awake()
     {
         List<TreasureHuntInfo> infos = new List<TreasureHuntInfo>();

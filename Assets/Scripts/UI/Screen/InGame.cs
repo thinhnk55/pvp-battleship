@@ -9,7 +9,7 @@ public class InGame : MonoBehaviour
     [SerializeField] TextMeshProUGUI opponentUsername;
     private void Start()
     {
-        username.text = GameData.Player.Username;
+        username.text = GameData.Player.Username.Data;
 
     }
 }

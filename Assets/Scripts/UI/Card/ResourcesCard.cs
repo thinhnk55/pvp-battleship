@@ -12,7 +12,6 @@ public class ResourcesCard : MonoBehaviour
     [SerializeField] float tweenDuration;
     [SerializeField] Tween tweenBeri;
     [SerializeField] Tween tweenGem;
-    
 
     void Start()
     {

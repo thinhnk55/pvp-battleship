@@ -17,6 +17,7 @@
     {
         AVATAR = 3,
         AVATAR_FRAME = 4,
-        SKIN_SHIP = 5,
+        BATTLE_FIELD = 5,
+        SKIN_SHIP = 6,
     }
 }

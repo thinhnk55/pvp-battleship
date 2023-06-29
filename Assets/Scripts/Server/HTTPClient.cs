@@ -8,7 +8,7 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.Windows;
 
-public class HTTPClient : Singleton<HTTPClient>    
+public class HTTPClient : SingletonMono<HTTPClient>    
 {
     [SerializeField] GameObject websocket;
     public void LoginDeviceId()
@@ -32,11 +32,10 @@ public class HTTPClient : Singleton<HTTPClient>
                 JSONNode jsonRes = JSONNode.Parse(res);
                 if (int.Parse(jsonRes["error"]) == 0)
                 {
-                    SceneTransitionHelper.Load(ESceneName.Home);
                     PDataAuth.AuthData = new AuthData();
                     PDataAuth.AuthData.userId = int.Parse(jsonRes["data"]["userid"]);
                     PDataAuth.AuthData.username = jsonRes["data"]["username"];
-                    PDataAuth.AuthData.refresh_token = "";// jsonRes["data"]["token"];
+                    PDataAuth.AuthData.refresh_token = jsonRes["data"]["refresh_token"];
                     PDataAuth.AuthData.token = jsonRes["data"]["token"];
                     if (WSClient.Instance == null)
                     {
@@ -45,7 +44,6 @@ public class HTTPClient : Singleton<HTTPClient>
                 }
                 else
                 {
-                    SceneTransitionHelper.Load(ESceneName.Home);
                     Debug.Log(res);
                 }
             }

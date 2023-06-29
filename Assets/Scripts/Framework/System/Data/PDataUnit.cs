@@ -14,8 +14,9 @@ namespace Framework
             {
                 if (!_data.Equals(value))
                 {
-                    OnDataChanged?.Invoke(_data , value);
+                    T oldValue = _data;
                     _data = value;
+                    OnDataChanged?.Invoke(oldValue, value);
                 }
             }
         }
