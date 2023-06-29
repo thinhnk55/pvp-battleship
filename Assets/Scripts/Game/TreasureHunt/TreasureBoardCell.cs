@@ -20,21 +20,23 @@ public class TreasureBoardCell : MonoBehaviour
     {
         x = _x;
         y = _y;
-        SetNotShot();
+        SetIsShot(false);
     }
 
-    public void SetNotShot()
+    public void SetIsShot(bool shot)
     {
-        shot = false;
+        this.shot = shot;
+        cellImage.gameObject.SetActive(!shot);
     }
 
-    public void Shoot()
+    public void PlayShootAnim()
     {
-        shot = true;
+        
     }
 
     public void TryShoot()
     {
-        TreasureHuntManager.Instance.TryShootCell(x, y);
+        if (!IsShot)
+            TreasureHuntManager.Instance.TryShootCell(x, y);
     }
 }

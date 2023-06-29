@@ -220,6 +220,15 @@ public class WSClient : WSClientBase
         }
     }
 
+    public static void RequestExitTreasureRoom()
+    {
+        JSONNode jsonNode = new JSONClass()
+        {
+            {"id", GameServerEvent.REQUEST_EXIT_TREASURE_ROOM.ToJson() },
+        };
+        Instance.Send(jsonNode);
+    }
+
     #endregion
 
     public static void SearchOpponent(int bet, List<Ship> ships)

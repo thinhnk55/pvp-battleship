@@ -49,11 +49,40 @@ public class TreasureHuntManager : Singleton<TreasureHuntManager>
         }
     }
 
+    public void UpdateBoard()
+    {
+        var board = GameData.JoinTreasureRoom.Board;
+        for (int i = 0; i < board.Count; i++)
+        {
+            for (int j = 0; j < board[i].Count; j++)
+            {
+                var c = new Vector2(i, j);
+                if (cells.ContainsKey(c))
+                {
+                    if (board[i][j] == 0)
+                        cells[c].SetIsShot(false);
+                    else
+                        cells[c].SetIsShot(true);
+                }
+            }
+        }
+    }
+
+    public void UpdateCell(int x, int y, bool isShot)
+    {
+        var c = new Vector2(x, y);
+        if (cells.ContainsKey(c))
+        {
+            cells[c].SetIsShot(isShot);
+
+        }
+    }
+
     public void ResetCells()
     {
         for (int i = 0; i < cells.Count; i++)
         {
-            cells.ElementAt(i).Value.SetNotShot();
+            cells.ElementAt(i).Value.SetIsShot(false);
         }
     }
 
@@ -65,5 +94,16 @@ public class TreasureHuntManager : Singleton<TreasureHuntManager>
     public void OnCellShot(JSONNode node)
     {
         int status = int.Parse(node["s"]);
+        int x = int.Parse(node["x"]);
+        int y = int.Parse(node["y"]);
+        Debug.Log($"cell {x} {y} is shot: result {status}");
+
+        UpdateCell(x, y, status >= 0 && status <= 2);
+    }
+
+    public void ExitRoom()
+    {
+        WSClient.RequestExitTreasureRoom();
+        GetComponent<PopupBehaviour>().ForceClose();
     }
 }

@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class TreasureHuntCollection : CardCollectionBase<TreasureHuntInfo>
 {
+    [SerializeField] GameObject treasureHuntPopup;
+
     private void OnEnable()
     {
         ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECIEVE_JOIN_TREASURE_ROOM, ReceiveJoinTreasureRoom);
@@ -25,14 +27,14 @@ public class TreasureHuntCollection : CardCollectionBase<TreasureHuntInfo>
             {
                 Id = GameData.TreasureConfigs[i].Id,
                 PrizeAmount = GameData.TreasureConfigs[i].PrizeAmount,
-                OnClick = LoadTreasureHuntScene
+                OnClick = TryJoinRoom
             }) ;
         }
 
         BuildUIs(infos);
     }
 
-    private void LoadTreasureHuntScene()
+    private void TryJoinRoom()
     {
         if (GameData.JoinTreasureRoom.IsSuccess == 0)
         {
@@ -56,6 +58,12 @@ public class TreasureHuntCollection : CardCollectionBase<TreasureHuntInfo>
                 rowList.Add(int.Parse(data["board"][col][row]));
             }
             GameData.JoinTreasureRoom.Board.Add(rowList);
+        }
+
+        if (treasureHuntPopup != null)
+        {
+            PopupHelper.Create(treasureHuntPopup);
+            TreasureHuntManager.Instance.UpdateBoard();
         }
     }
 }
