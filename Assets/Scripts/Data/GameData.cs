@@ -170,6 +170,7 @@ public class TreasureConfig
 public class JoinTreasureRoom
 {
     public int Id;
+    public int RoomId;
     public int IsSuccess;
     public int CurrentPrize;
     public List<List<int>> Board; //Trang thai cac o trong dao kho bau

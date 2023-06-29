@@ -12,11 +12,13 @@ public class SwitchToggle : MonoBehaviour
 
     private Toggle toggle;
     private RectTransform handleRectTransform;
+    private Vector2 handlePos;
 
     private void Awake()
     {
         toggle = GetComponent<Toggle>();
         handleRectTransform = handleImage.GetComponent<RectTransform>();
+        handlePos = handleRectTransform.anchoredPosition;
 
         if (toggle != null)
         {
@@ -33,7 +35,7 @@ public class SwitchToggle : MonoBehaviour
             handleImage.sprite = isOn ? onHandleSprite : offHandleSprite;
         if (handleRectTransform != null)
         {
-            handleRectTransform.DOAnchorPos(isOn ? handleRectTransform.anchoredPosition * -1 : handleRectTransform.anchoredPosition, .4f).SetEase(Ease.InOutBack);
+            handleRectTransform.DOAnchorPos(isOn ? handlePos * -1 : handlePos, .4f).SetEase(Ease.InOutBack);
         }
     }
 

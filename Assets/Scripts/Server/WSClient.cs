@@ -22,7 +22,7 @@ public class WSClient : WSClientBase
         ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECIEVE_TREASURE_CONFIG, ReceiveTreasureConfig);
         ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECEIVE_COUNTDOWN_CONFIG, ReceiveCountDownConfig);
         ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECIEVE_ROYAL_CONFIG, ReceiveRoyalPassConfig);
-        ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECIEVE_JOIN_TREASURE_ROOM, ReceiveJoinTreasureRoom);
+        //ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECIEVE_JOIN_TREASURE_ROOM, ReceiveJoinTreasureRoom);
 
 
     }
@@ -38,7 +38,7 @@ public class WSClient : WSClientBase
         ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.RECIEVE_TREASURE_CONFIG, ReceiveTreasureConfig);
         ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.RECEIVE_COUNTDOWN_CONFIG, ReceiveCountDownConfig);
         ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.RECIEVE_ROYAL_CONFIG, ReceiveRoyalPassConfig);
-        ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.RECIEVE_JOIN_TREASURE_ROOM, ReceiveJoinTreasureRoom);
+        //ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.RECIEVE_JOIN_TREASURE_ROOM, ReceiveJoinTreasureRoom);
     }
     public void OnLogin(JSONNode data)
     {
@@ -92,6 +92,7 @@ public class WSClient : WSClientBase
                 }
             }
         }
+        RequestTreasureConfig();
         SceneTransitionHelper.Load(ESceneName.Home);
         Timer<LuckyShot>.Instance.TriggerIntervalInSecond = GameData.LuckyShotCoolDown;
         Timer<Gift>.Instance.TriggerIntervalInSecond = GameData.GiftCoolDown;
@@ -250,6 +251,7 @@ public class WSClient : WSClientBase
             {"b" , rom.ToJson() },
         };
         Instance.Send(jsonNode);
+        GameData.JoinTreasureRoom.RoomId = rom;
     }
 
     public static void ReceiveJoinTreasureRoom(JSONNode data)
@@ -258,8 +260,9 @@ public class WSClient : WSClientBase
         GameData.JoinTreasureRoom.Id = int.Parse(data["id"]);
         GameData.JoinTreasureRoom.IsSuccess = int.Parse(data["s"]);
         GameData.JoinTreasureRoom.CurrentPrize = int.Parse(data["beri"]);
+        GameData.JoinTreasureRoom.Board = new List<List<int>>();
 
-        for(int row=0; row<10; row++)
+        for (int row=0; row<10; row++)
         {
             List<int> rowList = new List<int>();
             for(int col=0; col<10; col++)
@@ -268,6 +271,18 @@ public class WSClient : WSClientBase
             }
             GameData.JoinTreasureRoom.Board.Add(rowList);
         }
+    }
+
+    public static void RequestShootTreasure(int x, int y)
+    {
+        JSONNode jsonNode = new JSONClass()
+        {
+            {"id", GameServerEvent.REQUEST_SHOOT_TREASURE.ToJson() },
+            {"b" , GameData.JoinTreasureRoom.RoomId.ToJson() },
+            {"x" , y.ToJson() },
+            {"y" , x.ToJson() },
+        };
+        Instance.Send(jsonNode);
     }
 
     public static void RequestExitTreasureRoom()

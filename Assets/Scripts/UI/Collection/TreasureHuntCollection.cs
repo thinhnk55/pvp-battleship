@@ -52,7 +52,12 @@ public class TreasureHuntCollection : CardCollectionBase<TreasureHuntInfo>
         Debug.Log("Receive :" + data);
         GameData.JoinTreasureRoom.Id = int.Parse(data["id"]);
         GameData.JoinTreasureRoom.IsSuccess = int.Parse(data["s"]);
+        if (GameData.JoinTreasureRoom.IsSuccess == 0)
+        {
+            return;
+        }
         GameData.JoinTreasureRoom.CurrentPrize = int.Parse(data["beri"]);
+        GameData.JoinTreasureRoom.Board = new List<List<int>>();
 
         for (int row = 0; row < 10; row++)
         {

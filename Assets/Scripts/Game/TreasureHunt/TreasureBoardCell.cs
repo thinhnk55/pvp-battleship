@@ -4,6 +4,7 @@ using UnityEngine.UI;
 public class TreasureBoardCell : MonoBehaviour
 {
     [SerializeField] Image cellImage;
+    [SerializeField] Image cellImage2;
 
     int x, y;
 
@@ -26,7 +27,8 @@ public class TreasureBoardCell : MonoBehaviour
     public void SetIsShot(bool shot)
     {
         this.shot = shot;
-        cellImage.gameObject.SetActive(!shot);
+        if (cellImage != null) cellImage.gameObject.SetActive(!shot);
+        if (cellImage2 != null) cellImage2.gameObject.SetActive(shot);
     }
 
     public void PlayShootAnim()

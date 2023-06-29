@@ -23,15 +23,16 @@ public class TreasureHuntManager : SingletonMono<TreasureHuntManager>
 
     private void OnEnable()
     {
-        ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECIEVE_LUCKY_SHOT, OnCellShot);
+        ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECIEVE_TREASURE_SHOT, OnCellShot);
+        message.text = "";
     }
 
     private void OnDisable()
     {
-        ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.RECIEVE_LUCKY_SHOT, OnCellShot);
+        ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.RECIEVE_TREASURE_SHOT, OnCellShot);
     }
 
-    private void Start()
+    private void Awake()
     {
         InitBoard();
     }
@@ -53,6 +54,7 @@ public class TreasureHuntManager : SingletonMono<TreasureHuntManager>
 
     public void UpdateBoard()
     {
+        int count = 0;
         var board = GameData.JoinTreasureRoom.Board;
         for (int i = 0; i < board.Count; i++)
         {
@@ -66,7 +68,19 @@ public class TreasureHuntManager : SingletonMono<TreasureHuntManager>
                     else
                         cells[c].SetIsShot(true);
                 }
+                count++;
             }
+        }
+        UpdatePrize(GameData.JoinTreasureRoom.CurrentPrize);
+    }
+
+    public void UpdatePrize(int value)
+    {
+        var digits = value.ToString().ToList<char>();
+        int digitCount = digits.Count - 1;
+        for (int i = 0; i < digits.Count; i++)
+        {
+            treasureDigits[treasureDigits.Count - 1 - i].GetComponentInChildren<TextMeshProUGUI>().text = digits[digitCount - i].ToString();
         }
     }
 
@@ -91,16 +105,27 @@ public class TreasureHuntManager : SingletonMono<TreasureHuntManager>
     public void TryShootCell(int x, int y)
     {
         Debug.Log($"shooting cell {x} {y}");
+        WSClient.RequestShootTreasure(x, y);
     }
 
     public void OnCellShot(JSONNode node)
     {
         int status = int.Parse(node["s"]);
-        int x = int.Parse(node["x"]);
-        int y = int.Parse(node["y"]);
+        int y = int.Parse(node["x"]);       // x from server is y in game
+        int x = int.Parse(node["y"]);       // y from server is x in game
         Debug.Log($"cell {x} {y} is shot: result {status}");
 
         UpdateCell(x, y, status >= 0 && status <= 2);
+        if (status == 2 || status == 1)
+            ResetCells();
+        if (status == 2)
+        {
+            string name = node["name"];
+            string beri = node["beri"];
+            message.text = $"{name} hit the treasure ship and get {beri} beri.\n" + message.text;
+            if (message.text.Length > 400)
+                message.text = message.text.Substring(0, 400);
+        }
     }
 
     public void ExitRoom()
