@@ -22,7 +22,7 @@ public class WSClient : WSClientBase
         ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECIEVE_TREASURE_CONFIG, ReceiveTreasureConfig);
         ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECEIVE_COUNTDOWN_CONFIG, ReceiveCountDownConfig);
         ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECIEVE_ROYAL_CONFIG, ReceiveRoyalPassConfig);
-        //ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECIEVE_JOIN_TREASURE_ROOM, ReceiveJoinTreasureRoom);
+        ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECIEVE_JOIN_TREASURE_ROOM, ReceiveJoinTreasureRoom);
 
 
     }
@@ -38,7 +38,7 @@ public class WSClient : WSClientBase
         ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.RECIEVE_TREASURE_CONFIG, ReceiveTreasureConfig);
         ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.RECEIVE_COUNTDOWN_CONFIG, ReceiveCountDownConfig);
         ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.RECIEVE_ROYAL_CONFIG, ReceiveRoyalPassConfig);
-        //ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.RECIEVE_JOIN_TREASURE_ROOM, ReceiveJoinTreasureRoom);
+        ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.RECIEVE_JOIN_TREASURE_ROOM, ReceiveJoinTreasureRoom);
     }
     public void OnLogin(JSONNode data)
     {
@@ -218,6 +218,8 @@ public class WSClient : WSClientBase
 
     #region TREASUREHUNT
 
+    private static bool waitingJoinTreasureRoom = false;
+
     public static void RequestTreasureConfig()
     {
         JSONNode jsonNode = new JSONClass()
@@ -236,6 +238,7 @@ public class WSClient : WSClientBase
             {
                 Id = int.Parse(data["list"][i]["id"]),
                 PrizeAmount = int.Parse(data["list"][i]["re"]),
+                InitPrize = int.Parse(data["list"][i]["init"]),
             };
             GameData.TreasureConfigs.Add(treasureConfig);
         }
@@ -244,6 +247,7 @@ public class WSClient : WSClientBase
 
     public static void RequestJoinTreasureRoom(int rom)
     {
+        if (waitingJoinTreasureRoom) return;
         Debug.Log("Request:");
         JSONNode jsonNode = new JSONClass()
         {
@@ -252,25 +256,36 @@ public class WSClient : WSClientBase
         };
         Instance.Send(jsonNode);
         GameData.JoinTreasureRoom.RoomId = rom;
+        foreach (var r in GameData.TreasureConfigs)
+        {
+            if (r.Id == rom)
+            {
+                GameData.JoinTreasureRoom.ShotCost = r.PrizeAmount;
+                GameData.JoinTreasureRoom.InitPrize = r.InitPrize;
+                break;
+            }
+        }
+        waitingJoinTreasureRoom = true;
     }
 
     public static void ReceiveJoinTreasureRoom(JSONNode data)
     {
-        Debug.Log("Receive :"+ data);
-        GameData.JoinTreasureRoom.Id = int.Parse(data["id"]);
-        GameData.JoinTreasureRoom.IsSuccess = int.Parse(data["s"]);
-        GameData.JoinTreasureRoom.CurrentPrize = int.Parse(data["beri"]);
-        GameData.JoinTreasureRoom.Board = new List<List<int>>();
+        //Debug.Log("Receive :"+ data);
+        //GameData.JoinTreasureRoom.Id = int.Parse(data["id"]);
+        //GameData.JoinTreasureRoom.IsSuccess = int.Parse(data["s"]);
+        //GameData.JoinTreasureRoom.CurrentPrize = int.Parse(data["beri"]);
+        //GameData.JoinTreasureRoom.Board = new List<List<int>>();
 
-        for (int row=0; row<10; row++)
-        {
-            List<int> rowList = new List<int>();
-            for(int col=0; col<10; col++)
-            {
-                rowList.Add(int.Parse(data["board"][col][row]));
-            }
-            GameData.JoinTreasureRoom.Board.Add(rowList);
-        }
+        //for (int row=0; row<10; row++)
+        //{
+        //    List<int> rowList = new List<int>();
+        //    for(int col=0; col<10; col++)
+        //    {
+        //        rowList.Add(int.Parse(data["board"][col][row]));
+        //    }
+        //    GameData.JoinTreasureRoom.Board.Add(rowList);
+        //}
+        waitingJoinTreasureRoom = false;
     }
 
     public static void RequestShootTreasure(int x, int y)

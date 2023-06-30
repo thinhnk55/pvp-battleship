@@ -163,6 +163,7 @@ public class TreasureConfig
 {
     public int Id;
     public int PrizeAmount;
+    public int InitPrize;
 }
 
 [Serializable]
@@ -174,5 +175,7 @@ public class JoinTreasureRoom
     public int IsSuccess;
     public int CurrentPrize;
     public List<List<int>> Board; //Trang thai cac o trong dao kho bau
+    public int ShotCost;
+    public int InitPrize;
 }
 

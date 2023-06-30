@@ -76,6 +76,7 @@ public class TreasureHuntManager : SingletonMono<TreasureHuntManager>
 
     public void UpdatePrize(int value)
     {
+        GameData.JoinTreasureRoom.CurrentPrize = value;
         var digits = value.ToString().ToList<char>();
         int digitCount = digits.Count - 1;
         for (int i = 0; i < digits.Count; i++)
@@ -125,6 +126,10 @@ public class TreasureHuntManager : SingletonMono<TreasureHuntManager>
             message.text = $"{name} hit the treasure ship and get {beri} beri.\n" + message.text;
             if (message.text.Length > 400)
                 message.text = message.text.Substring(0, 400);
+            UpdatePrize(GameData.JoinTreasureRoom.InitPrize);
+        } else if (status == 0 || status == 1)
+        {
+            UpdatePrize(GameData.JoinTreasureRoom.CurrentPrize + GameData.JoinTreasureRoom.ShotCost);
         }
     }
 
