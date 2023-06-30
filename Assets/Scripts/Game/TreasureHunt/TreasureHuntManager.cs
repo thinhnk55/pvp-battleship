@@ -13,11 +13,13 @@ public class TreasureHuntManager : SingletonMono<TreasureHuntManager>
 {
     [SerializeField] TreasureBoardCell cellPrefab;
     [SerializeField] Transform treasureGrid;
-    [SerializeField] GameObject resourceUI;
+    [SerializeField] Transform resourceUI;
     [SerializeField] GameObject blockInteract;
     [SerializeField] TextMeshProUGUI countDown;
     [SerializeField] TextMeshProUGUI message;
     [SerializeField] List<GameObject> treasureDigits;
+    [SerializeField] Transform treasureTransform;
+    [SerializeField] Toggle autoFillToggle;
 
     Dictionary<Vector2, TreasureBoardCell> cells = new Dictionary<Vector2, TreasureBoardCell>();
 
@@ -35,6 +37,12 @@ public class TreasureHuntManager : SingletonMono<TreasureHuntManager>
     private void Awake()
     {
         InitBoard();
+        if (autoFillToggle != null) autoFillToggle.onValueChanged.AddListener(OnToggleAutoFill);
+    }
+
+    private void OnDestroy()
+    {
+        if (autoFillToggle != null) autoFillToggle.onValueChanged.RemoveListener(OnToggleAutoFill);
     }
 
     public void InitBoard()
@@ -85,13 +93,12 @@ public class TreasureHuntManager : SingletonMono<TreasureHuntManager>
         }
     }
 
-    public void UpdateCell(int x, int y, bool isShot)
+    public void ShootCell(int x, int y)
     {
         var c = new Vector2(x, y);
         if (cells.ContainsKey(c))
         {
-            cells[c].SetIsShot(isShot);
-
+            cells[c].PlayShootAnim();
         }
     }
 
@@ -116,20 +123,48 @@ public class TreasureHuntManager : SingletonMono<TreasureHuntManager>
         int x = int.Parse(node["y"]);       // y from server is x in game
         Debug.Log($"cell {x} {y} is shot: result {status}");
 
-        UpdateCell(x, y, status >= 0 && status <= 2);
+        if (status >= 0 && status <= 2)
+            ShootCell(x, y);
         if (status == 2 || status == 1)
             ResetCells();
         if (status == 2)
         {
             string name = node["name"];
+            int userId = int.Parse(node["userId"]);
             string beri = node["beri"];
             message.text = $"{name} hit the treasure ship and get {beri} beri.\n" + message.text;
             if (message.text.Length > 400)
                 message.text = message.text.Substring(0, 400);
             UpdatePrize(GameData.JoinTreasureRoom.InitPrize);
+            if (treasureTransform && PDataAuth.AuthData.userId == userId)
+            {
+                PlayTreasureGetAnim(x, y);
+            }
         } else if (status == 0 || status == 1)
         {
             UpdatePrize(GameData.JoinTreasureRoom.CurrentPrize + GameData.JoinTreasureRoom.ShotCost);
+        }
+    }
+
+    public void PlayTreasureGetAnim(int cellX, int cellY)
+    {
+        var c = new Vector2(cellX, cellY);
+        if (cells.ContainsKey(c))
+        {
+
+        }
+
+        if (treasureTransform != null && resourceUI != null)
+        {
+            CoinVFX2.CreateCoinFx(resourceUI, treasureTransform.position, CoinVFX2.VFXState.JACKPOT);
+        }
+    }
+
+    public void TestFx()
+    {
+        if (treasureTransform != null && resourceUI != null)
+        {
+            CoinVFX2.CreateCoinFx(resourceUI, treasureTransform.position, CoinVFX2.VFXState.JACKPOT);
         }
     }
 
@@ -137,5 +172,10 @@ public class TreasureHuntManager : SingletonMono<TreasureHuntManager>
     {
         WSClient.RequestExitTreasureRoom();
         GetComponent<PopupBehaviour>().ForceClose();
+    }
+
+    public void OnToggleAutoFill(bool on)
+    {
+
     }
 }
