@@ -1,5 +1,6 @@
 using Framework;
 using SimpleJSON;
+using SRF;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -26,18 +27,21 @@ public class GameData : PDataBlock<GameData>
     [SerializeField] private int luckyShotCoolDown; public static int LuckyShotCoolDown { get { return Instance.luckyShotCoolDown; } set { Instance.luckyShotCoolDown = value; } }
     [SerializeField] private int rankReceiveCoolDown; public static int RankReceiveCoolDown { get { return Instance.rankReceiveCoolDown; } set { Instance.rankReceiveCoolDown = value; } }
     [SerializeField] private int giftCoolDown; public static int GiftCoolDown { get { return Instance.giftCoolDown; } set { Instance.giftCoolDown = value; } }
-
+    [SerializeField] private RoyalPass royalPass; public static RoyalPass RoyalPass { get { return Instance.royalPass; } set { Instance.royalPass = value; } }
     protected override void Init()
     {
         base.Init();
         Instance.player = Instance.player ?? new ProfileData();
+        Instance.opponent = Instance.opponent ?? new ProfileData();
+        Instance.opponent.AchievementSelected = Instance.opponent.AchievementSelected ?? new int[3] { -1, -1, -1 };
+        Instance.opponent.AchievementProgress = Instance.opponent.AchievementProgress ?? new List<int>();
         Instance.player.Achievement = Instance.player.Achievement ?? new List<int>();
         Instance.player.AchievementObtained = Instance.player.AchievementObtained ?? new List<int>();
+        Instance.player.AchievementSelected = Instance.player.AchievementSelected ?? new int[3] { -1, -1, -1 };
         Instance.achievementConfig = Instance.achievementConfig ?? new Dictionary<AchievementType, AchievementInfo>();
         Instance.luckyShotResult = Instance.luckyShotResult ?? new List<int>();
         Instance.luckyShotConfig = Instance.luckyShotConfig ?? new List<int>();
         Instance.giftConfig = Instance.giftConfig ?? new List<int>();
-        Instance.player.AchievementSelected = Instance.player.AchievementSelected ?? new int[3] { -1, -1, -1 };
         Instance.transactionConfigs = Instance.transactionConfigs ?? new Dictionary<TransactionType, List<TransactionInfo>>();
         Instance.rankConfigs = Instance.rankConfigs ?? new List<RankConfig>();
         Instance.rocketCount = new PDataUnit<int>(0);
@@ -45,6 +49,7 @@ public class GameData : PDataBlock<GameData>
         Instance.treasureConfigs = Instance.treasureConfigs ?? new List<TreasureConfig>();
         Instance.joinTreasureRoom = Instance.joinTreasureRoom ?? new JoinTreasureRoom();
         Instance.joinTreasureRoom.Board = Instance.joinTreasureRoom.Board ?? new List<List<int>>();
+        Instance.royalPass = Instance.royalPass ?? new RoyalPass();
     }
 }
 
@@ -70,7 +75,7 @@ public class ProfileData
         }}
     public int PerfectGame { get { return GameData.AchievementConfig[AchievementType.TACTICAL_GENIUS].Progress; } }
     public int WinStreak;
-    public int WinStreakMax { get { return GameData.AchievementConfig[AchievementType.DOMINATOR].Progress; } }
+    [SerializeField] private int? winStreakMax; public int WinStreakMax { get {  return (int)(winStreakMax == null ? GameData.AchievementConfig[AchievementType.DOMINATOR].Progress : winStreakMax); } set {  } }
     [SerializeField] private int wins; public int Wins { get { return wins; } set { wins = value; winRate = wins / (wins + losts + 0.001f); } }
     [SerializeField] private int losts; public int Losts { get { return losts; } set { losts = value; winRate = wins / (wins + losts + 0.001f); } }
     public int Battles;
@@ -96,6 +101,31 @@ public class ProfileData
         profileData.Achievement = data["statistics"]["achie"].ToList();
         profileData.AchievementObtained = data["statistics"]["achie_r"].ToList();
         profileData.AchievementSelected = data["statistics"]["outst"].ToList().ToArray();
+        return profileData;
+    }
+    public static ProfileData FromJsonOpponent(ProfileData profileData, JSONNode data)
+    {
+        profileData.Username = new PDataUnit<string>(data["n"]);
+        profileData.Point = int.Parse(data["p"]);
+        profileData.Avatar = new PDataUnit<int>(int.Parse(data["a"]));
+        profileData.FrameAvatar = new PDataUnit<int>(int.Parse(data["f"]));
+        profileData.BattleField = new PDataUnit<int>(int.Parse(data["ba"]));
+        profileData.SkinShip = new PDataUnit<int>(int.Parse(data["sk"]));
+        profileData.WinStreak = int.Parse(data["wSM"]);
+        profileData.Wins = int.Parse(data["wC"]);
+        profileData.Losts = int.Parse(data["lC"]);
+        profileData.Battles = profileData.Wins + profileData.Losts;
+        profileData.AchievementSelected = data["outst"].ToList().ToArray();
+        if (profileData.AchievementProgress.Count == 0)
+        {
+            profileData.AchievementProgress = new List<int>(GameData.AchievementConfig.Count);
+            for (int i = 0; i < profileData.AchievementProgress.Capacity; i++)
+            {
+                profileData.AchievementProgress.Add(0); 
+            }
+        }
+        profileData.AchievementProgress[(int)AchievementType.DOMINATOR] = int.Parse(data["sD"]);
+        profileData.AchievementProgress[(int)AchievementType.ENVOVY_OF_WAR] = int.Parse(data["pG"]);
         return profileData;
     }
     public override string ToString()

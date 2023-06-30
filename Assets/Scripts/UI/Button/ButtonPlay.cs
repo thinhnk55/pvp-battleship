@@ -9,32 +9,22 @@ public class ButtonPlay : MonoBehaviour
     private void Awake()
     {
         ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECIEVE_RECONNECT, RecieveReconnect);
+
+    }
+    private void OnDestroy()
+    {
+        ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.RECIEVE_RECONNECT, RecieveReconnect);
     }
     public void Play()
     {
         WSClient.RequestReconnect();
     }
-
     public void RecieveReconnect(JSONNode data)
     {
         if (data["r"] != null)
         {
-            SceneTransitionHelper.LoadCall(ESceneName.MainGame, () =>
-            {
-                CoreGame.bet = int.Parse(data["bet"]);
-                CoreGame.Instance.roomId = int.Parse(data["r"]);
-                CoreGame.Instance.playerChair = int.Parse(data["c"]);
-                CoreGame.Instance.player.ships = new List<Ship> { };
-                for (int i = 0; i < data["ship"].Count; i++)
-                {
-                    Ship ship = new Ship();
-                    ship.FromJson(data["ship"][i]);
-                    //CoreGame.Instance.player.AssignShip(ship);
-
-                }
-                CoreGame.Instance.stateMachine.CurrentState = GameState.Turn;
-            });
-
+            CoreGame.reconnect = data;
+            SceneTransitionHelper.Load(ESceneName.MainGame);
         }
         else
         {

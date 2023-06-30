@@ -132,19 +132,23 @@ public class ProfileCollection : CardCollectionBase<ProfileInfo>
         {
             profile = GameData.Opponent;
         }
-        ProfileInfo info = new ProfileInfo()
+        if (profile != null)
         {
-            Avatar = profile.Avatar.Data,
-            Username = profile.Username.Data,
-            Rank = profile.Rank,
-            Wins = profile.Wins,
-            Losts = profile.Losts,
-            WinRate = profile.WinRate,
-            WinStreak = profile.WinStreak,
-            WinStreakMax = profile.WinStreakMax,
-            PerfectGame = profile.PerfectGame,
-            Achievement = profile.Achievement,
-        };
-        BuildUI(info);
+            ProfileInfo info = new ProfileInfo()
+            {
+                Avatar = profile.Avatar.Data,
+                Username = profile.Username.Data,
+                Rank = profile.Rank,
+                Wins = profile.Wins,
+                Losts = profile.Losts,
+                WinRate = profile.WinRate,
+                WinStreak = profile.WinStreak,
+                WinStreakMax = profile.WinStreakMax,
+                PerfectGame = profile.PerfectGame,
+                Achievement = profile.Achievement,
+            };
+            BuildUI(info);
+        }
+
     }
 }

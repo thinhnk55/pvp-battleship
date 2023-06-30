@@ -23,8 +23,6 @@ public class WSClient : WSClientBase
         ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECEIVE_COUNTDOWN_CONFIG, ReceiveCountDownConfig);
         ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECIEVE_ROYAL_CONFIG, ReceiveRoyalPassConfig);
         ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECIEVE_JOIN_TREASURE_ROOM, ReceiveJoinTreasureRoom);
-
-
     }
     protected override void OnDestroy()
     {
@@ -49,7 +47,7 @@ public class WSClient : WSClientBase
         PNonConsumableType.BATTLE_FIELD.FromJson(data["statistics"]["bfA"]);
         PNonConsumableType.SKIN_SHIP.FromJson(data["statistics"]["ssA"]);
         GameData.Player = ProfileData.FromJson(GameData.Player, data);
-        Debug.Log(GameData.Player.ToString());
+        RoyalPass.DataFromJson(GameData.RoyalPass, data["royalPass"]);
         Timer<LuckyShot>.Instance.LastTime = long.Parse(data["timer"]["lfb"]).NowFrom0001From1970();
         Timer<Gift>.Instance.LastTime = long.Parse(data["timer"]["lcr"]).NowFrom0001From1970();
         Timer<RankCollection>.Instance.LastTime = long.Parse(data["timer"]["WRC"]).NowFrom0001From1970();
@@ -97,10 +95,7 @@ public class WSClient : WSClientBase
         Timer<Gift>.Instance.TriggerIntervalInSecond = GameData.GiftCoolDown;
         Timer<RankCollection>.Instance.TriggerIntervalInSecond = GameData.RankReceiveCoolDown;
     }
-    public void LoadHomeScene()
-    {
-
-    }
+    #region Config
     private void RequestRoyalPassConfig()
     {
         JSONNode jsonNode = new JSONClass()
@@ -111,6 +106,7 @@ public class WSClient : WSClientBase
     }
     private void ReceiveRoyalPassConfig(JSONNode data)
     {
+        GameData.RoyalPass = RoyalPass.ConfigFromJson(GameData.RoyalPass, data);
         SceneTransitionHelper.Load(ESceneName.Home);
     }
     private void RequestCountDownConfig()
@@ -206,15 +202,8 @@ public class WSClient : WSClientBase
         }
         SceneTransitionHelper.Load(ESceneName.Home);
     }
-    public static void RequestShot()
-    {
-        JSONNode jsonNode = new JSONClass()
-        {
-            { "id", GameServerEvent.REQUEST_LUCKY_SHOT.ToJson() },
-        };
-        Instance.Send(jsonNode);
-    }
 
+    #endregion
     #region TREASUREHUNT
 
     public static void RequestTreasureConfig()
@@ -389,7 +378,14 @@ public class WSClient : WSClientBase
         };
         Instance.Send(jsonNode);
     }
-
+    public static void RequestShot()
+    {
+        JSONNode jsonNode = new JSONClass()
+        {
+            { "id", GameServerEvent.REQUEST_LUCKY_SHOT.ToJson() },
+        };
+        Instance.Send(jsonNode);
+    }
     public static void RequestChangeName(string name)
     {
         JSONNode jsonNode = new JSONClass()

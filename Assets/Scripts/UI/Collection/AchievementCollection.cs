@@ -4,6 +4,7 @@ using Sirenix.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class AchievementCollection : CardCollectionBase<AchievementInfo>
@@ -37,8 +38,7 @@ public class AchievementCollection : CardCollectionBase<AchievementInfo>
                     info.onClick = () =>
                     {
                         AchievementSelectionCollection.idNewSelect = info.Id * 100 + Mathf.Clamp(GameData.Player.AchievementObtained[info.Id], 0, 4);
-                        int[] arr = new int[3];
-                        arr = GameData.Player.AchievementSelected;
+                        int[] arr = new int[3] { GameData.Player.AchievementSelected[0], GameData.Player.AchievementSelected[1], GameData.Player.AchievementSelected[2] };
                         arr[AchievementSelectionCollection.slot] = info.Id * 100 + Mathf.Clamp(GameData.Player.AchievementObtained[info.Id], 0, 4);
                         WSClient.RequestChangeAchievement(arr);
                         popup.ForceClose();

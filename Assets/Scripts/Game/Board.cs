@@ -19,10 +19,8 @@ public class Board : CacheMonoBehaviour
     public GameObject horzLine;
     public GameObject vertLine;
 
-    public Image avatar;
-    public TextMeshProUGUI diamond;
-    public TextMeshProUGUI beri;
-    public TextMeshProUGUI point;
+    public SpriteRenderer battleFieldSprite;
+    public int skinShip;
     Camera cam;
     private void Awake()
     {

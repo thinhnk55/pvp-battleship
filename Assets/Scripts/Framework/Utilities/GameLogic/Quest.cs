@@ -36,8 +36,8 @@ namespace Framework
             {
                 if (value>progress)
                 {
+                    OnProgress?.Invoke(value - progress);
                     progress = value;
-                    OnProgress?.Invoke(value);
                 } 
             } 
         }

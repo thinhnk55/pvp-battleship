@@ -87,7 +87,7 @@ public class Octile : CacheMonoBehaviour
         if (!inside)
             return false;
 
-        if (board.octiles[y][x].attacked)
+        if (board && board.octiles[y][x].attacked)
         {
             return false;
         }

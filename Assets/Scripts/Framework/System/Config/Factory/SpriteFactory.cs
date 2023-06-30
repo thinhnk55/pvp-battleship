@@ -37,6 +37,7 @@ namespace Framework
         [SerializeField] private Sprite unselectedAchievementBG; public static Sprite UnselectedAchievementBG { get { return Instance.unselectedAchievementBG; } }
         [SerializeField] private Sprite selectedRankBG; public static Sprite SelectedRankBG { get { return Instance.selectedRankBG; } }
         [SerializeField] private Sprite unselectedRankBG; public static Sprite UnselectedRankBG { get { return Instance.unselectedRankBG; } }
+        [SerializeField] private Sprite shipLuckyShot; public static Sprite ShipLuckyShot { get { return Instance.shipLuckyShot; } }
 
     }
 

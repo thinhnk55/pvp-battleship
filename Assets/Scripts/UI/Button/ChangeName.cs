@@ -4,11 +4,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using UnityEditor.VersionControl;
-using UnityEngine;
+     using UnityEngine;
 using UnityEngine.UI;
 
-public class ChangeName : SingletonMono<ChangeName>
+public class ChangeName : MonoBehaviour
 {
     [SerializeField] TMP_InputField inputField;
     [SerializeField] Button button;
@@ -31,19 +30,21 @@ public class ChangeName : SingletonMono<ChangeName>
         inputField.onSelect.AddListener((text) => { inputField.placeholder.GetComponent<TextMeshProUGUI>().text = ""; });
         ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECIEVE_CHANGE_NAME, ReceiveChangeName);
     }
-    protected override void OnDestroy()
+    protected void OnDestroy()
     {
-        base.OnDestroy();
         ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.RECIEVE_CHANGE_NAME, ReceiveChangeName);
     }
-    public static void ReceiveChangeName(JSONNode json)
+    public void ReceiveChangeName(JSONNode json)
     {
         if (json["n"] == GameData.Player.Username.Data)
         {
-            Instance.messageTxt.text = "This Name already in used";
+            messageTxt.text = "This Name already in used";
         }
-        GameData.Player.Username.Data = json["n"];
-
+        else
+        {
+            GameData.Player.Username.Data = json["n"];
+            popup.ForceClose();
+        }
     }
 
     bool IsValid(string text, out string message)

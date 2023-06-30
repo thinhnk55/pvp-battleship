@@ -11,7 +11,7 @@ using UnityEngine.UI;
 
 public class LuckyShot : SingletonMono<LuckyShot>
 {
-    
+
     public int indexShot;
     public List<GameObject> rockets;
     public List<Button> shots;
@@ -27,21 +27,18 @@ public class LuckyShot : SingletonMono<LuckyShot>
         ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECIEVE_LUCKY_SHOT, Instance.RecieveLuckyShot);
         GameData.RocketCount.OnDataChanged += Instance.OnRocketChange;
         Timer<LuckyShot>.Instance.Init(Instance.OnTriggerTimer, Instance.OnElapseTimer);
-        Debug.Log(Timer<LuckyShot>.Instance.RemainTimeInsecond + "_" + Timer<LuckyShot>.Instance.TriggerCountFromTimePoint +"_"+ GameData.RocketCount.Data);
-
         GameData.RocketCount.Data = Mathf.Clamp(GameData.RocketCount.Data + Timer<LuckyShot>.Instance.TriggerCountFromTimePoint, 0, 3);
-
         int count = rockets.Count;
-        for (int i = 0; i <  GameData.RocketCount.Data - count; i++)
+        for (int i = 0; i < GameData.RocketCount.Data - count; i++)
         {
-            rockets.Add(Instantiate(rocketPrefab, rocketRoot.transform));
+            Instance.rockets.Add(Instantiate(rocketPrefab, rocketRoot.transform));
         }
-        shots = shotRoot.GetComponentsInChildren<Button>().ToList();
-        StartCoroutine(Init());
+        Instance.shots = shotRoot.GetComponentsInChildren<Button>().ToList();
+        StartCoroutine(Instance.Init());
     }
     private void Update()
     {
-        Timer<LuckyShot>.Instance.Elasping();        
+        Timer<LuckyShot>.Instance.Elasping();
     }
     protected override void OnDestroy()
     {
@@ -55,18 +52,28 @@ public class LuckyShot : SingletonMono<LuckyShot>
     }
     IEnumerator Init()
     {
+        var list = new List<int>();
+        list.AddRange(GameData.LuckyShotConfig);
+        list.Shuffle();
         for (int i = 0; i < GameData.LuckyShotConfig.Count; i++)
         {
-            var list = new List<int>(GameData.LuckyShotConfig);
-            list.Shuffle();
-            shots[i].GetComponent<Image>().sprite = list[i] == 0 ? SpriteFactory.X : SpriteFactory.Beri;
+            if (list[i] == 0)
+            {
+                Instance.shots[i].GetComponent<Image>().sprite = SpriteFactory.ShipLuckyShot;
+
+            }
+            else
+            {
+                Instance.shots[i].GetComponent<Image>().sprite = SpriteFactory.X;
+            }
         }
+
         yield return new WaitForSeconds(1);
-        for (int i = 0; i < GameData.LuckyShotConfig.Count; i++)
+        /*for (int i = 0; i < GameData.LuckyShotConfig.Count; i++)
         {
-            shots[i].GetComponent<Image>().sprite = SpriteFactory.Unknown;
-        }
-        yield return StartCoroutine(Suffle());
+            Instance.shots[i].GetComponent<Image>().sprite = SpriteFactory.Unknown;
+        }*/
+        yield return StartCoroutine(Instance.Suffle());
     }
     private void RecieveLuckyShot(JSONNode node)
     {
@@ -76,7 +83,14 @@ public class LuckyShot : SingletonMono<LuckyShot>
         
         PConsumableType.BERI.AddValue(amount);
         CoinVFX.CoinVfx(Instance.resourceUI.transform, Instance.shots[indexShot].transform.position, Instance.shots[indexShot].transform.position);
-        Instance.shots[indexShot].GetComponent<Image>().sprite = SpriteFactory.Attacked;
+        if(amount == 0)
+        {
+            Instance.shots[indexShot].GetComponent<Image>().sprite = SpriteFactory.X;
+        }
+        else
+        {
+            Instance.shots[indexShot].GetComponent<Image>().sprite = SpriteFactory.ShipLuckyShot;
+        }
         StartCoroutine(Instance.Suffle());
     }
 
@@ -137,7 +151,7 @@ public class LuckyShot : SingletonMono<LuckyShot>
         yield return new WaitForSeconds(1);
         for (int i = 0; i < shots.Count; i++)
         {
-            shots[i].GetComponent<Image>().sprite = SpriteFactory.Occupied;
+            shots[i].GetComponent<Image>().sprite = SpriteFactory.Unknown;
             shots[i].onClick.RemoveAllListeners();
             shots[i].transform.DOMove(poses[i], 1).SetEase(Ease.InCirc);
         }

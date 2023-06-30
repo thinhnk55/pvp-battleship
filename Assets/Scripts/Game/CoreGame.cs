@@ -23,6 +23,7 @@ public enum GameState
 }
 public class CoreGame : SingletonMono<CoreGame>
 {
+    public static JSONNode reconnect;
     public static int timeInit;
     public static int bet;
     public static List<int> bets;
@@ -57,6 +58,7 @@ public class CoreGame : SingletonMono<CoreGame>
     float turnTime; float TurnTime { get { return turnTime; } set { turnTime = Mathf.Clamp(value, 0, timeInit); turnTimeText.text = ((int)turnTime).ToString(); } }
     [SerializeField] TextMeshProUGUI turnTimeText;
     [SerializeField] Image turnImage;
+
 
     [OnValueChanged("OnRevealed")][SerializeField] private bool reveal;
     public bool Reveal
@@ -95,16 +97,15 @@ public class CoreGame : SingletonMono<CoreGame>
         reveal = true;
         cam = Camera.main;
         lines = new List<List<GameObject>>();
-        shipsPlayer = shipListPlayer.GetComponentsInChildren<Ship>().ToList();
-        shipsPlayer.Reverse();
-        shipsOpponent = shipListOpponent.GetComponentsInChildren<Ship>().ToList();
-    }
-    void Start()
-    {
+        Instance.shipsPlayer = shipListPlayer.GetComponentsInChildren<Ship>().ToList();
+        Instance.shipsPlayer.Reverse();
+        Instance.player.battleFieldSprite.sprite = SpriteFactory.ResourceIcons[5].sprites[GameData.Player.BattleField.Data];
+        Instance.opponent.battleFieldSprite.sprite = SpriteFactory.ResourceIcons[5].sprites[GameData.Opponent.BattleField.Data];
+        Instance.shipsOpponent = shipListOpponent.GetComponentsInChildren<Ship>().ToList();
         stateMachine = new StateMachine<GameState>();
-        stateMachine.AddState(GameState.Pre, StartPregame, null, EndPregame);
-        stateMachine.AddState(GameState.Search, StartSearch, UpdateSearch, EndSearch);
-        stateMachine.AddState(GameState.Turn, StartTurn, UpdateTurn, EndTurn);
+        stateMachine.AddState(GameState.Pre, Instance.StartPregame, null, Instance.EndPregame);
+        stateMachine.AddState(GameState.Search, Instance.StartSearch, Instance.UpdateSearch, Instance.EndSearch);
+        stateMachine.AddState(GameState.Turn, Instance.StartTurn, Instance.UpdateTurn, Instance.EndTurn);
         stateMachine.AddState(GameState.Out, null, null, null);
         stateMachine.CurrentState = GameState.Pre;
         ServerMessenger.AddListener<JSONNode>(GameServerEvent.START, Instance.GameStart);
@@ -113,6 +114,16 @@ public class CoreGame : SingletonMono<CoreGame>
         ServerMessenger.AddListener<JSONNode>(GameServerEvent.NEW_TURN, Instance.EndTurn);
         ServerMessenger.AddListener<JSONNode>(GameServerEvent.COUNTDOWN, Instance.CountDown);
         ServerMessenger.AddListener<JSONNode>(GameServerEvent.BEINGATTACKED, Instance.HandleBeingAttacked);
+        if (reconnect!=null)
+        {
+            Instance.Reconnect(reconnect);
+            reconnect = null;
+        }
+    }
+    void Start()
+    {
+
+
         //ServerMessenger.AddListener<JSONNode>(GameServerEvent.BEINGATTACKED, Attack);
     }
 
@@ -142,14 +153,15 @@ public class CoreGame : SingletonMono<CoreGame>
     void StartPregame()
     {
         float sizeWidth = cam.orthographicSize * cam.aspect * 2;
-        preUI.SetActive(true);
-        postUI.gameObject.SetActive(false);
-        searchUI.gameObject.SetActive(false);
-        ingameUI.gameObject.SetActive(false);
-        shipListPlayer.gameObject.SetActive(true);
-        opponent.gameObject.SetActive(false);
-        player.Position = Vector3.right * (-sizeWidth * 1 / 32 - player.width / 2);
-        opponent.Position = Vector3.right * (sizeWidth * 15 / 32 - opponent.width / 2);
+        Instance.preUI.SetActive(true);
+        Instance.postUI.gameObject.SetActive(false);
+        Instance.searchUI.gameObject.SetActive(false);
+        Instance.ingameUI.gameObject.SetActive(false);
+        Instance.shipListPlayer.gameObject.SetActive(true);
+        Instance.opponent.gameObject.SetActive(false);
+        Instance.player.InitBoard(10, 10);
+        Instance.player.Position = Vector3.right * (-sizeWidth * 1 / 32 - player.width / 2);
+        Instance.opponent.Position = Vector3.right * (sizeWidth * 15 / 32 - opponent.width / 2);
     }
     void EndPregame()
     {
@@ -159,17 +171,17 @@ public class CoreGame : SingletonMono<CoreGame>
     void StartSearch()
     {
         WSClient.SearchOpponent(bet, player.ships);
-        opponent.gameObject.SetActive(true);
-        opponent.InitBoard(10, 10);
-        opponent.RandomShip(shipsOpponent);
-        preUI.SetActive(false);
-        searchUI.gameObject.SetActive(true);
+        Instance.opponent.gameObject.SetActive(true);
+        Instance.opponent.InitBoard(10, 10);
+        Instance.opponent.RandomShip(shipsOpponent);
+        Instance.preUI.SetActive(false);
+        Instance.searchUI.gameObject.SetActive(true);
         var profile = new ProfileInfo()
         {
             Avatar = -1,
         };
-        searchUI.opponentProfile.BuildUI(profile);
-        shipListPlayer.gameObject.SetActive(false);
+        Instance.searchUI.opponentProfile.BuildUI(profile);
+        Instance.shipListPlayer.gameObject.SetActive(false);
     }
     void UpdateSearch()
     {
@@ -213,20 +225,20 @@ public class CoreGame : SingletonMono<CoreGame>
     {
         if (shipListPlayer.transform.childCount == 0)
         {
-            searchUI.gameObject.SetActive(true);
-            stateMachine.CurrentState = GameState.Search;
+            Instance.searchUI.gameObject.SetActive(true);
+            Instance.stateMachine.CurrentState = GameState.Search;
         }
     }
     public void RandomShip()
     {
-        player.RandomShip(shipsPlayer);
+        Instance.player.RandomShip(Instance.shipsPlayer);
     }
     public void QuitSearch()
     {
-        stateMachine.CurrentState = GameState.Pre;
-        searchUI.gameObject.SetActive(false);
-        preUI.SetActive(true);
-        searchTween.Kill();
+        Instance.stateMachine.CurrentState = GameState.Pre;
+        Instance.searchUI.gameObject.SetActive(false);
+        Instance.preUI.SetActive(true);
+        Instance.searchTween.Kill();
         WSClient.QuitSearch(bet);
     }
     public void QuitAfter()
@@ -235,9 +247,12 @@ public class CoreGame : SingletonMono<CoreGame>
     }
     public void QuitGame()
     {
-        ingameUI.gameObject.SetActive(false);
         SceneTransitionHelper.Load(ESceneName.Home);
         WSClient.QuitGame(roomId);
+    }
+    public void GoHome()
+    {
+        SceneTransitionHelper.Load(ESceneName.Home);
     }
     public void Rematch()
     {
@@ -252,12 +267,11 @@ public class CoreGame : SingletonMono<CoreGame>
     #region CallBackServer
     void GameStart(JSONNode json)
     {
-        GameData.Opponent = ProfileData.FromJson(GameData.Opponent, json);
+        GameData.Opponent = ProfileData.FromJsonOpponent(GameData.Opponent, json);
         Debug.Log(GameData.Opponent.Username);
         Instance.ingameUI.SetActive(true);
-        roomId = int.Parse(json["r"]);
-        playerChair = int.Parse(json["c"]);
-        Instance.searchUI.opponentProfile.UpdateUIs();
+        Instance.roomId = int.Parse(json["r"]);
+        Instance.playerChair = int.Parse(json["c"]);
         CoinVFX.CoinVfx(Instance.searchUI.tresure.transform, Instance.searchUI.avatar1.transform.position, Instance.searchUI.avatar2.transform.position);
         PConsumableType.BERI.AddValue(-bets[bet]);
         //opponent.diamond.text = json["d"];
@@ -265,14 +279,14 @@ public class CoreGame : SingletonMono<CoreGame>
         //opponent.point.text = json["p"];
         DOVirtual.DelayedCall(1.5f, () =>
         {
-            playerTurn = int.Parse(json["turn"]) == playerChair;
-            stateMachine.CurrentState = GameState.Turn;
+            Instance.playerTurn = int.Parse(json["turn"]) == playerChair;
+            Instance.stateMachine.CurrentState = GameState.Turn;
         });
     }
 
     void HandleBeingAttacked(JSONNode json)
     {
-        playerTurn = playerChair == int.Parse(json["c"]);
+        Instance.playerTurn = playerChair == int.Parse(json["c"]);
         Board board = playerTurn ? Instance.opponent : Instance.player;
         int status = int.Parse(json["s"]);
         int x = int.Parse(json["x"]);
@@ -281,7 +295,7 @@ public class CoreGame : SingletonMono<CoreGame>
         {
             Ship ship;
             int type = int.Parse(json["ship"]["type"]);
-            if (playerTurn)
+            if (Instance.playerTurn)
             {
                 ship = Instantiate(PrefabFactory.Ships[type]).GetComponent<Ship>();
                 ship.board = board;
@@ -306,8 +320,8 @@ public class CoreGame : SingletonMono<CoreGame>
 
     public void EndTurn(JSONNode json)
     {
-        playerTurn = playerChair == int.Parse(json["c"]);
-        stateMachine.CurrentState = GameState.Turn;
+        Instance.playerTurn = playerChair == int.Parse(json["c"]);
+        Instance.stateMachine.CurrentState = GameState.Turn;
     }
     void CountDown(JSONNode json)
     {
@@ -318,22 +332,22 @@ public class CoreGame : SingletonMono<CoreGame>
         DOVirtual.DelayedCall(3, () =>
         {
             Debug.Log("End");
-            stateMachine.CurrentState = GameState.Out;
+            Instance.stateMachine.CurrentState = GameState.Out;
             Instance.ingameUI.SetActive(false);
             Instance.postUI.gameObject.SetActive(true);
-            postUI.amount.text = json["w"];
+            Instance.postUI.amount.text = json["w"];
             if (int.Parse(json["c"]) == playerChair)
             {
                 PConsumableType.BERI.AddValue(int.Parse(json["w"]));
-                postUI.ResultPlayer.sprite = SpriteFactory.Win;
-                postUI.ResultOpponent.sprite = SpriteFactory.Lose;
+                Instance.postUI.ResultPlayer.sprite = SpriteFactory.Win;
+                Instance.postUI.ResultOpponent.sprite = SpriteFactory.Lose;
                 CoinVFX.CoinVfx(searchUI.avatar1.transform, searchUI.tresure.transform.position, searchUI.tresure.transform.position);
             }
             else
             {
                 PConsumableType.BERI.AddValue(-int.Parse(json["w"]));
-                postUI.ResultPlayer.sprite = SpriteFactory.Lose;
-                postUI.ResultOpponent.sprite = SpriteFactory.Win;
+                Instance.postUI.ResultPlayer.sprite = SpriteFactory.Lose;
+                Instance.postUI.ResultOpponent.sprite = SpriteFactory.Win;
                 CoinVFX.CoinVfx(searchUI.avatar2.transform, searchUI.tresure.transform.position, searchUI.tresure.transform.position);
             }
         });
@@ -341,6 +355,67 @@ public class CoreGame : SingletonMono<CoreGame>
     void EnemyOutGame(JSONNode json)
     {
         SceneTransitionHelper.Load(ESceneName.Home);
+    }
+    public void Reconnect(JSONNode data)
+    {
+        Instance.opponent.gameObject.SetActive(true);
+        Instance.opponent.InitBoard(10, 10);
+        for (int i = 0; i < data["ship"].Count; i++)
+        {
+            Ship ship = Instance.shipsPlayer.Find((ship) => { 
+                return ship.poses.Count == int.Parse(data["ship"][i]["type"]) + 1
+                && !Instance.player.ships.Contains(ship); 
+            });
+            ship.board = Instance.player;
+            ship.FromJson(data["ship"][i]);
+            for (int j = 0; j < data["fship"].Count; j++)
+            {
+                if (ship.currentPoses[0] == new Vector2Int(int.Parse(data["fship"][j]["x"]), int.Parse(data["fship"][j]["y"])) )
+                {
+                    ship.BeingDestroyed();
+                    break;
+                }
+            }
+
+        }
+
+        for (int i = 0; i < data["efship"].Count; i++)
+        {
+            Ship ship = Instantiate(PrefabFactory.Ships[int.Parse(data["efship"][i]["type"])]).GetComponent<Ship>();
+            ship.board = Instance.opponent;
+            ship.FromJson(data["efship"][i]);
+            ship.BeingDestroyed();
+        }
+
+
+        for (int i = 0; i < data["efired"].Count; i++)
+        {
+            if (Instance.opponent.ships.Find((ship) => {
+                for (int j = 0; j < ship.currentPoses.Count; j++)
+                {
+                    if (ship.currentPoses[j] == new Vector2Int(int.Parse(data["efired"][i]["x"]), int.Parse(data["efired"][i]["y"])))
+                        return true;
+                }
+                return false;
+            }
+            ))
+            {
+                Instance.opponent.octiles[int.Parse(data["efired"][i]["x"])][int.Parse(data["efired"][i]["y"])].BeingAttacked(false);
+            }
+
+        }
+        CoreGame.bet = int.Parse(data["bet"]);
+        CoreGame.Instance.roomId = int.Parse(data["r"]);
+        CoreGame.Instance.playerChair = int.Parse(data["c"]);
+        Instance.playerTurn = int.Parse(data["turn"]) == Instance.playerChair;
+        Instance.turnTime = int.Parse(data["count"]);
+        Instance.ingameUI.SetActive(true);
+        Instance.preUI.SetActive(false);
+        CoreGame.Instance.stateMachine.CurrentState = GameState.Turn;
+        CoreGame.Instance.player.ships = new List<Ship> { };
+
+        Debug.Log("Reconnect");
+
     }
     #endregion
 }
