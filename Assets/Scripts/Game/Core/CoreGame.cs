@@ -26,7 +26,6 @@ public class CoreGame : SingletonMono<CoreGame>
     public static JSONNode reconnect;
     public static int timeInit;
     public static int bet;
-    public static List<int> bets;
     public int roomId;
     public int playerChair;
     public static List<List<Vector2Int>> shipConfigs = new List<List<Vector2Int>>()
@@ -100,7 +99,6 @@ public class CoreGame : SingletonMono<CoreGame>
         Instance.shipsPlayer = shipListPlayer.GetComponentsInChildren<Ship>().ToList();
         Instance.shipsPlayer.Reverse();
         Instance.player.battleFieldSprite.sprite = SpriteFactory.ResourceIcons[5].sprites[GameData.Player.BattleField.Data];
-        Instance.opponent.battleFieldSprite.sprite = SpriteFactory.ResourceIcons[5].sprites[GameData.Opponent.BattleField.Data];
         Instance.shipsOpponent = shipListOpponent.GetComponentsInChildren<Ship>().ToList();
         stateMachine = new StateMachine<GameState>();
         stateMachine.AddState(GameState.Pre, Instance.StartPregame, null, Instance.EndPregame);
@@ -112,7 +110,6 @@ public class CoreGame : SingletonMono<CoreGame>
         ServerMessenger.AddListener<JSONNode>(GameServerEvent.ENEMY_OUT_GAME, Instance.EnemyOutGame);
         ServerMessenger.AddListener<JSONNode>(GameServerEvent.ENDGAME, Instance.EndGame);
         ServerMessenger.AddListener<JSONNode>(GameServerEvent.NEW_TURN, Instance.EndTurn);
-        ServerMessenger.AddListener<JSONNode>(GameServerEvent.COUNTDOWN, Instance.CountDown);
         ServerMessenger.AddListener<JSONNode>(GameServerEvent.BEINGATTACKED, Instance.HandleBeingAttacked);
         if (reconnect!=null)
         {
@@ -142,7 +139,6 @@ public class CoreGame : SingletonMono<CoreGame>
         ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.ENEMY_OUT_GAME, Instance.EnemyOutGame);
         ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.ENDGAME, Instance.EndGame);
         ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.NEW_TURN, Instance.EndTurn);
-        ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.COUNTDOWN, Instance.CountDown);
         ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.BEINGATTACKED, Instance.HandleBeingAttacked);
         Debug.Log("Destroyed");
         base.OnDestroy();
@@ -268,12 +264,13 @@ public class CoreGame : SingletonMono<CoreGame>
     void GameStart(JSONNode json)
     {
         GameData.Opponent = ProfileData.FromJsonOpponent(GameData.Opponent, json);
+        Instance.opponent.battleFieldSprite.sprite = SpriteFactory.ResourceIcons[5].sprites[GameData.Opponent.BattleField.Data];
         Debug.Log(GameData.Opponent.Username);
         Instance.ingameUI.SetActive(true);
         Instance.roomId = int.Parse(json["r"]);
         Instance.playerChair = int.Parse(json["c"]);
         CoinVFX.CoinVfx(Instance.searchUI.tresure.transform, Instance.searchUI.avatar1.transform.position, Instance.searchUI.avatar2.transform.position);
-        PConsumableType.BERI.AddValue(-bets[bet]);
+        PConsumableType.BERI.AddValue(-GameData.Bets[bet]);
         //opponent.diamond.text = json["d"];
         //opponent.beri.text = json["b"];
         //opponent.point.text = json["p"];
@@ -322,10 +319,6 @@ public class CoreGame : SingletonMono<CoreGame>
     {
         Instance.playerTurn = playerChair == int.Parse(json["c"]);
         Instance.stateMachine.CurrentState = GameState.Turn;
-    }
-    void CountDown(JSONNode json)
-    {
-        TurnTime = float.Parse(json["c"]);
     }
     void EndGame(JSONNode json)
     {

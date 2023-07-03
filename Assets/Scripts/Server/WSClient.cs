@@ -23,6 +23,7 @@ public class WSClient : WSClientBase
         ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECEIVE_COUNTDOWN_CONFIG, ReceiveCountDownConfig);
         ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECIEVE_ROYAL_CONFIG, ReceiveRoyalPassConfig);
         ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECIEVE_JOIN_TREASURE_ROOM, ReceiveJoinTreasureRoom);
+        ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECIEVE_BET_CONFIG, ReceiveBetConfig);
     }
     protected override void OnDestroy()
     {
@@ -37,6 +38,7 @@ public class WSClient : WSClientBase
         ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.RECEIVE_COUNTDOWN_CONFIG, ReceiveCountDownConfig);
         ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.RECIEVE_ROYAL_CONFIG, ReceiveRoyalPassConfig);
         ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.RECIEVE_JOIN_TREASURE_ROOM, ReceiveJoinTreasureRoom);
+        ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.RECIEVE_BET_CONFIG, ReceiveBetConfig);
     }
     public void OnLogin(JSONNode data)
     {
@@ -53,7 +55,6 @@ public class WSClient : WSClientBase
         Timer<RankCollection>.Instance.LastTime = long.Parse(data["timer"]["WRC"]).NowFrom0001From1970();
         GameData.ProgressGift = int.Parse(data["timer"]["cr"]);
         CoreGame.timeInit = int.Parse(data["t"]);
-        CoreGame.bets = data["bet"].ToList();
         for (int i = 0; i < data["v"].Count; i++)
         {
             if (GameData.Versions[i] != int.Parse(data["v"][i]))
@@ -85,6 +86,9 @@ public class WSClient : WSClientBase
                     case ConfigVersion.ROYAL_PASS:
                         RequestRoyalPassConfig();
                         break;
+                    case ConfigVersion.BET:
+                        RequestBetConfig();
+                        break;
                     default:
                         break;
                 }
@@ -96,6 +100,19 @@ public class WSClient : WSClientBase
         Timer<RankCollection>.Instance.TriggerIntervalInSecond = GameData.RankReceiveCoolDown;
     }
     #region Config
+    private void RequestBetConfig()
+    {
+        JSONNode jsonNode = new JSONClass()
+        {
+            { "id", GameServerEvent.REQUEST_BET_CONFIG.ToJson() },
+        };
+        Instance.Send(jsonNode);
+    }
+    private void ReceiveBetConfig(JSONNode json)
+    {
+        GameData.Bets = json["bet"].ToList().ToArray();
+        GameData.BetRequires = json["require"].ToList().ToArray();
+    }
     private void RequestRoyalPassConfig()
     {
         JSONNode jsonNode = new JSONClass()
