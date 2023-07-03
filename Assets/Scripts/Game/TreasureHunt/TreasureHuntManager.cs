@@ -22,11 +22,13 @@ public class TreasureHuntManager : SingletonMono<TreasureHuntManager>
     [SerializeField] Toggle autoFillToggle;
 
     Dictionary<Vector2, TreasureBoardCell> cells = new Dictionary<Vector2, TreasureBoardCell>();
+    private bool autoFillMode;
 
     private void OnEnable()
     {
         ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECIEVE_TREASURE_SHOT, OnCellShot);
         message.text = "";
+        delayShootCell = false;
     }
 
     private void OnDisable()
@@ -110,8 +112,29 @@ public class TreasureHuntManager : SingletonMono<TreasureHuntManager>
         }
     }
 
+    private bool delayShootCell = false;
+
+    IEnumerator DelayShootCell(float duration)
+    {
+        delayShootCell = true;
+        yield return new WaitForSeconds(duration);
+        delayShootCell = false;
+    }
+
+    Coroutine delayShootCellCoroutine;
+
     public void TryShootCell(int x, int y)
     {
+        if (delayShootCell)
+            return;
+
+        if (PConsumableType.BERI.GetValue() < GameData.JoinTreasureRoom.ShotCost)
+        {
+            return;
+        }
+
+        PConsumableType.BERI.AddValue(-GameData.JoinTreasureRoom.ShotCost);
+        delayShootCellCoroutine = StartCoroutine(DelayShootCell(1));
         Debug.Log($"shooting cell {x} {y}");
         WSClient.RequestShootTreasure(x, y);
     }
@@ -124,7 +147,11 @@ public class TreasureHuntManager : SingletonMono<TreasureHuntManager>
         Debug.Log($"cell {x} {y} is shot: result {status}");
 
         if (status >= 0 && status <= 2)
+        {
+            
             ShootCell(x, y);
+        }
+            
         if (status == 2 || status == 1)
             ResetCells();
         if (status == 2)
@@ -151,7 +178,7 @@ public class TreasureHuntManager : SingletonMono<TreasureHuntManager>
         var c = new Vector2(cellX, cellY);
         if (cells.ContainsKey(c))
         {
-
+             
         }
 
         if (treasureTransform != null && resourceUI != null)
@@ -176,6 +203,6 @@ public class TreasureHuntManager : SingletonMono<TreasureHuntManager>
 
     public void OnToggleAutoFill(bool on)
     {
-
+        autoFillMode = on;
     }
 }
