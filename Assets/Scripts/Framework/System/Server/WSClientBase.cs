@@ -20,7 +20,7 @@ namespace Framework {
         }
         void Ping()
         {
-             ws.Ping();
+             Instance.ws.Ping();
         }
         protected override void OnDestroy()
         {

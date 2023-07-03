@@ -99,7 +99,11 @@ namespace Framework
             {
                 _stateMachine.CurrentState = State.Idle;
                 CacheGameObject.SetActive(false);
-                OnLoaded?.Invoke();
+                if (OnLoaded!= null)
+                {
+                    OnLoaded?.Invoke();
+
+                }
             }, true);
         }
 
@@ -166,12 +170,13 @@ namespace Framework
         public static void LoadCall(ESceneName eSceneValue, Callback callback)
         {
             LazyInit();
-            _instance.Load(eSceneValue);
             _instance.OnLoaded = () =>
             {
                 callback?.Invoke();
                 _instance.OnLoaded = null;
             };
+            _instance.Load(eSceneValue);
+
         }
         public static void Reload()
         {

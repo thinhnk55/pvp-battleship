@@ -20,6 +20,15 @@ public class RankCollection : CardCollectionBase<RankInfo>
     [SerializeField] Transform resource;
     private void Start()
     {
+        OnSelectedCard += (oldCard, newCard) =>
+        {
+            if (oldCard && ((RankCard)oldCard).BG)
+                ((RankCard)oldCard).BG.sprite = SpriteFactory.UnselectedRankBG;
+            if (((RankCard)newCard).BG)
+                ((RankCard)newCard).BG.sprite = SpriteFactory.SelectedRankBG;
+            SetCardPreview(newCard.Info);
+            Debug.Log("Change");
+        };
         UpdateUIs();
         indicator.transform.parent = cards[GameData.Player.Rank].transform;
         indicator.GetComponent<RectTransform>().anchoredPosition = Vector3.up * offsetIndicator;
@@ -39,7 +48,6 @@ public class RankCollection : CardCollectionBase<RankInfo>
         {
             WSClient.RequestRank();
         };
-        selectedCard = cards[info.Id];
         reward.text = GameData.RankConfigs[info.Id].Reward.ToString();
         if (info.Id < GameData.Player.Rank)
         {
@@ -79,15 +87,7 @@ public class RankCollection : CardCollectionBase<RankInfo>
 
     public override void UpdateUIs()
     {
-        OnSelectedCard += (oldCard, newCard) =>
-        {
-            if (oldCard && ((RankCard)oldCard).BG)
-                ((RankCard)oldCard).BG.sprite = SpriteFactory.UnselectedRankBG;
-            if (((RankCard)newCard).BG)
-                ((RankCard)newCard).BG.sprite = SpriteFactory.SelectedRankBG;
-            SetCardPreview(newCard.Info);
-            Debug.Log("Change");
-        };
+
         List<RankInfo> infos = new List<RankInfo>();
         for (int i = 0; i < GameData.RankConfigs.Count; i++)
         {
@@ -100,7 +100,7 @@ public class RankCollection : CardCollectionBase<RankInfo>
                 Point = GameData.RankConfigs[i].Point,
                 OnClick = () =>
                 {
-                    SetCardPreview(infos[_i]);
+                    selectedCard = cards[_i];
                 }
             });
         }

@@ -12,4 +12,9 @@ public class BeriGemCollection : TransactionCollection
         bigCard.BuildUI(transactionInfos.Last());
         BuildUIs(transactionInfos.GetRange(0, transactionInfos.Count - 1));
     }
+
+    public override void UpdateUIs()
+    {
+       
+    }
 }
