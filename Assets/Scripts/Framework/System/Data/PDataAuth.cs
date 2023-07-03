@@ -7,7 +7,6 @@ namespace Framework
     public class PDataAuth : PDataBlock<PDataAuth>
     {
         [SerializeField] private AuthData authData; public static AuthData AuthData { get { return Instance.authData; } set { Instance.authData = value; } }
-
     }
 }
 

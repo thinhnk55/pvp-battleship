@@ -17,7 +17,7 @@ namespace Framework
             // Get all classes derived from ScriptableObject
             var allScriptableObjects = (from t in assembly.GetTypes()
                                         where t.IsSubclassOf(typeof(ScriptableObject))
-                                        where t.Name.Contains("SO")
+                                        //where t.Name.Contains("SO")
                                         select t).ToArray();
             // Show the selection window.
             var window = EditorWindow.GetWindow<ScriptableObjectWindow>(true, "Create a new ScriptableObject", true);

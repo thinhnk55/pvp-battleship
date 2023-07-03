@@ -9,6 +9,8 @@ using UnityEngine;
 
 public class GameData : PDataBlock<GameData>
 {
+    [SerializeField] private int[] bets; public static int[] Bets { get { return Instance.bets; } set { Instance.bets = value; } }
+    [SerializeField] private int[] betRequires; public static int[] BetRequires { get { return Instance.betRequires; } set { Instance.betRequires = value; } }
     [SerializeField] private int progressGift; public static int ProgressGift { get { return Instance.progressGift; } set { Instance.progressGift = value % 6; } }
     [SerializeField] private string text; public static string Text { get { return Instance.text; } set { Instance.text = value; } }
     [SerializeField] private List<int> versions; public static List<int> Versions { get { return Instance.versions; } set { Instance.versions = value; } }
@@ -45,7 +47,7 @@ public class GameData : PDataBlock<GameData>
         Instance.transactionConfigs = Instance.transactionConfigs ?? new Dictionary<TransactionType, List<TransactionInfo>>();
         Instance.rankConfigs = Instance.rankConfigs ?? new List<RankConfig>();
         Instance.rocketCount = new PDataUnit<int>(0);
-        Instance.versions = Instance.versions ?? new List<int>(8) { 0,0,0,0,0,0,0,0};
+        Instance.versions = Instance.versions ?? new List<int>() { 0,0,0,0,0,0,0,0,0};
         Instance.treasureConfigs = Instance.treasureConfigs ?? new List<TreasureConfig>();
         Instance.joinTreasureRoom = Instance.joinTreasureRoom ?? new JoinTreasureRoom();
         Instance.joinTreasureRoom.Board = Instance.joinTreasureRoom.Board ?? new List<List<int>>();
@@ -186,6 +188,7 @@ public enum ConfigVersion
     TREASURE,
     COUNT_DOWN,
     ROYAL_PASS,
+    BET,
 }
 
 [Serializable]
