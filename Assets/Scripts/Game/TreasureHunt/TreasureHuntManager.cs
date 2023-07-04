@@ -23,6 +23,8 @@ public class TreasureHuntManager : SingletonMono<TreasureHuntManager>
 
     Dictionary<Vector2, TreasureBoardCell> cells = new Dictionary<Vector2, TreasureBoardCell>();
     private bool autoFillMode;
+    List<Vector2> cellsShotQueue = new List<Vector2>();
+    private bool isInResetAnim;
 
     private void OnEnable()
     {
@@ -95,21 +97,38 @@ public class TreasureHuntManager : SingletonMono<TreasureHuntManager>
         }
     }
 
-    public void ShootCell(int x, int y)
+    public void ShootCell(int x, int y, bool treasureHit)
     {
         var c = new Vector2(x, y);
         if (cells.ContainsKey(c))
         {
-            cells[c].PlayShootAnim();
+            cells[c].PlayShootAnim(treasureHit);
         }
     }
 
     public void ResetCells()
     {
+        isInResetAnim = true;
+        cellsShotQueue.Clear();
         for (int i = 0; i < cells.Count; i++)
         {
-            cells.ElementAt(i).Value.SetIsShot(false);
+            //cells.ElementAt(i).Value.SetIsShot(false);
+            cells.ElementAt(i).Value.ResetCell();
         }
+        if (setCellsAfterResetCoroutine != null) StopCoroutine(setCellsAfterResetCoroutine);
+        setCellsAfterResetCoroutine = StartCoroutine(SetShotCellsAfterReset(2f));
+    }
+
+    Coroutine setCellsAfterResetCoroutine;
+
+    IEnumerator SetShotCellsAfterReset(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        for (int i = 0; i < cellsShotQueue.Count; i++)
+        {
+            ShootCell((int) cellsShotQueue[i].x, (int) cellsShotQueue[i].y, false);
+        }
+        isInResetAnim = false;
     }
 
     private bool delayShootCell = false;
@@ -125,16 +144,15 @@ public class TreasureHuntManager : SingletonMono<TreasureHuntManager>
 
     public void TryShootCell(int x, int y)
     {
-        if (delayShootCell)
+        if (delayShootCell || isInResetAnim)
             return;
 
         if (PConsumableType.BERI.GetValue() < GameData.JoinTreasureRoom.ShotCost)
         {
             return;
         }
-
         PConsumableType.BERI.AddValue(-GameData.JoinTreasureRoom.ShotCost);
-        delayShootCellCoroutine = StartCoroutine(DelayShootCell(1));
+        //delayShootCellCoroutine = StartCoroutine(DelayShootCell(1));
         Debug.Log($"shooting cell {x} {y}");
         WSClient.RequestShootTreasure(x, y);
     }
@@ -145,11 +163,21 @@ public class TreasureHuntManager : SingletonMono<TreasureHuntManager>
         int y = int.Parse(node["x"]);       // x from server is y in game
         int x = int.Parse(node["y"]);       // y from server is x in game
         Debug.Log($"cell {x} {y} is shot: result {status}");
+        var c = new Vector2(x, y);
 
+        if (status == -2)
+        {
+            if (cells.ContainsKey(c))
+            {
+                cells[c].SetIsShot(true);
+            }
+        }
         if (status >= 0 && status <= 2)
         {
-            
-            ShootCell(x, y);
+            if (isInResetAnim)
+                cellsShotQueue.Add(c);
+            else
+                ShootCell(x, y, status == 2);
         }
             
         if (status == 2 || status == 1)
@@ -166,6 +194,13 @@ public class TreasureHuntManager : SingletonMono<TreasureHuntManager>
             if (treasureTransform && PDataAuth.AuthData.userId == userId)
             {
                 PlayTreasureGetAnim(x, y);
+                try
+                {
+                    PConsumableType.BERI.AddValue(int.Parse(node["beri"]));
+                } catch (Exception e)
+                {
+
+                }
             }
         } else if (status == 0 || status == 1)
         {
