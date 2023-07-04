@@ -152,7 +152,7 @@ public class TreasureHuntManager : SingletonMono<TreasureHuntManager>
             return;
         }
         PConsumableType.BERI.AddValue(-GameData.JoinTreasureRoom.ShotCost);
-        //delayShootCellCoroutine = StartCoroutine(DelayShootCell(1));
+        delayShootCellCoroutine = StartCoroutine(DelayShootCell(1));
         Debug.Log($"shooting cell {x} {y}");
         WSClient.RequestShootTreasure(x, y);
     }
@@ -193,14 +193,7 @@ public class TreasureHuntManager : SingletonMono<TreasureHuntManager>
             UpdatePrize(GameData.JoinTreasureRoom.InitPrize);
             if (treasureTransform && PDataAuth.AuthData.userId == userId)
             {
-                PlayTreasureGetAnim(x, y);
-                try
-                {
-                    PConsumableType.BERI.AddValue(int.Parse(node["beri"]));
-                } catch (Exception e)
-                {
-
-                }
+                PlayTreasureGetAnim(x, y, int.Parse(node["beri"]));
             }
         } else if (status == 0 || status == 1)
         {
@@ -208,7 +201,7 @@ public class TreasureHuntManager : SingletonMono<TreasureHuntManager>
         }
     }
 
-    public void PlayTreasureGetAnim(int cellX, int cellY)
+    public void PlayTreasureGetAnim(int cellX, int cellY, int prizeAmount)
     {
         var c = new Vector2(cellX, cellY);
         if (cells.ContainsKey(c))
@@ -220,6 +213,14 @@ public class TreasureHuntManager : SingletonMono<TreasureHuntManager>
         {
             CoinVFX2.CreateCoinFx(resourceUI, treasureTransform.position, CoinVFX2.VFXState.JACKPOT);
         }
+
+        StartCoroutine(DelayAddBeri(prizeAmount));
+    }
+
+    IEnumerator DelayAddBeri(int prizeAmount)
+    {
+        yield return new WaitForSeconds(2f);
+        PConsumableType.BERI.AddValue(prizeAmount);
     }
 
     public void TestFx()
