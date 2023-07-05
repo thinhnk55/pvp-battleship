@@ -34,12 +34,14 @@ public class CoinVFX2 : MonoBehaviour
 
     void Update()
     {
-        if (state == VFXState.JACKPOT_GET)
+        //if (state == VFXState.JACKPOT_GET)
+        if (state == VFXState.JACKPOT_GET || state == VFXState.JACKPOT)
         {
             SoundType.COIN_VFX.PlaySound();
             if (target)
             {
-                particleSys.DirectToTarget(target.position, multiplier);
+                //particleSys.DirectToTarget(target.position, multiplier);
+                particleSys.DirectToTargetAfterTime(target.position, multiplier, 2.5f);
             }
         }
 

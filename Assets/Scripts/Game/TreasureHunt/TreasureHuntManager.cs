@@ -162,7 +162,6 @@ public class TreasureHuntManager : SingletonMono<TreasureHuntManager>
         int status = int.Parse(node["s"]);
         int y = int.Parse(node["x"]);       // x from server is y in game
         int x = int.Parse(node["y"]);       // y from server is x in game
-        Debug.Log($"cell {x} {y} is shot: result {status}");
         var c = new Vector2(x, y);
 
         if (status == -2)
