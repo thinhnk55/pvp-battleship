@@ -4,6 +4,7 @@ using SimpleJSON;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.ShaderGraph.Serialization;
 using UnityEngine;
 using UnityEngine.SocialPlatforms.Impl;
 using UnityEngine.UI;
@@ -42,6 +43,7 @@ public class WSClient : WSClientBase
     }
     public void OnLogin(JSONNode data)
     {
+        MusicType.MAINMENU.PlayMusic();
         PConsumableType.GEM.SetValue(int.Parse(data["profile"]["d"]));
         PConsumableType.BERI.SetValue(int.Parse(data["profile"]["b"]));
         PNonConsumableType.AVATAR.FromJson(data["statistics"]["a_a"]);
@@ -53,6 +55,7 @@ public class WSClient : WSClientBase
         Timer<LuckyShot>.Instance.LastTime = long.Parse(data["timer"]["lfb"]).NowFrom0001From1970();
         Timer<Gift>.Instance.LastTime = long.Parse(data["timer"]["lcr"]).NowFrom0001From1970();
         Timer<RankCollection>.Instance.LastTime = long.Parse(data["timer"]["WRC"]).NowFrom0001From1970();
+        Timer<RoyalPass>.Instance.LastTime = GameData.RoyalPass.End;
         GameData.ProgressGift = int.Parse(data["timer"]["cr"]);
         CoreGame.timeInit = int.Parse(data["t"]);
         for (int i = 0; i < data["v"].Count; i++)
@@ -220,7 +223,22 @@ public class WSClient : WSClientBase
         }
         SceneTransitionHelper.Load(ESceneName.Home);
     }
-
+    public static void RequestGiftConfig()
+    {
+        JSONNode jsonNode = new JSONClass()
+        {
+            { "id", GameServerEvent.REQUEST_GIFT_CONFIG.ToJson() },
+        };
+        Instance.Send(jsonNode);
+    }
+    public static void ReceiveGiftConfig(JSONNode json)
+    {
+        GameData.GiftConfig = new List<int>();
+        for (int i = 0; i < json["list"].Count; i++)
+        {
+            GameData.GiftConfig.Add(int.Parse(json["list"][i]));
+        }
+    }
     #endregion
     #region TREASUREHUNT
 
@@ -316,7 +334,7 @@ public class WSClient : WSClientBase
     }
 
     #endregion
-
+    #region CoreGame
     public static void SearchOpponent(int bet, List<Ship> ships)
     {
         JSONNode jsonNode = new JSONClass();
@@ -360,17 +378,6 @@ public class WSClient : WSClientBase
         };
         Instance.Send(jsonNode);
     }
-
-    public static void RequestObtainAchievemnt(int id, int obtained)
-    {
-        JSONNode jsonNode = new JSONClass
-        {
-            { "id", GameServerEvent.REQUEST_OBTAIN_ACHIEVEMENT.ToJson() },
-            { "achieId", id.ToJson() },
-            { "achieIndex", (obtained + 1).ToJson() }
-        };
-        Instance.Send(jsonNode);
-    }
     public static void RequesRematch()
     {
         JSONNode jsonNode = new JSONClass()
@@ -388,6 +395,18 @@ public class WSClient : WSClientBase
         };
         Instance.Send(jsonNode);
     }
+    #endregion 
+    public static void RequestObtainAchievemnt(int id, int obtained)
+    {
+        JSONNode jsonNode = new JSONClass
+        {
+            { "id", GameServerEvent.REQUEST_OBTAIN_ACHIEVEMENT.ToJson() },
+            { "achieId", id.ToJson() },
+            { "achieIndex", (obtained + 1).ToJson() }
+        };
+        Instance.Send(jsonNode);
+    }
+    
     public static void RequestGift()
     {
         JSONNode jsonNode = new JSONClass()
@@ -396,22 +415,7 @@ public class WSClient : WSClientBase
         };
         Instance.Send(jsonNode);
     }
-    public static void RequestGiftConfig()
-    {
-        JSONNode jsonNode = new JSONClass()
-        {
-            { "id", GameServerEvent.REQUEST_GIFT_CONFIG.ToJson() },
-        };
-        Instance.Send(jsonNode);
-    }
-    public static void ReceiveGiftConfig(JSONNode json)
-    {
-        GameData.GiftConfig = new List<int>();
-        for (int i = 0; i < json["list"].Count; i++)
-        {
-            GameData.GiftConfig.Add(int.Parse(json["list"][i]));
-        }
-    }
+
     public static void RequestRank()
     {
         JSONNode jsonNode = new JSONClass()
@@ -423,9 +427,10 @@ public class WSClient : WSClientBase
     public static void RequestChangeAchievement(int[] indexs)
     {
         JSONArray array = new JSONArray();
+        JSONNode node = new JSONClass();
         for (int i = 0; i < indexs.Length; i++)
         {
-            array.Add(indexs[i].ToString());
+            array.Add(new JSONData(indexs[i]));
         }
         JSONNode jsonNode = new JSONClass()
         {
@@ -487,5 +492,57 @@ public class WSClient : WSClientBase
             { "f", i.ToString()}
         };
         Instance.Send(jsonNode);
+    }
+
+    public static void RequestQuest(int index)
+    {
+        JSONNode jsonNode = new JSONClass()
+        {
+            { "id", GameServerEvent.REQUEST_RECEIVE_ROYALPASS_QUEST.ToJson() },
+            { "index", new JSONData(index)}
+        };
+        Instance.Send(jsonNode);
+    }
+    public static void ReceiveQuest(JSONNode json)
+    {
+        int[] receive = GameData.RoyalPass.CurrentQuests.Data;
+        receive[json["index"].AsInt] = -1;
+        GameData.RoyalPass.CurrentQuests.Data = receive;
+    }
+    public static void RequestSeasonQuest(int index)
+    {
+        JSONNode jsonNode = new JSONClass()
+        {
+            { "id", GameServerEvent.REQUEST_RECEIVE_ROYALPASS_SEASON_QUEST.ToJson() },
+            { "index", new JSONData(index)}
+        };
+        Instance.Send(jsonNode);
+    }
+    public static void ReceiveSeasonQuest(JSONNode json)
+    {
+        HashSet<int> receive = GameData.RoyalPass.SeasonQuestsObtained.Data;
+        receive.Add(json["index"].AsInt);
+        GameData.RoyalPass.SeasonQuestsObtained.Data = receive;
+    }
+    public static void RequestReceiveRoyalPass(int index, int elite)
+    {
+        JSONNode jsonNode = new JSONClass()
+        {
+            { "id", GameServerEvent.REQUEST_RECEIVE_ROYALPASS.ToJson() },
+            { "m", new JSONData(index)},
+            { "type", new JSONData(elite)},
+        };
+        Instance.Send(jsonNode);
+    }
+    public static void ReceiveReceiveRoyalPass(JSONNode json)
+    {
+        if (json["type"].AsInt == 0)
+        {
+            GameData.RoyalPass.NormalObtains.Add(json["m"].AsInt);
+        }
+        else
+        {
+            GameData.RoyalPass.EliteObtains.Add(json["m"].AsInt);
+        }
     }
 }

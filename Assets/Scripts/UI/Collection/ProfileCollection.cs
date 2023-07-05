@@ -5,10 +5,12 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static TMPro.SpriteAssetUtilities.TexturePacker_JsonArray;
 
 public struct ProfileInfo
 {
     public int Avatar;
+    public int Frame;
     public string Username;
     public int Rank;
     public int Wins;
@@ -70,6 +72,14 @@ public class ProfileCollection : CardCollectionBase<ProfileInfo>
             {
                 avatar.sprite = SpriteFactory.Avatars[infos.Avatar];
             }
+        }
+        if (frame)
+        {
+            frame.sprite = SpriteFactory.ResourceIcons[(int)PNonConsumableType.AVATAR_FRAME].sprites[infos.Frame];
+        }
+        if (frameTail)
+        {
+            frameTail.sprite = SpriteFactory.Tailframes[infos.Frame];
         }
         if (username)
         {
@@ -137,6 +147,7 @@ public class ProfileCollection : CardCollectionBase<ProfileInfo>
             ProfileInfo info = new ProfileInfo()
             {
                 Avatar = profile.Avatar.Data,
+                Frame = profile.FrameAvatar.Data,
                 Username = profile.Username.Data,
                 Rank = profile.Rank,
                 Wins = profile.Wins,
