@@ -97,6 +97,7 @@ public class WSClient : WSClientBase
                 }
             }
         }
+        RequestTreasureConfig();
         SceneTransitionHelper.Load(ESceneName.Home);
         Timer<LuckyShot>.Instance.TriggerIntervalInSecond = GameData.LuckyShotCoolDown;
         Timer<Gift>.Instance.TriggerIntervalInSecond = GameData.GiftCoolDown;
@@ -241,6 +242,8 @@ public class WSClient : WSClientBase
     #endregion
     #region TREASUREHUNT
 
+    private static bool waitingJoinTreasureRoom = false;
+
     public static void RequestTreasureConfig()
     {
         JSONNode jsonNode = new JSONClass()
@@ -259,6 +262,7 @@ public class WSClient : WSClientBase
             {
                 Id = int.Parse(data["list"][i]["id"]),
                 PrizeAmount = int.Parse(data["list"][i]["re"]),
+                InitPrize = int.Parse(data["list"][i]["init"]),
             };
             GameData.TreasureConfigs.Add(treasureConfig);
         }
@@ -267,6 +271,7 @@ public class WSClient : WSClientBase
 
     public static void RequestJoinTreasureRoom(int rom)
     {
+        if (waitingJoinTreasureRoom) return;
         Debug.Log("Request:");
         JSONNode jsonNode = new JSONClass()
         {
@@ -274,24 +279,58 @@ public class WSClient : WSClientBase
             {"b" , rom.ToJson() },
         };
         Instance.Send(jsonNode);
+        GameData.JoinTreasureRoom.RoomId = rom;
+        foreach (var r in GameData.TreasureConfigs)
+        {
+            if (r.Id == rom)
+            {
+                GameData.JoinTreasureRoom.ShotCost = r.PrizeAmount;
+                GameData.JoinTreasureRoom.InitPrize = r.InitPrize;
+                break;
+            }
+        }
+        waitingJoinTreasureRoom = true;
     }
 
     public static void ReceiveJoinTreasureRoom(JSONNode data)
     {
-        Debug.Log("Receive :"+ data);
-        GameData.JoinTreasureRoom.Id = int.Parse(data["id"]);
-        GameData.JoinTreasureRoom.IsSuccess = int.Parse(data["s"]);
-        GameData.JoinTreasureRoom.CurrentPrize = int.Parse(data["beri"]);
+        //Debug.Log("Receive :"+ data);
+        //GameData.JoinTreasureRoom.Id = int.Parse(data["id"]);
+        //GameData.JoinTreasureRoom.IsSuccess = int.Parse(data["s"]);
+        //GameData.JoinTreasureRoom.CurrentPrize = int.Parse(data["beri"]);
+        //GameData.JoinTreasureRoom.Board = new List<List<int>>();
 
-        for(int row=0; row<10; row++)
+        //for (int row=0; row<10; row++)
+        //{
+        //    List<int> rowList = new List<int>();
+        //    for(int col=0; col<10; col++)
+        //    {
+        //        rowList.Add(int.Parse(data["board"][col][row]));
+        //    }
+        //    GameData.JoinTreasureRoom.Board.Add(rowList);
+        //}
+        waitingJoinTreasureRoom = false;
+    }
+
+    public static void RequestShootTreasure(int x, int y)
+    {
+        JSONNode jsonNode = new JSONClass()
         {
-            List<int> rowList = new List<int>();
-            for(int col=0; col<10; col++)
-            {
-                rowList.Add(int.Parse(data["board"][col][row]));
-            }
-            GameData.JoinTreasureRoom.Board.Add(rowList);
-        }
+            {"id", GameServerEvent.REQUEST_SHOOT_TREASURE.ToJson() },
+            {"b" , GameData.JoinTreasureRoom.RoomId.ToJson() },
+            {"x" , y.ToJson() },
+            {"y" , x.ToJson() },
+        };
+        Instance.Send(jsonNode);
+    }
+
+    public static void RequestExitTreasureRoom()
+    {
+        JSONNode jsonNode = new JSONClass()
+        {
+            {"id", GameServerEvent.REQUEST_EXIT_TREASURE_ROOM.ToJson() },
+        };
+        Instance.Send(jsonNode);
     }
 
     #endregion

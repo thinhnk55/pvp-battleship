@@ -23,12 +23,12 @@ public class ResourcesCard : MonoBehaviour
     void OnChangeValueBeri(int oldValue, int newValue)
     {
         tweenBeri.Kill();
-        tweenBeri = DOTween.To(() => int.Parse(beri.text), (value) => beri.text = value.ToString(), newValue, tweenDuration);
+        tweenBeri = DOTween.To(() => int.Parse(beri.text), (value) => beri.text = value.ToString(), newValue, tweenDuration).OnComplete(() => beri.text = newValue.ToString());
     }
     void OnChangeValueGem(int oldValue, int newValue)
     {
         tweenGem.Kill();
-        tweenGem = DOTween.To(() => int.Parse(gem.text), (value) => gem.text = value.ToString(), newValue, tweenDuration);
+        tweenGem = DOTween.To(() => int.Parse(gem.text), (value) => gem.text = value.ToString(), newValue, tweenDuration).OnComplete(() => gem.text = newValue.ToString());
     }
 
     private void OnDestroy()

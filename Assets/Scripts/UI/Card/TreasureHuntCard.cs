@@ -17,6 +17,7 @@ public class TreasureHuntCard : CardBase<TreasureHuntInfo>
     [SerializeField] TextMeshProUGUI Praticipant;
     RectTransform rectTransform;
     RectTransform contentTransform;
+
     public override void BuildUI(TreasureHuntInfo info)
     {
         base.BuildUI(info);

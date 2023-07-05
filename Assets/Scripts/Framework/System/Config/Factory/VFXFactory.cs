@@ -17,4 +17,5 @@ public class VFXFactory : SingletonScriptableObject<VFXFactory>
     [SerializeField] private GameObject smoke; public static GameObject Smoke { get { return Instance.smoke; } }
     [SerializeField] private GameObject splashWater; public static GameObject SplashWater { get { return Instance.splashWater; } }
     [SerializeField] private GameObject coin; public static GameObject Coin { get { return Instance.coin; } }
+    [SerializeField] private GameObject coin2; public static GameObject Coin2 { get { return Instance.coin2; } }
 }

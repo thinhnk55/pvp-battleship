@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class TreasureHuntCollection : CardCollectionBase<TreasureHuntInfo>
 {
+    [SerializeField] GameObject treasureHuntPopup;
+
     public override void UpdateUIs()
     {
         List<TreasureHuntInfo> infos = new List<TreasureHuntInfo>();
@@ -15,7 +17,7 @@ public class TreasureHuntCollection : CardCollectionBase<TreasureHuntInfo>
             {
                 Id = GameData.TreasureConfigs[i].Id,
                 PrizeAmount = GameData.TreasureConfigs[i].PrizeAmount,
-                OnClick = LoadTreasureHuntScene
+                OnClick = TryJoinRoom
             });
         }
 
@@ -36,7 +38,7 @@ public class TreasureHuntCollection : CardCollectionBase<TreasureHuntInfo>
         UpdateUIs();
     }
 
-    private void LoadTreasureHuntScene()
+    private void TryJoinRoom()
     {
         if (GameData.JoinTreasureRoom.IsSuccess == 0)
         {
@@ -50,7 +52,12 @@ public class TreasureHuntCollection : CardCollectionBase<TreasureHuntInfo>
         Debug.Log("Receive :" + data);
         GameData.JoinTreasureRoom.Id = int.Parse(data["id"]);
         GameData.JoinTreasureRoom.IsSuccess = int.Parse(data["s"]);
+        if (GameData.JoinTreasureRoom.IsSuccess == 0)
+        {
+            return;
+        }
         GameData.JoinTreasureRoom.CurrentPrize = int.Parse(data["beri"]);
+        GameData.JoinTreasureRoom.Board = new List<List<int>>();
 
         for (int row = 0; row < 10; row++)
         {
@@ -60,6 +67,12 @@ public class TreasureHuntCollection : CardCollectionBase<TreasureHuntInfo>
                 rowList.Add(int.Parse(data["board"][col][row]));
             }
             GameData.JoinTreasureRoom.Board.Add(rowList);
+        }
+
+        if (treasureHuntPopup != null)
+        {
+            PopupHelper.Create(treasureHuntPopup);
+            TreasureHuntManager.Instance.UpdateBoard();
         }
     }
 }
