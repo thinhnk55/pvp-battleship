@@ -93,6 +93,7 @@ public class CoreGame : SingletonMono<CoreGame>
     #region Mono
     protected override void Awake()
     {
+        AudioHelper.StopMusic();
         reveal = true;
         cam = Camera.main;
         lines = new List<List<GameObject>>();

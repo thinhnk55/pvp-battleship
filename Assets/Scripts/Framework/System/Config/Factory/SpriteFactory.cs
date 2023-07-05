@@ -38,6 +38,9 @@ namespace Framework
         [SerializeField] private Sprite selectedRankBG; public static Sprite SelectedRankBG { get { return Instance.selectedRankBG; } }
         [SerializeField] private Sprite unselectedRankBG; public static Sprite UnselectedRankBG { get { return Instance.unselectedRankBG; } }
         [SerializeField] private Sprite shipLuckyShot; public static Sprite ShipLuckyShot { get { return Instance.shipLuckyShot; } }
+        [SerializeField] private Sprite royalPassTreasure; public static Sprite RoyalPassTreasure { get { return Instance.royalPassTreasure; } }
+        [SerializeField] private Sprite royalPassFreeBG; public static Sprite RoyalPassFreeBG { get { return Instance.royalPassFreeBG; } }
+        [SerializeField] private Sprite royalPassEliteBG; public static Sprite RoyalPassEliteBG { get { return Instance.royalPassEliteBG; } }
 
     }
 
