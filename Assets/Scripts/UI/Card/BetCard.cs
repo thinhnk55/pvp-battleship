@@ -62,8 +62,9 @@ public class BetCard : CardBase<BetInfo>
     }
     private void Update()
     {
-        rectTransform.position += Vector3.right * Time.deltaTime;
-        float scale = 1 + (1 - Mathf.Clamp01( Mathf.Pow((rectTransform.anchoredPosition.x + contentTransform.anchoredPosition.x - Screen.width / 2) / (Screen.height / 2), 2)) ) * 0.5f;
+        //rectTransform.position += Vector3.right * Time.deltaTime;
+        //float scale = 1 + (1 - Mathf.Clamp01( Mathf.Pow((rectTransform.anchoredPosition.x + contentTransform.anchoredPosition.x - Screen.width / 2) / (Screen.height / 2), 2)) ) * 0.5f;
+        float scale = 1 + (1 - Mathf.Clamp01(Mathf.Pow((rectTransform.anchoredPosition.x + contentTransform.anchoredPosition.x - SnapScrollView.SnapPointXPos) / (Screen.currentResolution.height / 2), 2))) * 0.5f;
         transform.localScale = scale * Vector3.one;
     }
 }
