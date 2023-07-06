@@ -1,0 +1,64 @@
+{
+"skeleton": {
+	"hash": "WtX3OPeJlsE",
+	"spine": "4.1.17",
+	"x": -1,
+	"y": -318,
+	"width": 393,
+	"height": 319,
+	"images": "./images/",
+	"audio": "E:/Game Bắn tàu/VFX/May_bay"
+},
+"bones": [
+	{ "name": "root" },
+	{ "name": "than_1", "parent": "root", "x": 174.45, "y": -124.53 },
+	{ "name": "canh_2", "parent": "than_1", "x": -44.45, "y": -3.47 },
+	{ "name": "Layer 1", "parent": "than_1", "x": -2.41, "y": -62.01 },
+	{ "name": "Layer 2", "parent": "than_1", "x": -44.33, "y": -57.89 }
+],
+"slots": [
+	{ "name": "Layer 1", "bone": "Layer 1", "attachment": "Layer 1" },
+	{ "name": "Layer 2", "bone": "Layer 2", "attachment": "Layer 2" },
+	{ "name": "than_1", "bone": "than_1", "attachment": "than_1" },
+	{ "name": "canh_2", "bone": "canh_2", "attachment": "canh_2" }
+],
+"skins": [
+	{
+		"name": "default",
+		"attachments": {
+			"canh_2": {
+				"canh_2": { "y": 1, "width": 260, "height": 256 }
+			},
+			"Layer 1": {
+				"Layer 1": { "x": 23.46, "y": -0.46, "width": 393, "height": 148 }
+			},
+			"Layer 2": {
+				"Layer 2": { "x": 4.88, "y": -4.59, "width": 272, "height": 262 }
+			},
+			"than_1": {
+				"than_1": { "x": 21.05, "y": -2.47, "width": 389, "height": 122 }
+			}
+		}
+	}
+],
+"animations": {
+	"bay": {
+		"bones": {
+			"canh_2": {
+				"rotate": [
+					{},
+					{ "time": 0.2, "value": -180 },
+					{ "time": 0.4, "value": -360 }
+				]
+			},
+			"Layer 2": {
+				"rotate": [
+					{},
+					{ "time": 0.2, "value": -180 },
+					{ "time": 0.4, "value": -360 }
+				]
+			}
+		}
+	}
+}
+}

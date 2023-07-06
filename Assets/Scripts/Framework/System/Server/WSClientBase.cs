@@ -15,12 +15,13 @@ namespace Framework {
             ws.OnMessage += OnMessage;
             ws.OnError += OnError;
             ws.Connect();
-            InvokeRepeating("Ping", 10, 14);
+            InvokeRepeating("Ping", 10, 10);
 
         }
         void Ping()
         {
-             Instance.ws.Ping();
+            ws.Send("{\"id\":2}");
+            Debug.Log("{\"id\":2}");
         }
         protected override void OnDestroy()
         {

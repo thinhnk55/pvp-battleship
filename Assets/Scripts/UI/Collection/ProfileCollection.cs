@@ -13,6 +13,7 @@ public struct ProfileInfo
     public int Frame;
     public string Username;
     public int Rank;
+    public int Point;
     public int Wins;
     public int Losts;
     public float WinRate;
@@ -95,7 +96,8 @@ public class ProfileCollection : CardCollectionBase<ProfileInfo>
         }
         if (rankProgress)
         {
-            rankProgress.value = 0;
+            rankProgress.maxValue = GameData.RankConfigs[infos.Rank].Point;
+            rankProgress.value = infos.Point;
         }
         if (battles)
         {
@@ -150,6 +152,7 @@ public class ProfileCollection : CardCollectionBase<ProfileInfo>
                 Frame = profile.FrameAvatar.Data,
                 Username = profile.Username.Data,
                 Rank = profile.Rank,
+                Point = profile.Point,
                 Wins = profile.Wins,
                 Losts = profile.Losts,
                 WinRate = profile.WinRate,

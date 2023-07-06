@@ -1,12 +1,9 @@
 using Framework;
-using GooglePlayGames.BasicApi;
 using SimpleJSON;
+using Sirenix.Utilities;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.ShaderGraph.Serialization;
 using UnityEngine;
-using UnityEngine.SocialPlatforms.Impl;
 using UnityEngine.UI;
 
 public class WSClient : WSClientBase
@@ -25,6 +22,13 @@ public class WSClient : WSClientBase
         ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECIEVE_ROYAL_CONFIG, ReceiveRoyalPassConfig);
         ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECIEVE_JOIN_TREASURE_ROOM, ReceiveJoinTreasureRoom);
         ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECIEVE_BET_CONFIG, ReceiveBetConfig);
+
+
+        //not config
+        ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECIEVE_RECEIVE_ROYALPASS, ReceiveReceiveRoyalPass);
+        ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECIEVE_RECEIVE_ROYALPASS_QUEST, ReceiveQuest);
+        ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECIEVE_RECEIVE_ROYALPASS_SEASON_QUEST, ReceiveSeasonQuest);
+
     }
     protected override void OnDestroy()
     {
@@ -40,6 +44,11 @@ public class WSClient : WSClientBase
         ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.RECIEVE_ROYAL_CONFIG, ReceiveRoyalPassConfig);
         ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.RECIEVE_JOIN_TREASURE_ROOM, ReceiveJoinTreasureRoom);
         ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.RECIEVE_BET_CONFIG, ReceiveBetConfig);
+
+        //not config
+        ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.RECIEVE_RECEIVE_ROYALPASS, ReceiveReceiveRoyalPass);
+        ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.RECIEVE_RECEIVE_ROYALPASS_QUEST, ReceiveQuest);
+        ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.RECIEVE_RECEIVE_ROYALPASS_SEASON_QUEST, ReceiveSeasonQuest);
     }
     public void OnLogin(JSONNode data)
     {
@@ -395,7 +404,8 @@ public class WSClient : WSClientBase
         };
         Instance.Send(jsonNode);
     }
-    #endregion 
+    #endregion
+    #region Other Feature
     public static void RequestObtainAchievemnt(int id, int obtained)
     {
         JSONNode jsonNode = new JSONClass
@@ -505,9 +515,10 @@ public class WSClient : WSClientBase
     }
     public static void ReceiveQuest(JSONNode json)
     {
-        int[] receive = GameData.RoyalPass.CurrentQuests.Data;
+        int[] receive = new int[3] { GameData.RoyalPass.CurrentQuests.Data[0], GameData.RoyalPass.CurrentQuests.Data[1], GameData.RoyalPass.CurrentQuests.Data[2] };
         receive[json["index"].AsInt] = -1;
         GameData.RoyalPass.CurrentQuests.Data = receive;
+        GameData.RoyalPass.Point.Data += GameData.RoyalPass.Quests[json["index"].AsInt].Reward;
     }
     public static void RequestSeasonQuest(int index)
     {
@@ -520,7 +531,9 @@ public class WSClient : WSClientBase
     }
     public static void ReceiveSeasonQuest(JSONNode json)
     {
-        HashSet<int> receive = GameData.RoyalPass.SeasonQuestsObtained.Data;
+        GameData.RoyalPass.Point.Data += GameData.RoyalPass.SeasonQuests[json["index"].AsInt].Reward;
+        HashSet<int> receive = new HashSet<int>();
+        receive.AddRange(GameData.RoyalPass.SeasonQuestsObtained.Data);
         receive.Add(json["index"].AsInt);
         GameData.RoyalPass.SeasonQuestsObtained.Data = receive;
     }
@@ -536,13 +549,32 @@ public class WSClient : WSClientBase
     }
     public static void ReceiveReceiveRoyalPass(JSONNode json)
     {
+        if(json["m"].AsInt == -1)
+            return;
         if (json["type"].AsInt == 0)
         {
-            GameData.RoyalPass.NormalObtains.Add(json["m"].AsInt);
+            HashSet<int> receive = new HashSet<int>();
+            receive.AddRange(GameData.RoyalPass.NormalObtains.Data);
+            receive.Add(json["m"].AsInt);
+            List<GoodInfo> goods = GameData.RoyalPass.RewardNormals[json["m"].AsInt];
+            for (int i = 0; i < goods.Count; i++)
+            {
+                goods[i].Type.Transact((int)goods[i].Value);
+            }
+            GameData.RoyalPass.NormalObtains.Data = receive;
         }
         else
         {
-            GameData.RoyalPass.EliteObtains.Add(json["m"].AsInt);
+            HashSet<int> receive = new HashSet<int>(); 
+            receive.AddRange(GameData.RoyalPass.EliteObtains.Data);
+            receive.Add(json["m"].AsInt);
+            List<GoodInfo> goods = GameData.RoyalPass.RewardElites[json["m"].AsInt];
+            for (int i = 0; i < goods.Count; i++)
+            {
+                goods[i].Type.Transact((int)goods[i].Value);
+            }
+            GameData.RoyalPass.EliteObtains.Data = receive;
         }
     }
+    #endregion
 }

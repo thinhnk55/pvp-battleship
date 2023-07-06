@@ -33,7 +33,6 @@ namespace Framework
                     if (RemainTimeInsecond - 1 == 0)
                     {
                         OnTrigger?.Invoke();
-                        Debug.Log("Trigger");
                     }
                 }
 

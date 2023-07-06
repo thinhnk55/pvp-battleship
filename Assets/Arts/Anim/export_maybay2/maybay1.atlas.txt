@@ -1,0 +1,14 @@
+maybay1.png
+size:919,276
+filter:Linear,Linear
+pma:true
+Layer 1
+bounds:524,126,393,148
+Layer 2
+bounds:2,2,272,262
+rotate:90
+canh_2
+bounds:266,14,260,256
+rotate:90
+than_1
+bounds:524,2,389,122

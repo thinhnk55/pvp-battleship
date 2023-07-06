@@ -1,4 +1,5 @@
 using Framework;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,8 +9,17 @@ public class RoyalPassFreeCollection : CardCollectionBase<RoyalPassInfo>
 {
     private void Awake()
     {
-
+        GameData.RoyalPass.NormalObtains.OnDataChanged += OnObtain;
         UpdateUIs();
+    }
+
+    private void OnObtain(HashSet<int> arg1, HashSet<int> arg2)
+    {
+        UpdateUIs();
+    }
+    private void OnDestroy()
+    {
+        GameData.RoyalPass.NormalObtains.OnDataChanged -= OnObtain;
     }
     public override void UpdateUIs()
     {
@@ -22,14 +32,14 @@ public class RoyalPassFreeCollection : CardCollectionBase<RoyalPassInfo>
             GoodInfo[] goods = GameData.RoyalPass.RewardNormals[i].ToArray();
             infos.Add(new RoyalPassInfo()
             {
-                Id = i,
-                Obtained = GameData.RoyalPass.NormalObtains.Contains(i),
-                Unlocked = (GameData.RoyalPass.Point/100) > i,
+                Id = _i,
+                Obtained = GameData.RoyalPass.NormalObtains.Data.Contains(_i),
+                Unlocked = GameData.RoyalPass.Level >= _i,
                 Reward = goods,
                 Elite = false,
                 Obtain = (info) =>
                 {
-                    WSClient.RequestReceiveRoyalPass(_i,0);
+                    WSClient.RequestReceiveRoyalPass(info.Id, 0);
                 }
             });;
         }

@@ -12,6 +12,7 @@ public struct QuestInfo
     public int Progress;
     public int Require;
     public int Reward;
+    public bool Obtained;
     public Callback<QuestInfo> OnCollect;
     public Callback<QuestInfo> OnChange;
 }
@@ -23,6 +24,7 @@ public class QuestCard : CardBase<QuestInfo>
     [SerializeField] TextMeshProUGUI progress;
     [SerializeField] Button collect;
     [SerializeField] Button change;
+    [SerializeField] Image obtainIndicator;
 
     protected override void OnClicked(QuestInfo info)
     {
@@ -35,14 +37,38 @@ public class QuestCard : CardBase<QuestInfo>
         reward?.SetText(info.Reward.ToString());
         des?.SetText(info.Description);
         progress?.SetText(info.Progress.ToString()+"/"+info.Require.ToString());
-        collect?.onClick.AddListener(() =>
+        if (!info.Obtained)
         {
-            info.OnCollect?.Invoke(info);
-        });
-        change?.onClick.AddListener(() =>
+            obtainIndicator?.gameObject.SetActive(false);
+            collect?.onClick.AddListener(() =>
+            {
+                if (info.OnCollect != null)
+                {
+                    info.OnCollect?.Invoke(info);
+                }
+            });
+            change?.onClick.AddListener(() =>
+            {
+                if (info.OnChange != null)
+                {
+                    info.OnChange?.Invoke(info);
+                }
+
+            });
+        }
+        else
         {
-            info.OnChange?.Invoke(info);
-        });
+            if (!change) // not the normal quest
+            {
+                obtainIndicator?.gameObject.SetActive(true);
+                gameObject.SetChildrenRecursively<Image>((img) =>
+                {
+                    img.color = Color.gray;
+                });
+                collect.gameObject.SetActive(false);
+            }
+
+        }
         if (progressBar)
         {
             progressBar.maxValue = info.Require;

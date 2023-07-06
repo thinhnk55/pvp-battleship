@@ -8,6 +8,7 @@ using UnityEngine;
 
 public class Octile : CacheMonoBehaviour
 {
+    public static float timeAttackAnim = 1.25f;
     public TextMeshPro textOccupied;
     [SerializeField] private int occupied; public int Occupied
     {
@@ -36,7 +37,7 @@ public class Octile : CacheMonoBehaviour
             attacked = value;
             if (attacked)
             {
-                DOVirtual.DelayedCall(1.25f, ()=> spriteRenderer.sprite = SpriteFactory.Occupied, true);
+                DOVirtual.DelayedCall(0.5f, ()=> spriteRenderer.sprite = SpriteFactory.Missed, true);
             }
             else
             {

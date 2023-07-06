@@ -170,7 +170,6 @@ public class CoreGame : SingletonMono<CoreGame>
         WSClient.SearchOpponent(bet, player.ships);
         Instance.opponent.gameObject.SetActive(true);
         Instance.opponent.InitBoard(10, 10);
-        Instance.opponent.RandomShip(shipsOpponent);
         Instance.preUI.SetActive(false);
         Instance.searchUI.gameObject.SetActive(true);
         var profile = new ProfileInfo()
@@ -265,6 +264,7 @@ public class CoreGame : SingletonMono<CoreGame>
     void GameStart(JSONNode json)
     {
         GameData.Opponent = ProfileData.FromJsonOpponent(GameData.Opponent, json);
+        Instance.searchUI.opponentProfile.UpdateUIs();
         Instance.opponent.battleFieldSprite.sprite = SpriteFactory.ResourceIcons[5].sprites[GameData.Opponent.BattleField.Data];
         Debug.Log(GameData.Opponent.Username);
         Instance.ingameUI.SetActive(true);
@@ -284,35 +284,42 @@ public class CoreGame : SingletonMono<CoreGame>
 
     void HandleBeingAttacked(JSONNode json)
     {
+        var plane = ObjectPoolManager.GenerateObject<Plane>(PrefabFactory.Plane);
         Instance.playerTurn = playerChair == int.Parse(json["c"]);
         Board board = playerTurn ? Instance.opponent : Instance.player;
-        int status = int.Parse(json["s"]);
-        int x = int.Parse(json["x"]);
-        int y = int.Parse(json["y"]);
-        if (status == 2)
+        plane.Init(board.octiles[int.Parse(json["y"])][int.Parse(json["x"])].Position);
+        DOVirtual.DelayedCall(Octile.timeAttackAnim, () =>
         {
-            Ship ship;
-            int type = int.Parse(json["ship"]["type"]);
-            if (Instance.playerTurn)
+
+            int status = int.Parse(json["s"]);
+            int x = int.Parse(json["x"]);
+            int y = int.Parse(json["y"]);
+            if (status == 2)
             {
-                ship = Instantiate(PrefabFactory.Ships[type]).GetComponent<Ship>();
-                ship.board = board;
-                ship.FromJson(json["ship"]);
+                Ship ship;
+                int type = int.Parse(json["ship"]["type"]);
+                if (Instance.playerTurn)
+                {
+                    ship = Instantiate(PrefabFactory.Ships[type]).GetComponent<Ship>();
+                    ship.board = board;
+                    ship.FromJson(json["ship"]);
+                }
+                else
+                {
+                    ship = board.octiles[y][x].ship;
+                }
+                ship.BeingDestroyed();
             }
-            else
+            else if (status == 1)
             {
-                ship = board.octiles[y][x].ship;
+                board.octiles[y][x].BeingAttacked(true);
             }
-            ship.BeingDestroyed();
-        }
-        else if (status == 1)
-        {
-            board.octiles[y][x].BeingAttacked(true);
-        }
-        else if (status == 0)
-        {
-            board.octiles[y][x].BeingAttacked(false);
-        }
+            else if (status == 0)
+            {
+                board.octiles[y][x].BeingAttacked(false);
+            }
+        });
+
         //board.HandleAttacked(x,y,status, ship);
     }
 

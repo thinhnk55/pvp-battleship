@@ -63,8 +63,6 @@ public class Board : CacheMonoBehaviour
         if (Octile.Check(this, x, y , out int _x, out int _y) && !octiles[_y][_x].Attacked)
         {
             WSClient.AttackOpponent(CoreGame.Instance.roomId, _x, _y);
-            LeanTouch.OnFingerUp -= BeingAttacked;
-            LeanTouch.OnFingerUpdate -= SelectingTarget;
         }
         horzLine.SetActive(false);
         vertLine.SetActive(false);

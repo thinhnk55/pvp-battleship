@@ -217,6 +217,7 @@ public class Ship : CacheMonoBehaviour
                 ObjectPoolManager.GenerateObject<ParticleSystem>(VFXFactory.Smoke, octilesComposition[i].Position, gameObject);
             }
         }
+        GetComponent<LeanSelectableByFinger>().enabled = false;
     }
 
     public void OnSelected(LeanSelectByFinger leanSelectByFinger,LeanFinger leanFinger)

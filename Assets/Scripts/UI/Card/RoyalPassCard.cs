@@ -30,8 +30,21 @@ public class RoyalPassCard : CardBase<RoyalPassInfo>
     public override void BuildUI(RoyalPassInfo info)
     {
         base.BuildUI(info);
-        unlocked?.SetAlpha(info.Unlocked ? 1 : 0);
-        obtained?.SetAlpha(info.Unlocked ? 1 : 0);
+        if (!info.Unlocked || info.Obtained)
+        {
+            gameObject.SetChildrenRecursively<Image>((img) => { img.color = Color.gray; });
+            if (!info.Unlocked)
+            {
+                unlocked.color = Color.white;
+            }
+            if (info.Obtained)
+            {
+                obtained.color = Color.white;
+            }
+        }
+        unlocked?.SetAlpha(info.Unlocked ? 0 : 1);
+        obtained?.SetAlpha(info.Obtained ? 1 : 0);
+
         Id?.SetText(info.Id.ToString());
         if (Container)
         {
@@ -56,7 +69,7 @@ public class RoyalPassCard : CardBase<RoyalPassInfo>
                 }
             }
         }
-        if (Button)
+        if (Button && info.Unlocked && !info.Obtained)
         {
             Button.onClick.RemoveAllListeners();
             Button.onClick.AddListener(()=> info.Obtain?.Invoke(info));

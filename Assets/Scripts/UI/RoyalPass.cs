@@ -29,15 +29,16 @@ public class RoyalPass
         public int Require;
     }
     public long End;
-    public int Point;
+    public PDataUnit<int> Point = new PDataUnit<int>(0);
     public int PointPerLevel;
-    public HashSet<int> NormalObtains =  new HashSet<int>();
+    public int Level { get => Point.Data / PointPerLevel; }
+    public PDataUnit<HashSet<int>> NormalObtains = new PDataUnit<HashSet<int>>(new HashSet<int>());
     public int[] NormalProgresses;
     public List<Framework.GoodInfo>[] RewardNormals;
 
     public bool UnlockedElite;
     public int[] EliteProgresses;
-    public HashSet<int> EliteObtains =  new HashSet<int>();
+    public PDataUnit<HashSet<int>> EliteObtains =  new PDataUnit<HashSet<int>>(new HashSet<int>());
     public List<Framework.GoodInfo>[] RewardElites;
 
     public RoyalPassQuest[] Quests;
@@ -45,7 +46,7 @@ public class RoyalPass
     public int[] CurrentQuestsProgress;
     public RoyalPassQuest[] SeasonQuests;
     public int[] SeasonQuestsProgress;
-    public PDataUnit<HashSet<int>> SeasonQuestsObtained;
+    public PDataUnit<HashSet<int>> SeasonQuestsObtained = new PDataUnit<HashSet<int>>(new HashSet<int>());
     public static string GetDescription(RoyalPassQuestType type, int value)
     {
         string s = "";
@@ -88,6 +89,7 @@ public class RoyalPass
     }
     public static RoyalPass ConfigFromJson(RoyalPass royalPass, JSONNode json)
     {
+        
         royalPass.End = long.Parse(json["end"]).NowFrom0001From1970() - DateTime.UtcNow.Ticks;
 
         royalPass.PointPerLevel = int.Parse(json["r"]);
@@ -162,12 +164,13 @@ public class RoyalPass
             royalPass.CurrentQuests.Data[i] = json["dq"][i].AsInt;
             royalPass.CurrentQuestsProgress[i] = json["pg"][i].AsInt;
         }
-        royalPass.Point = int.Parse(json["rp"]);
+        royalPass.Point.Data = int.Parse(json["rp"]);
         royalPass.UnlockedElite = int.Parse(json["u"]) == 1;
         if (royalPass.UnlockedElite)
         {
-            royalPass.EliteObtains.AddRange(json["re"].ToList());
+            royalPass.EliteObtains.Data.AddRange(json["re"].ToList());
         }
-        royalPass.NormalObtains.AddRange(json["rn"].ToList());
+        royalPass.NormalObtains.Data.AddRange(json["rn"].ToList());
+
     }
 }
