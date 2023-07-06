@@ -66,7 +66,7 @@ public class TreasureBoardCell : MonoBehaviour
 
     public void ResetCell()
     {
-        if (shot)
+        if (IsShot)
         {
             shot = false;
             StartCoroutine(PlayResetAnim(1.1f));

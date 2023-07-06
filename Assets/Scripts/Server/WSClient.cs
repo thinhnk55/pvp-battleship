@@ -91,7 +91,6 @@ public class WSClient : WSClientBase
                 }
             }
         }
-        RequestTreasureConfig();
         SceneTransitionHelper.Load(ESceneName.Home);
         Timer<LuckyShot>.Instance.TriggerIntervalInSecond = GameData.LuckyShotCoolDown;
         Timer<Gift>.Instance.TriggerIntervalInSecond = GameData.GiftCoolDown;
