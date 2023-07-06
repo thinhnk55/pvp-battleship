@@ -42,7 +42,7 @@ public class TreasureHuntCard : CardBase<TreasureHuntInfo>
     }
     private void Update()
     {
-        float scale = 1 + (1 - Mathf.Clamp01(Mathf.Pow((rectTransform.anchoredPosition.x + contentTransform.anchoredPosition.x - Screen.currentResolution.width / 2) / (Screen.currentResolution.height / 2), 2))) * 0.5f;
+        float scale = 1 + (1 - Mathf.Clamp01(Mathf.Pow((rectTransform.anchoredPosition.x + contentTransform.anchoredPosition.x - SnapScrollView.SnapPointXPos) / (Screen.currentResolution.height / 2), 2))) * 0.5f;
         transform.localScale = scale * Vector3.one;
     }
 }

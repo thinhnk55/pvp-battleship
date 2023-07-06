@@ -18,10 +18,23 @@ public class SnapScrollView : MonoBehaviour
     private bool isDragging;
     private bool isSnapping;
     [SerializeField] private float closestPosition;
+    [SerializeField] private RectTransform scrollViewMiddle;
+    private static float snapPointXPos;
+
+    public static float SnapPointXPos { get => snapPointXPos; set => snapPointXPos = value; }
 
     private void Start()
     {
-        snapThreshold = Screen.width * 3 / 5;
+        if (scrollViewMiddle != null)
+        {
+            scrollViewMiddle.position = scrollViewMiddle.parent.position;
+            SnapPointXPos = scrollViewMiddle.anchoredPosition.x;
+        }
+        else
+            SnapPointXPos = Screen.width / 2;
+
+        //snapThreshold = Screen.width * 3 / 5;
+        snapThreshold = SnapPointXPos * 6 / 5;
         scrollRect = GetComponent<ScrollRect>();
         contentRect = scrollRect.content;
         childRects = new RectTransform[contentRect.childCount];
@@ -31,8 +44,10 @@ public class SnapScrollView : MonoBehaviour
             childRects[i] = contentRect.GetChild(i).GetComponent<RectTransform>();
         }
         contentRect.anchoredPosition = childRects[0].anchoredPosition * Vector2.right;
-        layoutGroup.padding.left = Screen.width / 2;
-        layoutGroup.padding.right = Screen.width / 2;
+        //layoutGroup.padding.left = Screen.width / 2;
+        //layoutGroup.padding.right = Screen.width / 2;
+        layoutGroup.padding.left = (int) SnapPointXPos;
+        layoutGroup.padding.right = (int) SnapPointXPos;
         LeanTouch.OnFingerDown += OnSelected;
         LeanTouch.OnFingerUp += OnUnselected;
     }
@@ -54,10 +69,12 @@ public class SnapScrollView : MonoBehaviour
             foreach (RectTransform childRect in childRects)
             {
                 float childPos = childRect.anchoredPosition.x;
-                float distance = Mathf.Abs(childPos + currentScrollPos - Screen.width / 2 );
+                //float distance = Mathf.Abs(childPos + currentScrollPos - Screen.width / 2 );
+                float distance = Mathf.Abs(childPos + currentScrollPos - SnapPointXPos);
 
                 if (distance < Mathf.Abs(closestPosition))
-                    closestPosition = childPos + currentScrollPos - Screen.width / 2;
+                    //closestPosition = childPos + currentScrollPos - Screen.width / 2;
+                    closestPosition = childPos + currentScrollPos - SnapPointXPos;
             }
 
             if (isSnapping)

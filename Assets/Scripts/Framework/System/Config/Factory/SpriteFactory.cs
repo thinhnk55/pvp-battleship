@@ -32,6 +32,7 @@ namespace Framework
         [SerializeField] private ListSprite[] resourceIcons; public static ListSprite[] ResourceIcons { get { return Instance.resourceIcons; } }
         [SerializeField] private Sprite unKnowmAvatar; public static Sprite Unknown { get { return Instance.unKnowmAvatar; } }
         [SerializeField] private Sprite x; public static Sprite X { get { return Instance.x; } }
+        [SerializeField] private Sprite questionMark; public static Sprite QuestionMark { get { return Instance.questionMark; } }
         [SerializeField] private Sprite win; public static Sprite Win { get { return Instance.win; } }
         [SerializeField] private Sprite lose; public static Sprite Lose { get { return Instance.lose; } }
         [SerializeField] private Sprite selectedAchievementBG; public static Sprite SelectedAchievementBG { get { return Instance.selectedAchievementBG; } }

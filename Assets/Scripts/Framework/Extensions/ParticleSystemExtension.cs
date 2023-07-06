@@ -37,4 +37,16 @@ public static class ParticleSystemExtension
             particle.velocity = directionToTarget.normalized * directionToTarget.magnitude * multiplier;
         });
     }
+
+    public static void DirectToTargetAfterTime(this ParticleSystem particleSystem, Vector3 target, float multiplier, float timeToMove)
+    {
+        particleSystem.ModifyParticles((ref Particle particle) =>
+        {
+            if (particle.remainingLifetime <= particle.startLifetime - timeToMove)
+            {
+                Vector3 directionToTarget = (target - particle.position - particleSystem.transform.position);
+                particle.velocity = directionToTarget.normalized * directionToTarget.magnitude * multiplier;
+            }
+        });
+    }
 }
