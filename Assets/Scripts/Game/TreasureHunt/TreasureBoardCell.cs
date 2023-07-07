@@ -17,7 +17,7 @@ public class TreasureBoardCell : MonoBehaviour
 
     private void Start()
     {
-        GetComponent<Button>().onClick.AddListener(TryShoot);
+        //GetComponent<Button>().onClick.AddListener(TryShoot);
     }
 
     public void InitCell(int _x, int _y)
