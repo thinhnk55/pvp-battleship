@@ -8,6 +8,7 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Lean.Touch;
 
 public class TreasureHuntManager : SingletonMono<TreasureHuntManager>
 {
@@ -15,11 +16,13 @@ public class TreasureHuntManager : SingletonMono<TreasureHuntManager>
     [SerializeField] Transform treasureGrid;
     [SerializeField] Transform resourceUI;
     [SerializeField] GameObject blockInteract;
-    [SerializeField] TextMeshProUGUI countDown;
     [SerializeField] TextMeshProUGUI message;
     [SerializeField] List<GameObject> treasureDigits;
     [SerializeField] Transform treasureTransform;
     [SerializeField] Toggle autoFillToggle;
+    [SerializeField] GameObject horizontalLine;
+    [SerializeField] GameObject verticalLine;
+    [SerializeField] RectTransform touchPointRelativeToBoard;
 
     Dictionary<Vector2, TreasureBoardCell> cells = new Dictionary<Vector2, TreasureBoardCell>();
     private bool autoFillMode;
@@ -31,11 +34,14 @@ public class TreasureHuntManager : SingletonMono<TreasureHuntManager>
         ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECIEVE_TREASURE_SHOT, OnCellShot);
         message.text = "";
         delayShootCell = false;
+        LeanTouch.OnFingerUpdate += Instance.SelectingTarget;
+        LeanTouch.OnFingerUp += Instance.OnFingerUp;
     }
 
     private void OnDisable()
     {
         ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.RECIEVE_TREASURE_SHOT, OnCellShot);
+        LeanTouch.OnFingerUp -= Instance.OnFingerUp;
     }
 
     private void Awake()
@@ -106,17 +112,25 @@ public class TreasureHuntManager : SingletonMono<TreasureHuntManager>
         }
     }
 
-    public void ResetCells()
+    IEnumerator ResetCells()
     {
+        yield return new WaitForSeconds(.5f);
         isInResetAnim = true;
         cellsShotQueue.Clear();
-        for (int i = 0; i < cells.Count; i++)
+        //for (int i = 0; i < cells.Count; i++)
+        //{
+        //    cells.ElementAt(i).Value.ResetCell();
+        //}
+        for (int i = 0; i < 10; i++)
         {
-            //cells.ElementAt(i).Value.SetIsShot(false);
-            cells.ElementAt(i).Value.ResetCell();
+            for (int j = 0; j < 10; j++)
+            {
+                cells[new Vector2(i, j)].ResetCell();
+            }
+            yield return new WaitForSeconds(.15f);
         }
         if (setCellsAfterResetCoroutine != null) StopCoroutine(setCellsAfterResetCoroutine);
-        setCellsAfterResetCoroutine = StartCoroutine(SetShotCellsAfterReset(2f));
+        setCellsAfterResetCoroutine = StartCoroutine(SetShotCellsAfterReset(4f));
     }
 
     Coroutine setCellsAfterResetCoroutine;
@@ -144,7 +158,7 @@ public class TreasureHuntManager : SingletonMono<TreasureHuntManager>
 
     public void TryShootCell(int x, int y)
     {
-        if (delayShootCell || isInResetAnim)
+        if (delayShootCell || isInResetAnim || !cells.ContainsKey(new Vector2(x, y)) || cells[new Vector2(x, y)].IsShot)
             return;
 
         if (PConsumableType.BERI.GetValue() < GameData.JoinTreasureRoom.ShotCost)
@@ -180,7 +194,7 @@ public class TreasureHuntManager : SingletonMono<TreasureHuntManager>
         }
             
         if (status == 2 || status == 1)
-            ResetCells();
+            StartCoroutine(ResetCells());
         if (status == 2)
         {
             string name = node["name"];
@@ -239,5 +253,55 @@ public class TreasureHuntManager : SingletonMono<TreasureHuntManager>
     public void OnToggleAutoFill(bool on)
     {
         autoFillMode = on;
+    }
+
+    public void SelectingTarget(LeanFinger leanFinger)
+    {
+        if (touchPointRelativeToBoard == null) return;
+        var grid = treasureGrid.GetComponent<GridLayoutGroup>();
+        touchPointRelativeToBoard.position = new Vector2(leanFinger.GetLastWorldPosition(0).x, leanFinger.GetLastWorldPosition(0).y);
+        int x = (int)(touchPointRelativeToBoard.anchoredPosition.x / (grid.cellSize.x + grid.spacing.x));
+        int y = (int)(touchPointRelativeToBoard.anchoredPosition.y / (grid.cellSize.y + grid.spacing.y));
+
+        if (touchPointRelativeToBoard.anchoredPosition.x < 0 || touchPointRelativeToBoard.anchoredPosition.y < 0)
+            x = -1;
+        ShowTargeting(x, y);
+    }
+
+    public void OnFingerUp(LeanFinger leanFinger)
+    {
+        HideTargeting();
+        if (touchPointRelativeToBoard == null) return;
+        var grid = treasureGrid.GetComponent<GridLayoutGroup>();
+        touchPointRelativeToBoard.position = new Vector2(leanFinger.GetLastWorldPosition(0).x, leanFinger.GetLastWorldPosition(0).y);
+        int x = (int)(touchPointRelativeToBoard.anchoredPosition.x / (grid.cellSize.x + grid.spacing.x));
+        int y = (int)(touchPointRelativeToBoard.anchoredPosition.y / (grid.cellSize.y + grid.spacing.y));
+
+        if (touchPointRelativeToBoard.anchoredPosition.x < 0 || touchPointRelativeToBoard.anchoredPosition.y < 0)
+            x = -1;
+        TryShootCell(x, y);
+    }
+
+    public void ShowTargeting(int x, int y)
+    {
+        if (delayShootCell || isInResetAnim || !cells.ContainsKey(new Vector2(x, y)) || horizontalLine == null || verticalLine == null)
+        {
+            HideTargeting();
+            return;
+        }
+
+        var c = cells[new Vector2(x, y)];
+        horizontalLine.SetActive(true);
+        horizontalLine.transform.position = new Vector2(horizontalLine.transform.position.x, c.transform.position.y);
+        verticalLine.SetActive(true);
+        verticalLine.transform.position = new Vector2(c.transform.position.x, verticalLine.transform.position.y);
+    }
+
+    public void HideTargeting()
+    {
+        if (horizontalLine == null || verticalLine == null)
+            return;
+        horizontalLine.SetActive(false);
+        verticalLine.SetActive(false);
     }
 }

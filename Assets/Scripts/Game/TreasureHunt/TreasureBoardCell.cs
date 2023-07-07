@@ -17,7 +17,7 @@ public class TreasureBoardCell : MonoBehaviour
 
     private void Start()
     {
-        GetComponent<Button>().onClick.AddListener(TryShoot);
+        //GetComponent<Button>().onClick.AddListener(TryShoot);
     }
 
     public void InitCell(int _x, int _y)
@@ -66,11 +66,8 @@ public class TreasureBoardCell : MonoBehaviour
 
     public void ResetCell()
     {
-        if (IsShot)
-        {
-            shot = false;
-            StartCoroutine(PlayResetAnim(1.1f));
-        }
+        shot = false;
+        StartCoroutine(PlayResetAnim(1.1f));
     }
 
     IEnumerator PlayResetAnim(float delay)
