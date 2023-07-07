@@ -265,7 +265,7 @@ public class CoreGame : SingletonMono<CoreGame>
     {
         GameData.Opponent = ProfileData.FromJsonOpponent(GameData.Opponent, json);
         Instance.searchUI.opponentProfile.UpdateUIs();
-        Instance.opponent.battleFieldSprite.sprite = SpriteFactory.ResourceIcons[5].sprites[GameData.Opponent.BattleField.Data];
+        Instance.opponent.battleFieldSprite.sprite = SpriteFactory.ResourceIcons[(int)PNonConsumableType.BATTLE_FIELD].sprites[GameData.Opponent.BattleField.Data];
         Debug.Log(GameData.Opponent.Username);
         Instance.ingameUI.SetActive(true);
         Instance.roomId = int.Parse(json["r"]);
@@ -286,7 +286,8 @@ public class CoreGame : SingletonMono<CoreGame>
     {
         Instance.playerTurn = playerChair == int.Parse(json["c"]);
         Board board = playerTurn ? Instance.opponent : Instance.player;
-        ObjectPoolManager.GenerateObject<Transform>(PrefabFactory.Missle, board.octiles[int.Parse(json["y"])][int.Parse(json["x"])].Position);
+        var missle = ObjectPoolManager.GenerateObject<Missle>(PrefabFactory.Missle);
+        missle.Init(board.octiles[int.Parse(json["y"])][int.Parse(json["x"])].Position);
         DOVirtual.DelayedCall(Octile.timeAttackAnim, () =>
         {
 
@@ -324,8 +325,11 @@ public class CoreGame : SingletonMono<CoreGame>
 
     public void EndTurn(JSONNode json)
     {
-        Instance.playerTurn = playerChair == int.Parse(json["c"]);
-        Instance.stateMachine.CurrentState = GameState.Turn;
+        DOVirtual.DelayedCall(1f, () =>
+        {
+            Instance.playerTurn = playerChair == int.Parse(json["c"]);
+            Instance.stateMachine.CurrentState = GameState.Turn;
+        });
     }
     void EndGame(JSONNode json)
     {
@@ -361,6 +365,7 @@ public class CoreGame : SingletonMono<CoreGame>
         int[,] arr = new int[Instance.player.octiles.Count, Instance.player.octiles.Count];
         Instance.opponent.gameObject.SetActive(true);
         Instance.opponent.InitBoard(10, 10);
+        Instance.opponent.battleFieldSprite.sprite = SpriteFactory.ResourceIcons[(int)PNonConsumableType.BATTLE_FIELD].sprites[GameData.Opponent.BattleField.Data];
         for (int i = 0; i < data["ship"].Count; i++)
         {
             Ship ship = Instance.shipsPlayer.Find((ship) => { 

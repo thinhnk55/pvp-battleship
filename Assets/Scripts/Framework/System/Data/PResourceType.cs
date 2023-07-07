@@ -19,5 +19,6 @@
         AVATAR_FRAME = 4,
         BATTLE_FIELD = 5,
         SKIN_SHIP = 6,
+        ELITE = 7,
     }
 }

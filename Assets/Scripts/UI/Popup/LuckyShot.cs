@@ -143,8 +143,8 @@ public class LuckyShot : SingletonMono<LuckyShot>
         Vector3[] poses = new Vector3[shots.Count];
         for (int i = 0; i < shots.Count; i++)
         {
-            poses[i] = shots[i].transform.position;
             shots[i].onClick.RemoveAllListeners();
+            poses[i] = shots[i].transform.position;
             shots[i].transform.DOMove(shots[4].transform.position,1).SetEase(Ease.InCirc);
         }
 

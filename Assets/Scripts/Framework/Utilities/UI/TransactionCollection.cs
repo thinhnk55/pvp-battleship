@@ -15,7 +15,7 @@ namespace Framework
         BERI_AVATAR_FRAME,
         BERI_BATTLE_FIELD,
         BERI_SKIN_SHIP,
-        USD_ELITE,
+        GEM_ELITE,
     }
     public class TransactionCollection : CardCollectionBase<TransactionInfo>
     {

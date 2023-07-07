@@ -159,7 +159,7 @@ public class ProfileCollection : CardCollectionBase<ProfileInfo>
                 WinStreak = profile.WinStreak,
                 WinStreakMax = profile.WinStreakMax,
                 PerfectGame = profile.PerfectGame,
-                Achievement = profile.Achievement,
+                Achievement = profile.AchievementProgress,
             };
             BuildUI(info);
         }

@@ -1,5 +1,6 @@
 ﻿using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Framework
 {
@@ -7,10 +8,12 @@ namespace Framework
     {
         [Header("Reference")]
         [SerializeField] TextMeshProUGUI _txtContent;
+        [SerializeField] Image _imgContent;
 
-        public void Construct(string msg)
+        public void Construct(string msg, Sprite sprite)
         {
             _txtContent.text = msg;
+            _imgContent.sprite = sprite;
         }
     }
 }

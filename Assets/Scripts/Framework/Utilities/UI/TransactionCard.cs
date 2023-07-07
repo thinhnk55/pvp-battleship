@@ -69,7 +69,7 @@ namespace Framework {
                 var product = Product[i];
                 product.Type.Transact((int)product.Value);
             }
-
+            PopupHelper.CreateMessage(PrefabFactory.PopupMessage, "You have received", null);
         }
         public bool IsAffordble()
         {

@@ -30,10 +30,10 @@ namespace Framework
             return popup;
         }
 
-        public static PopupMessage CreateMessage(GameObject prefab, string msg)
+        public static PopupMessage CreateMessage(GameObject prefab, string msg, Sprite sprite)
         {
             PopupMessage popup = Create<PopupMessage>(prefab);
-            popup.Construct(msg);
+            popup.Construct(msg, sprite);
 
             return popup;
         }

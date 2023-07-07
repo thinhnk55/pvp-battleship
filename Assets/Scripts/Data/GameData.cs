@@ -38,6 +38,7 @@ public class GameData : PDataBlock<GameData>
         Instance.opponent.AchievementSelected = Instance.opponent.AchievementSelected ?? new int[3] { -1, -1, -1 };
         Instance.opponent.AchievementProgress = Instance.opponent.AchievementProgress ?? new List<int>();
         Instance.player.Achievement = Instance.player.Achievement ?? new List<int>();
+        Instance.player.AchievementProgress = Instance.player.Achievement ?? new List<int>();
         Instance.player.AchievementObtained = Instance.player.AchievementObtained ?? new List<int>();
         Instance.player.AchievementSelected = Instance.player.AchievementSelected ?? new int[3] { -1, -1, -1 };
         Instance.achievementConfig = Instance.achievementConfig ?? new Dictionary<AchievementType, AchievementInfo>();
@@ -101,6 +102,7 @@ public class ProfileData
         profileData.Losts = int.Parse(data["statistics"]["lC"]);
         profileData.Battles = profileData.Wins + profileData.Losts;
         profileData.Achievement = data["statistics"]["achie"].ToList();
+        profileData.AchievementProgress = data["statistics"]["achie"].ToList();
         profileData.AchievementObtained = data["statistics"]["achie_r"].ToList();
         profileData.AchievementSelected = data["statistics"]["outst"].ToList().ToArray();
         return profileData;
@@ -139,7 +141,7 @@ public class ProfileData
             s += item.ToString() + "_";
         }
         s += "achieCompleted: ";
-        foreach (var item in Achievement)
+        foreach (var item in AchievementProgress)
         {
             s += item.ToString() + "_";
         }

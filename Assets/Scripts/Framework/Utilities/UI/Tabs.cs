@@ -12,7 +12,7 @@ namespace Framework
         [SerializeField] protected GameObject rootContent;
         protected List<GameObject> contents;
         protected GameObject activeContent;
-        protected int activeIndex;
+        protected PDataUnit<int> activeIndex;
         private void Awake()
         {
             contents = new List<GameObject>();
@@ -22,28 +22,36 @@ namespace Framework
                 contents.Add(rootContent.transform.GetChild(i).gameObject);
                 contents[i].SetActive(false);
             }
-            activeContent = contents[0];
-            activeContent.SetActive(true);
+            activeIndex = new PDataUnit<int>(-1);
+            activeIndex.OnDataChanged += (oldIndex, newIndex) =>
+            {
+                InactiveTab(oldIndex);
+                ActiveTab(newIndex);
+            };
             for (int i = 0; i < buttons.Count; i++)
             {
                 int _i = i;
                 buttons[i].onClick.AddListener(() =>
                 {
-                    InactiveTab();
-                    activeIndex = _i;
-                    ActiveTab();
+                    activeIndex.Data = _i;
                 });
             }
+
+            Activate(0);
         }
 
-        protected virtual void InactiveTab()
+        protected virtual void InactiveTab(int i)
         {
-            activeContent.SetActive(false);
+            activeContent?.SetActive(false);
         }
-        protected virtual void ActiveTab()
+        protected virtual void ActiveTab(int i)
         {
-            activeContent = contents[activeIndex];
+            activeContent = contents[i];
             activeContent.SetActive(true);
+        }
+        public void Activate(int i)
+        {
+            activeIndex.Data = i;
         }
     }
 }

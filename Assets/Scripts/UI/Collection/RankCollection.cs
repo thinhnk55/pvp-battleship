@@ -29,7 +29,7 @@ public class RankCollection : CardCollectionBase<RankInfo>
         UpdateUIs();
         indicator.transform.parent = cards[GameData.Player.Rank].transform;
         indicator.GetComponent<RectTransform>().anchoredPosition = Vector3.up * offsetIndicator;
-        SetCardPreview(cards[GameData.Player.Rank].Info);
+        SelectedCard = cards[GameData.Player.Rank];
         rankIndicator.sprite = SpriteFactory.Avatars[GameData.Player.Avatar.Data];
         Timer<RankCollection>.Instance.Init(OnTrigger, OnElapse);
         ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECIEVE_RANK, ReceiveRank);
