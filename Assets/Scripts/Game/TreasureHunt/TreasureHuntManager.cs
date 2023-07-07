@@ -112,17 +112,25 @@ public class TreasureHuntManager : SingletonMono<TreasureHuntManager>
         }
     }
 
-    public void ResetCells()
+    IEnumerator ResetCells()
     {
+        yield return new WaitForSeconds(.5f);
         isInResetAnim = true;
         cellsShotQueue.Clear();
-        for (int i = 0; i < cells.Count; i++)
+        //for (int i = 0; i < cells.Count; i++)
+        //{
+        //    cells.ElementAt(i).Value.ResetCell();
+        //}
+        for (int i = 0; i < 10; i++)
         {
-            //cells.ElementAt(i).Value.SetIsShot(false);
-            cells.ElementAt(i).Value.ResetCell();
+            for (int j = 0; j < 10; j++)
+            {
+                cells[new Vector2(i, j)].ResetCell();
+            }
+            yield return new WaitForSeconds(.15f);
         }
         if (setCellsAfterResetCoroutine != null) StopCoroutine(setCellsAfterResetCoroutine);
-        setCellsAfterResetCoroutine = StartCoroutine(SetShotCellsAfterReset(2f));
+        setCellsAfterResetCoroutine = StartCoroutine(SetShotCellsAfterReset(4f));
     }
 
     Coroutine setCellsAfterResetCoroutine;
@@ -186,7 +194,7 @@ public class TreasureHuntManager : SingletonMono<TreasureHuntManager>
         }
             
         if (status == 2 || status == 1)
-            ResetCells();
+            StartCoroutine(ResetCells());
         if (status == 2)
         {
             string name = node["name"];
