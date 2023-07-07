@@ -69,6 +69,7 @@ namespace Framework {
                 var product = Product[i];
                 product.Type.Transact((int)product.Value);
             }
+
         }
         public bool IsAffordble()
         {

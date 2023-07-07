@@ -1,0 +1,6 @@
+Boom.png
+size:134,95
+filter:Linear,Linear
+pma:true
+Layer 1433
+bounds:2,2,130,91

@@ -1,5 +1,6 @@
 ﻿using DG.Tweening;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Framework
 {
@@ -15,7 +16,7 @@ namespace Framework
         [Header("Config")]
         [SerializeField] protected float delay = 0f;
         [SerializeField] protected DestructType destructType;
-
+        [SerializeField] UnityEvent OnDestruct;
         protected Tween _tween;
 
         #region MonoBehaviour
@@ -67,6 +68,7 @@ namespace Framework
                 default:
                     break;
             }
+            OnDestruct?.Invoke();
         }
     }
 }

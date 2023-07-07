@@ -1,4 +1,3 @@
-using GooglePlayGames;
 using SimpleJSON;
 using System;
 using System.Collections.Generic;
@@ -37,22 +36,18 @@ namespace Framework
                 {
                     case SocialAuthType.Google:
 #if UNITY_ANDROID || UNITY_IOS
-                        auth = new GoogleAuth();
 #endif
                         break;
                     case SocialAuthType.GooglePlay:
 #if UNITY_ANDROID
-                        auth = new GooglePlayAuth();
 #endif
                         break;
                     case SocialAuthType.Facebook:
 #if UNITY_ANDROID || UNITY_IOS
-                        auth = new FacebookAuth();
 #endif
                         break;
                     case SocialAuthType.Apple:
 #if UNITY_IOS
-                        auth = new ApleAuth();
 #endif
                         break;
                     case SocialAuthType.Anonymous:

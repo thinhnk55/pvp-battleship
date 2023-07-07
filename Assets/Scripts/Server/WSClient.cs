@@ -156,12 +156,7 @@ public class WSClient : WSClientBase
         Timer<RankCollection> .Instance.TriggerIntervalInSecond = int.Parse(data["rank_receive"]) / 1000;
         SceneTransitionHelper.Load(ESceneName.Home);
     }
-    public static void RecieveTransaction(JSONNode data)
-    {
-        TransactionType id = data["itemId"].ToEnum<TransactionType>();
-        int index = int.Parse(data["itemIndex"]);
-        GameData.TransactionConfigs[id][index].Transact();
-    }
+
     public void ReceiveAchievementConfig(JSONNode data)
     {
         GameData.AchievementConfig = new Dictionary<AchievementType, AchievementInfo>();
@@ -405,6 +400,12 @@ public class WSClient : WSClientBase
     }
     #endregion
     #region Other Feature
+    public static void RecieveTransaction(JSONNode data)
+    {
+        TransactionType id = data["itemId"].ToEnum<TransactionType>();
+        int index = int.Parse(data["itemIndex"]);
+        GameData.TransactionConfigs[id][index].Transact();
+    }
     public static void RequestObtainAchievemnt(int id, int obtained)
     {
         JSONNode jsonNode = new JSONClass

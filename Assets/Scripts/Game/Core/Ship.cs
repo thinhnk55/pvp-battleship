@@ -596,6 +596,7 @@ public class Ship : CacheMonoBehaviour
         }
         EulerAngles = angle;
         transform.parent = board.shipRoot.transform;
+        GetComponent<LeanDragTranslate>().enabled = false;
         board.AssignShip(this, int.Parse(json["x"]), int.Parse(json["y"]));
         return this;
     }

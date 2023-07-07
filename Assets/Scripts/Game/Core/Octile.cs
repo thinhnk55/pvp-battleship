@@ -8,7 +8,7 @@ using UnityEngine;
 
 public class Octile : CacheMonoBehaviour
 {
-    public static float timeAttackAnim = 1.25f;
+    public static float timeAttackAnim = 0.625f;
     public TextMeshPro textOccupied;
     [SerializeField] private int occupied; public int Occupied
     {

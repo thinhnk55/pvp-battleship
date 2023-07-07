@@ -27,6 +27,7 @@ namespace Framework
         [SerializeField] private GameObject plane; public static GameObject Plane { get { return Instance.plane; } }
         [SerializeField] private GameObject missle; public static GameObject Missle { get { return Instance.missle; } }
         [SerializeField] private GameObject popupConfirm; public static GameObject PopupConfirm { get { return Instance.popupConfirm; } }
+        [SerializeField] private GameObject popupMessage; public static GameObject PopupMessage { get { return Instance.popupMessage; } }
 
 
     }

@@ -1,10 +1,7 @@
-using Facebook.Unity;
 using Framework;
 using SimpleJSON;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Net.NetworkInformation;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -100,7 +97,7 @@ public class RankCollection : CardCollectionBase<RankInfo>
                 Point = GameData.RankConfigs[i].Point,
                 OnClick = () =>
                 {
-                    selectedCard = cards[_i];
+                    SelectedCard = cards[_i];
                 }
             });
         }

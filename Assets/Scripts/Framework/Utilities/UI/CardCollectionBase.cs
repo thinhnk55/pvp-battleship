@@ -8,7 +8,7 @@ namespace Framework
     public abstract class CardCollectionBase<T> : CacheMonoBehaviour where T : struct
     {
         protected List<CardBase<T>> cards;
-        protected CardBase<T> selectedCard; public CardBase<T> SelectedCard { get { return selectedCard; } set { OnSelectedCard?.Invoke(selectedCard, value); selectedCard = value;} }
+        private CardBase<T> selectedCard; public CardBase<T> SelectedCard { get { return selectedCard; } set { OnSelectedCard?.Invoke(selectedCard, value); selectedCard = value;} }
         protected Callback<CardBase<T>, CardBase<T>> OnSelectedCard;
 
         [SerializeField] protected GameObject cardPrefab;

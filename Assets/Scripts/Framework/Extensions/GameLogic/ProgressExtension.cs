@@ -16,7 +16,7 @@ namespace Framework
                     mileStone++;
                 }
             }
-            return mileStone;
+            return Mathf.Clamp(mileStone,0, milestones.Count - 1);
         }
     }
 

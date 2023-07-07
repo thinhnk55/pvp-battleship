@@ -284,10 +284,9 @@ public class CoreGame : SingletonMono<CoreGame>
 
     void HandleBeingAttacked(JSONNode json)
     {
-        var plane = ObjectPoolManager.GenerateObject<Plane>(PrefabFactory.Plane);
         Instance.playerTurn = playerChair == int.Parse(json["c"]);
         Board board = playerTurn ? Instance.opponent : Instance.player;
-        plane.Init(board.octiles[int.Parse(json["y"])][int.Parse(json["x"])].Position);
+        ObjectPoolManager.GenerateObject<Transform>(PrefabFactory.Missle, board.octiles[int.Parse(json["y"])][int.Parse(json["x"])].Position);
         DOVirtual.DelayedCall(Octile.timeAttackAnim, () =>
         {
 

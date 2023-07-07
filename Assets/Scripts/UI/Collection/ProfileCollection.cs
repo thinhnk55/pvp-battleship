@@ -92,7 +92,7 @@ public class ProfileCollection : CardCollectionBase<ProfileInfo>
         }
         if (rankIcon)
         {
-            rankIcon.sprite = SpriteFactory.Ranks[infos.Rank%12];
+            rankIcon.sprite = SpriteFactory.Ranks[infos.Rank];
         }
         if (rankProgress)
         {
