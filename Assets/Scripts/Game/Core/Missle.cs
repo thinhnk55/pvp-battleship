@@ -19,9 +19,9 @@ public class Missle : CacheMonoBehaviour
     public void Init(Vector3 pos)
     {
         skeletonAnimation.Initialize(true);
-        dir = Random.Range(0, 4);
+        dir = 3;// Random.Range(0, 4);
         Debug.Log(dir);
-        float dis = 2f;
+        float dis = 1f;
         switch (dir)
         {
             case 0:

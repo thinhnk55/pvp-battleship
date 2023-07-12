@@ -82,7 +82,6 @@ public class LuckyShot : SingletonMono<LuckyShot>
         Debug.Log(GameData.LuckyShotConfig[int.Parse(node["index"])]);
         
         PConsumableType.BERI.AddValue(amount);
-        CoinVFX.CoinVfx(Instance.resourceUI.transform, Instance.shots[indexShot].transform.position, Instance.shots[indexShot].transform.position);
         if(amount == 0)
         {
             Instance.shots[indexShot].GetComponent<Image>().sprite = SpriteFactory.X;
@@ -90,6 +89,7 @@ public class LuckyShot : SingletonMono<LuckyShot>
         else
         {
             Instance.shots[indexShot].GetComponent<Image>().sprite = SpriteFactory.ShipLuckyShot;
+            CoinVFX.CoinVfx(Instance.resourceUI.transform, Instance.shots[indexShot].transform.position, Instance.shots[indexShot].transform.position);
         }
         StartCoroutine(Instance.Suffle());
     }
@@ -169,5 +169,10 @@ public class LuckyShot : SingletonMono<LuckyShot>
                 }
             });
         }
+    }
+
+    public void RewardAds()
+    {
+        Debug.Log("Reward");
     }
 }

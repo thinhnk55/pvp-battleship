@@ -46,6 +46,7 @@ namespace Framework
                 (_goodType) => { return _goodType.GetValue() >= value; }, 
                 (_goodType) =>true );
         }
+
     }
 }
 

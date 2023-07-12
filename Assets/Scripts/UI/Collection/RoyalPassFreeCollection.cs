@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class RoyalPassFreeCollection : CardCollectionBase<RoyalPassInfo>
 {
-    private void Awake()
+    private void OnEnable()
     {
         GameData.RoyalPass.NormalObtains.OnDataChanged += OnObtain;
         UpdateUIs();
@@ -17,7 +17,7 @@ public class RoyalPassFreeCollection : CardCollectionBase<RoyalPassInfo>
     {
         UpdateUIs();
     }
-    private void OnDestroy()
+    private void OnDisable()
     {
         GameData.RoyalPass.NormalObtains.OnDataChanged -= OnObtain;
     }

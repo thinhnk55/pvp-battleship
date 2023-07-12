@@ -56,18 +56,36 @@ public class RoyalPassCard : CardBase<RoyalPassInfo>
         }
         else if (info.Reward.Length == 1)
         {
-            Number?.SetText(info.Reward[0].Value.ToString());
+            if (info.Reward[0].Type.GetPResourceType()== PResourceType.Consumable)
+            {
+                Number?.SetText(info.Reward[0].Value.ToString());
+            }
+            else
+            {
+                Number?.SetText("");
+            }
             if (Icon)
             {
                 if (info.Reward[0].Type.GetPResourceType() == PResourceType.Consumable )
                 {
-                    Icon.sprite = SpriteFactory.ResourceIcons[info.Reward[0].Type].sprites.GetLoop(0);
+                    if (info.Reward[0].Type == (int)PConsumableType.GEM)
+                    {
+                        Icon.sprite = SpriteFactory.ResourceIcons[info.Reward[0].Type].sprites.GetClamp(((int)info.Reward[0].Value) / 2);
+                    }
+                    else if (info.Reward[0].Type == (int)PConsumableType.BERI)
+                    {
+                        Icon.sprite = SpriteFactory.ResourceIcons[info.Reward[0].Type].sprites.GetClamp(((int)info.Reward[0].Value) / 200);
+                    }
                 }
                 else
                 {
                     Icon.sprite = SpriteFactory.ResourceIcons[info.Reward[0].Type].sprites.GetLoop((int)info.Reward[0].Value);
                 }
             }
+        }
+        else if (info.Reward.Length == 0)
+        {
+            Icon.gameObject.SetActive(false);
         }
         if (Button && info.Unlocked && !info.Obtained)
         {

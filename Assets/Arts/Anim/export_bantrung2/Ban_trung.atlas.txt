@@ -1,0 +1,10 @@
+Ban_trung.png
+size:172,70
+filter:Linear,Linear
+pma:true
+Ellipse 1
+bounds:135,33,35,35
+Ellipse 1 copy
+bounds:2,2,66,66
+Layer 1427
+bounds:70,5,63,63

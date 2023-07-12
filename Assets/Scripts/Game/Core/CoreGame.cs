@@ -10,6 +10,7 @@ using System.ComponentModel;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Purchasing;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -148,7 +149,7 @@ public class CoreGame : SingletonMono<CoreGame>
 
     #region StateMachine
     void StartPregame()
-    {
+    {      
         float sizeWidth = cam.orthographicSize * cam.aspect * 2;
         Instance.preUI.SetActive(true);
         Instance.postUI.gameObject.SetActive(false);
@@ -335,6 +336,7 @@ public class CoreGame : SingletonMono<CoreGame>
     {
         DOVirtual.DelayedCall(3, () =>
         {
+            MusicType.END.PlayMusic();
             Debug.Log("End");
             Instance.stateMachine.CurrentState = GameState.Out;
             Instance.ingameUI.SetActive(false);
@@ -355,6 +357,7 @@ public class CoreGame : SingletonMono<CoreGame>
                 CoinVFX.CoinVfx(searchUI.avatar2.transform, searchUI.tresure.transform.position, searchUI.tresure.transform.position);
             }
         });
+
     }
     void EnemyOutGame(JSONNode json)
     {

@@ -1,0 +1,83 @@
+{
+"skeleton": {
+	"hash": "VuKOV2s11QY",
+	"spine": "4.1.17",
+	"x": -1,
+	"y": -65,
+	"width": 66,
+	"height": 66,
+	"images": "./images/",
+	"audio": "E:/Game Bắn tàu/VFX/Ban_trung"
+},
+"bones": [
+	{ "name": "root" },
+	{ "name": "Ellipse 1", "parent": "root", "x": 33, "y": -33 },
+	{ "name": "Ellipse 1 copy", "parent": "root", "x": 33, "y": -33 },
+	{ "name": "Layer 1427", "parent": "root", "x": 33, "y": -33 }
+],
+"slots": [
+	{ "name": "Ellipse 1", "bone": "Ellipse 1" },
+	{ "name": "Layer 1427", "bone": "Layer 1427", "attachment": "Layer 1427" },
+	{ "name": "Ellipse 1 copy", "bone": "Ellipse 1 copy", "attachment": "Ellipse 1 copy" }
+],
+"skins": [
+	{
+		"name": "default",
+		"attachments": {
+			"Ellipse 1": {
+				"Ellipse 1": { "x": -0.5, "y": 0.5, "width": 35, "height": 35 }
+			},
+			"Ellipse 1 copy": {
+				"Ellipse 1 copy": { "x": -1, "y": 1, "width": 66, "height": 66 }
+			},
+			"Layer 1427": {
+				"Layer 1427": { "x": -0.5, "y": 0.5, "width": 63, "height": 63 }
+			}
+		}
+	}
+],
+"animations": {
+	"ban_trung": {
+		"bones": {
+			"Ellipse 1 copy": {
+				"scale": [
+					{
+						"x": 0.865,
+						"y": 0.865,
+						"curve": [ 0.167, 0.865, 0.5, 1.02, 0.167, 0.865, 0.5, 1.02 ]
+					},
+					{
+						"time": 0.6667,
+						"x": 1.02,
+						"y": 1.02,
+						"curve": [ 0.833, 1.02, 1.167, 0.865, 0.833, 1.02, 1.167, 0.865 ]
+					},
+					{ "time": 1.3333, "x": 0.865, "y": 0.865 }
+				]
+			},
+			"Layer 1427": {
+				"scale": [
+					{
+						"x": 0.866,
+						"y": 0.866,
+						"curve": [ 0.089, 0.827, 0.172, 0.797, 0.089, 0.827, 0.172, 0.797 ]
+					},
+					{
+						"time": 0.2333,
+						"x": 0.797,
+						"y": 0.797,
+						"curve": [ 0.4, 0.797, 0.733, 1.022, 0.4, 0.797, 0.733, 1.022 ]
+					},
+					{
+						"time": 0.9,
+						"x": 1.022,
+						"y": 1.022,
+						"curve": [ 1.006, 1.022, 1.18, 0.93, 1.006, 1.022, 1.18, 0.93 ]
+					},
+					{ "time": 1.3333, "x": 0.866, "y": 0.866 }
+				]
+			}
+		}
+	}
+}
+}

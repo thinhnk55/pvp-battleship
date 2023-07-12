@@ -36,8 +36,7 @@ namespace Framework
         }
         public virtual void ModifyUIAt(int i,T info)
         {
-            CardBase<T> card = cards[i];
-            card.BuildUI(info);
+            cards[i].BuildUI(info);
         }
     }
 }

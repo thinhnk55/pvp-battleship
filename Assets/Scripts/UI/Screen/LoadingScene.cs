@@ -12,7 +12,7 @@ public class LoadingScene : CacheMonoBehaviour
     private void Awake()
     {
         SceneManager.LoadScene("PreHome", LoadSceneMode.Additive);
-        GetComponent<Image>().DOFade(0, loadingDuration).OnComplete(() =>
+        DOVirtual.DelayedCall(loadingDuration, () =>
         {
             SceneManager.UnloadSceneAsync("Loading");
         });

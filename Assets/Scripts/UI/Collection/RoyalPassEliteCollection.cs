@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class RoyalPassEliteCollection : CardCollectionBase<RoyalPassInfo>
 {
     [SerializeField] RoyalPassCard elitePreview;
-    private void Awake()
+    private void OnEnable()
     {
         GameData.RoyalPass.EliteObtains.OnDataChanged += OnObtain;
         UpdateUIs();
@@ -16,7 +16,7 @@ public class RoyalPassEliteCollection : CardCollectionBase<RoyalPassInfo>
     {
         UpdateUIs();
     }
-    private void OnDestroy()
+    private void OnDisable()
     {
         GameData.RoyalPass.EliteObtains.OnDataChanged -= OnObtain;
     }

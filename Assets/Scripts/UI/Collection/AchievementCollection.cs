@@ -33,7 +33,7 @@ public class AchievementCollection : CardCollectionBase<AchievementInfo>
             AchievementInfo info = list[i].Value;
             if (isSelection)
             {
-                if (!GameData.Player.AchievementSelected.Any((select) => select/100 == info.Id))
+                if (!GameData.Player.AchievementSelected.Any((select) => select!=-1 && select /100 == info.Id))
                 {
                     info.onClick = () =>
                     {

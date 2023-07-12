@@ -115,6 +115,7 @@ public class Ship : CacheMonoBehaviour
     {
         get
         {
+            return dir;
             int rot = (int)((EulerAngles.z % 360) / 90);
             switch (rot)
             {
@@ -518,24 +519,23 @@ public class Ship : CacheMonoBehaviour
 
     public JSONClass ToJson() {
         int d = 0;
-        int dir = ((int)(EulerAngles.z % 360) / 90);
-        switch (dir)
+        if (dir == Vector2Int.right)
         {
-            case 0:
-                d = 0;
-                break;
-            case 1:
-                d = 3;
-                break;
-            case 2:
-                d = 2;
-                break;
-            case 3:
-                d = 1;
-                break;
-            default:
-                break;
+            d = 2;
         }
+        else if (dir == Vector2Int.left)
+        {
+            d = 0;
+        }
+        else if (dir == Vector2Int.down)
+        {
+            d = 3;
+        }
+        else if (dir == Vector2Int.up)
+        {
+            d = 1;
+        }
+
         JSONClass json = new JSONClass
         {
             { "type", (poses.Count - 1).ToJson()  },

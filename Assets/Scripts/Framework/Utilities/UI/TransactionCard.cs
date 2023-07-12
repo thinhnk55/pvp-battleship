@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Purchasing;
 using UnityEngine.UI;
 namespace Framework {
     public struct GoodInfo
@@ -59,10 +60,17 @@ namespace Framework {
 
         public void Transact()
         {
-            for (int i = 0; i < Cost.Length; i++)
+            if (Cost[0].Type != 0)
             {
-                var cost = Cost[i];
-                cost.Type.Transact(-(int)cost.Value);
+                for (int i = 0; i < Cost.Length; i++)
+                {
+                    var cost = Cost[i];
+                    cost.Type.Transact(-(int)cost.Value);
+                }
+            }
+            else
+            {
+                IAP.Instance.ConfirmPendingPurchase();
             }
             for (int i = 0; i < Product.Length; i++)
             {
@@ -139,17 +147,37 @@ namespace Framework {
                 }
 
                 if (Button)
-                    Button.onClick.AddListener(() =>
+                {
+                    if (info.Cost[0].Type != 0)
                     {
-                        PopupHelper.CreateConfirm(PrefabFactory.PopupConfirm, "Buy?", "Buy?", (confirm) => {
-                            if (confirm)
+                        Button.onClick.AddListener(() =>
+                        {
+                            PopupHelper.CreateConfirm(PrefabFactory.PopupConfirm, "Buy?", "Buy?", (confirm) => {
+                                if (confirm)
+                                {
+                                    TransactionAction(info.TransactionType, info)?.Invoke();
+                                    Collection.UpdateUIs();
+                                }
+                            });
+                        }
+                        );
+                    }
+                    else
+                    {
+                        Button.onClick.AddListener(() =>
+                        {
+                            IAP.Instance.PurchaseProduct($"{ApplicationConfig.BundleId}.{((PConsumableType)info.Product[0].Type).ToString().ToLower()}.{info.Product[0].Value}", (success, product) =>
                             {
-                                TransactionAction(info.TransactionType, info)?.Invoke();
-                                Collection.UpdateUIs();
-                            }
+                                if (success)
+                                {
+                                    TransactionAction(info.TransactionType, info, product)?.Invoke();
+                                }
+                            });
                         });
                     }
-                    );
+
+                }
+
             }
             else
             {
@@ -171,13 +199,16 @@ namespace Framework {
         {
             return "";
         }
-        public static UnityAction TransactionAction(TransactionType transactionType, TransactionInfo Info)
+        public static UnityAction TransactionAction(TransactionType transactionType, TransactionInfo Info, Product product = null)
         {
             UnityAction action = null;
             action += () => { };
             if (transactionType == TransactionType.USD_GEM)
             {
-
+                action = () =>
+                {
+                    RequestTransactionMoney(JSON.Parse(product.receipt));
+                };
             }
             else
             {
@@ -206,7 +237,15 @@ namespace Framework {
             WSClientBase.Instance.Send(jsonNode);
         }
 
-
+        public static void RequestTransactionMoney(JSONNode data)
+        {
+            JSONNode jsonNode = new JSONClass()
+            {
+                { "id", GameServerEvent.REQUEST_TRANSACTION_MONEY.ToJson() },
+                { "data", data},
+            };
+            WSClientBase.Instance.Send(jsonNode);
+        }
     }
     
 }

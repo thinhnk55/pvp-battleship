@@ -3,6 +3,7 @@ using SimpleJSON;
 using Sirenix.Utilities;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -575,6 +576,31 @@ public class WSClient : WSClientBase
             }
             GameData.RoyalPass.EliteObtains.Data = receive;
         }
+    }
+    public static void RequestClaimAllRoyalPass()
+    {
+        JSONArray jsonNormal = new JSONArray();
+        JSONArray jsonElite = new JSONArray();
+        for (int i = 0; i <= GameData.RoyalPass.Level; i++)
+        {
+            if (!GameData.RoyalPass.NormalObtains.Data.Contains(i))
+            {
+                jsonNormal.Add(new JSONData(i));
+
+            }
+            if (!GameData.RoyalPass.EliteObtains.Data.Contains(i))
+            {
+                jsonElite.Add(new JSONData(i));
+
+            }
+        }
+        JSONNode jsonNode = new JSONClass()
+        {
+            { "id", GameServerEvent.REQUEST_CLAIM_ALL_ROYALPASS.ToJson() },
+            { "normal",  jsonNormal},
+            { "elite",  jsonElite}
+        };
+        Instance.Send(jsonNode);
     }
     #endregion
 }

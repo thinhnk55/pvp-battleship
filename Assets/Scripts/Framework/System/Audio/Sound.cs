@@ -13,6 +13,8 @@ namespace Framework
         COIN_VFX,
         AUDIO,
         COUNT,
+        CLICK,
+
     }
     [Serializable]
     public struct ClipConfig

@@ -35,6 +35,18 @@ public class RoyalPassPopup : MonoBehaviour
             freeCollection.ModifyUIAt(GameData.RoyalPass.Level, new RoyalPassInfo()
             {
                 Id = GameData.RoyalPass.Level,
+                Obtained = GameData.RoyalPass.NormalObtains.Data.Contains(GameData.RoyalPass.Level),
+                Unlocked = true,
+                Reward = GameData.RoyalPass.RewardNormals[GameData.RoyalPass.Level].ToArray(),
+                Elite = false,
+                Obtain = (info) =>
+                {
+                    WSClient.RequestReceiveRoyalPass(GameData.RoyalPass.Level, 0);
+                }   
+            });
+            eliteCollection.ModifyUIAt(GameData.RoyalPass.Level, new RoyalPassInfo()
+            {
+                Id = GameData.RoyalPass.Level,
                 Obtained = GameData.RoyalPass.EliteObtains.Data.Contains(GameData.RoyalPass.Level),
                 Unlocked = true,
                 Reward = GameData.RoyalPass.RewardElites[GameData.RoyalPass.Level].ToArray(),
@@ -42,7 +54,7 @@ public class RoyalPassPopup : MonoBehaviour
                 Obtain = (info) =>
                 {
                     WSClient.RequestReceiveRoyalPass(GameData.RoyalPass.Level, 0);
-                }   
+                }
             });
         }
         pointTweenText?.Kill();
@@ -70,5 +82,15 @@ public class RoyalPassPopup : MonoBehaviour
     void Update()
     {
         Timer<RoyalPass>.Instance.Elasping();
+    }
+
+    public void UpgradePass()
+    {
+        TransactionCard.RequestTransaction((int)TransactionType.GEM_ELITE, 0);
+    }
+
+    public void ClaimAll()
+    {
+        WSClient.RequestClaimAllRoyalPass();
     }
 }
