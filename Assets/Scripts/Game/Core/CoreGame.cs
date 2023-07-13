@@ -176,6 +176,7 @@ public class CoreGame : SingletonMono<CoreGame>
         var profile = new ProfileInfo()
         {
             Avatar = -1,
+            Frame = -1,
         };
         Instance.searchUI.opponentProfile.BuildUI(profile);
         Instance.shipListPlayer.gameObject.SetActive(false);

@@ -41,10 +41,17 @@ public class RankCollection : CardCollectionBase<RankInfo>
     }
     public void SetCardPreview(RankInfo info)
     {
-        info.OnClick = () =>
+        if (Timer<RankCollection>.Instance.TriggerCountTotal >= 1 && info.Id == GameData.Player.Rank)
         {
-            WSClient.RequestRank();
-        };
+            info.OnClick = () =>
+            {
+                WSClient.RequestRank();
+            };
+        }
+        else
+        {
+            info.OnClick = null;
+        }
         reward.text = GameData.RankConfigs[info.Id].Reward.ToString();
         if (info.Id < GameData.Player.Rank)
         {
@@ -59,7 +66,10 @@ public class RankCollection : CardCollectionBase<RankInfo>
 
     private void OnTrigger()
     {
-        //countDown.text = Timer<RankCollection>.Instance.TriggerCountTotal >= 1 ? "Obtain" : Timer<RankCollection>.Instance.RemainTimeInsecond.Hour_Minute_Second_1();
+        if (Timer<RankCollection>.Instance.TriggerCountTotal == 1)
+        {
+            SetCardPreview(SelectedCard.Info);
+        }
     }
 
     private void OnElapse()
@@ -72,6 +82,7 @@ public class RankCollection : CardCollectionBase<RankInfo>
         PConsumableType.BERI.AddValue(int.Parse(json["value"]));
         CoinVFX.CoinVfx(resource, Position, Position);
         Timer<RankCollection>.Instance.LastTime = DateTime.UtcNow.Ticks;
+        SetCardPreview(SelectedCard.Info);
     }
     // Update is called once per frame
     void Update()

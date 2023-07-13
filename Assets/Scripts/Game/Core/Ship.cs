@@ -194,7 +194,7 @@ public class Ship : CacheMonoBehaviour
                 return ;
             }
         }
-         BeingDestroyed();
+        BeingDestroyed();
     }
 
     public void BeingDestroyed()
@@ -202,7 +202,6 @@ public class Ship : CacheMonoBehaviour
         isDestroyed = true;
         renderer.sprite = destroyedSprite;
         board.ships.Remove(this);
-        Debug.Log("Destroyed");
         SoundType.SHIP_EXPLOSION.PlaySound();
         for (int i = 0; i < octilesOccupy.Count; i++)
         {
@@ -212,6 +211,7 @@ public class Ship : CacheMonoBehaviour
         for (int i = 0; i < octilesComposition.Count; i++)
         {
             octilesComposition[i].attackSpriteRenderer.sprite = null;
+            octilesComposition[i].attackedAnim?.gameObject.SetActive(false);
             ObjectPoolManager.GenerateObject<ParticleSystem>(VFXFactory.Explosion, octilesComposition[i].Position);
             if (i==0 || i == 2)
             {
@@ -574,25 +574,21 @@ public class Ship : CacheMonoBehaviour
         {
             angle = Quaternion.identity.eulerAngles;
             angle.z = 0;
-            //transform.rotation = Quaternion.Euler(angle);
         }
         else if (this.dir == Vector2Int.up)
         {
             angle = Quaternion.identity.eulerAngles;
             angle.z = 270;
-            //transform.rotation = Quaternion.Euler(angle);
         }
         else if (this.dir == Vector2Int.right)
         {
             angle = Quaternion.identity.eulerAngles;
             angle.z = 180;
-            //transform.rotation = Quaternion.Euler(angle);
         }
         else if (this.dir == Vector2Int.down)
         {
             angle = Quaternion.identity.eulerAngles;
             angle.z = 90;
-            //transform.rotation = Quaternion.Euler(angle);
         }
         EulerAngles = angle;
         transform.parent = board.shipRoot.transform;

@@ -89,7 +89,6 @@ public class ProfileData
     public List<int> AchievementObtained;
     public List<int> AchievementProgress;
 
-
     public static ProfileData FromJson(ProfileData profileData, JSONNode data)
     {
         profileData.Username = new PDataUnit<string>(data["profile"]["n"]);

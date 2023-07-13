@@ -28,18 +28,17 @@ public class ObjectPoolManager : SingletonMono<ObjectPoolManager>
     {
         BasePool pool;
         T obj;
+        if (root == null)
+        {
+            root = new GameObject();
+            root.transform.parent = Instance.transform;
+            root.name = prefab.name.ToString() + " Pool";
+        }
         if (!objectPoolDict.ContainsKey(prefab))
         {
-            if (root == null)
-            {
-                root = new GameObject();
-                root.transform.parent = Instance.transform;
-                root.name = prefab.name.ToString() + " Pool";
-            }
-
             if (PoolConfig.InitPool.ContainsKey(prefab))
             {
-                pool = new BasePool(prefab, root.transform, PoolConfig.InitPool[prefab]);
+                pool = new BasePool(prefab, PoolConfig.InitPool[prefab]);
             }
             else
             {
@@ -47,7 +46,7 @@ public class ObjectPoolManager : SingletonMono<ObjectPoolManager>
                 {
                     amount = PoolConfig.DefaultInitPoolGO;
                 }
-                pool = new BasePool(prefab, root.transform, (int)amount);
+                pool = new BasePool(prefab, (int)amount);
             }
             objectPoolDict.TryAdd(prefab, pool);
         }
@@ -56,7 +55,7 @@ public class ObjectPoolManager : SingletonMono<ObjectPoolManager>
             pool = objectPoolDict[prefab];
         }
         obj = pool.GetItem<T>();
-
+        obj.transform.parent = Instance.transform;
         return obj;
     }
 
@@ -64,22 +63,22 @@ public class ObjectPoolManager : SingletonMono<ObjectPoolManager>
     {
         BasePool pool;
         T obj;
-        if (!objectPoolDict.ContainsKey(prefab))
+        if (root == null)
         {
-            if (root == null)
-            {
-                root = new GameObject();
-                root.transform.parent = Instance.transform;
-                root.name = typeof(T).ToString() + " Pool";
-            }
+            root = new GameObject();
+            root.transform.parent = Instance.transform;
+            root.name = typeof(T).ToString() + " Pool";
+        }
+        if (!objectPoolDict.ContainsKey(prefab))
+        { 
 
             if (PoolConfig.InitPool.ContainsKey(prefab))
             {
-                pool = new BasePool(prefab, root.transform, PoolConfig.InitPool[prefab]);
+                pool = new BasePool(prefab, PoolConfig.InitPool[prefab]);
             }
             else
             {
-                pool = new BasePool(prefab, root.transform, PoolConfig.DefaultInitPoolGO);
+                pool = new BasePool(prefab, PoolConfig.DefaultInitPoolGO);
             }
             objectPoolDict.TryAdd(prefab, pool);
         }
@@ -88,7 +87,8 @@ public class ObjectPoolManager : SingletonMono<ObjectPoolManager>
             pool = objectPoolDict[prefab];
         }
         obj = pool.GetItem<T>();
-        obj.gameObject.transform.position = pos;
+        obj.transform.parent = Instance.transform;
+        obj.transform.position = pos;
         return obj;
     }
 }

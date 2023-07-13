@@ -9,12 +9,9 @@ namespace Framework
         protected List<GameObject> _pool = new List<GameObject>();
 
         protected GameObject _prefab;
-        protected Transform _root;
 
-        public BasePool(GameObject prefab, Transform root, int initAtStart)
+        public BasePool(GameObject prefab, int initAtStart)
         {
-            _root = root;
-
             if (prefab != null)
                 _prefab = prefab;
 
@@ -71,15 +68,13 @@ namespace Framework
             {
                 newItem = new GameObject();
                 newItem.AddComponent<T>();
-                newItem.transform.SetParent(_root);
-
 #if UNITY_EDITOR
                 newItem.name = typeof(T).ToString();
 #endif
             }
             else
             {
-                newItem = GameObject.Instantiate(_prefab, _root);
+                newItem = GameObject.Instantiate(_prefab);
             }
 
             return newItem;
@@ -88,7 +83,7 @@ namespace Framework
         {
             // Create new item and set parent to root
             GameObject newItem = null;
-            newItem = UnityEngine.Object.Instantiate(_prefab, _root);
+            newItem = UnityEngine.Object.Instantiate(_prefab);
             return newItem;
         }
         protected virtual bool IsActive(GameObject item)

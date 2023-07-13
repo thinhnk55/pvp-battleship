@@ -76,7 +76,11 @@ public class ProfileCollection : CardCollectionBase<ProfileInfo>
         }
         if (frame)
         {
-            frame.sprite = SpriteFactory.ResourceIcons[(int)PNonConsumableType.AVATAR_FRAME].sprites[infos.Frame];
+            if (infos.Frame >= 0)
+            {
+                frame.sprite = SpriteFactory.ResourceIcons[(int)PNonConsumableType.AVATAR_FRAME].sprites[infos.Frame];
+                frame.SetAlpha(1);
+            }
         }
         if (frameTail)
         {

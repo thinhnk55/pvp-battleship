@@ -13,6 +13,7 @@ public class VFXFactory : SingletonScriptableObject<VFXFactory>
             Instance.ToString();
         }
     }
+    [SerializeField] private GameObject attackedAnim; public static GameObject AttackedAnim { get { return Instance.attackedAnim; } }
     [SerializeField] private GameObject explosion; public static GameObject Explosion { get { return Instance.explosion; } }
     [SerializeField] private GameObject smoke; public static GameObject Smoke { get { return Instance.smoke; } }
     [SerializeField] private GameObject splashWater; public static GameObject SplashWater { get { return Instance.splashWater; } }

@@ -1,6 +1,7 @@
 using DG.Tweening;
 using Framework;
 using Lean.Touch;
+using Spine.Unity;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -37,7 +38,6 @@ public class Octile : CacheMonoBehaviour
             attacked = value;
             if (attacked)
             {
-                DOVirtual.DelayedCall(0.5f, ()=> spriteRenderer.sprite = SpriteFactory.Missed, true);
             }
             else
             {
@@ -49,12 +49,15 @@ public class Octile : CacheMonoBehaviour
     public Ship ship;
     public SpriteRenderer spriteRenderer;
     public SpriteRenderer attackSpriteRenderer;
+    public GameObject attackedAnim;
     public bool BeingAttacked(bool hitShip)
     {
         Attacked = true;
         ObjectPoolManager.GenerateObject<ParticleSystem>(VFXFactory.SplashWater, Position);
         if (hitShip)
         {
+            attackSpriteRenderer.sprite = SpriteFactory.Octile;
+            attackedAnim = ObjectPoolManager.GenerateObject<Transform>(VFXFactory.AttackedAnim, Position, gameObject).gameObject;
             ObjectPoolManager.GenerateObject<ParticleSystem>(VFXFactory.Explosion, Position);
             attackSpriteRenderer.sprite = SpriteFactory.Attacked;
             SoundType.SHIP_HIT.PlaySound();
@@ -64,6 +67,7 @@ public class Octile : CacheMonoBehaviour
         }
         else
         {
+            DOVirtual.DelayedCall(0.5f, () => spriteRenderer.sprite = SpriteFactory.Missed, true);
             SoundType.SHIP_MISS.PlaySound();
             return false;
         }

@@ -22,6 +22,17 @@ public class Gift : CacheMonoBehaviour
         Timer<Gift>.Instance.OnTrigger += OnTrigger;
         Timer<Gift>.Instance.OnElapse += OnElapse;
         ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECIEVE_GIFT, ReceiveGift);
+        if (GameData.ProgressGift == 5)
+        {
+            smallGiftBar.SetActive(false);
+            bigGiftBar.SetActive(true);
+        }
+        else
+        {
+            smallGiftBar.SetActive(true);
+            bigGiftBar.SetActive(false);
+            progress.text = $"{GameData.ProgressGift}/5";
+        }
         if (Timer<Gift>.Instance.TriggerCountTotal >= 1)
         {
             countDown.text = "Collect";

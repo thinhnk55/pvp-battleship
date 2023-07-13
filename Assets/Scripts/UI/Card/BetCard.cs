@@ -27,7 +27,7 @@ public class BetCard : CardBase<BetInfo>
         base.BuildUI(info);
         if (rewardAmount)
         {
-            rewardAmount.text = info.RewardAmount.ToString();
+            rewardAmount.text = "+"+ info.RewardAmount.ToString();
         }
         if (entryStake)
         {

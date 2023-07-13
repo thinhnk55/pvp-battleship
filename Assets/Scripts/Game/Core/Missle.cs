@@ -20,7 +20,6 @@ public class Missle : CacheMonoBehaviour
     {
         skeletonAnimation.Initialize(true);
         dir = 3;// Random.Range(0, 4);
-        Debug.Log(dir);
         float dis = 1f;
         switch (dir)
         {

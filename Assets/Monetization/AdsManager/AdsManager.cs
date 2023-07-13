@@ -41,6 +41,7 @@ namespace Monetization
         public static void SetUserId(string id)
         {
             adsManager.SetUserId(id);
+            Debug.Log("SetUserId " + id);
         }
     }
 
