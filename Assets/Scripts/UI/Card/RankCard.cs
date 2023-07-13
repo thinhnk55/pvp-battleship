@@ -19,6 +19,7 @@ public class RankCard : CardBase<RankInfo>
     public Image BG;
     [SerializeField] TextMeshProUGUI title;
     [SerializeField] Image icon;
+    [SerializeField] Image receive;
     [SerializeField] Slider slider;
 
     protected override void OnClicked(RankInfo info)
@@ -49,14 +50,17 @@ public class RankCard : CardBase<RankInfo>
             Button.onClick.RemoveAllListeners();
             if (info.OnClick!=null)
             {
-                
                 Button.onClick.AddListener(() =>
                 {
                     info.OnClick?.Invoke();
                 });
             }
-
+            if (receive)
+            {
+                this.Button.gameObject.GetComponent<Image>().sprite = info.OnClick != null ? SpriteFactory.ObtainableRankBG : SpriteFactory.UnobtainableRankBG;
+            }
         }
+
     }
 
 }

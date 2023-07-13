@@ -12,4 +12,5 @@ public interface IAdsManager
     public void ShowInterstialAds();
     public void ShowRewardAds(Callback onRewardShowed);
     public void Initialize();
+    public void SetUserId(string id);
 }

@@ -38,7 +38,10 @@ namespace Monetization
         {
             adsManager.ShowRewardAds(onRewardShowed);
         }
-
+        public static void SetUserId(string id)
+        {
+            adsManager.SetUserId(id);
+        }
     }
 
 }

@@ -1,4 +1,5 @@
 using Framework;
+using Monetization;
 using SimpleJSON;
 using Sirenix.Utilities;
 using System;
@@ -111,6 +112,7 @@ public class WSClient : WSClientBase
         Timer<LuckyShot>.Instance.TriggerIntervalInSecond = GameData.LuckyShotCoolDown;
         Timer<Gift>.Instance.TriggerIntervalInSecond = GameData.GiftCoolDown;
         Timer<RankCollection>.Instance.TriggerIntervalInSecond = GameData.RankReceiveCoolDown;
+        AdsManager.SetUserId(PDataAuth.AuthData.userId.ToString());
     }
     #region Config
     private void RequestBetConfig()

@@ -182,6 +182,11 @@ public abstract class MaxAdsManagerBase : IAdsManager
     {
         throw new System.NotImplementedException();
     }
+
+    public void SetUserId(string id)
+    {
+        MaxSdk.SetUserId(id);
+    }
     #endregion
 
 }
