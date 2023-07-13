@@ -37,6 +37,7 @@ public class ButtonShowAds : ButtonBase
     protected override void Button_OnClicked()
     {
         base.Button_OnClicked();
+        Debug.Log("ShowAds");
         ShowAds();
     }
 

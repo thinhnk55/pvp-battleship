@@ -22,7 +22,7 @@ public class BetCollection : CardCollectionBase<BetInfo>
             {
                 Index = _i,
                 IsQualified = isQualified,
-                RewardAmount = GameData.Bets[i] * 2,
+                RewardAmount = GameData.BetRankPoint[i],
                 EntryStake = GameData.Bets[i],
                 OnClick = () =>
                 {

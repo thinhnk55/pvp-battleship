@@ -1718,4 +1718,104 @@ public class MaxSdkCallbacks : MonoBehaviour
     {
         MaxSdkLogger.D("Listener has been removed from callback: " + eventName);
     }
+
+#if UNITY_EDITOR && UNITY_2019_2_OR_NEWER
+    /// <summary>
+    /// Resets static event handlers so they still get reset even if Domain Reloading is disabled
+    /// </summary>
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    private static void ResetOnDomainReload()
+    {
+        _onSdkInitializedEvent = null;
+        _onVariablesUpdatedEvent = null;
+        _onSdkConsentDialogDismissedEvent = null;
+
+        _onInterstitialAdLoadedEventV2 = null;
+        _onInterstitialAdLoadFailedEventV2 = null;
+        _onInterstitialAdDisplayedEventV2 = null;
+        _onInterstitialAdFailedToDisplayEventV2 = null;
+        _onInterstitialAdClickedEventV2 = null;
+        _onInterstitialAdRevenuePaidEvent = null;
+        _onInterstitialAdReviewCreativeIdGeneratedEvent = null;
+        _onInterstitialAdHiddenEventV2 = null;
+
+        _onAppOpenAdLoadedEvent = null;
+        _onAppOpenAdLoadFailedEvent = null;
+        _onAppOpenAdDisplayedEvent = null;
+        _onAppOpenAdFailedToDisplayEvent = null;
+        _onAppOpenAdClickedEvent = null;
+        _onAppOpenAdRevenuePaidEvent = null;
+        _onAppOpenAdHiddenEvent = null;
+
+        _onRewardedAdLoadedEventV2 = null;
+        _onRewardedAdLoadFailedEventV2 = null;
+        _onRewardedAdDisplayedEventV2 = null;
+        _onRewardedAdFailedToDisplayEventV2 = null;
+        _onRewardedAdClickedEventV2 = null;
+        _onRewardedAdRevenuePaidEvent = null;
+        _onRewardedAdReviewCreativeIdGeneratedEvent = null;
+        _onRewardedAdReceivedRewardEventV2 = null;
+        _onRewardedAdHiddenEventV2 = null;
+
+        _onRewardedInterstitialAdLoadedEvent = null;
+        _onRewardedInterstitialAdLoadFailedEvent = null;
+        _onRewardedInterstitialAdDisplayedEvent = null;
+        _onRewardedInterstitialAdFailedToDisplayEvent = null;
+        _onRewardedInterstitialAdClickedEvent = null;
+        _onRewardedInterstitialAdRevenuePaidEvent = null;
+        _onRewardedInterstitialAdReviewCreativeIdGeneratedEvent = null;
+        _onRewardedInterstitialAdReceivedRewardEvent = null;
+        _onRewardedInterstitialAdHiddenEvent = null;
+
+        _onBannerAdLoadedEventV2 = null;
+        _onBannerAdLoadFailedEventV2 = null;
+        _onBannerAdClickedEventV2 = null;
+        _onBannerAdRevenuePaidEvent = null;
+        _onBannerAdReviewCreativeIdGeneratedEvent = null;
+        _onBannerAdExpandedEventV2 = null;
+        _onBannerAdCollapsedEventV2 = null;
+
+        _onMRecAdLoadedEventV2 = null;
+        _onMRecAdLoadFailedEventV2 = null;
+        _onMRecAdClickedEventV2 = null;
+        _onMRecAdRevenuePaidEvent = null;
+        _onMRecAdReviewCreativeIdGeneratedEvent = null;
+        _onMRecAdExpandedEventV2 = null;
+        _onMRecAdCollapsedEventV2 = null;
+
+        _onCrossPromoAdLoadedEvent = null;
+        _onCrossPromoAdLoadFailedEvent = null;
+        _onCrossPromoAdClickedEvent = null;
+        _onCrossPromoAdRevenuePaidEvent = null;
+        _onCrossPromoAdExpandedEvent = null;
+        _onCrossPromoAdCollapsedEvent = null;
+
+        _onBannerAdLoadedEvent = null;
+        _onBannerAdLoadFailedEvent = null;
+        _onBannerAdClickedEvent = null;
+        _onBannerAdExpandedEvent = null;
+        _onBannerAdCollapsedEvent = null;
+
+        _onMRecAdLoadedEvent = null;
+        _onMRecAdLoadFailedEvent = null;
+        _onMRecAdClickedEvent = null;
+        _onMRecAdExpandedEvent = null;
+        _onMRecAdCollapsedEvent = null;
+
+        _onInterstitialAdLoadedEvent = null;
+        _onInterstitialLoadFailedEvent = null;
+        _onInterstitialAdDisplayedEvent = null;
+        _onInterstitialAdFailedToDisplayEvent = null;
+        _onInterstitialAdClickedEvent = null;
+        _onInterstitialAdHiddenEvent = null;
+
+        _onRewardedAdLoadedEvent = null;
+        _onRewardedAdLoadFailedEvent = null;
+        _onRewardedAdDisplayedEvent = null;
+        _onRewardedAdFailedToDisplayEvent = null;
+        _onRewardedAdClickedEvent = null;
+        _onRewardedAdReceivedRewardEvent = null;
+        _onRewardedAdHiddenEvent = null;
+    }
+#endif
 }

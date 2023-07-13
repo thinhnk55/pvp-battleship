@@ -50,19 +50,6 @@ namespace AppLovinMax.Scripts.Editor
         private const string KeyConsentFlowAnalyticsPartners = "ConsentFlowAnalyticsPartners";
         private const string KeyConsentFlowIncludeDefaultAnalyticsPartners = "ConsentFlowIncludeDefaultAnalyticsPartners";
 
-        private static readonly List<string> AtsRequiringNetworks = new List<string>
-        {
-            "AdColony",
-            "ByteDance",
-            "Fyber",
-            "Google",
-            "GoogleAdManager",
-            "HyprMX",
-            "InMobi",
-            "IronSource",
-            "Smaato"
-        };
-
         private static readonly List<string> DynamicLibrariesToEmbed = new List<string>
         {
             "DTBiOSSDK.xcframework",
@@ -377,7 +364,6 @@ namespace AppLovinMax.Scripts.Editor
             AddSdkSettingsIfNeeded(plist, path);
             EnableTermsFlowIfNeeded(plist);
             AddSkAdNetworksInfoIfNeeded(plist);
-            UpdateAppTransportSecuritySettingsIfNeeded(plist);
 
             plist.WriteToFile(plistPath);
         }
@@ -685,33 +671,6 @@ namespace AppLovinMax.Scripts.Editor
                     MaxSdkLogger.UserError("Failed to parse data '" + unityWebRequest.downloadHandler.text + "' with exception: " + exception);
                     return new SkAdNetworkData();
                 }
-            }
-        }
-
-        private static void UpdateAppTransportSecuritySettingsIfNeeded(PlistDocument plist)
-        {
-            var mediationDir = PluginMediationDirectory;
-            var projectHasAtsRequiringNetworks = AtsRequiringNetworks.Any(atsRequiringNetwork => Directory.Exists(Path.Combine(mediationDir, atsRequiringNetwork)));
-            if (!projectHasAtsRequiringNetworks) return;
-
-            var root = plist.root.values;
-            PlistElement atsRoot;
-            root.TryGetValue("NSAppTransportSecurity", out atsRoot);
-
-            if (atsRoot == null || atsRoot.GetType() != typeof(PlistElementDict))
-            {
-                // Add the missing App Transport Security settings for publishers if needed. 
-                MaxSdkLogger.UserDebug("Adding App Transport Security settings...");
-                atsRoot = plist.root.CreateDict("NSAppTransportSecurity");
-                atsRoot.AsDict().SetBoolean("NSAllowsArbitraryLoads", true);
-            }
-
-            var atsRootDict = atsRoot.AsDict().values;
-            // Check if both NSAllowsArbitraryLoads and NSAllowsArbitraryLoadsInWebContent are present and remove NSAllowsArbitraryLoadsInWebContent if both are present.
-            if (atsRootDict.ContainsKey("NSAllowsArbitraryLoads") && atsRootDict.ContainsKey("NSAllowsArbitraryLoadsInWebContent"))
-            {
-                MaxSdkLogger.UserDebug("Removing NSAllowsArbitraryLoadsInWebContent");
-                atsRootDict.Remove("NSAllowsArbitraryLoadsInWebContent");
             }
         }
 

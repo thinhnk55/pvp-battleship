@@ -18,7 +18,7 @@ namespace Monetization
             {
                 // AppLovin SDK is initialized, start loading ads
                 InitializeBannerAds();
-                InitializeInterstitialAds();
+                //InitializeInterstitialAds();
                 InitializeRewardedAds();
             };
         }

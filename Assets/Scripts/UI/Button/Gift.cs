@@ -14,6 +14,8 @@ public class Gift : CacheMonoBehaviour
     [SerializeField] TextMeshProUGUI countDown;
     [SerializeField] TextMeshProUGUI progress;
     [SerializeField] Button obtain;
+    [SerializeField] GameObject smallGiftBar;
+    [SerializeField] GameObject bigGiftBar;
     void Start()
     {
         progress.text = $"{GameData.ProgressGift}/5";
@@ -60,7 +62,17 @@ public class Gift : CacheMonoBehaviour
         obtain.onClick.RemoveAllListeners();
         Timer<Gift>.Instance.LastTime = DateTime.UtcNow.Ticks;
         GameData.ProgressGift++;
-        progress.text = $"{GameData.ProgressGift}/5";
+        if (GameData.ProgressGift==5)
+        {
+            smallGiftBar.SetActive(false);
+            bigGiftBar.SetActive(true);
+        }
+        else
+        {
+            smallGiftBar.SetActive(true);
+            bigGiftBar.SetActive(false);
+            progress.text = $"{GameData.ProgressGift}/5";
+        }
     }
     // Update is called once per frame
     void Update()

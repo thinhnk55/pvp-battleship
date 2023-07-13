@@ -127,7 +127,14 @@ namespace Framework {
             {
                 for (int i = 0; i < costIcon.Length; i++)
                 {
-                    costIcon[i].sprite = SpriteFactory.ResourceIcons[(int)info.Cost[i].Type].sprites.GetLoop((int)info.Cost[i].Value);
+                    if (info.Cost[i].Type.GetPResourceType() == PResourceType.Consumable)
+                    {
+                        costIcon[i].sprite = SpriteFactory.ResourceIcons[info.Cost[i].Type].sprites.GetClamp(0);
+                    }
+                    else
+                    {
+                        costIcon[i].sprite = SpriteFactory.ResourceIcons[info.Cost[i].Type].sprites.GetClamp((int)info.Cost[i].Value);
+                    }
                 }
                 for (int i = 0; i < costAmount.Length; i++)
                 {
@@ -152,7 +159,7 @@ namespace Framework {
                     {
                         Button.onClick.AddListener(() =>
                         {
-                            PopupHelper.CreateConfirm(PrefabFactory.PopupConfirm, "Buy?", "Buy?", (confirm) => {
+                            PopupHelper.CreateConfirm(PrefabFactory.PopupConfirm, "CONFIRM", "Do you want to buy this item?", productIcon[0].sprite ,(confirm) => {
                                 if (confirm)
                                 {
                                     TransactionAction(info.TransactionType, info)?.Invoke();

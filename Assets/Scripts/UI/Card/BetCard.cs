@@ -40,10 +40,11 @@ public class BetCard : CardBase<BetInfo>
             {
                 OnClicked(info);
             });
+            lockedImage.SetAlpha(0);
         }
         else
         {
-            lockedImage.SetAlpha(0);
+            lockedImage.SetAlpha(1);
         }
         if (BG)
         {

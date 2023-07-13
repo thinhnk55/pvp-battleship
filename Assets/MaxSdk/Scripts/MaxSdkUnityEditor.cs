@@ -206,11 +206,11 @@ public class MaxSdkUnityEditor : MaxSdkBase
     ///
     /// Note: This method should be called only after SDK has been initialized.
     /// </summary>
-
     public static SdkConfiguration GetSdkConfiguration()
     {
         return SdkConfiguration.CreateEmpty();
     }
+
     /// <summary>
     /// Set whether or not user has provided consent for information sharing with AppLovin and other providers.
     /// </summary>

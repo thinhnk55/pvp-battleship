@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Text;
 using AppLovinMax.ThirdParty.MiniJson;
 using UnityEngine;
@@ -99,7 +100,7 @@ public abstract class MaxSdkBase
         [Obsolete("This API has been deprecated and will be removed in a future release.")]
         public ConsentDialogState ConsentDialogState { get; private set; }
 
-#if UNITY_EDITOR
+#if UNITY_EDITOR || !(UNITY_ANDROID || UNITY_IPHONE || UNITY_IOS)
         public static SdkConfiguration CreateEmpty()
         {
             var sdkConfiguration = new SdkConfiguration();
@@ -107,7 +108,9 @@ public abstract class MaxSdkBase
 #pragma warning disable 0618
             sdkConfiguration.ConsentDialogState = ConsentDialogState.Unknown;
 #pragma warning restore 0618
+#if UNITY_EDITOR
             sdkConfiguration.AppTrackingStatus = AppTrackingStatus.Authorized;
+#endif
             var currentRegion = RegionInfo.CurrentRegion;
             sdkConfiguration.CountryCode = currentRegion != null ? currentRegion.TwoLetterISORegionName : "US";
             sdkConfiguration.IsTestModeEnabled = false;
@@ -344,7 +347,7 @@ public abstract class MaxSdkBase
             return "[MediatedNetworkInfo: name = " + Name +
                    ", testName = " + TestName +
                    ", latency = " + LatencyMillis +
-                   ", networkResponse = " + NetworkResponses + "]";
+                   ", networkResponse = " + string.Join(", ", NetworkResponses.Select(networkResponseInfo => networkResponseInfo.ToString()).ToArray()) + "]";
         }
     }
 
@@ -375,7 +378,7 @@ public abstract class MaxSdkBase
         {
             var stringBuilder = new StringBuilder("[NetworkResponseInfo: adLoadState = ").Append(AdLoadState);
             stringBuilder.Append(", mediatedNetwork = ").Append(MediatedNetwork);
-            stringBuilder.Append(", credentials = ").Append(Credentials);
+            stringBuilder.Append(", credentials = ").Append(string.Join(", ", Credentials.Select(keyValuePair => keyValuePair.ToString()).ToArray()));
 
             switch (AdLoadState)
             {

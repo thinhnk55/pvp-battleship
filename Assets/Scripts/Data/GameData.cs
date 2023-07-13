@@ -11,6 +11,7 @@ public class GameData : PDataBlock<GameData>
 {
     [SerializeField] private int[] bets; public static int[] Bets { get { return Instance.bets; } set { Instance.bets = value; } }
     [SerializeField] private int[] betRequires; public static int[] BetRequires { get { return Instance.betRequires; } set { Instance.betRequires = value; } }
+    [SerializeField] private int[] betRankPoint; public static int[] BetRankPoint { get { return Instance.betRankPoint; } set { Instance.betRankPoint = value; } }
     [SerializeField] private int progressGift; public static int ProgressGift { get { return Instance.progressGift; } set { Instance.progressGift = value % 6; } }
     [SerializeField] private string text; public static string Text { get { return Instance.text; } set { Instance.text = value; } }
     [SerializeField] private List<int> versions; public static List<int> Versions { get { return Instance.versions; } set { Instance.versions = value; } }

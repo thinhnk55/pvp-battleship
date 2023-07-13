@@ -10,7 +10,9 @@ public class BeriGemCollection : TransactionCollection
     {
         List<TransactionInfo> transactionInfos = GameData.TransactionConfigs[transactionType];
         bigCard.BuildUI(transactionInfos.Last());
-        BuildUIs(transactionInfos.GetRange(0, transactionInfos.Count - 1));
+        var list = transactionInfos.GetRange(0, transactionInfos.Count - 1);
+        list.Reverse();
+        BuildUIs(list);
     }
 
     public override void UpdateUIs()

@@ -125,6 +125,7 @@ public class WSClient : WSClientBase
     {
         GameData.Bets = json["bet"].ToList().ToArray();
         GameData.BetRequires = json["require"].ToList().ToArray();
+        GameData.BetRankPoint = json["point"].ToList().ToArray();
     }
     private void RequestRoyalPassConfig()
     {

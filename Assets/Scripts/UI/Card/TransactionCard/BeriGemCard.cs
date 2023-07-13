@@ -13,13 +13,9 @@ public class BeriGemCard : TransactionCard
 
         for (int i = 0; i < productIcon.Length; i++)
         {
-            if (info.Product[i].Type == (int)PConsumableType.GEM)
+            if (info.Product[i].Type.GetPResourceType() == PResourceType.Consumable)
             {
-                productIcon[i].sprite = SpriteFactory.ResourceIcons[info.Product[0].Type].sprites.GetClamp(((int)info.Product[0].Value) / 20);
-            }
-            else if (info.Product[i].Type == (int)PConsumableType.BERI)
-            {
-                productIcon[i].sprite = SpriteFactory.ResourceIcons[info.Product[0].Type].sprites.GetClamp(((int)info.Product[0].Value) / 200);
+                productIcon[i].sprite = SpriteFactory.ResourceIcons[info.Product[0].Type].sprites.GetClamp(info.Index);
             }
         }
     }

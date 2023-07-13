@@ -47,10 +47,15 @@ public class RankCard : CardBase<RankInfo>
         if (Button)
         {
             Button.onClick.RemoveAllListeners();
-            Button.onClick.AddListener(() =>
+            if (info.OnClick!=null)
             {
-                info.OnClick?.Invoke();
-            });
+                
+                Button.onClick.AddListener(() =>
+                {
+                    info.OnClick?.Invoke();
+                });
+            }
+
         }
     }
 
