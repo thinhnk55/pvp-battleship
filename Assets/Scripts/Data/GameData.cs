@@ -30,6 +30,7 @@ public class GameData : PDataBlock<GameData>
     [SerializeField] private int luckyShotCoolDown; public static int LuckyShotCoolDown { get { return Instance.luckyShotCoolDown; } set { Instance.luckyShotCoolDown = value; } }
     [SerializeField] private int rankReceiveCoolDown; public static int RankReceiveCoolDown { get { return Instance.rankReceiveCoolDown; } set { Instance.rankReceiveCoolDown = value; } }
     [SerializeField] private int giftCoolDown; public static int GiftCoolDown { get { return Instance.giftCoolDown; } set { Instance.giftCoolDown = value; } }
+    [SerializeField] private int changeQuestCoolDown; public static int ChangeQuestCoolDown { get { return Instance.changeQuestCoolDown; } set { Instance.changeQuestCoolDown = value; } }
     [SerializeField] private RoyalPass royalPass; public static RoyalPass RoyalPass { get { return Instance.royalPass; } set { Instance.royalPass = value; } }
     protected override void Init()
     {

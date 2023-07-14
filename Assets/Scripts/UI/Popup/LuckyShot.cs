@@ -27,7 +27,7 @@ public class LuckyShot : SingletonMono<LuckyShot>
         ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECIEVE_LUCKY_SHOT, Instance.RecieveLuckyShot);
         GameData.RocketCount.OnDataChanged += Instance.OnRocketChange;
         Timer<LuckyShot>.Instance.Init(Instance.OnTriggerTimer, Instance.OnElapseTimer);
-        GameData.RocketCount.Data = Mathf.Clamp(GameData.RocketCount.Data + Timer<LuckyShot>.Instance.TriggerCountFromTimePoint, 0, 3);
+        GameData.RocketCount.Data = Mathf.Clamp(GameData.RocketCount.Data + Timer<LuckyShot>.Instance.TriggersFromMark, 0, 3);
         int count = rockets.Count;
         for (int i = 0; i < GameData.RocketCount.Data - count; i++)
         {
@@ -35,6 +35,9 @@ public class LuckyShot : SingletonMono<LuckyShot>
         }
         Instance.shots = shotRoot.GetComponentsInChildren<Button>().ToList();
         StartCoroutine(Instance.Init());
+
+        ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECIEVE_REWARD_ROCKET, RewardAds);
+
     }
     private void Update()
     {
@@ -47,7 +50,7 @@ public class LuckyShot : SingletonMono<LuckyShot>
         GameData.RocketCount.OnDataChanged -= Instance.OnRocketChange;
         Timer<LuckyShot>.Instance.OnTrigger -= Instance.OnTriggerTimer;
         Timer<LuckyShot>.Instance.OnElapse -= Instance.OnElapseTimer;
-        Timer<LuckyShot>.Instance.TimePoint = DateTime.UtcNow.Ticks;
+        Timer<LuckyShot>.Instance.MarkedPoint = DateTime.UtcNow.Ticks;
         base.OnDestroy();
     }
     IEnumerator Init()
@@ -69,10 +72,6 @@ public class LuckyShot : SingletonMono<LuckyShot>
         }
 
         yield return new WaitForSeconds(1);
-        /*for (int i = 0; i < GameData.LuckyShotConfig.Count; i++)
-        {
-            Instance.shots[i].GetComponent<Image>().sprite = SpriteFactory.Unknown;
-        }*/
         yield return StartCoroutine(Instance.Suffle());
     }
     private void RecieveLuckyShot(JSONNode node)
@@ -108,7 +107,7 @@ public class LuckyShot : SingletonMono<LuckyShot>
         {
             if (oldValue == 3)
             {
-                Timer<LuckyShot>.Instance.LastTime = DateTime.UtcNow.Ticks; 
+                Timer<LuckyShot>.Instance.BeginPoint = DateTime.UtcNow.Ticks; 
             }
             for (int i = 0; i < oldValue - newValue; i++)
             {
@@ -133,7 +132,7 @@ public class LuckyShot : SingletonMono<LuckyShot>
         }
         else
         {
-            countDown.text = $"Free Rocket - {Timer<LuckyShot>.Instance.RemainTimeInsecond.Hour_Minute_Second_1()}";
+            countDown.text = $"Free Rocket - {Timer<LuckyShot>.Instance.RemainTime_Sec.Hour_Minute_Second_1()}";
         }
     }
     public IEnumerator Suffle()
@@ -171,8 +170,8 @@ public class LuckyShot : SingletonMono<LuckyShot>
         }
     }
 
-    public void RewardAds()
+    public void RewardAds(JSONNode json)
     {
-        Debug.Log("Reward");
+        GameData.RocketCount.Data++;
     }
 }

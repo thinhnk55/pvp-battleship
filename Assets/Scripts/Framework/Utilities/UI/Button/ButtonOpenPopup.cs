@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Events;
 
 namespace Framework
 {
@@ -6,7 +7,7 @@ namespace Framework
     {
         [SerializeField] GameObject _popup;
 
-        public event Callback<PopupBehaviour> OnSpawnPopup;
+        public UnityEvent<PopupBehaviour> OnSpawnPopup;
 
         protected override void Button_OnClicked()
         {

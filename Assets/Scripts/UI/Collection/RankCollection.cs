@@ -24,7 +24,6 @@ public class RankCollection : CardCollectionBase<RankInfo>
             if (((RankCard)newCard).BG)
                 ((RankCard)newCard).BG.sprite = SpriteFactory.SelectedRankBG;
             SetCardPreview(newCard.Info);
-            Debug.Log("Change");
         };
         UpdateUIs();
         indicator.transform.parent = cards[GameData.Player.Rank].transform;
@@ -41,7 +40,7 @@ public class RankCollection : CardCollectionBase<RankInfo>
     }
     public void SetCardPreview(RankInfo info)
     {
-        if (Timer<RankCollection>.Instance.TriggerCountTotal >= 1 && info.Id == GameData.Player.Rank)
+        if (Timer<RankCollection>.Instance.TriggersFromBegin >= 1 && info.Id == GameData.Player.Rank)
         {
             info.OnClick = () =>
             {
@@ -66,7 +65,7 @@ public class RankCollection : CardCollectionBase<RankInfo>
 
     private void OnTrigger()
     {
-        if (Timer<RankCollection>.Instance.TriggerCountTotal == 1)
+        if (Timer<RankCollection>.Instance.TriggersFromBegin == 1)
         {
             SetCardPreview(SelectedCard.Info);
         }
@@ -74,14 +73,14 @@ public class RankCollection : CardCollectionBase<RankInfo>
 
     private void OnElapse()
     {
-        countDown.text = Timer<RankCollection>.Instance.TriggerCountTotal >= 1 ? "Obtain" : "Received salary in " + Timer<RankCollection>.Instance.RemainTimeInsecond.Hour_Minute_Second_1();
+        countDown.text = Timer<RankCollection>.Instance.TriggersFromBegin >= 1 ? "Obtain" : "Received salary in " + Timer<RankCollection>.Instance.RemainTime_Sec.Hour_Minute_Second_1();
     }
 
     void ReceiveRank(JSONNode json)
     {
         PConsumableType.BERI.AddValue(int.Parse(json["value"]));
         CoinVFX.CoinVfx(resource, Position, Position);
-        Timer<RankCollection>.Instance.LastTime = DateTime.UtcNow.Ticks;
+        Timer<RankCollection>.Instance.BeginPoint = DateTime.UtcNow.Ticks;
         SetCardPreview(SelectedCard.Info);
     }
     // Update is called once per frame

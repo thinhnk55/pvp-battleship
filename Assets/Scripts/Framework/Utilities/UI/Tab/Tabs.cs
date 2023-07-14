@@ -8,7 +8,7 @@ namespace Framework
 {
     public class Tabs : CacheMonoBehaviour
     {
-        protected List<Button> buttons;
+        protected List<Button> tabs;
         [SerializeField] protected GameObject rootContent;
         protected List<GameObject> contents;
         protected GameObject activeContent;
@@ -16,7 +16,7 @@ namespace Framework
         private void Awake()
         {
             contents = new List<GameObject>();
-            buttons = GetComponentsInChildren<Button>().ToList();
+            tabs = GetComponentsInChildren<Button>().ToList();
             for (int i = 0; i < rootContent.transform.childCount; i++)
             {
                 contents.Add(rootContent.transform.GetChild(i).gameObject);
@@ -28,10 +28,10 @@ namespace Framework
                 InactiveTab(oldIndex);
                 ActiveTab(newIndex);
             };
-            for (int i = 0; i < buttons.Count; i++)
+            for (int i = 0; i < tabs.Count; i++)
             {
                 int _i = i;
-                buttons[i].onClick.AddListener(() =>
+                tabs[i].onClick.AddListener(() =>
                 {
                     activeIndex.Data = _i;
                 });

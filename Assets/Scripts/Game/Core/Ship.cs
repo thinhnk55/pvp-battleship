@@ -16,6 +16,7 @@ public class Ship : CacheMonoBehaviour
     public SpriteRenderer renderer;
     [SerializeField] SpriteRenderer occupyRenderer;
     [SerializeField] Sprite destroyedSprite;
+    [SerializeField] List<GameObject> smokeVFXs;
     LeanDragTranslate leanDrag;
     public bool onSelecting;
     public float timeSelecting;
@@ -116,20 +117,6 @@ public class Ship : CacheMonoBehaviour
         get
         {
             return dir;
-            int rot = (int)((EulerAngles.z % 360) / 90);
-            switch (rot)
-            {
-                case 0:
-                    return Vector2Int.left;
-                case 3:
-                    return Vector2Int.up;
-                case 2:
-                    return Vector2Int.right;
-                case 1:
-                    return Vector2Int.down;
-                default:
-                    return Vector2Int.left;
-            }
         }
         set
         {
@@ -184,7 +171,19 @@ public class Ship : CacheMonoBehaviour
             CheckShip(CoreGame.Instance.player, x, y, out int _x, out int _y, out bool inside, timeSelecting > LeanTouch.CurrentTapThreshold);
         }
     }
-
+    private void OnDisable()
+    {
+        for (int i = 0; i < octilesComposition.Count; i++)
+        {
+            foreach (var item in smokeVFXs)
+            {
+                item.SetActive(false);
+            }
+            if (octilesComposition[i].attackedAnim != null)
+                octilesComposition[i].attackedAnim.gameObject.SetActive(false);
+            
+        }
+    }
     public void BeingAttacked(Octile octile)
     {
         for (int i = 0; i < octilesComposition.Count; i++)
@@ -211,11 +210,12 @@ public class Ship : CacheMonoBehaviour
         for (int i = 0; i < octilesComposition.Count; i++)
         {
             octilesComposition[i].attackSpriteRenderer.sprite = null;
-            octilesComposition[i].attackedAnim?.gameObject.SetActive(false);
+            if (octilesComposition[i].attackedAnim != null)
+                octilesComposition[i].attackedAnim.gameObject.SetActive(false);
             ObjectPoolManager.GenerateObject<ParticleSystem>(VFXFactory.Explosion, octilesComposition[i].Position);
             if (i==0 || i == 2)
             {
-                ObjectPoolManager.GenerateObject<ParticleSystem>(VFXFactory.Smoke, octilesComposition[i].Position, gameObject);
+                smokeVFXs.Add(ObjectPoolManager.GenerateObject<ParticleSystem>(VFXFactory.Smoke, octilesComposition[i].Position, transform).gameObject);
             }
         }
         GetComponent<LeanSelectableByFinger>().enabled = false;

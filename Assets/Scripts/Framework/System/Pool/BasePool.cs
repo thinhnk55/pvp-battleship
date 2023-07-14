@@ -9,8 +9,8 @@ namespace Framework
         protected List<GameObject> _pool = new List<GameObject>();
 
         protected GameObject _prefab;
-
-        public BasePool(GameObject prefab, int initAtStart)
+        protected Transform _root;
+        public BasePool(GameObject prefab, int initAtStart, Transform root)
         {
             if (prefab != null)
                 _prefab = prefab;
@@ -22,9 +22,10 @@ namespace Framework
                 SetActive(item, false);
                 _pool.Add(item);
             }
+            _root = root;
         }
 
-        public T GetItem<T>() where T : Component
+        public T GetItem<T>(Transform root = null) where T : Component
         {
             // Find if there is any available item, return it
             for (int i = 0; i < _pool.Count; i++)
@@ -44,6 +45,15 @@ namespace Framework
                         _pool.Add(item);
 
                         SetActive(item, true);
+                        if (root!=null)
+                        {
+                            item.transform.parent = root;
+                        }
+                        else
+                        {
+                            item.transform.parent = _root;
+
+                        }
                         return item.GetComponent<T>();
                     }
                 }
@@ -55,11 +65,19 @@ namespace Framework
             }
 
             // Check if there is no more item in pool, create new
-            _pool.Add(SpawnItem<T>());
+            if (root != null)
+            {
+                _pool.Add(SpawnItem<T>(root));
+            }
+            else
+            {
+                _pool.Add(SpawnItem<T>(_root));
+
+            }
             return _pool[_pool.Count-1].GetComponent<T>();
         }
 
-        protected virtual GameObject SpawnItem<T>() where T : Component
+        protected virtual GameObject SpawnItem<T>(Transform root = null) where T : Component
         {
             // Create new item and set parent to root
             GameObject newItem = null;
@@ -75,15 +93,17 @@ namespace Framework
             else
             {
                 newItem = GameObject.Instantiate(_prefab);
+                newItem.transform.parent = root;
             }
 
             return newItem;
         }
-        protected virtual GameObject SpawnItem()
+        protected virtual GameObject SpawnItem(Transform root = null)
         {
             // Create new item and set parent to root
             GameObject newItem = null;
             newItem = UnityEngine.Object.Instantiate(_prefab);
+            newItem.transform.parent = root;
             return newItem;
         }
         protected virtual bool IsActive(GameObject item)

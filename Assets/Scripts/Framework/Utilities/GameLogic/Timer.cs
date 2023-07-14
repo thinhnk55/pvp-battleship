@@ -9,16 +9,20 @@ namespace Framework
 {
     public class Timer<T> : Singleton<Timer<T>>
     {
-        private int triggerIntervalInSecond; public int TriggerIntervalInSecond { get { return triggerIntervalInSecond; } set { triggerIntervalInSecond = Mathf.Clamp(value, 1, int.MaxValue); } }
-        private long lastTime; public long LastTime
+        private int triggerInterval_Sec; public int TriggerInterval_Sec { get { return triggerInterval_Sec; } set { triggerInterval_Sec = Mathf.Clamp(value, 1, int.MaxValue); } }
+        private long beginPoint; public long BeginPoint
         {
-            get { return lastTime; }
+            get { return beginPoint; }
             set
             {
-                lastTime = value;
+                beginPoint = value;
                 elapse = 0;
-                TimePoint = value;
+                MarkedPoint = value;
             }
+        }
+        private long markedPoint; public long MarkedPoint { 
+            get { return markedPoint; } 
+            set { markedPoint = value; } 
         }
 
         private float elapse; public float ELaspe
@@ -30,20 +34,19 @@ namespace Framework
                 if (elapse >= 1)
                 {
                     elapse -= 1;
-                    if (RemainTimeInsecond - 1 == 0)
+                    if (RemainTime_Sec - 1 == 0)
                     {
                         OnTrigger?.Invoke();
                     }
                 }
-
             }
         }
-        private long timePoint; public long TimePoint { get { return timePoint; } set { timePoint = value; } }
-        public long ElaspedTime { get { return DateTime.UtcNow.Ticks - lastTime; } }
-        public long ResidalTimeInSecond { get { return ElaspedTime.ToSecond() % triggerIntervalInSecond; } }
-        public long RemainTimeInsecond { get { return Math.Clamp(TriggerIntervalInSecond - ResidalTimeInSecond, 0, TriggerIntervalInSecond); } }
-        public int TriggerCountTotal { get { return ElaspedTime.ToSecond() / triggerIntervalInSecond; } }
-        public int TriggerCountFromTimePoint { get { return TriggerCountTotal - ((timePoint - lastTime).ToSecond() / triggerIntervalInSecond); } }
+        public long ElaspedTime_Tick { get { return DateTime.UtcNow.Ticks - beginPoint; } }
+        public long ResidalTime_Sec { get { return ElaspedTime_Tick.ToSecond() % triggerInterval_Sec; } }
+        public long RemainTime_Sec { get { return Math.Clamp(TriggerInterval_Sec - ResidalTime_Sec, 0, TriggerInterval_Sec); } }
+        public int TriggersFromBegin { get { return ElaspedTime_Tick.ToSecond() / triggerInterval_Sec; } }
+        public int TriggersFromMark { get { return TriggersFromBegin - ((markedPoint - beginPoint).ToSecond() / triggerInterval_Sec); } }
+
         public Callback OnTrigger;
         public Callback OnElapse;
 
@@ -55,6 +58,21 @@ namespace Framework
         {
             ELaspe += Time.deltaTime;
             OnElapse?.Invoke();
+        }
+        public void Begin(long? tick = null)
+        {
+            if (tick.HasValue)
+            {
+                BeginPoint = tick.Value;
+            }
+            else
+            {
+                BeginPoint = DateTime.UtcNow.Ticks;
+            }
+        }
+        public void Mark()
+        {
+            MarkedPoint = DateTime.UtcNow.Ticks;
         }
     }
 }

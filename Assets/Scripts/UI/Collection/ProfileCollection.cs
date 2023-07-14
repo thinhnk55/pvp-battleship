@@ -81,6 +81,10 @@ public class ProfileCollection : CardCollectionBase<ProfileInfo>
                 frame.sprite = SpriteFactory.ResourceIcons[(int)PNonConsumableType.AVATAR_FRAME].sprites[infos.Frame];
                 frame.SetAlpha(1);
             }
+            else
+            {
+                frame.SetAlpha(0);
+            }
         }
         if (frameTail)
         {

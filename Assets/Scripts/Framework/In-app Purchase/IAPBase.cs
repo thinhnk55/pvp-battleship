@@ -33,25 +33,25 @@ namespace Framework
             return m_StoreController != null && m_StoreExtensionProvider != null;
         }
 
-        public string GetProductPriceFromStore(string id, string defaultPrice)
+        public static string GetProductPriceFromStore(string id, string defaultPrice = "")
         {
-            if (m_StoreController != null && m_StoreController.products != null)
-                return m_StoreController.products.WithID(id).metadata.localizedPriceString;
+            if (Instance.m_StoreController != null && Instance.m_StoreController.products != null)
+                return Instance.m_StoreController.products.WithID(id).metadata.localizedPriceString;
             else
                 return defaultPrice;
         }
 
-        public void PurchaseProduct(string bundleID, Action<bool, Product> action)
+        public static void PurchaseProduct(string bundleID, Action<bool, Product> action)
         {
-            purchaseAction = action;
-            _currentBundleId = bundleID;
-            if (IsInitialized())
+            Instance.purchaseAction = action;
+            Instance._currentBundleId = bundleID;
+            if (Instance.IsInitialized())
             {
-                Product product = m_StoreController.products.WithID(bundleID);
+                Product product = Instance.m_StoreController.products.WithID(bundleID);
                 if (product != null && product.availableToPurchase)
                 {
                     Debug.Log(string.Format("Purchasing product asychronously: '{0}'", product.definition.id));
-                    m_StoreController.InitiatePurchase(product);
+                    Instance.m_StoreController.InitiatePurchase(product);
                 }
                 else
                 {
@@ -63,19 +63,19 @@ namespace Framework
                 Debug.Log("BuyProductID FAIL. Not initialized.");
             }
         }
-        public void ConfirmPendingPurchase()
+        public static void ConfirmPendingPurchase()
         {
-            if (IsInitialized())
+            if (Instance.IsInitialized())
             {
-                Product product = m_StoreController.products.WithID(_currentBundleId);
+                Product product = Instance.m_StoreController.products.WithID(Instance._currentBundleId);
                 if (product != null && product.availableToPurchase)
                 {
                     Debug.Log(string.Format("Purchased product successfully: '{0}'", product.definition.id));
-                    m_StoreController.ConfirmPendingPurchase(product);
+                    Instance.m_StoreController.ConfirmPendingPurchase(product);
                 }
                 else
                 {
-                    Debug.Log("BuyProductID: FAIL. Product is not found or unavailable :" + _currentBundleId);
+                    Debug.Log("BuyProductID: FAIL. Product is not found or unavailable :" + Instance._currentBundleId);
                 }
             }
             else

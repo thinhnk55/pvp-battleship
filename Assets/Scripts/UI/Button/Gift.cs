@@ -33,7 +33,7 @@ public class Gift : CacheMonoBehaviour
             bigGiftBar.SetActive(false);
             progress.text = $"{GameData.ProgressGift}/5";
         }
-        if (Timer<Gift>.Instance.TriggerCountTotal >= 1)
+        if (Timer<Gift>.Instance.TriggersFromBegin >= 1)
         {
             countDown.text = "Collect";
             obtain.onClick.AddListener(() =>
@@ -43,7 +43,7 @@ public class Gift : CacheMonoBehaviour
         }
         else
         {
-            countDown.text = Timer<Gift>.Instance.RemainTimeInsecond.Hour_Minute_Second_1();
+            countDown.text = Timer<Gift>.Instance.RemainTime_Sec.Hour_Minute_Second_1();
         }
     }
     private void OnDestroy()
@@ -54,7 +54,7 @@ public class Gift : CacheMonoBehaviour
     }
     private void OnTrigger()
     {
-        countDown.text = Timer<Gift>.Instance.TriggerCountTotal >= 1 ? "Collect" : Timer<Gift>.Instance.RemainTimeInsecond.Hour_Minute_Second_1();
+        countDown.text = Timer<Gift>.Instance.TriggersFromBegin >= 1 ? "Collect" : Timer<Gift>.Instance.RemainTime_Sec.Hour_Minute_Second_1();
         obtain.onClick.AddListener(() =>
         {
             WSClient.RequestGift();
@@ -63,7 +63,7 @@ public class Gift : CacheMonoBehaviour
 
     private void OnElapse()
     {
-        countDown.text = Timer<Gift>.Instance.TriggerCountTotal >= 1 ? "Collect" : Timer<Gift>.Instance.RemainTimeInsecond.Hour_Minute_Second_1();
+        countDown.text = Timer<Gift>.Instance.TriggersFromBegin >= 1 ? "Collect" : Timer<Gift>.Instance.RemainTime_Sec.Hour_Minute_Second_1();
     }
 
     void ReceiveGift(JSONNode json)
@@ -71,7 +71,7 @@ public class Gift : CacheMonoBehaviour
         PConsumableType.BERI.AddValue(int.Parse(json["value"]));
         CoinVFX.CoinVfx(resource, Position, Position);
         obtain.onClick.RemoveAllListeners();
-        Timer<Gift>.Instance.LastTime = DateTime.UtcNow.Ticks;
+        Timer<Gift>.Instance.BeginPoint = DateTime.UtcNow.Ticks;
         GameData.ProgressGift++;
         if (GameData.ProgressGift==5)
         {

@@ -348,14 +348,13 @@ public class CoreGame : SingletonMono<CoreGame>
                 PConsumableType.BERI.AddValue(int.Parse(json["w"]));
                 Instance.postUI.ResultPlayer.sprite = SpriteFactory.Win;
                 Instance.postUI.ResultOpponent.sprite = SpriteFactory.Lose;
-                CoinVFX.CoinVfx(searchUI.avatar1.transform, searchUI.tresure.transform.position, searchUI.tresure.transform.position);
+                CoinVFX.CoinVfx(postUI.avatar1.transform, postUI.treasure.transform.position, postUI.treasure.transform.position);
             }
             else
             {
-                PConsumableType.BERI.AddValue(-int.Parse(json["w"]));
                 Instance.postUI.ResultPlayer.sprite = SpriteFactory.Lose;
                 Instance.postUI.ResultOpponent.sprite = SpriteFactory.Win;
-                CoinVFX.CoinVfx(searchUI.avatar2.transform, searchUI.tresure.transform.position, searchUI.tresure.transform.position);
+                CoinVFX.CoinVfx(postUI.avatar2.transform, postUI.treasure.transform.position, postUI.treasure.transform.position);
             }
         });
 

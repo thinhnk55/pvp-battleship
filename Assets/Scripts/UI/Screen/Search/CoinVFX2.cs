@@ -59,7 +59,8 @@ public class CoinVFX2 : MonoBehaviour
 
     public static void CreateCoinFx(Transform target, Vector3 src, VFXState state)
     {
-        CoinVFX2 coinFx = ObjectPoolManager.GenerateObject<CoinVFX2>(VFXFactory.Coin2, src, target.gameObject);
+        CoinVFX2 coinFx = ObjectPoolManager.GenerateObject<CoinVFX2>(VFXFactory.Coin2, src, target.transform);
+        coinFx.transform.localScale = Vector3.one;
         coinFx.target = target;
         coinFx.state = state;
     }

@@ -23,7 +23,7 @@ public class RoyalPassPopup : MonoBehaviour
         progressBar.maxValue = GameData.RoyalPass.PointPerLevel;
         progressBar.value = GameData.RoyalPass.Point.Data % GameData.RoyalPass.PointPerLevel;
         progress.text = (GameData.RoyalPass.Point.Data % GameData.RoyalPass.PointPerLevel).ToString() + "/" + GameData.RoyalPass.PointPerLevel;
-        Timer<RoyalPass>.Instance.TriggerIntervalInSecond = GameData.RoyalPass.End.NowFrom0001From1970().ToSecond();
+        Timer<RoyalPass>.Instance.TriggerInterval_Sec = GameData.RoyalPass.End.NowFrom0001From1970().ToSecond();
         Timer<RoyalPass>.Instance.OnElapse += OnElapsed;
         Timer<RoyalPass>.Instance.OnTrigger += OnTrigger;
     }
@@ -60,7 +60,6 @@ public class RoyalPassPopup : MonoBehaviour
         pointTweenText?.Kill();
         pointTweenText = DOTween.To(() => progressBar.value + float.Parse(level.text)* GameData.RoyalPass.PointPerLevel, 
             (value) => {
-                Debug.Log(value);
                 progress.text = ((int)value % GameData.RoyalPass.PointPerLevel).ToString() + "/" + GameData.RoyalPass.PointPerLevel; 
                 level.text = (Mathf.Floor(value/GameData.RoyalPass.PointPerLevel)).ToString(); 
                 progressBar.value = value% GameData.RoyalPass.PointPerLevel;
@@ -70,12 +69,12 @@ public class RoyalPassPopup : MonoBehaviour
 
     private void OnTrigger()
     {
-        countDown.text = Timer<RoyalPass>.Instance.TriggerCountTotal >= 1 ? "Season Ended" : Timer<RoyalPass>.Instance.RemainTimeInsecond.Hour_Minute_Second_1();
+        countDown.text = Timer<RoyalPass>.Instance.TriggersFromBegin >= 1 ? "Season Ended" : Timer<RoyalPass>.Instance.RemainTime_Sec.Hour_Minute_Second_1();
     }
 
     private void OnElapsed()
     {
-        countDown.text = Timer<RoyalPass>.Instance.RemainTimeInsecond.Hour_Minute_Second_1();
+        countDown.text = "Season Ended in : " + Timer<RoyalPass>.Instance.RemainTime_Sec.Hour_Minute_Second_1();
     }
 
     // Update is called once per frame

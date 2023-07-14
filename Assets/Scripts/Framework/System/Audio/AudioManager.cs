@@ -21,7 +21,7 @@ public class AudioManager : SingletonMono<AudioManager>
     protected override void Awake()
     {
         base.Awake();
-        ObjectPoolManager.GenerateObject<AudioSource>(PrefabFactory.AudioSourcePrefab, Instance.gameObject, PoolConfig.DefaultInitPoolSound).gameObject.SetActive(false);
+        ObjectPoolManager.GenerateObject<AudioSource>(PrefabFactory.AudioSourcePrefab, Instance.transform, PoolConfig.DefaultInitPoolSound).gameObject.SetActive(false);
     }
     public void PlaySound(SoundType sound, ClipConfig clipConfig, Transform transform, bool isFollow)
     {
@@ -54,7 +54,7 @@ public class AudioManager : SingletonMono<AudioManager>
                 return;
             }
         }
-        audioSrc = ObjectPoolManager.GenerateObject<AudioSource>(PrefabFactory.AudioSourcePrefab, audioTracker.gameObject);
+        audioSrc = ObjectPoolManager.GenerateObject<AudioSource>(PrefabFactory.AudioSourcePrefab, audioTracker.transform);
         audioSrc.transform.parent = audioTracker.transform;
         audioSrc.clip = clipConfig.clip;
         audioSrc.spatialBlend = AudioConfig.SoundConfigs[sound].spatial;

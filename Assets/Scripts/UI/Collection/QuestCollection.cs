@@ -1,4 +1,5 @@
 using Framework;
+using SimpleJSON;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -44,7 +45,7 @@ public class QuestCollection : CardCollectionBase<QuestInfo>
                     },
                     OnChange = (info) =>
                     {
-
+                        RequestChangeQuest(_i);
                     }
                 });
             }
@@ -55,5 +56,15 @@ public class QuestCollection : CardCollectionBase<QuestInfo>
     public override void BuildUIs(List<QuestInfo> infos)
     {
         base.BuildUIs(infos);
+    }
+
+    private void RequestChangeQuest(int index)
+    {
+        JSONNode jsonNode = new JSONClass()
+        {
+            { "id", GameServerEvent.REQUEST_CHANGE_QUEST.ToJson() },
+            { "index", new JSONData(index)},
+        };
+        WSClient.Instance.Send(jsonNode);
     }
 }

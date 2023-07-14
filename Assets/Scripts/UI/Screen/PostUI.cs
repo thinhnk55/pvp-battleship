@@ -9,4 +9,7 @@ public class PostUI : MonoBehaviour
     public TextMeshProUGUI amount;
     public Image ResultPlayer;
     public Image ResultOpponent;
+    public GameObject avatar1;
+    public GameObject avatar2;
+    public GameObject treasure;
 }

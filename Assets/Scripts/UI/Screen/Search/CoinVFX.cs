@@ -49,8 +49,11 @@ public class CoinVFX : CacheMonoBehaviour
 
     public static void CoinVfx(Transform target, Vector3 src1, Vector3 src2)
     {
-        CoinVFX coin1 = ObjectPoolManager.GenerateObject<CoinVFX>(VFXFactory.Coin, src1, target.gameObject);
-        CoinVFX coin2 = ObjectPoolManager.GenerateObject<CoinVFX>(VFXFactory.Coin, src2, target.gameObject);
+        CoinVFX coin1 = ObjectPoolManager.GenerateObject<CoinVFX>(VFXFactory.Coin, src1, target.transform);
+        CoinVFX coin2 = ObjectPoolManager.GenerateObject<CoinVFX>(VFXFactory.Coin, src2, target.transform);
+        coin1.transform.localScale = Vector3.one;
+        coin2.transform.localScale = Vector3.one;
+        Debug.Log("Coin");
         coin1.target = target;
         coin2.target = target;
     }

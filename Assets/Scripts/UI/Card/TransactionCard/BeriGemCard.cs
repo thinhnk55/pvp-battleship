@@ -15,7 +15,7 @@ public class BeriGemCard : TransactionCard
         {
             if (info.Product[i].Type.GetPResourceType() == PResourceType.Consumable)
             {
-                productIcon[i].sprite = SpriteFactory.ResourceIcons[info.Product[0].Type].sprites.GetClamp(info.Index);
+                productIcon[i].sprite = SpriteFactory.ResourceIcons[info.Product[0].Type].sprites.GetClamp(info.Index+1);
             }
         }
     }

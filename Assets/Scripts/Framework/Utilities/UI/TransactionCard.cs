@@ -70,7 +70,7 @@ namespace Framework {
             }
             else
             {
-                IAP.Instance.ConfirmPendingPurchase();
+                IAP.ConfirmPendingPurchase();
             }
             for (int i = 0; i < Product.Length; i++)
             {
@@ -125,32 +125,61 @@ namespace Framework {
             }
             if (info.Cost[0].Type >= 0)
             {
-                for (int i = 0; i < costIcon.Length; i++)
+                if (info.Cost[0].Type >0)
                 {
-                    if (info.Cost[i].Type.GetPResourceType() == PResourceType.Consumable)
+                    for (int i = 0; i < costIcon.Length; i++)
                     {
-                        costIcon[i].sprite = SpriteFactory.ResourceIcons[info.Cost[i].Type].sprites.GetClamp(0);
+                        if (info.Cost[i].Type.GetPResourceType() == PResourceType.Consumable)
+                        {
+                            costIcon[i].sprite = SpriteFactory.ResourceIcons[info.Cost[i].Type].sprites.GetClamp(0);
+                        }
+                        else
+                        {
+                            costIcon[i].sprite = SpriteFactory.ResourceIcons[info.Cost[i].Type].sprites.GetClamp((int)info.Cost[i].Value);
+                        }
                     }
-                    else
+                    for (int i = 0; i < costAmount.Length; i++)
                     {
-                        costIcon[i].sprite = SpriteFactory.ResourceIcons[info.Cost[i].Type].sprites.GetClamp((int)info.Cost[i].Value);
+                        if (info.Cost[i].Value == (int)info.Cost[i].Value)
+                        {
+                            costAmount[i].text = info.Cost[i].Value.ToString("F0");
+                        }
+                        else
+                        {
+                            costAmount[i].text = info.Cost[i].Value.ToString("F2");
+                        }
                     }
                 }
-                for (int i = 0; i < costAmount.Length; i++)
+                else
                 {
-                    if (info.Cost[i].Value == (int)info.Cost[i].Value)
+                    for (int i = 0; i < costAmount.Length; i++)
                     {
-                        costAmount[i].text = info.Cost[i].Value.ToString("F0");
+                        if (info.Cost[i].Value == (int)info.Cost[i].Value)
+                        {
+                            costAmount[i].text = IAP.GetProductPriceFromStore(ApplicationConfig.BundleId + "." + "gem" + "." + info.Index);
+                        }
+                        else
+                        {
+                            costAmount[i].text = IAP.GetProductPriceFromStore(ApplicationConfig.BundleId + "." + "gem" + "." + info.Index);
+                        }
                     }
-                    else
+                    for (int i = 0; i < costIcon.Length; i++)
                     {
-                        costAmount[i].text = info.Cost[i].Value.ToString("F2");
+                        DestroyImmediate(costIcon[i].gameObject);
                     }
                 }
+                
 
                 if (bonus)
                 {
-                    bonus.text = "Bonus " + info.Bonus.ToString() + "%";
+                    if (info.Bonus>0)
+                    {
+                        bonus.text = "Bonus " + info.Bonus.ToString() + "%";
+                    }
+                    else
+                    {
+                        bonus.transform.parent.gameObject.SetActive(false);
+                    }
                 }
 
                 if (Button)
@@ -173,7 +202,7 @@ namespace Framework {
                     {
                         Button.onClick.AddListener(() =>
                         {
-                            IAP.Instance.PurchaseProduct($"{ApplicationConfig.BundleId}.{((PConsumableType)info.Product[0].Type).ToString().ToLower()}.{info.Product[0].Value}", (success, product) =>
+                            IAP.PurchaseProduct($"{ApplicationConfig.BundleId}.{((PConsumableType)info.Product[0].Type).ToString().ToLower()}.{info.Product[0].Value}", (success, product) =>
                             {
                                 if (success)
                                 {

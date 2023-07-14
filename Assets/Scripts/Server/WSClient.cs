@@ -29,6 +29,7 @@ public class WSClient : WSClientBase
         //not config
         ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECIEVE_RECEIVE_ROYALPASS, ReceiveReceiveRoyalPass);
         ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECIEVE_RECEIVE_ROYALPASS_QUEST, ReceiveQuest);
+        ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECIEVE_CHANGE_QUEST, ReceiveChangeQuest);
         ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECIEVE_RECEIVE_ROYALPASS_SEASON_QUEST, ReceiveSeasonQuest);
 
     }
@@ -50,6 +51,7 @@ public class WSClient : WSClientBase
         //not config
         ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.RECIEVE_RECEIVE_ROYALPASS, ReceiveReceiveRoyalPass);
         ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.RECIEVE_RECEIVE_ROYALPASS_QUEST, ReceiveQuest);
+        ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.RECIEVE_CHANGE_QUEST, ReceiveChangeQuest);
         ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.RECIEVE_RECEIVE_ROYALPASS_SEASON_QUEST, ReceiveSeasonQuest);
     }
     public void OnLogin(JSONNode data)
@@ -63,10 +65,11 @@ public class WSClient : WSClientBase
         PNonConsumableType.SKIN_SHIP.FromJson(data["statistics"]["ssA"]);
         GameData.Player = ProfileData.FromJson(GameData.Player, data);
         RoyalPass.DataFromJson(GameData.RoyalPass, data["royalPass"]);
-        Timer<LuckyShot>.Instance.LastTime = long.Parse(data["timer"]["lfb"]).NowFrom0001From1970();
-        Timer<Gift>.Instance.LastTime = long.Parse(data["timer"]["lcr"]).NowFrom0001From1970();
-        Timer<RankCollection>.Instance.LastTime = long.Parse(data["timer"]["WRC"]).NowFrom0001From1970();
-        Timer<RoyalPass>.Instance.LastTime = GameData.RoyalPass.End;
+        Timer<LuckyShot>.Instance.BeginPoint = long.Parse(data["timer"]["lfb"]).NowFrom0001From1970();
+        Timer<Gift>.Instance.BeginPoint = long.Parse(data["timer"]["lcr"]).NowFrom0001From1970();
+        Timer<RankCollection>.Instance.BeginPoint = long.Parse(data["timer"]["WRC"]).NowFrom0001From1970();
+        Timer<RoyalPass>.Instance.BeginPoint = GameData.RoyalPass.End;
+        Timer<QuestCard>.Instance.BeginPoint = 300000000; //long.Parse(data["timer"]["as"]).NowFrom0001From1970();
         GameData.ProgressGift = int.Parse(data["timer"]["cr"]);
         CoreGame.timeInit = int.Parse(data["t"]);
         for (int i = 0; i < data["v"].Count; i++)
@@ -109,9 +112,9 @@ public class WSClient : WSClientBase
             }
         }
         SceneTransitionHelper.Load(ESceneName.Home);
-        Timer<LuckyShot>.Instance.TriggerIntervalInSecond = GameData.LuckyShotCoolDown;
-        Timer<Gift>.Instance.TriggerIntervalInSecond = GameData.GiftCoolDown;
-        Timer<RankCollection>.Instance.TriggerIntervalInSecond = GameData.RankReceiveCoolDown;
+        Timer<LuckyShot>.Instance.TriggerInterval_Sec = GameData.LuckyShotCoolDown;
+        Timer<Gift>.Instance.TriggerInterval_Sec = GameData.GiftCoolDown;
+        Timer<RankCollection>.Instance.TriggerInterval_Sec = GameData.RankReceiveCoolDown;
         AdsManager.SetUserId(PDataAuth.AuthData.userId.ToString());
     }
     #region Config
@@ -155,9 +158,11 @@ public class WSClient : WSClientBase
         GameData.LuckyShotCoolDown = int.Parse(data["lucky_shot"]) / 1000;
         GameData.RankReceiveCoolDown = int.Parse(data["rank_receive"]) / 1000;
         GameData.GiftCoolDown = int.Parse(data["consolation_gift"]) / 1000;
-        Timer<LuckyShot>.Instance.TriggerIntervalInSecond = int.Parse(data["lucky_shot"]) / 1000;
-        Timer<Gift>.Instance.TriggerIntervalInSecond = int.Parse(data["consolation_gift"]) / 1000;
-        Timer<RankCollection> .Instance.TriggerIntervalInSecond = int.Parse(data["rank_receive"]) / 1000;
+        GameData.ChangeQuestCoolDown = 60;//int.Parse(data["consolation_gift"]) / 1000;
+        Timer<LuckyShot>.Instance.TriggerInterval_Sec = int.Parse(data["lucky_shot"]) / 1000;
+        Timer<Gift>.Instance.TriggerInterval_Sec = int.Parse(data["consolation_gift"]) / 1000;
+        Timer<RankCollection>.Instance.TriggerInterval_Sec = int.Parse(data["rank_receive"]) / 1000;
+        Timer<QuestCard>.Instance.TriggerInterval_Sec = 60; //int.Parse(data["quest"]) / 1000;
         SceneTransitionHelper.Load(ESceneName.Home);
     }
 
@@ -604,6 +609,11 @@ public class WSClient : WSClientBase
             { "elite",  jsonElite}
         };
         Instance.Send(jsonNode);
+    }
+    private void ReceiveChangeQuest(JSONNode json)
+    {
+        GameData.RoyalPass.CurrentQuests.Data[json["index"].AsInt] = json["n"].AsInt;
+        Timer<QuestCard>.Instance.Begin();
     }
     #endregion
 }

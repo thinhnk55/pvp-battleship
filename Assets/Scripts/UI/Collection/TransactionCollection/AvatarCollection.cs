@@ -9,6 +9,7 @@ public class AvatarCollection : TransactionCollection
 {
     public int total;
     public bool isUnlocked;
+    public bool isObtainable;
     void Awake()
     {
         UpdateUIs();
@@ -31,14 +32,17 @@ public class AvatarCollection : TransactionCollection
         base.UpdateUIs();
         List<TransactionInfo> transactionInfos = new List<TransactionInfo>();
         transactionType = TransactionType.BERI_AVATAR;
+
         for (int i = 0; i < GameData.TransactionConfigs[transactionType].Count; i++)
         {
             var transaction = GameData.TransactionConfigs[transactionType][i];
-            if (isUnlocked == PNonConsumableType.AVATAR.GetValue().Contains((int)transaction.Product[0].Value))
+            if ((isUnlocked == PNonConsumableType.AVATAR.GetValue().Contains((int)transaction.Product[0].Value)  && isObtainable && transaction.Cost[0].Type >= 0) 
+                || (!isObtainable && transaction.Cost[0].Type==-1 && !PNonConsumableType.AVATAR.GetValue().Contains((int)transaction.Product[0].Value)))
             {
                 transactionInfos.Add(transaction);
             }
         }
+
         BuildUIs(transactionInfos);
     }
 

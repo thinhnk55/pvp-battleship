@@ -24,16 +24,16 @@ public class Missle : CacheMonoBehaviour
         switch (dir)
         {
             case 0:
-                Position = new Vector3(pos.x - dis, pos.y, 5);
+                Position = new Vector3(pos.x - dis, pos.y, -5);
                 break;
             case 1:
-                Position = new Vector3(pos.x, pos.y + dis, 5);
+                Position = new Vector3(pos.x, pos.y + dis, -5);
                 break;
             case 2:
-                Position = new Vector3(pos.x + dis, pos.y, 5);
+                Position = new Vector3(pos.x + dis, pos.y, -5);
                 break;
             case 3:
-                Position = new Vector3(pos.x, pos.y - dis, 5);
+                Position = new Vector3(pos.x, pos.y - dis, -5);
                 break;
             default:
                 break;
