@@ -123,7 +123,6 @@ namespace Framework
         {
             m_StoreController = controller;
             m_StoreExtensionProvider = extensions;
-            Debug.Log("Inittialized successfully");
         }
 
         public PurchaseProcessingResult ProcessPurchase(PurchaseEventArgs args)

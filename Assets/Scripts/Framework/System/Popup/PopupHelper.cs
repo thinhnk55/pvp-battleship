@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace Framework
 {
@@ -35,6 +36,13 @@ namespace Framework
             PopupMessage popup = Create<PopupMessage>(prefab);
             popup.Construct(msg, sprite);
 
+            return popup;
+        }
+
+        public static PopupGoods CreateGoods(GameObject prefab, string msg, List<GoodInfo> goods)
+        {
+            PopupGoods popup = Create<PopupGoods>(prefab);
+            popup.Construct(msg, goods);
             return popup;
         }
     }
