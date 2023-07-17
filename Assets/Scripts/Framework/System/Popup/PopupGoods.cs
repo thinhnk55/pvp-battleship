@@ -10,11 +10,14 @@ namespace Framework
         [Header("Reference")]
         [SerializeField] TextMeshProUGUI _txtContent;
         [SerializeField] Image _imgContent;
-        [SerializeField] CardCollectionBase<GoodInfo> view;
+        [SerializeField] GoodCollection view;
 
         public void Construct(string msg, List<GoodInfo> goodInfos)
         {
-            _txtContent.text = msg;
+            if (_txtContent)
+            {
+                _txtContent.text = msg;
+            }
             view.BuildUIs(goodInfos);
         }
 

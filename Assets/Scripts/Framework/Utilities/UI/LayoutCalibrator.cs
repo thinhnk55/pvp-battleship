@@ -18,7 +18,7 @@ public class LayoutCalibrator : MonoBehaviour
             if (rects[i] != null)
                 width += rects[i].sizeDelta.x;
         }
-        GetComponent<RectTransform>().anchoredPosition = new Vector2(-width, 0);
+        GetComponent<RectTransform>().anchoredPosition = new Vector2(-width, GetComponent<RectTransform>().anchoredPosition.y);
         for (int i = 0; i < texts.Count; i++)
         {
             width += texts[i].preferredWidth;

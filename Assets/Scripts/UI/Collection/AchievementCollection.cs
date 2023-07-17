@@ -30,7 +30,7 @@ public class AchievementCollection : CardCollectionBase<AchievementInfo>
         var list = isPlayer == 1 ? GameData.AchievementConfig.ToList() : GameData.AchievementConfig.ToList().GetRange(0, numberOfChild);
         for (int i = 0; i < list.Count; i++)
         {
-            AchievementInfo info = list[i].Value;
+            AchievementInfo info = list[i];
             if (isSelection)
             {
                 if (!GameData.Player.AchievementSelected.Any((select) => select!=-1 && select /100 == info.Id))

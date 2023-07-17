@@ -18,13 +18,17 @@ public class BetCard : CardBase<BetInfo>
 {
     [SerializeField] Image BG;
     [SerializeField] Image lockedImage;
+    [SerializeField] TextMeshProUGUI title;
     [SerializeField] TextMeshProUGUI rewardAmount;
     [SerializeField] TextMeshProUGUI entryStake;
+    [SerializeField] TextMeshProUGUI lockText;
+    [SerializeField] GameObject unlockSession;
     RectTransform rectTransform;
     RectTransform contentTransform;
     public override void BuildUI(BetInfo info)
     {
         base.BuildUI(info);
+        title?.SetText(GameConfig.BetNames[info.Index]);
         if (rewardAmount)
         {
             rewardAmount.text = "+"+ info.RewardAmount.ToString();
@@ -41,10 +45,14 @@ public class BetCard : CardBase<BetInfo>
                 OnClicked(info);
             });
             lockedImage.SetAlpha(0);
+            unlockSession.SetActive(true);
+            lockText.text = "";
         }
         else
         {
             lockedImage.SetAlpha(1);
+            lockText.text = "Unlock at rank " + GameData.RankConfigs[GameData.BetRequires[Info.Index]].Title;
+            unlockSession.SetActive(false);
         }
         if (BG)
         {

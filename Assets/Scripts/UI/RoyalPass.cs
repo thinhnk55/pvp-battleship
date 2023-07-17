@@ -168,8 +168,10 @@ public class RoyalPass
         royalPass.UnlockedElite = int.Parse(json["u"]) == 1;
         if (royalPass.UnlockedElite)
         {
+            royalPass.EliteObtains = new PDataUnit<HashSet<int>>(new HashSet<int>());
             royalPass.EliteObtains.Data.AddRange(json["re"].ToList());
         }
+        royalPass.NormalObtains = new PDataUnit<HashSet<int>>(new HashSet<int>());
         royalPass.NormalObtains.Data.AddRange(json["rn"].ToList());
 
     }

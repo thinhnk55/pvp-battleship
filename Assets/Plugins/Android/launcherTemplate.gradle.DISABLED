@@ -5,6 +5,7 @@ dependencies {
     }
 
 android {
+    enableR8=false
     ndkPath "**NDKPATH**"
 
     compileSdkVersion **APIVERSION**

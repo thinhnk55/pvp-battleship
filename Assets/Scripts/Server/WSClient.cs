@@ -5,6 +5,7 @@ using Sirenix.Utilities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -31,6 +32,7 @@ public class WSClient : WSClientBase
         ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECIEVE_RECEIVE_ROYALPASS_QUEST, ReceiveQuest);
         ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECIEVE_CHANGE_QUEST, ReceiveChangeQuest);
         ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECIEVE_RECEIVE_ROYALPASS_SEASON_QUEST, ReceiveSeasonQuest);
+        ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECIEVE_CLAIM_ALL_ROYALPASS, ReceiveClaimAllRoyalPass);
 
     }
     protected override void OnDestroy()
@@ -53,6 +55,7 @@ public class WSClient : WSClientBase
         ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.RECIEVE_RECEIVE_ROYALPASS_QUEST, ReceiveQuest);
         ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.RECIEVE_CHANGE_QUEST, ReceiveChangeQuest);
         ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.RECIEVE_RECEIVE_ROYALPASS_SEASON_QUEST, ReceiveSeasonQuest);
+        ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.RECIEVE_CLAIM_ALL_ROYALPASS, ReceiveClaimAllRoyalPass);
     }
     public void OnLogin(JSONNode data)
     {
@@ -570,6 +573,7 @@ public class WSClient : WSClientBase
             {
                 goods[i].Type.Transact((int)goods[i].Value);
             }
+            PopupHelper.CreateGoods(PrefabFactory.PopupGood, "You have received", goods);
             GameData.RoyalPass.NormalObtains.Data = receive;
         }
         else
@@ -582,6 +586,7 @@ public class WSClient : WSClientBase
             {
                 goods[i].Type.Transact((int)goods[i].Value);
             }
+            PopupHelper.CreateGoods(PrefabFactory.PopupGood, "You have received", goods);
             GameData.RoyalPass.EliteObtains.Data = receive;
         }
     }
@@ -594,12 +599,10 @@ public class WSClient : WSClientBase
             if (!GameData.RoyalPass.NormalObtains.Data.Contains(i))
             {
                 jsonNormal.Add(new JSONData(i));
-
             }
             if (!GameData.RoyalPass.EliteObtains.Data.Contains(i))
             {
                 jsonElite.Add(new JSONData(i));
-
             }
         }
         JSONNode jsonNode = new JSONClass()
@@ -609,6 +612,80 @@ public class WSClient : WSClientBase
             { "elite",  jsonElite}
         };
         Instance.Send(jsonNode);
+    }
+    public static void ReceiveClaimAllRoyalPass(JSONNode json)
+    {
+        Dictionary<int, GoodInfo> goods = new Dictionary<int, GoodInfo>();
+        HashSet<int> normalReceive = new HashSet<int>();
+        normalReceive.AddRange(GameData.RoyalPass.NormalObtains.Data);
+        HashSet<int> eliteReceive = new HashSet<int>();
+        eliteReceive.AddRange(GameData.RoyalPass.NormalObtains.Data);
+        for (int i = 0; i < json["normal"].Count; i++)
+        {
+            normalReceive.Add(json["normal"][i].AsInt);
+            var list = GameData.RoyalPass.RewardNormals[json["normal"][i].AsInt];
+            for (int j = 0; j < list.Count; j++)
+            {
+                if (list[j].Type.GetPResourceType() == PResourceType.Nonconsumable)
+                {
+                    goods.Add(list[j].Type * 100 + (int)list[j].Value, list[j]);
+                }
+                else
+                {
+                    if (goods.ContainsKey(list[j].Type * 100))
+                    {
+                        goods[list[j].Type * 100] = new GoodInfo()
+                        {
+                            Type = list[j].Type,
+                            Value = list[j].Value + goods[list[j].Type * 100].Value,
+                        };
+                    }
+                    else
+                    {
+                        goods.Add(list[j].Type * 100, list[j]);
+                    }
+                }
+            }
+        }
+        for (int i = 0; i < json["elite"].Count; i++)
+        {
+            eliteReceive.Add(json["elite"][i].AsInt);
+            var list = GameData.RoyalPass.RewardElites[json["normal"][i].AsInt];
+            for (int j = 0; j < list.Count; j++)
+            {
+                if (goods.ContainsKey(list[j].Type * 100))
+                {
+                    goods[list[j].Type * 100] = new GoodInfo()
+                    {
+                        Type = list[j].Type,
+                        Value = list[j].Value + goods[list[j].Type * 100].Value,
+                    };
+                }
+                else
+                {
+                    if (goods.ContainsKey(list[j].Type * 100))
+                    {
+                        goods[list[j].Type * 100] = new GoodInfo()
+                        {
+                            Type = list[j].Type,
+                            Value = list[j].Value + goods[list[j].Type * 100].Value,
+                        };
+                    }
+                    else
+                    {
+                        goods.Add(list[j].Type * 100, list[j]);
+                    }
+                }
+            }
+        }
+        if (goods.Count>0)
+        {
+            PopupHelper.CreateGoods(PrefabFactory.PopupGood, "You have received", goods.ToList());
+            GameData.RoyalPass.NormalObtains.Data = normalReceive;
+            GameData.RoyalPass.EliteObtains.Data = eliteReceive;
+        }
+
+
     }
     private void ReceiveChangeQuest(JSONNode json)
     {

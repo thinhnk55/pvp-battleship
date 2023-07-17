@@ -21,6 +21,19 @@ public class GameData : PDataBlock<GameData>
     [SerializeField] private List<int> giftConfig; public static List<int> GiftConfig { get { return Instance.giftConfig; } set { Instance.giftConfig = value; } }
     [SerializeField] private List<int> luckyShotConfig; public static List<int> LuckyShotConfig { get { return Instance.luckyShotConfig; } set { Instance.luckyShotConfig = value; } }
     [SerializeField] private List<int> luckyShotResult; public static List<int> LuckyShotResult { get { return Instance.luckyShotResult; } set { Instance.luckyShotResult = value; } }
+    [SerializeField] private List<int> rankMilestone; public static List<int> RankMilestone { 
+        get {
+            if (Instance.rankMilestone==null)
+            {
+                Instance.rankMilestone = new List<int>();
+                for (int i = 0; i < GameData.RankConfigs.Count; i++)
+                {
+                    Instance.rankMilestone.Add(GameData.RankConfigs[i].Point);
+                }
+            }
+            return Instance.rankMilestone;
+        } 
+        set { Instance.rankMilestone = value; } }
     [SerializeField] private Dictionary<TransactionType,List<TransactionInfo>> transactionConfigs; public static Dictionary<TransactionType, List<TransactionInfo>> TransactionConfigs { get { return Instance.transactionConfigs; } set { Instance.transactionConfigs = value; } }
     [SerializeField] private List<RankConfig> rankConfigs; public static List<RankConfig> RankConfigs { get { return Instance.rankConfigs; } set { Instance.rankConfigs = value; } }
     [SerializeField] private PDataUnit<int> rocketCount; public static PDataUnit<int> RocketCount { get { return Instance.rocketCount; } set { Instance.rocketCount = value; } }
@@ -55,6 +68,7 @@ public class GameData : PDataBlock<GameData>
         Instance.joinTreasureRoom = Instance.joinTreasureRoom ?? new JoinTreasureRoom();
         Instance.joinTreasureRoom.Board = Instance.joinTreasureRoom.Board ?? new List<List<int>>();
         Instance.royalPass = Instance.royalPass ?? new RoyalPass();
+
     }
 }
 
@@ -70,12 +84,8 @@ public class ProfileData
     [SerializeField] private int point; public int Point { get { return point; } set { point = value; } }
     [SerializeField] private int rank; 
     public int Rank { get {
-            List<int> rankMilestone = new List<int>();
-            for (int i = 0; i < GameData.RankConfigs.Count; i++)
-            {
-                rankMilestone.Add(GameData.RankConfigs[i].Point);
-            }
-            rank = rankMilestone.GetMileStone(point);
+
+            rank = GameData.RankMilestone.GetMileStone(point) - 1;
             return rank; 
         }}
     public int PerfectGame { get { return GameData.AchievementConfig[AchievementType.TACTICAL_GENIUS].Progress; } }
