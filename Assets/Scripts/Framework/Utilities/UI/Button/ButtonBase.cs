@@ -27,6 +27,7 @@ namespace Framework
 
         protected virtual void Button_OnClicked()
         {
+            SoundType.CLICK.PlaySound();
         }
         private void OnDestroy()
         {

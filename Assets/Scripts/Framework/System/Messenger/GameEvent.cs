@@ -4,5 +4,8 @@
     {
         SELECT_ACHIEVEMENT,
         RECONNECT,
+        SHIP_DESTROY,
+        GAME_END,
+        TRANSACTION,
     }
 }

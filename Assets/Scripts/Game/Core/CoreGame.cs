@@ -311,6 +311,7 @@ public class CoreGame : SingletonMono<CoreGame>
                     ship = board.octiles[y][x].ship;
                 }
                 ship.BeingDestroyed();
+
             }
             else if (status == 1)
             {
@@ -343,6 +344,7 @@ public class CoreGame : SingletonMono<CoreGame>
             Instance.ingameUI.SetActive(false);
             Instance.postUI.gameObject.SetActive(true);
             Instance.postUI.amount.text = json["w"];
+            Messenger.Broadcast(GameEvent.GAME_END, int.Parse(json["c"]) == playerChair);
             if (int.Parse(json["c"]) == playerChair)
             {
                 PConsumableType.BERI.AddValue(int.Parse(json["w"]));

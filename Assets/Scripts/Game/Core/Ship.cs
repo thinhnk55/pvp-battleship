@@ -198,6 +198,7 @@ public class Ship : CacheMonoBehaviour
 
     public void BeingDestroyed()
     {
+        Messenger.Broadcast(GameEvent.SHIP_DESTROY, this);
         isDestroyed = true;
         renderer.sprite = destroyedSprite;
         board.ships.Remove(this);
@@ -301,6 +302,7 @@ public class Ship : CacheMonoBehaviour
         if (CoreGame.Instance.stateMachine.CurrentState != GameState.Pre && CoreGame.Instance.stateMachine.CurrentState != GameState.Search)
             return false;
         tweenMove.Kill();
+        // valid
         if (CheckShip(board, x, y, out int _x, out int _y, out bool inside))
         {
             board.AssignShip(this, _x, _y);
@@ -309,9 +311,11 @@ public class Ship : CacheMonoBehaviour
             tweenMove = transform.DOMove(board.octiles[_y][_x].Position, tweenTime);
             return true;
         }
+        //invalid
         else
         {
             occupyRenderer.enabled = false;
+            // outside and move
             if (!inside && !isRotate)
             {
                 transform.parent = CoreGame.Instance.shipListPlayer.transform;
@@ -319,16 +323,20 @@ public class Ship : CacheMonoBehaviour
                 Dir = initRot;
                 octilesOccupy.Clear();
                 octilesComposition.Clear();
+                Debug.Log("qw");
+                return false;
+            }
+            // inside or rotate with back up condition
+            if (previousIndex!=null && assignBackup)
+            {
+                Debug.Log("backup");
+                board.AssignShip(this, previousIndex.x, previousIndex.y);
+                tweenMove = transform.DOMove(board.octiles[previousIndex.y][previousIndex.x].Position, tweenTime);
                 return false;
             }
             else
             {
                 tweenMove = transform.DOMove(initPos, tweenTime);
-            }
-            if (previousIndex!=null && assignBackup)
-            {
-                board.AssignShip(this, previousIndex.x, previousIndex.y);
-                return false;
             }
             return false;
         }

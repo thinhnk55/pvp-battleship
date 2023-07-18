@@ -15,7 +15,7 @@ public class ButtonShowAds : ButtonBase
     }
     [SerializeField] AdsType adsType;
     [SerializeField] UnityEvent rewardCallback;
-    
+    [SerializeField] int adsIndex;
     public void ShowAds()
     {
         switch (adsType)
@@ -27,7 +27,7 @@ public class ButtonShowAds : ButtonBase
                 AdsManager.ShowInterstialAds();
                 break;
             case AdsType.Reward:
-                AdsManager.ShowRewardAds(()=> rewardCallback?.Invoke());
+                AdsManager.ShowRewardAds(()=> rewardCallback?.Invoke(), AdsManager.RewardAdUnitId[adsIndex]);
                 break;
             default:
                 break;

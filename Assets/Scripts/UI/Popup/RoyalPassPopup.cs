@@ -1,6 +1,7 @@
 using DG.Tweening;
 using Framework;
 using System;
+using System.Collections.Generic;
 using TMPro;
 using UnityEditor;
 using UnityEngine;
@@ -14,6 +15,8 @@ public class RoyalPassPopup : MonoBehaviour
     [SerializeField] private TextMeshProUGUI countDown;
     [SerializeField] private RoyalPassFreeCollection freeCollection;
     [SerializeField] private RoyalPassEliteCollection eliteCollection;
+    [SerializeField] private GameObject upgradePass;
+    [SerializeField] private TransactionCard upgradePassCard;
 
     private Tween pointTweenText;
     void Start()
@@ -23,9 +26,32 @@ public class RoyalPassPopup : MonoBehaviour
         progressBar.maxValue = GameData.RoyalPass.PointPerLevel;
         progressBar.value = GameData.RoyalPass.Point.Data % GameData.RoyalPass.PointPerLevel;
         progress.text = (GameData.RoyalPass.Point.Data % GameData.RoyalPass.PointPerLevel).ToString() + "/" + GameData.RoyalPass.PointPerLevel;
+        TransactionInfo transactionInfo = new TransactionInfo()
+        {
+            Product = new GoodInfo[1] { new GoodInfo() { Type = (int)PNonConsumableType.ELITE, Value = 0 } },
+            Cost = new GoodInfo[1] { GameData.TransactionConfigs[TransactionType.GEM_ELITE][0].Cost[0] },
+            TransactionType = TransactionType.GEM_ELITE,
+            Index = 0,
+        };
+        upgradePassCard.BuildUI(transactionInfo);
+
         Timer<RoyalPass>.Instance.TriggerInterval_Sec = GameData.RoyalPass.End.NowFrom0001From1970().ToSecond();
         Timer<RoyalPass>.Instance.OnElapse += OnElapsed;
         Timer<RoyalPass>.Instance.OnTrigger += OnTrigger;
+        upgradePass.SetActive(!GameData.RoyalPass.UnlockedElite);
+        PNonConsumableType.ELITE.GetData().OnDataChanged += RoyalPassPopup_OnDataChanged;
+    }
+    private void OnDestroy()
+    {
+        Timer<RoyalPass>.Instance.OnElapse -= OnElapsed;
+        Timer<RoyalPass>.Instance.OnTrigger -= OnTrigger;
+        PNonConsumableType.ELITE.GetData().OnDataChanged -= RoyalPassPopup_OnDataChanged;
+    }
+    private void RoyalPassPopup_OnDataChanged(HashSet<int> arg1, HashSet<int> arg2)
+    {
+        GameData.RoyalPass.UnlockedElite = true;
+        upgradePass.SetActive(false);
+        eliteCollection.UpdateUIs();
     }
 
     private void OnPointChange(int arg1, int arg2)
@@ -85,7 +111,14 @@ public class RoyalPassPopup : MonoBehaviour
 
     public void UpgradePass()
     {
-        TransactionCard.RequestTransaction((int)TransactionType.GEM_ELITE, 0);
+        if (GameData.TransactionConfigs[TransactionType.GEM_ELITE][0].Cost[0].Value > PConsumableType.GEM.GetValue())
+        {
+            TransactionCard.RequestTransaction((int)TransactionType.GEM_ELITE, 0);
+        }
+        else
+        {
+
+        }
     }
 
     public void ClaimAll()

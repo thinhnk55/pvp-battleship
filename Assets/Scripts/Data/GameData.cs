@@ -89,8 +89,22 @@ public class ProfileData
             return rank; 
         }}
     public int PerfectGame { get { return GameData.AchievementConfig[AchievementType.TACTICAL_GENIUS].Progress; } }
-    public int WinStreak;
-    [SerializeField] private int? winStreakMax; public int WinStreakMax { get {  return (int)(winStreakMax == null ? GameData.AchievementConfig[AchievementType.DOMINATOR].Progress : winStreakMax); } set {  } }
+    [SerializeField] private int winStreak; public int WinStreak { get { return winStreak; } set { winStreak = value; if (winStreakMax.HasValue && winStreak > winStreakMax.Value) WinStreakMax = winStreak; } }
+
+    [SerializeField] private int? winStreakMax = null; 
+    public int WinStreakMax {
+        get
+        {
+            if (winStreakMax == null)
+            {
+                return GameData.Player.AchievementProgress[(int)AchievementType.DOMINATOR];
+            }
+            else
+            {
+                return winStreakMax.Value;
+            }
+        }
+        set { GameData.Player.AchievementProgress[(int)AchievementType.DOMINATOR] = value; } }
     [SerializeField] private int wins; public int Wins { get { return wins; } set { wins = value; winRate = wins / (wins + losts + 0.001f); } }
     [SerializeField] private int losts; public int Losts { get { return losts; } set { losts = value; winRate = wins / (wins + losts + 0.001f); } }
     public int Battles;
@@ -116,6 +130,7 @@ public class ProfileData
         profileData.AchievementProgress = data["statistics"]["achie"].ToList();
         profileData.AchievementObtained = data["statistics"]["achie_r"].ToList();
         profileData.AchievementSelected = data["statistics"]["outst"].ToList().ToArray();
+        Debug.Log(profileData.ToString());
         return profileData;
     }
     public static ProfileData FromJsonOpponent(ProfileData profileData, JSONNode data)

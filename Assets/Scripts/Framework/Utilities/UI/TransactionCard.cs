@@ -188,7 +188,7 @@ namespace Framework {
                                 if (confirm)
                                 {
                                     TransactionAction(info.TransactionType, info)?.Invoke();
-                                    Collection.UpdateUIs();
+                                    Collection?.UpdateUIs();
                                 }
                             });
                         }

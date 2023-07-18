@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,7 +14,7 @@ namespace Monetization
 #else
         public static string BannerAdUnitId { get => MonetizationConfig.BannerAdsIdAndroid; set { } }
         public static string InterAdUnitId { get => MonetizationConfig.IntertialAdsIdAndroid; set { } }
-        public static string RewardAdUnitId { get => MonetizationConfig.RewardAdsIdAndroid; set { } }
+        public static string[] RewardAdUnitId { get => MonetizationConfig.RewardAdsIdAndroid; set { } }
 
 #endif
         static IAdsManager adsManager;
@@ -21,6 +22,10 @@ namespace Monetization
         {
             adsManager = new MaxAdsManager();
             adsManager.Initialize();
+            for (int i = 0; i < RewardAdUnitId.Length; i++)
+            {
+                adsManager.LoadAds(RewardAdUnitId[i]);
+            }
         }
         public static void ShowBannerAds()
         {
@@ -34,15 +39,15 @@ namespace Monetization
         {
             adsManager.ShowInterstialAds();
         }
-        public static void ShowRewardAds(Callback onRewardShowed)
+        public static void ShowRewardAds(Callback onRewardShowed, string id)
         {
-            adsManager.ShowRewardAds(onRewardShowed);
+            adsManager.ShowRewardAds(onRewardShowed, id);
         }
         public static void SetUserId(string id)
         {
             adsManager.SetUserId(id);
-            Debug.Log("SetUserId " + id);
         }
+
     }
 
 }

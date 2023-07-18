@@ -123,10 +123,7 @@ public class ProfileCollection : CardCollectionBase<ProfileInfo>
         {
             winStreak.text = infos.WinStreak.ToString();
         }
-        if (winStreakMax)
-        {
-            winStreakMax.text = infos.WinStreakMax.ToString();
-        }
+        winStreakMax?.SetText(infos.WinStreakMax.ToString());
         if (wins)
         {
             wins.text = infos.Wins.ToString();

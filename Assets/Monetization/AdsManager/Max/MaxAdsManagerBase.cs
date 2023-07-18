@@ -61,9 +61,9 @@ public abstract class MaxAdsManagerBase : IAdsManager
         // Interstitial ad is hidden. Pre-load the next ad.
         LoadInterstitial();
     }
-    protected void LoadRewardedAd()
+    public void LoadRewardedAd(string adUnit)
     {
-        MaxSdk.LoadRewardedAd(AdsManager.RewardAdUnitId);
+        MaxSdk.LoadRewardedAd(adUnit);
     }
 
     protected void OnRewardedAdLoadedEvent(string adUnitId, MaxSdkBase.AdInfo adInfo)
@@ -81,7 +81,7 @@ public abstract class MaxAdsManagerBase : IAdsManager
 
         retryAttemptReward++;
         double retryDelay = Mathf.Pow(2, Mathf.Min(6, retryAttemptReward));
-        DOVirtual.DelayedCall((float)retryDelay, LoadRewardedAd);
+        DOVirtual.DelayedCall((float)retryDelay, ()=> LoadRewardedAd(adUnitId));
     }
 
     protected void OnRewardedAdDisplayedEvent(string adUnitId, MaxSdkBase.AdInfo adInfo) { }
@@ -89,7 +89,7 @@ public abstract class MaxAdsManagerBase : IAdsManager
     protected void OnRewardedAdFailedToDisplayEvent(string adUnitId, MaxSdkBase.ErrorInfo errorInfo, MaxSdkBase.AdInfo adInfo)
     {
         // Rewarded ad failed to display. AppLovin recommends that you load the next ad.
-        LoadRewardedAd();
+        LoadAds(adUnitId);
     }
 
     protected void OnRewardedAdClickedEvent(string adUnitId, MaxSdkBase.AdInfo adInfo) { }
@@ -97,7 +97,7 @@ public abstract class MaxAdsManagerBase : IAdsManager
     protected void OnRewardedAdHiddenEvent(string adUnitId, MaxSdkBase.AdInfo adInfo)
     {
         // Rewarded ad is hidden. Pre-load the next ad
-        LoadRewardedAd();
+        LoadAds(adUnitId);
     }
 
     protected void OnRewardedAdReceivedRewardEvent(string adUnitId, MaxSdk.Reward reward, MaxSdkBase.AdInfo adInfo)
@@ -154,39 +154,43 @@ public abstract class MaxAdsManagerBase : IAdsManager
         MaxSdkCallbacks.Rewarded.OnAdHiddenEvent += OnRewardedAdHiddenEvent;
         MaxSdkCallbacks.Rewarded.OnAdDisplayFailedEvent += OnRewardedAdFailedToDisplayEvent;
         MaxSdkCallbacks.Rewarded.OnAdReceivedRewardEvent += OnRewardedAdReceivedRewardEvent;
-
-        // Load the first rewarded ad
-        LoadRewardedAd();
     }
-    public virtual void Initialize()
+    public void Initialize()
     {
         throw new System.NotImplementedException();
     }
 
-    public virtual void ShowBannerAds()
+    public void ShowBannerAds()
     {
         throw new System.NotImplementedException();
     }
 
-    public virtual void HideBannerAds()
+    public void HideBannerAds()
     {
         throw new System.NotImplementedException();
     }
 
-    public virtual void ShowInterstialAds()
+    public void ShowInterstialAds()
+    {
+        throw new System.NotImplementedException();
+    }
+    public void ShowRewardAds(Callback onRewardShowed, string id)
     {
         throw new System.NotImplementedException();
     }
 
-    public virtual void ShowRewardAds(Callback onRewardShowed)
-    {
-        throw new System.NotImplementedException();
-    }
-
+    override 
     public void SetUserId(string id)
     {
         MaxSdk.SetUserId(id);
     }
+
+    public void LoadAds(string id)
+    {
+        throw new System.NotImplementedException();
+    }
+
+
     #endregion
 
 }

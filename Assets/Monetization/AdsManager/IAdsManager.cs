@@ -10,7 +10,8 @@ public interface IAdsManager
     public void ShowBannerAds();
     public void HideBannerAds();
     public void ShowInterstialAds();
-    public void ShowRewardAds(Callback onRewardShowed);
+    public void ShowRewardAds(Callback onRewardShowed, string id);
     public void Initialize();
     public void SetUserId(string id);
+    public void LoadAds(string id);
 }

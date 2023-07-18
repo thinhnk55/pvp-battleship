@@ -12,5 +12,9 @@ namespace Framework
 
             image.color = newColor;
         }
+        public static void SetSprite(this Image image, Sprite sprite)
+        {
+            image.sprite = sprite;
+        }
     }
 }

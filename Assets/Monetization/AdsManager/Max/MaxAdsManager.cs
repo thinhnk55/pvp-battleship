@@ -23,28 +23,28 @@ namespace Monetization
             };
         }
 
-        public override void ShowBannerAds()
+        public new void ShowBannerAds()
         { 
             MaxSdk.ShowBanner(AdsManager.BannerAdUnitId);
         }
 
-        public override void HideBannerAds()
+        public new void HideBannerAds()
         {
             MaxSdk.HideBanner(AdsManager.BannerAdUnitId);
         }
-        public override void ShowInterstialAds()
+        public new void ShowInterstialAds()
         {
             if (MaxSdk.IsInterstitialReady(AdsManager.InterAdUnitId))
             {
                 MaxSdk.ShowInterstitial(AdsManager.InterAdUnitId);
             }
         }
-        public override void ShowRewardAds(Callback onRewardShowed)
+        public new void ShowRewardAds(Callback onRewardShowed, string rewardAdUnitId)
         {
             OnRewardShowed = onRewardShowed;
-            if (MaxSdk.IsRewardedAdReady(AdsManager.RewardAdUnitId))
+            if (MaxSdk.IsRewardedAdReady(rewardAdUnitId))
             {
-                MaxSdk.ShowRewardedAd(AdsManager.RewardAdUnitId);
+                MaxSdk.ShowRewardedAd(rewardAdUnitId);
             }
         }
     }

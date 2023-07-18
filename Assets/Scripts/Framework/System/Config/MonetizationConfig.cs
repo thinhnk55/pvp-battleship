@@ -19,8 +19,8 @@ namespace Monetization
         [SerializeField] private string bannerAdsIdIOS; public static string BannerAdsIdIOS { get { return Instance.bannerAdsIdIOS; } }
         [SerializeField] private string interstialAdsIdAndroid; public static string IntertialAdsIdAndroid { get { return Instance.interstialAdsIdAndroid; } }
         [SerializeField] private string interstialAdsIdIOS; public static string IntertialAdsIdIOS { get { return Instance.interstialAdsIdIOS; } }
-        [SerializeField] private string rewardAdsIdAndroid; public static string RewardAdsIdAndroid { get { return Instance.rewardAdsIdAndroid; } }
-        [SerializeField] private string rewardAdsIdIOS; public static string RewardAdsIdIOS { get { return Instance.rewardAdsIdIOS; } }
+        [SerializeField] private string[] rewardAdsIdAndroid; public static string[] RewardAdsIdAndroid { get { return Instance.rewardAdsIdAndroid; } }
+        [SerializeField] private string[] rewardAdsIdIOS; public static string[] RewardAdsIdIOS { get { return Instance.rewardAdsIdIOS; } }
 
     }
 

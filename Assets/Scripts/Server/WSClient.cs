@@ -417,6 +417,7 @@ public class WSClient : WSClientBase
         TransactionType id = data["itemId"].ToEnum<TransactionType>();
         int index = int.Parse(data["itemIndex"]);
         GameData.TransactionConfigs[id][index].Transact();
+        Messenger.Broadcast(GameEvent.TRANSACTION,id, index);
     }
     public static void RequestObtainAchievemnt(int id, int obtained)
     {
@@ -653,13 +654,9 @@ public class WSClient : WSClientBase
             var list = GameData.RoyalPass.RewardElites[json["normal"][i].AsInt];
             for (int j = 0; j < list.Count; j++)
             {
-                if (goods.ContainsKey(list[j].Type * 100))
+                if (list[j].Type.GetPResourceType() == PResourceType.Nonconsumable)
                 {
-                    goods[list[j].Type * 100] = new GoodInfo()
-                    {
-                        Type = list[j].Type,
-                        Value = list[j].Value + goods[list[j].Type * 100].Value,
-                    };
+                    goods.Add(list[j].Type * 100 + (int)list[j].Value, list[j]);
                 }
                 else
                 {

@@ -46,10 +46,7 @@ public class RoyalPassCard : CardBase<RoyalPassInfo>
         obtained?.SetAlpha(info.Obtained ? 1 : 0);
 
         Id?.SetText(info.Id.ToString());
-        if (Container)
-        {
-            Container.sprite = info.Elite ? SpriteFactory.RoyalPassEliteBG : SpriteFactory.RoyalPassFreeBG;
-        }
+
         if (info.Reward.Length>1)
         {
             Icon.sprite = SpriteFactory.RoyalPassTreasure;
@@ -70,11 +67,13 @@ public class RoyalPassCard : CardBase<RoyalPassInfo>
                 {
                     if (info.Reward[0].Type == (int)PConsumableType.GEM)
                     {
-                        Icon.sprite = SpriteFactory.ResourceIcons[info.Reward[0].Type].sprites.GetClamp(((int)info.Reward[0].Value) / 2);
+                        Icon.sprite = SpriteFactory.ResourceIcons[info.Reward[0].Type].sprites[Mathf.Clamp(((int)info.Reward[0].Value) / 200, 1, SpriteFactory.ResourceIcons[info.Reward[0].Type].sprites.Length - 2)];
+                        Container?.SetSprite(SpriteFactory.RoyalPassGem);
                     }
                     else if (info.Reward[0].Type == (int)PConsumableType.BERI)
                     {
-                        Icon.sprite = SpriteFactory.ResourceIcons[info.Reward[0].Type].sprites.GetClamp(((int)info.Reward[0].Value) / 200);
+                        Icon.sprite = SpriteFactory.ResourceIcons[info.Reward[0].Type].sprites[Mathf.Clamp(((int)info.Reward[0].Value) / 200, 1, SpriteFactory.ResourceIcons[info.Reward[0].Type].sprites.Length - 2)];
+                        Container?.SetSprite(SpriteFactory.RoyalPassBeri);
                     }
                 }
                 else
@@ -85,6 +84,7 @@ public class RoyalPassCard : CardBase<RoyalPassInfo>
                         rect.SetWidth(rect.sizeDelta.y * 0.8f);
                     }
                     Icon.sprite = SpriteFactory.ResourceIcons[info.Reward[0].Type].sprites.GetLoop((int)info.Reward[0].Value);
+                    Container?.SetSprite(SpriteFactory.RoyalPassOther);
                 }
             }
         }
