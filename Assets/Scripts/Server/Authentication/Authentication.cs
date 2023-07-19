@@ -36,7 +36,8 @@ namespace Framework
                 {
                     case SocialAuthType.Google:
 #if UNITY_ANDROID || UNITY_IOS
-#endif
+                        auth = new LoginGoogle();
+#endif                  
                         break;
                     case SocialAuthType.GooglePlay:
 #if UNITY_ANDROID
@@ -63,6 +64,7 @@ namespace Framework
                     auths.Add((SocialAuthType)i, auth);
                 }
 
+                Debug.Log(auth);
             }
         }
         void SetupEvents()

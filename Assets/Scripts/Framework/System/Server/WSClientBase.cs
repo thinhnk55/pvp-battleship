@@ -8,6 +8,7 @@ namespace Framework {
     public abstract class WSClientBase : SingletonMono<WSClientBase>
     {
         public WebSocket ws;
+
         protected virtual void Start()
         {
             ws = new WebSocket(ServerConfig.WebSocketURL + "?id="+ PDataAuth.AuthData.userId + "&token=" + PDataAuth.AuthData.token);

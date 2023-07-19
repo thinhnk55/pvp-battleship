@@ -1,22 +1,24 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Google;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class LoginGoogle : MonoBehaviour
+public class LoginGoogle : ISocialAuth
 {
-    public Text infoText;
-    public string webClientId = "35406771014-qh5id239hkq5k5f05u5svsr6cld4h335.apps.googleusercontent.com";
+    public string webClientId = "555442977696-0e53ilirr6l6hvu7u567bu4a4c0ekodg.apps.googleusercontent.com";
 
     private GoogleSignInConfiguration configuration;
 
-    private void Awake()
+/*    private void Udate()
     {
+        Debug.Log("config");
         configuration = new GoogleSignInConfiguration { WebClientId = webClientId, RequestEmail = true, RequestIdToken = true };
-    }
+        Debug.LogError(configuration);
+    }*/
 
     public void SignInWithGoogle() { OnSignIn(); }
     public void SignOutFromGoogle() { OnSignOut(); }
@@ -26,20 +28,18 @@ public class LoginGoogle : MonoBehaviour
         GoogleSignIn.Configuration = configuration;
         GoogleSignIn.Configuration.UseGameSignIn = false;
         GoogleSignIn.Configuration.RequestIdToken = true;
-        AddToInformation("Calling SignIn");
+        Debug.Log("Call Sigin");
 
         GoogleSignIn.DefaultInstance.SignIn().ContinueWith(OnAuthenticationFinished);
     }
 
     private void OnSignOut()
     {
-        AddToInformation("Calling SignOut");
         GoogleSignIn.DefaultInstance.SignOut();
     }
 
     public void OnDisconnect()
     {
-        AddToInformation("Calling Disconnect");
         GoogleSignIn.DefaultInstance.Disconnect();
     }
 
@@ -52,24 +52,20 @@ public class LoginGoogle : MonoBehaviour
                 if (enumerator.MoveNext())
                 {
                     GoogleSignIn.SignInException error = (GoogleSignIn.SignInException)enumerator.Current;
-                    AddToInformation("Got Error: " + error.Status + " " + error.Message);
                 }
                 else
                 {
-                    AddToInformation("Got Unexpected Exception?!?" + task.Exception);
                 }
             }
         }
         else if (task.IsCanceled)
         {
-            AddToInformation("Canceled");
         }
         else
         {
-            AddToInformation("Welcome: " + task.Result.DisplayName + "!");
-            AddToInformation("Email = " + task.Result.Email);
-            AddToInformation("Google ID Token = " + task.Result.IdToken);
-            AddToInformation("Email = " + task.Result.Email);
+            HTTPClient.Instance.LoginGoogle(task.Result.IdToken);
+            Debug.Log(task.Result.IdToken);
+            
         }
     }
 
@@ -78,7 +74,6 @@ public class LoginGoogle : MonoBehaviour
         GoogleSignIn.Configuration = configuration;
         GoogleSignIn.Configuration.UseGameSignIn = false;
         GoogleSignIn.Configuration.RequestIdToken = true;
-        AddToInformation("Calling SignIn Silently");
 
         GoogleSignIn.DefaultInstance.SignInSilently().ContinueWith(OnAuthenticationFinished);
     }
@@ -89,10 +84,29 @@ public class LoginGoogle : MonoBehaviour
         GoogleSignIn.Configuration.UseGameSignIn = true;
         GoogleSignIn.Configuration.RequestIdToken = false;
 
-        AddToInformation("Calling Games SignIn");
 
         GoogleSignIn.DefaultInstance.SignIn().ContinueWith(OnAuthenticationFinished);
     }
 
-    private void AddToInformation(string str) { infoText.text += "\n" + str; }
+/*    private void AddToInformation(string str) { infoText.text += "\n" + str; }*/
+
+    public void Initialize()
+    {
+        configuration = new GoogleSignInConfiguration { WebClientId = webClientId, RequestEmail = true, RequestIdToken = true };
+    }
+
+    public void SignUp()
+    {
+        throw new NotImplementedException();
+    }
+
+    public void SignIn()
+    {
+        SignInWithGoogle();
+    }
+
+    public void SignOut()
+    {
+        throw new NotImplementedException();
+    }
 }
