@@ -262,7 +262,7 @@ namespace Framework {
         {
             JSONNode jsonNode = new JSONClass()
             {
-                { "id", GameServerEvent.REQUEST_TRANSACTION.ToJson() },
+                { "id", ServerResponse.REQUEST_TRANSACTION.ToJson() },
                 { "itemId", id.ToJson() },
                 { "itemIndex", index.ToJson() },
             };
@@ -273,7 +273,7 @@ namespace Framework {
         {
             JSONNode jsonNode = new JSONClass()
             {
-                { "id", GameServerEvent.REQUEST_TRANSACTION_MONEY.ToJson() },
+                { "id", ServerResponse.REQUEST_TRANSACTION_MONEY.ToJson() },
                 { "data", data},
             };
             WSClientBase.Instance.Send(jsonNode);

@@ -17,16 +17,16 @@ public class BetCollection : CardCollectionBase<BetInfo>
         for (int i = 0; i < GameData.Bets.Length; i++)
         {
             int _i = i;
-            bool isQualified = GameData.Player.Rank >= GameData.BetRequires[_i];
+            bool isQualified = GameData.Player.Rank >= GameData.Bets[_i].BetRequire;
             infos.Add(new BetInfo()
             {
                 Index = _i,
                 IsQualified = isQualified,
-                RewardAmount = GameData.BetRankPoint[i],
-                EntryStake = GameData.Bets[i],
+                RewardAmount = GameData.Bets[i].BetRankPoint,
+                EntryStake = GameData.Bets[i].BetRequire,
                 OnClick = () =>
                 {
-                    if (GameData.Bets[_i] <= PConsumableType.BERI.GetValue())
+                    if (GameData.Bets[_i].BetRequire <= PConsumableType.BERI.GetValue())
                     {
                         SceneTransitionHelper.Load(ESceneName.MainGame);
                     }

@@ -89,7 +89,7 @@ public abstract class MaxAdsManagerBase : IAdsManager
     protected void OnRewardedAdFailedToDisplayEvent(string adUnitId, MaxSdkBase.ErrorInfo errorInfo, MaxSdkBase.AdInfo adInfo)
     {
         // Rewarded ad failed to display. AppLovin recommends that you load the next ad.
-        LoadAds(adUnitId);
+        LoadAds(adUnitId, AdsType.Reward);
     }
 
     protected void OnRewardedAdClickedEvent(string adUnitId, MaxSdkBase.AdInfo adInfo) { }
@@ -97,7 +97,7 @@ public abstract class MaxAdsManagerBase : IAdsManager
     protected void OnRewardedAdHiddenEvent(string adUnitId, MaxSdkBase.AdInfo adInfo)
     {
         // Rewarded ad is hidden. Pre-load the next ad
-        LoadAds(adUnitId);
+        LoadAds(adUnitId, AdsType.Reward);
     }
 
     protected void OnRewardedAdReceivedRewardEvent(string adUnitId, MaxSdk.Reward reward, MaxSdkBase.AdInfo adInfo)
@@ -155,39 +155,52 @@ public abstract class MaxAdsManagerBase : IAdsManager
         MaxSdkCallbacks.Rewarded.OnAdDisplayFailedEvent += OnRewardedAdFailedToDisplayEvent;
         MaxSdkCallbacks.Rewarded.OnAdReceivedRewardEvent += OnRewardedAdReceivedRewardEvent;
     }
-    public void Initialize()
+    public virtual void Initialize()
     {
-        throw new System.NotImplementedException();
     }
 
-    public void ShowBannerAds()
+    public virtual void ShowBannerAds()
     {
-        throw new System.NotImplementedException();
     }
 
-    public void HideBannerAds()
+    public virtual void HideBannerAds()
     {
-        throw new System.NotImplementedException();
     }
 
-    public void ShowInterstialAds()
+    public virtual void ShowInterstialAds()
     {
-        throw new System.NotImplementedException();
     }
-    public void ShowRewardAds(Callback onRewardShowed, string id)
+    public virtual void ShowRewardAds(Callback onRewardShowed, string id)
     {
-        throw new System.NotImplementedException();
     }
-
-    override 
+ 
     public void SetUserId(string id)
     {
         MaxSdk.SetUserId(id);
     }
 
-    public void LoadAds(string id)
+    public virtual void LoadAds(string id, AdsType type)
     {
-        throw new System.NotImplementedException();
+        switch (type)
+        {
+            case AdsType.Banner:
+                MaxSdk.LoadBanner(id);
+                break;
+            case AdsType.Inter:
+                MaxSdk.LoadInterstitial(id);
+                break;
+            case AdsType.Reward:
+                MaxSdk.LoadRewardedAd(id);
+                break;
+            case AdsType.Open:
+                MaxSdk.LoadAppOpenAd(id);
+                break;
+            case AdsType.Native:
+
+                break;
+            default:
+                break;
+        }
     }
 
 

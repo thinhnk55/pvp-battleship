@@ -18,6 +18,7 @@ public class RankCard : CardBase<RankInfo>
 {
     public Image BG;
     [SerializeField] TextMeshProUGUI title;
+    [SerializeField] TextMeshProUGUI pointText;
     [SerializeField] Image icon;
     [SerializeField] Image receive;
     [SerializeField] Slider slider;
@@ -43,7 +44,8 @@ public class RankCard : CardBase<RankInfo>
                 slider.gameObject.SetActive(false);
             }
             slider.maxValue = GameData.RankConfigs[GameData.Player.Rank].Point;
-            slider.value = GameData.Player.Point; 
+            slider.value = GameData.Player.Point;
+            pointText?.SetText(slider.value + "/" + slider.maxValue);
         }
         if (Button)
         {

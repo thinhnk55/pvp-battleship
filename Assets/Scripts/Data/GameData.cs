@@ -9,12 +9,10 @@ using UnityEngine;
 
 public class GameData : PDataBlock<GameData>
 {
-    [SerializeField] private int[] bets; public static int[] Bets { get { return Instance.bets; } set { Instance.bets = value; } }
-    [SerializeField] private int[] betRequires; public static int[] BetRequires { get { return Instance.betRequires; } set { Instance.betRequires = value; } }
-    [SerializeField] private int[] betRankPoint; public static int[] BetRankPoint { get { return Instance.betRankPoint; } set { Instance.betRankPoint = value; } }
+    [SerializeField] private BetData[] bets; public static BetData[] Bets { get { return Instance.bets; } set { Instance.bets = value; } }
     [SerializeField] private int progressGift; public static int ProgressGift { get { return Instance.progressGift; } set { Instance.progressGift = value % 6; } }
     [SerializeField] private string text; public static string Text { get { return Instance.text; } set { Instance.text = value; } }
-    [SerializeField] private List<int> versions; public static List<int> Versions { get { return Instance.versions; } set { Instance.versions = value; } }
+    [SerializeField] private int? versions; public static int? Versions { get { return Instance.versions; } set { Instance.versions = value; } }
     [SerializeField] private int isBuyDiamondFirst; public static int IsBuyDiamondFirst { get { return Instance.isBuyDiamondFirst; } set { Instance.isBuyDiamondFirst = value; } }
     [SerializeField] private ProfileData player; public static ProfileData Player { get { return Instance.player; } set { Instance.player = value; } }
     [SerializeField] private ProfileData opponent; public static ProfileData Opponent { get { return Instance.opponent; } set { Instance.opponent = value; } }
@@ -23,7 +21,7 @@ public class GameData : PDataBlock<GameData>
     [SerializeField] private List<int> luckyShotResult; public static List<int> LuckyShotResult { get { return Instance.luckyShotResult; } set { Instance.luckyShotResult = value; } }
     [SerializeField] private List<int> rankMilestone; public static List<int> RankMilestone { 
         get {
-            if (Instance.rankMilestone==null)
+            if (Instance.rankMilestone.IsNullOrEmpty())
             {
                 Instance.rankMilestone = new List<int>();
                 for (int i = 0; i < GameData.RankConfigs.Count; i++)
@@ -63,7 +61,7 @@ public class GameData : PDataBlock<GameData>
         Instance.transactionConfigs = Instance.transactionConfigs ?? new Dictionary<TransactionType, List<TransactionInfo>>();
         Instance.rankConfigs = Instance.rankConfigs ?? new List<RankConfig>();
         Instance.rocketCount = new PDataUnit<int>(0);
-        Instance.versions = Instance.versions ?? new List<int>() { 0,0,0,0,0,0,0,0,0};
+        Instance.versions = Instance.versions ?? new int?(0);
         Instance.treasureConfigs = Instance.treasureConfigs ?? new List<TreasureConfig>();
         Instance.joinTreasureRoom = Instance.joinTreasureRoom ?? new JoinTreasureRoom();
         Instance.joinTreasureRoom.Board = Instance.joinTreasureRoom.Board ?? new List<List<int>>();
@@ -84,11 +82,16 @@ public class ProfileData
     [SerializeField] private int point; public int Point { get { return point; } set { point = value; } }
     [SerializeField] private int rank; 
     public int Rank { get {
-
-            rank = GameData.RankMilestone.GetMileStone(point) - 1;
+            rank = GameData.RankMilestone.GetMileStone(point);
             return rank; 
         }}
-    public int PerfectGame { get { return GameData.AchievementConfig[AchievementType.TACTICAL_GENIUS].Progress; } }
+    public int PerfectGame { get
+        {
+            if (!AchievementProgress.IsNullOrEmpty())
+                return AchievementProgress[(int)AchievementType.TACTICAL_GENIUS];
+            else return 0;
+        }
+        }
     [SerializeField] private int winStreak; public int WinStreak { get { return winStreak; } set { winStreak = value; if (winStreakMax.HasValue && winStreak > winStreakMax.Value) WinStreakMax = winStreak; } }
 
     [SerializeField] private int? winStreakMax = null; 
@@ -97,7 +100,8 @@ public class ProfileData
         {
             if (winStreakMax == null)
             {
-                return GameData.Player.AchievementProgress[(int)AchievementType.DOMINATOR];
+                if (!AchievementProgress.IsNullOrEmpty()) return AchievementProgress[(int)AchievementType.DOMINATOR];
+                else return 0;
             }
             else
             {
@@ -116,20 +120,20 @@ public class ProfileData
 
     public static ProfileData FromJson(ProfileData profileData, JSONNode data)
     {
-        profileData.Username = new PDataUnit<string>(data["profile"]["n"]);
-        profileData.Point = int.Parse(data["profile"]["p"]);
-        profileData.Avatar = new PDataUnit<int>(int.Parse(data["profile"]["a"]));
-        profileData.FrameAvatar = new PDataUnit<int>(int.Parse(data["profile"]["f"]));
-        profileData.BattleField = new PDataUnit<int>(int.Parse(data["profile"]["ba"]));
-        profileData.SkinShip = new PDataUnit<int>(int.Parse(data["profile"]["sk"]));
-        profileData.WinStreak = int.Parse(data["statistics"]["wSN"]);
-        profileData.Wins = int.Parse(data["statistics"]["wC"]);
-        profileData.Losts = int.Parse(data["statistics"]["lC"]);
-        profileData.Battles = profileData.Wins + profileData.Losts;
-        profileData.Achievement = data["statistics"]["achie"].ToList();
-        profileData.AchievementProgress = data["statistics"]["achie"].ToList();
-        profileData.AchievementObtained = data["statistics"]["achie_r"].ToList();
-        profileData.AchievementSelected = data["statistics"]["outst"].ToList().ToArray();
+        profileData.Username = new PDataUnit<string>(data["d"]["n"]);
+        profileData.Point = int.Parse(data["d"]["e"]);
+        profileData.Avatar = new PDataUnit<int>(int.Parse(data["d"]["a"]));
+        profileData.FrameAvatar = new PDataUnit<int>(0); //new PDataUnit<int>(int.Parse(data["profile"]["f"]));
+        profileData.BattleField = new PDataUnit<int>(0); // new PDataUnit<int>(int.Parse(data["profile"]["ba"]));
+        profileData.SkinShip = new PDataUnit<int>(0); // new PDataUnit<int>(int.Parse(data["profile"]["sk"]));
+        //profileData.WinStreak = int.Parse(data["statistics"]["wSN"]);
+        //profileData.Wins = int.Parse(data["statistics"]["wC"]);
+        //profileData.Losts = int.Parse(data["statistics"]["lC"]);
+        //profileData.Battles = profileData.Wins + profileData.Losts;
+        //profileData.Achievement = data["statistics"]["achie"].ToList();
+        //profileData.AchievementProgress = data["statistics"]["achie"].ToList();
+        //profileData.AchievementObtained = data["statistics"]["achie_r"].ToList();
+        //profileData.AchievementSelected = data["statistics"]["outst"].ToList().ToArray();
         Debug.Log(profileData.ToString());
         return profileData;
     }
@@ -187,20 +191,22 @@ public class RankConfig
     public int Point;
     public int Reward;
 
-    public static List<RankConfig> ListFromJson(JSONNode json)
+    public static List<RankConfig> ListFromJson(JSONNode data)
     {
         List<RankConfig > rankConfigs = new List<RankConfig>();
-        for (int i = 0; i < json["p"].Count; i++)
+        for (int i = 0; i < data["level"].Count; i++)
         {
             RankConfig rankConfig = new RankConfig()
             {
-                Point = int.Parse(json["p"][i]),
-                Title = json["n"][i],
-                Reward = int.Parse(json["list"][i])
+                Point = int.Parse(data["level"][i]),
+                Title = GameConfig.RankNames[i],
+                Reward = int.Parse(data["bonus"][i])
             };
             rankConfigs.Add(rankConfig);
 
         }
+        GameData.RankReceiveCoolDown = int.Parse(data["bonus_period"]) / 1000;
+        Timer<RankCollection>.Instance.TriggerInterval_Sec = GameData.RankReceiveCoolDown;
         return rankConfigs;
     }
 

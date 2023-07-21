@@ -5,6 +5,14 @@ using UnityEngine;
 
 namespace Monetization
 {
+    public enum AdsType
+    {
+        Banner,
+        Inter,
+        Reward,
+        Open,
+        Native
+    }
     public class AdsManager : MonoBehaviour
     {
 #if UNITY_IOS
@@ -22,10 +30,7 @@ namespace Monetization
         {
             adsManager = new MaxAdsManager();
             adsManager.Initialize();
-            for (int i = 0; i < RewardAdUnitId.Length; i++)
-            {
-                adsManager.LoadAds(RewardAdUnitId[i]);
-            }
+
         }
         public static void ShowBannerAds()
         {

@@ -28,11 +28,11 @@ public class ChangeName : MonoBehaviour
             }
         });
         inputField.onSelect.AddListener((text) => { inputField.placeholder.GetComponent<TextMeshProUGUI>().text = ""; });
-        ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECIEVE_CHANGE_NAME, ReceiveChangeName);
+        ServerMessenger.AddListener<JSONNode>(ServerResponse.RECIEVE_CHANGE_NAME, ReceiveChangeName);
     }
     protected void OnDestroy()
     {
-        ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.RECIEVE_CHANGE_NAME, ReceiveChangeName);
+        ServerMessenger.RemoveListener<JSONNode>(ServerResponse.RECIEVE_CHANGE_NAME, ReceiveChangeName);
     }
     public void ReceiveChangeName(JSONNode json)
     {

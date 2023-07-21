@@ -13,7 +13,7 @@ public class AvatarCollection : TransactionCollection
     void Awake()
     {
         UpdateUIs();
-        ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECIEVE_CHANGE_AVATAR, ReceiveChangeAvatar);
+        ServerMessenger.AddListener<JSONNode>(ServerResponse.RECIEVE_CHANGE_AVATAR, ReceiveChangeAvatar);
         PNonConsumableType.AVATAR.GetData().OnDataChanged += OnDataChanged;
     }
 
@@ -25,7 +25,7 @@ public class AvatarCollection : TransactionCollection
     private void OnDestroy()
     {
         PNonConsumableType.AVATAR.GetData().OnDataChanged -= OnDataChanged;
-        ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.RECIEVE_CHANGE_AVATAR, ReceiveChangeAvatar);
+        ServerMessenger.RemoveListener<JSONNode>(ServerResponse.RECIEVE_CHANGE_AVATAR, ReceiveChangeAvatar);
     }
     public override void UpdateUIs()
     {

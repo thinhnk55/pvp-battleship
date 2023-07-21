@@ -9,7 +9,7 @@ namespace Framework
 {
     public class Timer<T> : Singleton<Timer<T>>
     {
-        private int triggerInterval_Sec; public int TriggerInterval_Sec { get { return triggerInterval_Sec; } set { triggerInterval_Sec = Mathf.Clamp(value, 1, int.MaxValue); } }
+        private int triggerInterval_Sec = 1; public int TriggerInterval_Sec { get { return triggerInterval_Sec; } set { triggerInterval_Sec = Mathf.Clamp(value, 1, int.MaxValue); } }
         private long beginPoint; public long BeginPoint
         {
             get { return beginPoint; }

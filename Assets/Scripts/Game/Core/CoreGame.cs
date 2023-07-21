@@ -100,7 +100,10 @@ public class CoreGame : SingletonMono<CoreGame>
         lines = new List<List<GameObject>>();
         Instance.shipsPlayer = shipListPlayer.GetComponentsInChildren<Ship>().ToList();
         Instance.shipsPlayer.Reverse();
-        Instance.player.battleFieldSprite.sprite = SpriteFactory.ResourceIcons[5].sprites[GameData.Player.BattleField.Data];
+        if (GameData.Player.BattleField != null)
+        {
+            Instance.player.battleFieldSprite.sprite = SpriteFactory.ResourceIcons[5].sprites[GameData.Player.BattleField.Data];
+        }
         Instance.shipsOpponent = shipListOpponent.GetComponentsInChildren<Ship>().ToList();
         stateMachine = new StateMachine<GameState>();
         stateMachine.AddState(GameState.Pre, Instance.StartPregame, null, Instance.EndPregame);
@@ -108,11 +111,12 @@ public class CoreGame : SingletonMono<CoreGame>
         stateMachine.AddState(GameState.Turn, Instance.StartTurn, Instance.UpdateTurn, Instance.EndTurn);
         stateMachine.AddState(GameState.Out, null, null, null);
         stateMachine.CurrentState = GameState.Pre;
-        ServerMessenger.AddListener<JSONNode>(GameServerEvent.START, Instance.GameStart);
-        ServerMessenger.AddListener<JSONNode>(GameServerEvent.ENEMY_OUT_GAME, Instance.EnemyOutGame);
-        ServerMessenger.AddListener<JSONNode>(GameServerEvent.ENDGAME, Instance.EndGame);
-        ServerMessenger.AddListener<JSONNode>(GameServerEvent.NEW_TURN, Instance.EndTurn);
-        ServerMessenger.AddListener<JSONNode>(GameServerEvent.BEINGATTACKED, Instance.HandleBeingAttacked);
+        ServerMessenger.AddListener<JSONNode>(ServerResponse._MATCH, Instance.Match);
+        ServerMessenger.AddListener<JSONNode>(ServerResponse.START, Instance.GameStart);
+        ServerMessenger.AddListener<JSONNode>(ServerResponse.ENEMY_OUT_GAME, Instance.EnemyOutGame);
+        ServerMessenger.AddListener<JSONNode>(ServerResponse.ENDGAME, Instance.EndGame);
+        ServerMessenger.AddListener<JSONNode>(ServerResponse.NEW_TURN, Instance.EndTurn);
+        ServerMessenger.AddListener<JSONNode>(ServerResponse.BEINGATTACKED, Instance.HandleBeingAttacked);
         if (reconnect!=null)
         {
             Instance.Reconnect(reconnect);
@@ -137,11 +141,12 @@ public class CoreGame : SingletonMono<CoreGame>
         Instance.opponent.horzLine.gameObject.SetActive(false);
         Instance.opponent.vertLine.gameObject.SetActive(false);
         stateMachine.CurrentState = GameState.Out;
-        ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.START, Instance.GameStart);
-        ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.ENEMY_OUT_GAME, Instance.EnemyOutGame);
-        ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.ENDGAME, Instance.EndGame);
-        ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.NEW_TURN, Instance.EndTurn);
-        ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.BEINGATTACKED, Instance.HandleBeingAttacked);
+        ServerMessenger.RemoveListener<JSONNode>(ServerResponse._MATCH, Instance.Match);
+        ServerMessenger.RemoveListener<JSONNode>(ServerResponse.START, Instance.GameStart);
+        ServerMessenger.RemoveListener<JSONNode>(ServerResponse.ENEMY_OUT_GAME, Instance.EnemyOutGame);
+        ServerMessenger.RemoveListener<JSONNode>(ServerResponse.ENDGAME, Instance.EndGame);
+        ServerMessenger.RemoveListener<JSONNode>(ServerResponse.NEW_TURN, Instance.EndTurn);
+        ServerMessenger.RemoveListener<JSONNode>(ServerResponse.BEINGATTACKED, Instance.HandleBeingAttacked);
         Debug.Log("Destroyed");
         base.OnDestroy();
     }
@@ -263,6 +268,10 @@ public class CoreGame : SingletonMono<CoreGame>
     #endregion
 
     #region CallBackServer
+    public void Match(JSONNode json)
+    {
+        WSClient.SubmitShip(player.ships);
+    }
     void GameStart(JSONNode json)
     {
         GameData.Opponent = ProfileData.FromJsonOpponent(GameData.Opponent, json);
@@ -273,7 +282,7 @@ public class CoreGame : SingletonMono<CoreGame>
         Instance.roomId = int.Parse(json["r"]);
         Instance.playerChair = int.Parse(json["c"]);
         CoinVFX.CoinVfx(Instance.searchUI.tresure.transform, Instance.searchUI.avatar1.transform.position, Instance.searchUI.avatar2.transform.position);
-        PConsumableType.BERI.AddValue(-GameData.Bets[bet]);
+        PConsumableType.BERI.AddValue(-GameData.Bets[bet].BetRequire);
         //opponent.diamond.text = json["d"];
         //opponent.beri.text = json["b"];
         //opponent.point.text = json["p"];
@@ -288,7 +297,7 @@ public class CoreGame : SingletonMono<CoreGame>
     {
         Instance.playerTurn = playerChair == int.Parse(json["c"]);
         Board board = playerTurn ? Instance.opponent : Instance.player;
-        var missle = ObjectPoolManager.GenerateObject<Missle>(PrefabFactory.Missle);
+        var missle = ObjectPoolManager.SpawnObject<Missle>(PrefabFactory.Missle);
         missle.Init(board.octiles[int.Parse(json["y"])][int.Parse(json["x"])].Position);
         DOVirtual.DelayedCall(Octile.timeAttackAnim, () =>
         {

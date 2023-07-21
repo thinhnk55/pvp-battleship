@@ -1,4 +1,5 @@
 using Framework;
+using Monetization;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -13,5 +14,5 @@ public interface IAdsManager
     public void ShowRewardAds(Callback onRewardShowed, string id);
     public void Initialize();
     public void SetUserId(string id);
-    public void LoadAds(string id);
+    public void LoadAds(string id, AdsType type);
 }

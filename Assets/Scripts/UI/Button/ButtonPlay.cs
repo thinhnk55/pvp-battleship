@@ -4,16 +4,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ButtonPlay : MonoBehaviour
+public class ButtonPlay : ButtonBase
 {
-    private void Awake()
+    protected override void Awake()
     {
-        ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECIEVE_RECONNECT, RecieveReconnect);
+        base.Awake();
+        ServerMessenger.AddListener<JSONNode>(ServerResponse.RECIEVE_RECONNECT, RecieveReconnect);
 
     }
     private void OnDestroy()
     {
-        ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.RECIEVE_RECONNECT, RecieveReconnect);
+        ServerMessenger.RemoveListener<JSONNode>(ServerResponse.RECIEVE_RECONNECT, RecieveReconnect);
     }
     public void Play()
     {

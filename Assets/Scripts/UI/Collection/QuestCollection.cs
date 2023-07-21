@@ -62,7 +62,7 @@ public class QuestCollection : CardCollectionBase<QuestInfo>
     {
         JSONNode jsonNode = new JSONClass()
         {
-            { "id", GameServerEvent.REQUEST_CHANGE_QUEST.ToJson() },
+            { "id", ServerResponse.REQUEST_CHANGE_QUEST.ToJson() },
             { "index", new JSONData(index)},
         };
         WSClient.Instance.Send(jsonNode);

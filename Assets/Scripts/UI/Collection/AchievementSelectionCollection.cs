@@ -12,7 +12,7 @@ public class AchievementSelectionCollection : AchievementCollection
 
     private void Start()
     {
-        ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECIEVE_ACHIEVEMENT_CHANGE, ReceiveChangeAchievement);
+        ServerMessenger.AddListener<JSONNode>(ServerResponse.RECIEVE_ACHIEVEMENT_CHANGE, ReceiveChangeAchievement);
         List<AchievementInfo> infosArr = new List<AchievementInfo>();
         if (isPlayer == 1)
         {
@@ -44,7 +44,7 @@ public class AchievementSelectionCollection : AchievementCollection
 
     private void OnDestroy()
     {
-        ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.RECIEVE_ACHIEVEMENT_CHANGE, ReceiveChangeAchievement);
+        ServerMessenger.RemoveListener<JSONNode>(ServerResponse.RECIEVE_ACHIEVEMENT_CHANGE, ReceiveChangeAchievement);
     }
 
     public void Select(int slot)

@@ -53,12 +53,12 @@ public class Octile : CacheMonoBehaviour
     public bool BeingAttacked(bool hitShip)
     {
         Attacked = true;
-        ObjectPoolManager.GenerateObject<ParticleSystem>(VFXFactory.SplashWater, Position);
+        ObjectPoolManager.SpawnObject<ParticleSystem>(VFXFactory.SplashWater, Position);
         if (hitShip)
         {
             attackSpriteRenderer.sprite = SpriteFactory.Octile;
-            attackedAnim = ObjectPoolManager.GenerateObject<Transform>(VFXFactory.AttackedAnim, Position, transform).gameObject;
-            ObjectPoolManager.GenerateObject<ParticleSystem>(VFXFactory.Explosion, Position);
+            attackedAnim = ObjectPoolManager.SpawnObject<Transform>(VFXFactory.AttackedAnim, Position, transform).gameObject;
+            ObjectPoolManager.SpawnObject<ParticleSystem>(VFXFactory.Explosion, Position);
             attackSpriteRenderer.sprite = SpriteFactory.Attacked;
             SoundType.SHIP_HIT.PlaySound();
             if(ship)

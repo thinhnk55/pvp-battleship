@@ -10,7 +10,7 @@ namespace Framework
     {
         #region Internal variables
 
-        public static Dictionary<GameServerEvent, Delegate> eventTable = new Dictionary<GameServerEvent, Delegate>() { 
+        public static Dictionary<ServerResponse, Delegate> eventTable = new Dictionary<ServerResponse, Delegate>() { 
                 
         };
 
@@ -22,7 +22,7 @@ namespace Framework
         #region Helper methods
 
         //Marks a certain message as permanent.
-        public static void MarkAsPermanent(GameServerEvent gameServerEvent)
+        public static void MarkAsPermanent(ServerResponse gameServerEvent)
         {
             permanentMessages.Add((int)gameServerEvent);
         }
@@ -52,7 +52,7 @@ namespace Framework
 
         #region Message logging and exception throwing
 
-        static void OnListenerAdding(GameServerEvent _event, Delegate listenerBeingAdded)
+        static void OnListenerAdding(ServerResponse _event, Delegate listenerBeingAdded)
         {
             Delegate d = eventTable[_event];
             if (d != null && d.GetType() != listenerBeingAdded.GetType())
@@ -61,7 +61,7 @@ namespace Framework
             }
         }
 
-        static void OnListenerRemoving(GameServerEvent _event, Delegate listenerBeingRemoved)
+        static void OnListenerRemoving(ServerResponse _event, Delegate listenerBeingRemoved)
         {
             Delegate d = eventTable[_event];
 
@@ -85,7 +85,7 @@ namespace Framework
         #region AddListener
 
         //No parameters
-        static public void AddListener(GameServerEvent gameServerEvent, Callback handler, bool isPermanent = true)
+        static public void AddListener(ServerResponse gameServerEvent, Callback handler, bool isPermanent = true)
         {
             if (eventTable.ContainsKey(gameServerEvent))
             {
@@ -103,7 +103,7 @@ namespace Framework
         }
 
         //Single parameter
-        static public void AddListener<T>(GameServerEvent gameServerEvent, Callback<T> handler, bool isPermanent = true)
+        static public void AddListener<T>(ServerResponse gameServerEvent, Callback<T> handler, bool isPermanent = true)
         {
             int index = (int)gameServerEvent;
 
@@ -123,7 +123,7 @@ namespace Framework
         }
 
         //Two parameters
-        static public void AddListener<T, U>(GameServerEvent gameServerEvent, Callback<T, U> handler, bool isPermanent = true)
+        static public void AddListener<T, U>(ServerResponse gameServerEvent, Callback<T, U> handler, bool isPermanent = true)
         {
             int index = (int)gameServerEvent;
 
@@ -143,7 +143,7 @@ namespace Framework
         }
 
         //Three parameters
-        static public void AddListener<T, U, V>(GameServerEvent gameServerEvent, Callback<T, U, V> handler, bool isPermanent = true)
+        static public void AddListener<T, U, V>(ServerResponse gameServerEvent, Callback<T, U, V> handler, bool isPermanent = true)
         {
             int index = (int)gameServerEvent;
 
@@ -167,7 +167,7 @@ namespace Framework
         #region RemoveListener
 
         //No parameters
-        static public void RemoveListener(GameServerEvent gameServerEvent, Callback handler)
+        static public void RemoveListener(ServerResponse gameServerEvent, Callback handler)
         {
             int index = (int)gameServerEvent;
 
@@ -176,7 +176,7 @@ namespace Framework
         }
 
         //Single parameter
-        static public void RemoveListener<T>(GameServerEvent gameServerEvent, Callback<T> handler)
+        static public void RemoveListener<T>(ServerResponse gameServerEvent, Callback<T> handler)
         {
             int index = (int)gameServerEvent;
 
@@ -185,7 +185,7 @@ namespace Framework
         }
 
         //Two parameters
-        static public void RemoveListener<T, U>(GameServerEvent gameServerEvent, Callback<T, U> handler)
+        static public void RemoveListener<T, U>(ServerResponse gameServerEvent, Callback<T, U> handler)
         {
             int index = (int)gameServerEvent;
 
@@ -194,7 +194,7 @@ namespace Framework
         }
 
         //Three parameters
-        static public void RemoveListener<T, U, V>(GameServerEvent gameServerEvent, Callback<T, U, V> handler)
+        static public void RemoveListener<T, U, V>(ServerResponse gameServerEvent, Callback<T, U, V> handler)
         {
             int index = (int)gameServerEvent;
 
@@ -207,14 +207,14 @@ namespace Framework
         #region Broadcast
 
         //No parameters
-        static public void Broadcast(GameServerEvent gameServerEvent)
+        static public void Broadcast(ServerResponse gameServerEvent)
         {
             if (eventTable[gameServerEvent] != null)
                 ((Callback)eventTable[gameServerEvent])?.Invoke();
         }
 
         //Single parameter
-        static public void Broadcast<T>(GameServerEvent gameServerEvent, T arg1)
+        static public void Broadcast<T>(ServerResponse gameServerEvent, T arg1)
         {
             int index = (int)gameServerEvent;
 
@@ -223,7 +223,7 @@ namespace Framework
         }
 
         //Two parameters
-        static public void Broadcast<T, U>(GameServerEvent gameServerEvent, T arg1, U arg2)
+        static public void Broadcast<T, U>(ServerResponse gameServerEvent, T arg1, U arg2)
         {
             int index = (int)gameServerEvent;
 
@@ -232,7 +232,7 @@ namespace Framework
         }
 
         //Three parameters
-        static public void Broadcast<T, U, V>(GameServerEvent gameServerEvent, T arg1, U arg2, V arg3)
+        static public void Broadcast<T, U, V>(ServerResponse gameServerEvent, T arg1, U arg2, V arg3)
         {
             int index = (int)gameServerEvent;
 

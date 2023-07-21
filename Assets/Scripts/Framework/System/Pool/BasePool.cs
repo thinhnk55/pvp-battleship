@@ -18,7 +18,7 @@ namespace Framework
             // Init pool
             for (int i = 0; i < initAtStart; i++)
             {
-                GameObject item = SpawnItem();
+                GameObject item = SpawnItem(root);
                 SetActive(item, false);
                 _pool.Add(item);
             }

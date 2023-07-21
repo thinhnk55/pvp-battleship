@@ -1,8 +1,20 @@
 ﻿namespace Framework
 {
-    public enum GameServerEvent
+    public enum ServerRequest
     {
-        SEARCH_OPPONENT = 4001,
+        _GET_CONFIG = 4002,
+        _FIND_MATCH = 4101,
+        _CANCEL_FIND_MATCH = 4103,
+        _SUBMIT_SHIP = 4110,
+    }
+    public enum ServerResponse
+    {
+        _GET_PROFILE = 4001,
+        _GET_CONFIG = 4002,
+
+        _MATCH = 4104,
+        GetLuckyShot,
+        SEARCH_OPPONENT = 9001,
         REQUEST_RECONNECT = 4002,
         QUIT_GAME_REQUEST = 4003,
         ATTACK = 4004,
@@ -73,6 +85,7 @@
         RECIEVE_JOIN_TREASURE_ROOM = 4602,
         RECIEVE_TREASURE_SHOT = 4603,
         LOGIN = 4999,
+
 
     }
 }

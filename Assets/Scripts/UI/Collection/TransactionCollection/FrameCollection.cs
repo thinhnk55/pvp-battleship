@@ -13,7 +13,7 @@ public class FrameCollection : TransactionCollection
     void Awake()
     {
         UpdateUIs();
-        ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECIEVE_CHANGE_FRAME, ReceiveChangeFrame);
+        ServerMessenger.AddListener<JSONNode>(ServerResponse.RECIEVE_CHANGE_FRAME, ReceiveChangeFrame);
         PNonConsumableType.AVATAR_FRAME.GetData().OnDataChanged += OnDataChanged;
 
     }
@@ -21,7 +21,7 @@ public class FrameCollection : TransactionCollection
     private void OnDestroy()
     {
         PNonConsumableType.AVATAR_FRAME.GetData().OnDataChanged -= OnDataChanged;
-        ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.RECIEVE_CHANGE_FRAME, ReceiveChangeFrame);
+        ServerMessenger.RemoveListener<JSONNode>(ServerResponse.RECIEVE_CHANGE_FRAME, ReceiveChangeFrame);
     }
     private void OnDataChanged(HashSet<int> arg1, HashSet<int> arg2)
     {

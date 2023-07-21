@@ -41,6 +41,10 @@ public class HTTPClient : SingletonMono<HTTPClient>
                     {
                         Instantiate(websocket, transform.parent);
                     }
+                    else
+                    {
+                        WSClient.Instance.ws.Connect();
+                    }
                 }
                 else
                 {

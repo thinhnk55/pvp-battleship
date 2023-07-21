@@ -44,6 +44,6 @@ public class Helicopter : CacheMonoBehaviour
         {
             gameObject.SetActive(false);
         });
-        DOVirtual.DelayedCall((pos - Position).magnitude / (des - Position).magnitude - 0.2f, ()=> ObjectPoolManager.GenerateObject<Transform>(PrefabFactory.Missle, Position));
+        DOVirtual.DelayedCall((pos - Position).magnitude / (des - Position).magnitude - 0.2f, ()=> ObjectPoolManager.SpawnObject<Transform>(PrefabFactory.Missle, Position));
     }
 }

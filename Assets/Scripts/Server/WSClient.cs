@@ -14,132 +14,128 @@ public class WSClient : WSClientBase
     protected override void Start()
     {
         base.Start();
-        ServerMessenger.AddListener<JSONNode>(GameServerEvent.LOGIN, OnLogin);
-        ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECIEVE_ACHIEVEMENT, ReceiveAchievementConfig);
-        ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECIEVE_LUCKY_SHOT_CONFIG, ReceiveLuckyShotConfig);
-        ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECIEVE_SHOP_CONFIG, ReceiveShopConfig);
-        ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECIEVE_TRANSACTION, RecieveTransaction);
-        ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECEIVE_RANK_CONFIG, ReceiveRankConfig);
-        ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECIEVE_TREASURE_CONFIG, ReceiveTreasureConfig);
-        ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECEIVE_COUNTDOWN_CONFIG, ReceiveCountDownConfig);
-        ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECIEVE_ROYAL_CONFIG, ReceiveRoyalPassConfig);
-        ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECIEVE_JOIN_TREASURE_ROOM, ReceiveJoinTreasureRoom);
-        ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECIEVE_BET_CONFIG, ReceiveBetConfig);
+        ServerMessenger.AddListener<JSONNode>(ServerResponse._GET_PROFILE, OnLogin);
+        ServerMessenger.AddListener<JSONNode>(ServerResponse.GetLuckyShot, OnLogin);
+        ServerMessenger.AddListener<JSONNode>(ServerResponse._GET_PROFILE, OnLogin);
+        ServerMessenger.AddListener<JSONNode>(ServerResponse._GET_PROFILE, OnLogin);
+        ServerMessenger.AddListener<JSONNode>(ServerResponse._GET_CONFIG, GetConfig);
+        ServerMessenger.AddListener<JSONNode>(ServerResponse.RECIEVE_LUCKY_SHOT_CONFIG, ReceiveLuckyShotConfig);
+        ServerMessenger.AddListener<JSONNode>(ServerResponse.RECIEVE_SHOP_CONFIG, ReceiveShopConfig);
+        ServerMessenger.AddListener<JSONNode>(ServerResponse.RECIEVE_TRANSACTION, RecieveTransaction);
+        ServerMessenger.AddListener<JSONNode>(ServerResponse.RECEIVE_RANK_CONFIG, ReceiveRankConfig);
+        ServerMessenger.AddListener<JSONNode>(ServerResponse.RECIEVE_TREASURE_CONFIG, ReceiveTreasureConfig);
+        ServerMessenger.AddListener<JSONNode>(ServerResponse.RECEIVE_COUNTDOWN_CONFIG, ReceiveCountDownConfig);
+        ServerMessenger.AddListener<JSONNode>(ServerResponse.RECIEVE_ROYAL_CONFIG, ReceiveRoyalPassConfig);
+        ServerMessenger.AddListener<JSONNode>(ServerResponse.RECIEVE_JOIN_TREASURE_ROOM, ReceiveJoinTreasureRoom);
+        ServerMessenger.AddListener<JSONNode>(ServerResponse.RECIEVE_BET_CONFIG, ReceiveBetConfig);
 
 
         //not config
-        ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECIEVE_RECEIVE_ROYALPASS, ReceiveReceiveRoyalPass);
-        ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECIEVE_RECEIVE_ROYALPASS_QUEST, ReceiveQuest);
-        ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECIEVE_CHANGE_QUEST, ReceiveChangeQuest);
-        ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECIEVE_RECEIVE_ROYALPASS_SEASON_QUEST, ReceiveSeasonQuest);
-        ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECIEVE_CLAIM_ALL_ROYALPASS, ReceiveClaimAllRoyalPass);
+        ServerMessenger.AddListener<JSONNode>(ServerResponse.RECIEVE_RECEIVE_ROYALPASS, ReceiveReceiveRoyalPass);
+        ServerMessenger.AddListener<JSONNode>(ServerResponse.RECIEVE_RECEIVE_ROYALPASS_QUEST, ReceiveQuest);
+        ServerMessenger.AddListener<JSONNode>(ServerResponse.RECIEVE_CHANGE_QUEST, ReceiveChangeQuest);
+        ServerMessenger.AddListener<JSONNode>(ServerResponse.RECIEVE_RECEIVE_ROYALPASS_SEASON_QUEST, ReceiveSeasonQuest);
+        ServerMessenger.AddListener<JSONNode>(ServerResponse.RECIEVE_CLAIM_ALL_ROYALPASS, ReceiveClaimAllRoyalPass);
 
     }
     protected override void OnDestroy()
     {
         base.OnDestroy();
-        ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.LOGIN, OnLogin);
-        ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.RECIEVE_ACHIEVEMENT, ReceiveAchievementConfig);
-        ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.RECIEVE_LUCKY_SHOT_CONFIG, ReceiveLuckyShotConfig);
-        ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.RECIEVE_SHOP_CONFIG, ReceiveShopConfig);
-        ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.RECIEVE_TRANSACTION, RecieveTransaction);
-        ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.RECEIVE_RANK_CONFIG, ReceiveRankConfig);
-        ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.RECIEVE_TREASURE_CONFIG, ReceiveTreasureConfig);
-        ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.RECEIVE_COUNTDOWN_CONFIG, ReceiveCountDownConfig);
-        ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.RECIEVE_ROYAL_CONFIG, ReceiveRoyalPassConfig);
-        ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.RECIEVE_JOIN_TREASURE_ROOM, ReceiveJoinTreasureRoom);
-        ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.RECIEVE_BET_CONFIG, ReceiveBetConfig);
+        ServerMessenger.RemoveListener<JSONNode>(ServerResponse._GET_PROFILE, OnLogin);
+        ServerMessenger.RemoveListener<JSONNode>(ServerResponse._GET_CONFIG, GetConfig);
+        ServerMessenger.RemoveListener<JSONNode>(ServerResponse.RECIEVE_ACHIEVEMENT, ReceiveAchievementConfig);
+        ServerMessenger.RemoveListener<JSONNode>(ServerResponse.RECIEVE_LUCKY_SHOT_CONFIG, ReceiveLuckyShotConfig);
+        ServerMessenger.RemoveListener<JSONNode>(ServerResponse.RECIEVE_SHOP_CONFIG, ReceiveShopConfig);
+        ServerMessenger.RemoveListener<JSONNode>(ServerResponse.RECIEVE_TRANSACTION, RecieveTransaction);
+        ServerMessenger.RemoveListener<JSONNode>(ServerResponse.RECEIVE_RANK_CONFIG, ReceiveRankConfig);
+        ServerMessenger.RemoveListener<JSONNode>(ServerResponse.RECIEVE_TREASURE_CONFIG, ReceiveTreasureConfig);
+        ServerMessenger.RemoveListener<JSONNode>(ServerResponse.RECEIVE_COUNTDOWN_CONFIG, ReceiveCountDownConfig);
+        ServerMessenger.RemoveListener<JSONNode>(ServerResponse.RECIEVE_ROYAL_CONFIG, ReceiveRoyalPassConfig);
+        ServerMessenger.RemoveListener<JSONNode>(ServerResponse.RECIEVE_JOIN_TREASURE_ROOM, ReceiveJoinTreasureRoom);
+        ServerMessenger.RemoveListener<JSONNode>(ServerResponse.RECIEVE_BET_CONFIG, ReceiveBetConfig);
 
         //not config
-        ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.RECIEVE_RECEIVE_ROYALPASS, ReceiveReceiveRoyalPass);
-        ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.RECIEVE_RECEIVE_ROYALPASS_QUEST, ReceiveQuest);
-        ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.RECIEVE_CHANGE_QUEST, ReceiveChangeQuest);
-        ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.RECIEVE_RECEIVE_ROYALPASS_SEASON_QUEST, ReceiveSeasonQuest);
-        ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.RECIEVE_CLAIM_ALL_ROYALPASS, ReceiveClaimAllRoyalPass);
+        ServerMessenger.RemoveListener<JSONNode>(ServerResponse.RECIEVE_RECEIVE_ROYALPASS, ReceiveReceiveRoyalPass);
+        ServerMessenger.RemoveListener<JSONNode>(ServerResponse.RECIEVE_RECEIVE_ROYALPASS_QUEST, ReceiveQuest);
+        ServerMessenger.RemoveListener<JSONNode>(ServerResponse.RECIEVE_CHANGE_QUEST, ReceiveChangeQuest);
+        ServerMessenger.RemoveListener<JSONNode>(ServerResponse.RECIEVE_RECEIVE_ROYALPASS_SEASON_QUEST, ReceiveSeasonQuest);
+        ServerMessenger.RemoveListener<JSONNode>(ServerResponse.RECIEVE_CLAIM_ALL_ROYALPASS, ReceiveClaimAllRoyalPass);
     }
     public void OnLogin(JSONNode data)
     {
+        GetConfig();
+        AdsManager.SetUserId(PDataAuth.AuthData.userId.ToString());
         MusicType.MAINMENU.PlayMusic();
-        PConsumableType.GEM.SetValue(int.Parse(data["profile"]["d"]));
-        PConsumableType.BERI.SetValue(int.Parse(data["profile"]["b"]));
-        PNonConsumableType.AVATAR.FromJson(data["statistics"]["a_a"]);
-        PNonConsumableType.AVATAR_FRAME.FromJson(data["statistics"]["a_f"]);
-        PNonConsumableType.BATTLE_FIELD.FromJson(data["statistics"]["bfA"]);
-        PNonConsumableType.SKIN_SHIP.FromJson(data["statistics"]["ssA"]);
+        PConsumableType.GEM.SetValue(int.Parse(data["d"]["d"]));
+        PConsumableType.BERI.SetValue(int.Parse(data["d"]["g"]));
+        PNonConsumableType.AVATAR.FromJson(data["d"]["l"]);
+        //PNonConsumableType.AVATAR_FRAME.FromJson(data["statistics"]["a_f"]);
+        //PNonConsumableType.BATTLE_FIELD.FromJson(data["statistics"]["bfA"]);
+        //PNonConsumableType.SKIN_SHIP.FromJson(data["statistics"]["ssA"]);
         GameData.Player = ProfileData.FromJson(GameData.Player, data);
-        RoyalPass.DataFromJson(GameData.RoyalPass, data["royalPass"]);
-        Timer<LuckyShot>.Instance.BeginPoint = long.Parse(data["timer"]["lfb"]).NowFrom0001From1970();
-        Timer<Gift>.Instance.BeginPoint = long.Parse(data["timer"]["lcr"]).NowFrom0001From1970();
-        Timer<RankCollection>.Instance.BeginPoint = long.Parse(data["timer"]["WRC"]).NowFrom0001From1970();
-        Timer<RoyalPass>.Instance.BeginPoint = GameData.RoyalPass.End;
-        Timer<QuestCard>.Instance.BeginPoint = 300000000; //long.Parse(data["timer"]["as"]).NowFrom0001From1970();
-        GameData.ProgressGift = int.Parse(data["timer"]["cr"]);
-        CoreGame.timeInit = int.Parse(data["t"]);
-        for (int i = 0; i < data["v"].Count; i++)
-        {
-            if (GameData.Versions[i] != int.Parse(data["v"][i]))
-            {
-                GameData.Versions[i] = int.Parse(data["v"][i]);
-                switch ((ConfigVersion)i)
-                {
-                    case ConfigVersion.RANK:
-                        RequestRankConfig();
-                        break;
-                    case ConfigVersion.ACHIEVEMENT:
-                        RequestAchievementConfig();
-                        break;
-                    case ConfigVersion.LUCKY_SHOT:
-                        RequestLuckyShotConfig();
-                        break;
-                    case ConfigVersion.GIFT:
-                        RequestGiftConfig();
-                        break;
-                    case ConfigVersion.SHOP:
-                        RequestShopConfig();
-                        break;
-                    case ConfigVersion.TREASURE:
-                        RequestTreasureConfig();
-                        break;
-                    case ConfigVersion.COUNT_DOWN:
-                        RequestCountDownConfig();
-                        break;
-                    case ConfigVersion.ROYAL_PASS:
-                        RequestRoyalPassConfig();
-                        break;
-                    case ConfigVersion.BET:
-                        RequestBetConfig();
-                        break;
-                    default:
-                        break;
-                }
-            }
-        }
-        SceneTransitionHelper.Load(ESceneName.Home);
+        //RoyalPass.DataFromJson(GameData.RoyalPass, data["royalPass"]);
+        //Timer<LuckyShot>.Instance.BeginPoint = long.Parse(data["timer"]["lfb"]).NowFrom0001From1970();
+        //Timer<Gift>.Instance.BeginPoint = long.Parse(data["timer"]["lcr"]).NowFrom0001From1970();
+        //Timer<RankCollection>.Instance.BeginPoint = long.Parse(data["timer"]["WRC"]).NowFrom0001From1970();
+        //Timer<RoyalPass>.Instance.BeginPoint = GameData.RoyalPass.End;
+        //Timer<QuestCard>.Instance.BeginPoint = 300000000; //long.Parse(data["timer"]["as"]).NowFrom0001From1970();
+        //GameData.ProgressGift = int.Parse(data["timer"]["cr"]);
+        //CoreGame.timeInit = int.Parse(data["t"]);
         Timer<LuckyShot>.Instance.TriggerInterval_Sec = GameData.LuckyShotCoolDown;
         Timer<Gift>.Instance.TriggerInterval_Sec = GameData.GiftCoolDown;
         Timer<RankCollection>.Instance.TriggerInterval_Sec = GameData.RankReceiveCoolDown;
-        AdsManager.SetUserId(PDataAuth.AuthData.userId.ToString());
     }
     #region Config
+    void GetConfig()
+    {
+        JSONNode jsonNode = new JSONClass()
+        {
+            { "id", ServerRequest._GET_CONFIG.ToJson() },
+            { "v", new JSONData(0) },
+        };
+        Instance.Send(jsonNode);
+    }
+    void GetConfig(JSONNode data)
+    {
+        // rank
+        GameData.RankConfigs = RankConfig.ListFromJson(data["d"]["level"]);
+        // bet
+        try
+        {
+            GameData.Bets = BetData.ListFromJson(data["d"]["match"]["classic"]);
+        }catch(Exception e)
+        {
+            Debug.Log(e.ToString());
+        }
+        // royalpass
+
+        // achievement
+
+        // luckyshot
+
+        // shop 
+
+        // gift
+        SceneTransitionHelper.Load(ESceneName.Home);
+
+    }
     private void RequestBetConfig()
     {
         JSONNode jsonNode = new JSONClass()
         {
-            { "id", GameServerEvent.REQUEST_BET_CONFIG.ToJson() },
+            { "id", ServerResponse.REQUEST_BET_CONFIG.ToJson() },
         };
         Instance.Send(jsonNode);
     }
     private void ReceiveBetConfig(JSONNode json)
     {
-        GameData.Bets = json["bet"].ToList().ToArray();
-        GameData.BetRequires = json["require"].ToList().ToArray();
-        GameData.BetRankPoint = json["point"].ToList().ToArray();
+
     }
     private void RequestRoyalPassConfig()
     {
         JSONNode jsonNode = new JSONClass()
         {
-            { "id", GameServerEvent.REQUEST_COUNTDOWN_CONFIG.ToJson() },
+            { "id", ServerResponse.REQUEST_COUNTDOWN_CONFIG.ToJson() },
         };
         Instance.Send(jsonNode);
     }
@@ -152,7 +148,7 @@ public class WSClient : WSClientBase
     {
         JSONNode jsonNode = new JSONClass()
         {
-            { "id", GameServerEvent.REQUEST_ROYAL_CONFIG.ToJson() },
+            { "id", ServerResponse.REQUEST_ROYAL_CONFIG.ToJson() },
         };
         Instance.Send(jsonNode);
     }
@@ -194,7 +190,7 @@ public class WSClient : WSClientBase
     {
         JSONNode jsonNode = new JSONClass()
         {
-            { "id", GameServerEvent.REQUEST_RANK_CONFIG.ToJson() },
+            { "id", ServerResponse.REQUEST_RANK_CONFIG.ToJson() },
         };
         Instance.Send(jsonNode);
     }
@@ -202,7 +198,7 @@ public class WSClient : WSClientBase
     {
         JSONNode jsonNode = new JSONClass()
         {
-            { "id", GameServerEvent.REQUEST_LUCKY_SHOT_CONFIG.ToJson() },
+            { "id", ServerResponse.REQUEST_LUCKY_SHOT_CONFIG.ToJson() },
         };
         Instance.Send(jsonNode);
     }
@@ -210,7 +206,7 @@ public class WSClient : WSClientBase
     {
         JSONNode jsonNode = new JSONClass()
         {
-            { "id", GameServerEvent.REQUEST_ACHIEVEMENT.ToJson() },
+            { "id", ServerResponse.REQUEST_ACHIEVEMENT.ToJson() },
         };
         Instance.Send(jsonNode);
     }
@@ -218,7 +214,7 @@ public class WSClient : WSClientBase
     {
         JSONNode jsonNode = new JSONClass()
         {
-            { "id", GameServerEvent.REQUEST_SHOP_CONFIG.ToJson() },
+            { "id", ServerResponse.REQUEST_SHOP_CONFIG.ToJson() },
         };
         Instance.Send(jsonNode);
     }
@@ -242,7 +238,7 @@ public class WSClient : WSClientBase
     {
         JSONNode jsonNode = new JSONClass()
         {
-            { "id", GameServerEvent.REQUEST_GIFT_CONFIG.ToJson() },
+            { "id", ServerResponse.REQUEST_GIFT_CONFIG.ToJson() },
         };
         Instance.Send(jsonNode);
     }
@@ -263,7 +259,7 @@ public class WSClient : WSClientBase
     {
         JSONNode jsonNode = new JSONClass()
         {
-            {"id", GameServerEvent.REQUEST_TREASURE_CONFIG.ToJson() },
+            {"id", ServerResponse.REQUEST_TREASURE_CONFIG.ToJson() },
         };
         Instance.Send(jsonNode);
     }
@@ -290,7 +286,7 @@ public class WSClient : WSClientBase
         Debug.Log("Request:");
         JSONNode jsonNode = new JSONClass()
         {
-            {"id", GameServerEvent.REQUEST_JOIN_TREASURE_ROOM.ToJson() },
+            {"id", ServerResponse.REQUEST_JOIN_TREASURE_ROOM.ToJson() },
             {"b" , rom.ToJson() },
         };
         Instance.Send(jsonNode);
@@ -331,7 +327,7 @@ public class WSClient : WSClientBase
     {
         JSONNode jsonNode = new JSONClass()
         {
-            {"id", GameServerEvent.REQUEST_SHOOT_TREASURE.ToJson() },
+            {"id", ServerResponse.REQUEST_SHOOT_TREASURE.ToJson() },
             {"b" , GameData.JoinTreasureRoom.RoomId.ToJson() },
             {"x" , y.ToJson() },
             {"y" , x.ToJson() },
@@ -343,7 +339,7 @@ public class WSClient : WSClientBase
     {
         JSONNode jsonNode = new JSONClass()
         {
-            {"id", GameServerEvent.REQUEST_EXIT_TREASURE_ROOM.ToJson() },
+            {"id", ServerResponse.REQUEST_EXIT_TREASURE_ROOM.ToJson() },
         };
         Instance.Send(jsonNode);
     }
@@ -352,23 +348,30 @@ public class WSClient : WSClientBase
     #region CoreGame
     public static void SearchOpponent(int bet, List<Ship> ships)
     {
+        JSONNode jsonNode = new JSONClass
+        {
+            { "id", ServerRequest._FIND_MATCH.ToJson() },
+            { "t", bet.ToJson() }
+        };
+        Instance.Send(jsonNode);
+    }
+    public static void SubmitShip(List<Ship> ships)
+    {
         JSONNode jsonNode = new JSONClass();
         JSONArray jsonArray = new JSONArray();
         foreach (Ship ship in ships)
         {
             jsonArray.Add(ship.ToJson());
         }
-        jsonNode.Add("id", GameServerEvent.SEARCH_OPPONENT.ToJson() );
-        jsonNode.Add("b", bet.ToJson());
+        jsonNode.Add("id", ServerRequest._SUBMIT_SHIP.ToJson());
         jsonNode.Add("ship", jsonArray);
         Instance.Send(jsonNode);
     }
-
     public static void AttackOpponent(int room, int x, int y)
     {
         JSONNode jsonNode = new JSONClass
         {
-            { "id", GameServerEvent.ATTACK.ToJson() },
+            { "id", ServerResponse.ATTACK.ToJson() },
             { "r",  room.ToJson() },
             { "x",  x.ToJson() },
             { "y",  y.ToJson() },
@@ -379,8 +382,8 @@ public class WSClient : WSClientBase
     {
         JSONNode jsonNode = new JSONClass
         {
-            { "id", GameServerEvent.QUIT_SEARCH.ToJson() },
-            { "r", bet.ToJson() },
+            { "id", ServerRequest._CANCEL_FIND_MATCH.ToJson() },
+            { "t", bet.ToJson() },
         };
         Instance.Send(jsonNode);
     }
@@ -388,7 +391,7 @@ public class WSClient : WSClientBase
     {
         JSONNode jsonNode = new JSONClass
         {
-            { "id", GameServerEvent.QUIT_GAME_REQUEST.ToJson() },
+            { "id", ServerResponse.QUIT_GAME_REQUEST.ToJson() },
             { "r", room.ToJson() },
         };
         Instance.Send(jsonNode);
@@ -397,7 +400,7 @@ public class WSClient : WSClientBase
     {
         JSONNode jsonNode = new JSONClass()
         {
-            { "id", GameServerEvent.REQUEST_LUCKY_SHOT.ToJson() },
+            { "id", ServerResponse.REQUEST_LUCKY_SHOT.ToJson() },
         };
         Instance.Send(jsonNode);
     }
@@ -406,7 +409,7 @@ public class WSClient : WSClientBase
     {
         JSONNode jsonNode = new JSONClass()
         {
-            { "id", GameServerEvent.REQUEST_RECONNECT.ToJson() },
+            { "id", ServerResponse.REQUEST_RECONNECT.ToJson() },
         };
         Instance.Send(jsonNode);
     }
@@ -423,7 +426,7 @@ public class WSClient : WSClientBase
     {
         JSONNode jsonNode = new JSONClass
         {
-            { "id", GameServerEvent.REQUEST_OBTAIN_ACHIEVEMENT.ToJson() },
+            { "id", ServerResponse.REQUEST_OBTAIN_ACHIEVEMENT.ToJson() },
             { "achieId", id.ToJson() },
             { "achieIndex", (obtained + 1).ToJson() }
         };
@@ -434,7 +437,7 @@ public class WSClient : WSClientBase
     {
         JSONNode jsonNode = new JSONClass()
         {
-            { "id", GameServerEvent.REQUEST_GIFT.ToJson() },
+            { "id", ServerResponse.REQUEST_GIFT.ToJson() },
         };
         Instance.Send(jsonNode);
     }
@@ -443,7 +446,7 @@ public class WSClient : WSClientBase
     {
         JSONNode jsonNode = new JSONClass()
         {
-            { "id", GameServerEvent.REQUEST_RANK.ToJson() },
+            { "id", ServerResponse.REQUEST_RANK.ToJson() },
         };
         Instance.Send(jsonNode);
     }
@@ -457,7 +460,7 @@ public class WSClient : WSClientBase
         }
         JSONNode jsonNode = new JSONClass()
         {
-            { "id", GameServerEvent.REQUEST_ACHIEVEMENT_CHANGE.ToJson() },
+            { "id", ServerResponse.REQUEST_ACHIEVEMENT_CHANGE.ToJson() },
             { "outst", array },
         };
         Instance.Send(jsonNode);
@@ -466,7 +469,7 @@ public class WSClient : WSClientBase
     {
         JSONNode jsonNode = new JSONClass()
         {
-            { "id", GameServerEvent.REQUEST_LUCKY_SHOT.ToJson() },
+            { "id", ServerResponse.REQUEST_LUCKY_SHOT.ToJson() },
         };
         Instance.Send(jsonNode);
     }
@@ -474,7 +477,7 @@ public class WSClient : WSClientBase
     {
         JSONNode jsonNode = new JSONClass()
         {
-            { "id", GameServerEvent.REQUEST_CHANGE_NAME.ToJson() },
+            { "id", ServerResponse.REQUEST_CHANGE_NAME.ToJson() },
             { "n", name.ToString()}
         };
         Instance.Send(jsonNode);
@@ -484,7 +487,7 @@ public class WSClient : WSClientBase
     {
         JSONNode jsonNode = new JSONClass()
         {
-            { "id", GameServerEvent.REQUEST_CHANGE_AVATAR.ToJson() },
+            { "id", ServerResponse.REQUEST_CHANGE_AVATAR.ToJson() },
             { "a", i.ToString()}
         };
         Instance.Send(jsonNode);
@@ -493,7 +496,7 @@ public class WSClient : WSClientBase
     {
         JSONNode jsonNode = new JSONClass()
         {
-            { "id", GameServerEvent.REQUEST_CHANGE_FRAME.ToJson() },
+            { "id", ServerResponse.REQUEST_CHANGE_FRAME.ToJson() },
             { "f", i.ToString()}
         };
         Instance.Send(jsonNode);
@@ -502,7 +505,7 @@ public class WSClient : WSClientBase
     {
         JSONNode jsonNode = new JSONClass()
         {
-            { "id", GameServerEvent.REQUEST_CHANGE_BATTLEFIELD.ToJson() },
+            { "id", ServerResponse.REQUEST_CHANGE_BATTLEFIELD.ToJson() },
             { "a", i.ToString()}
         };
         Instance.Send(jsonNode);
@@ -511,7 +514,7 @@ public class WSClient : WSClientBase
     {
         JSONNode jsonNode = new JSONClass()
         {
-            { "id", GameServerEvent.REQUEST_CHANGE_SKIN_SHIP.ToJson() },
+            { "id", ServerResponse.REQUEST_CHANGE_SKIN_SHIP.ToJson() },
             { "f", i.ToString()}
         };
         Instance.Send(jsonNode);
@@ -521,7 +524,7 @@ public class WSClient : WSClientBase
     {
         JSONNode jsonNode = new JSONClass()
         {
-            { "id", GameServerEvent.REQUEST_RECEIVE_ROYALPASS_QUEST.ToJson() },
+            { "id", ServerResponse.REQUEST_RECEIVE_ROYALPASS_QUEST.ToJson() },
             { "index", new JSONData(index)}
         };
         Instance.Send(jsonNode);
@@ -537,7 +540,7 @@ public class WSClient : WSClientBase
     {
         JSONNode jsonNode = new JSONClass()
         {
-            { "id", GameServerEvent.REQUEST_RECEIVE_ROYALPASS_SEASON_QUEST.ToJson() },
+            { "id", ServerResponse.REQUEST_RECEIVE_ROYALPASS_SEASON_QUEST.ToJson() },
             { "index", new JSONData(index)}
         };
         Instance.Send(jsonNode);
@@ -554,7 +557,7 @@ public class WSClient : WSClientBase
     {
         JSONNode jsonNode = new JSONClass()
         {
-            { "id", GameServerEvent.REQUEST_RECEIVE_ROYALPASS.ToJson() },
+            { "id", ServerResponse.REQUEST_RECEIVE_ROYALPASS.ToJson() },
             { "m", new JSONData(index)},
             { "type", new JSONData(elite)},
         };
@@ -608,7 +611,7 @@ public class WSClient : WSClientBase
         }
         JSONNode jsonNode = new JSONClass()
         {
-            { "id", GameServerEvent.REQUEST_CLAIM_ALL_ROYALPASS.ToJson() },
+            { "id", ServerResponse.REQUEST_CLAIM_ALL_ROYALPASS.ToJson() },
             { "normal",  jsonNormal},
             { "elite",  jsonElite}
         };

@@ -12,14 +12,14 @@ public class SkinShipCollection : TransactionCollection
     void Awake()
     {
         UpdateUIs();
-        ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECIEVE_CHANGE_SKIN_SHIP, ReceiveChangeSkinShip);
+        ServerMessenger.AddListener<JSONNode>(ServerResponse.RECIEVE_CHANGE_SKIN_SHIP, ReceiveChangeSkinShip);
         PNonConsumableType.SKIN_SHIP.GetData().OnDataChanged += OnDataChanged;
 
     }
     private void OnDestroy()
     {
         PNonConsumableType.SKIN_SHIP.GetData().OnDataChanged -= OnDataChanged;
-        ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.RECIEVE_CHANGE_AVATAR, ReceiveChangeSkinShip);
+        ServerMessenger.RemoveListener<JSONNode>(ServerResponse.RECIEVE_CHANGE_AVATAR, ReceiveChangeSkinShip);
     }
     private void OnDataChanged(HashSet<int> arg1, HashSet<int> arg2)
     {

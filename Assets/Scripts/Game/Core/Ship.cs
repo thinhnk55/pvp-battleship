@@ -213,10 +213,10 @@ public class Ship : CacheMonoBehaviour
             octilesComposition[i].attackSpriteRenderer.sprite = null;
             if (octilesComposition[i].attackedAnim != null)
                 octilesComposition[i].attackedAnim.gameObject.SetActive(false);
-            ObjectPoolManager.GenerateObject<ParticleSystem>(VFXFactory.Explosion, octilesComposition[i].Position);
+            ObjectPoolManager.SpawnObject<ParticleSystem>(VFXFactory.Explosion, octilesComposition[i].Position);
             if (i==0 || i == 2)
             {
-                smokeVFXs.Add(ObjectPoolManager.GenerateObject<ParticleSystem>(VFXFactory.Smoke, octilesComposition[i].Position, transform).gameObject);
+                smokeVFXs.Add(ObjectPoolManager.SpawnObject<ParticleSystem>(VFXFactory.Smoke, octilesComposition[i].Position, transform).gameObject);
             }
         }
         GetComponent<LeanSelectableByFinger>().enabled = false;
@@ -323,13 +323,11 @@ public class Ship : CacheMonoBehaviour
                 Dir = initRot;
                 octilesOccupy.Clear();
                 octilesComposition.Clear();
-                Debug.Log("qw");
                 return false;
             }
             // inside or rotate with back up condition
             if (previousIndex!=null && assignBackup)
             {
-                Debug.Log("backup");
                 board.AssignShip(this, previousIndex.x, previousIndex.y);
                 tweenMove = transform.DOMove(board.octiles[previousIndex.y][previousIndex.x].Position, tweenTime);
                 return false;

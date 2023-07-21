@@ -10,7 +10,7 @@ namespace Framework {
         public WebSocket ws;
         protected virtual void Start()
         {
-            ws = new WebSocket(ServerConfig.WebSocketURL + "?id="+ PDataAuth.AuthData.userId + "&token=" + PDataAuth.AuthData.token);
+            ws = new WebSocket(ServerConfig.WebSocketURL);//+ "?id="+ PDataAuth.AuthData.userId + "&token=" + PDataAuth.AuthData.token);
             ws.OnOpen += OnOpen;
             ws.OnMessage += OnMessage;
             ws.OnError += OnError;
@@ -47,7 +47,7 @@ namespace Framework {
                 JSONNode idJson = JSON.Parse(e.Data)["id"];
                 if (idJson != null)
                 {
-                    GameServerEvent id = (GameServerEvent)int.Parse(idJson);
+                    ServerResponse id = (ServerResponse)int.Parse(idJson);
                     if (ServerMessenger.eventTable.ContainsKey(id))
                     {
                         ServerMessenger.Broadcast(id, JSON.Parse(e.Data));

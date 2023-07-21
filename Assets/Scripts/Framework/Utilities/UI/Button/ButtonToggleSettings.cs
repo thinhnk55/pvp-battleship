@@ -14,7 +14,8 @@ namespace Framework
         }
 
         [Header("Reference")]
-        [SerializeField] GameObject _objToggle;
+        [SerializeField] GameObject onObj;
+        [SerializeField] GameObject offObj;
         [SerializeField] Image bg;
         [SerializeField] Material grayScale;
         [Header("Config")]
@@ -68,8 +69,9 @@ namespace Framework
 
         protected void UpdateUI()
         {
-            _objToggle.SetActive(!IsOn);
-            bg.material = IsOn ? null : grayScale;
+            offObj.SetActive(!IsOn);
+            onObj.SetActive(IsOn);
+            //bg.material = IsOn ? null : grayScale;
         }
 
         protected override void Button_OnClicked()

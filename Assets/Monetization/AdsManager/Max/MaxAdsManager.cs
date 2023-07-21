@@ -10,7 +10,6 @@ namespace Monetization
     {
         public override void Initialize()
         {
-
             MaxSdk.SetSdkKey(MonetizationConfig.SdkKey);
             MaxSdk.SetUserId("USER_ID");
             MaxSdk.InitializeSdk();
@@ -21,25 +20,29 @@ namespace Monetization
                 //InitializeInterstitialAds();
                 InitializeRewardedAds();
             };
+            for (int i = 0; i < AdsManager.RewardAdUnitId.Length; i++)
+            {
+                LoadAds(AdsManager.RewardAdUnitId[i], AdsType.Reward);
+            }
         }
 
-        public new void ShowBannerAds()
+        public override void ShowBannerAds()
         { 
             MaxSdk.ShowBanner(AdsManager.BannerAdUnitId);
         }
 
-        public new void HideBannerAds()
+        public override void HideBannerAds()
         {
             MaxSdk.HideBanner(AdsManager.BannerAdUnitId);
         }
-        public new void ShowInterstialAds()
+        public override void ShowInterstialAds()
         {
             if (MaxSdk.IsInterstitialReady(AdsManager.InterAdUnitId))
             {
                 MaxSdk.ShowInterstitial(AdsManager.InterAdUnitId);
             }
         }
-        public new void ShowRewardAds(Callback onRewardShowed, string rewardAdUnitId)
+        public override void ShowRewardAds(Callback onRewardShowed, string rewardAdUnitId)
         {
             OnRewardShowed = onRewardShowed;
             if (MaxSdk.IsRewardedAdReady(rewardAdUnitId))

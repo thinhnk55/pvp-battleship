@@ -21,7 +21,7 @@ public class Gift : CacheMonoBehaviour
         progress.text = $"{GameData.ProgressGift}/5";
         Timer<Gift>.Instance.OnTrigger += OnTrigger;
         Timer<Gift>.Instance.OnElapse += OnElapse;
-        ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECIEVE_GIFT, ReceiveGift);
+        ServerMessenger.AddListener<JSONNode>(ServerResponse.RECIEVE_GIFT, ReceiveGift);
         if (GameData.ProgressGift == 5)
         {
             smallGiftBar.SetActive(false);
@@ -50,7 +50,7 @@ public class Gift : CacheMonoBehaviour
     {
         Timer<Gift>.Instance.OnTrigger -= OnTrigger;
         Timer<Gift>.Instance.OnElapse -= OnElapse;
-        ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.RECIEVE_GIFT, ReceiveGift);
+        ServerMessenger.RemoveListener<JSONNode>(ServerResponse.RECIEVE_GIFT, ReceiveGift);
     }
     private void OnTrigger()
     {

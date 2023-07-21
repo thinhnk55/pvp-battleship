@@ -1,7 +1,11 @@
 using Framework;
 using System.Collections.Generic;
 using UnityEngine;
-
+/// <summary>
+/// Spawn object from a pool
+/// If root is specified, attach object to root else attach object to default pool-generated root
+/// If first time spawn object, create new pool
+/// </summary>
 public class ObjectPoolManager : SingletonMono<ObjectPoolManager>
 {
     static Dictionary<GameObject, BasePool> objectPoolDict = new Dictionary<GameObject, BasePool>();
@@ -12,19 +16,14 @@ public class ObjectPoolManager : SingletonMono<ObjectPoolManager>
         base.Awake();
         for (int i = 0; i < beforeLoadObject.Count; i++)
         {
-            GenerateObject<Component>(beforeLoadObject[i]).gameObject.SetActive(false);
+            SpawnObject<Component>(beforeLoadObject[i]).gameObject.SetActive(false);
         }
     }
-    /// <summary>
-    /// (If pool not exist, create new pool)
-    /// Get an object from pool.
-    /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <param name="prefab"> Object need to generate</param>
     /// <param name="root"> Parent of pool </param>
     /// <param name="amount"> Number of object init </param>
-    /// <returns></returns>
-    public static T GenerateObject<T>(GameObject prefab, Transform root = null, int? amount = null) where T : Component
+    public static T SpawnObject<T>(GameObject prefab, Transform root = null, int? amount = null) where T : Component
     {
         BasePool pool;
         T obj;
@@ -41,7 +40,7 @@ public class ObjectPoolManager : SingletonMono<ObjectPoolManager>
             }
             if (PoolConfig.InitPool.ContainsKey(prefab))
             {
-                pool = new BasePool(prefab, PoolConfig.InitPool[prefab],root);
+                pool = new BasePool(prefab, PoolConfig.InitPool[prefab], root);
             }
             else
             {
@@ -49,7 +48,7 @@ public class ObjectPoolManager : SingletonMono<ObjectPoolManager>
                 {
                     amount = PoolConfig.DefaultInitPoolGO;
                 }
-                pool = new BasePool(prefab, (int)amount,root);
+                pool = new BasePool(prefab, (int)amount, root);
             }
             objectPoolDict.TryAdd(prefab, pool);
         }
@@ -62,8 +61,11 @@ public class ObjectPoolManager : SingletonMono<ObjectPoolManager>
             obj.transform.parent = root.transform;
         return obj;
     }
-
-    public static T GenerateObject<T>(GameObject prefab, Vector3 pos, Transform root = null) where T : Component
+    /// <typeparam name="T"></typeparam>
+    /// <param name="prefab">Object need to generate</param> 
+    /// <param name="pos">Position</param>
+    /// <param name="root">Parent of pool</param>
+    public static T SpawnObject<T>(GameObject prefab, Vector3 pos, Transform root = null) where T : Component
     {
         BasePool pool;
         T obj;

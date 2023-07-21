@@ -31,11 +31,11 @@ public class RankCollection : CardCollectionBase<RankInfo>
         SelectedCard = cards[GameData.Player.Rank];
         rankIndicator.sprite = SpriteFactory.Avatars[GameData.Player.Avatar.Data];
         Timer<RankCollection>.Instance.Init(OnTrigger, OnElapse);
-        ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECIEVE_RANK, ReceiveRank);
+        ServerMessenger.AddListener<JSONNode>(ServerResponse.RECIEVE_RANK, ReceiveRank);
     }
     private void OnDestroy()
     {
-        ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.RECIEVE_RANK, ReceiveRank);
+        ServerMessenger.RemoveListener<JSONNode>(ServerResponse.RECIEVE_RANK, ReceiveRank);
 
     }
     public void SetCardPreview(RankInfo info)

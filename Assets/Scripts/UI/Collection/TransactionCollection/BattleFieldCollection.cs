@@ -12,13 +12,13 @@ public class BattleFieldCollection : TransactionCollection
     void Awake()
     {
         UpdateUIs();
-        ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECIEVE_CHANGE_BATTLEFIELD, ReceiveChangeBattleField);
+        ServerMessenger.AddListener<JSONNode>(ServerResponse.RECIEVE_CHANGE_BATTLEFIELD, ReceiveChangeBattleField);
         PNonConsumableType.BATTLE_FIELD.GetData().OnDataChanged += OnDataChanged;
     }
     private void OnDestroy()
     {
         PNonConsumableType.BATTLE_FIELD.GetData().OnDataChanged -= OnDataChanged;
-        ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.RECIEVE_CHANGE_BATTLEFIELD, ReceiveChangeBattleField);
+        ServerMessenger.RemoveListener<JSONNode>(ServerResponse.RECIEVE_CHANGE_BATTLEFIELD, ReceiveChangeBattleField);
     }
     private void OnDataChanged(HashSet<int> arg1, HashSet<int> arg2)
     {

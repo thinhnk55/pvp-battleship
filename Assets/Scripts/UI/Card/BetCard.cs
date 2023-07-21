@@ -1,10 +1,33 @@
 using Framework;
+using SimpleJSON;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-
+public class BetData
+{
+    public int Bet;
+    public int BetRequire; 
+    public int BetRankPoint;
+    public static BetData FromJson(JSONNode data)
+    {
+        BetData betData = new BetData();
+        betData.Bet = int.Parse(data["bet"]);
+        betData.BetRequire = int.Parse(data["level"]);
+        betData.BetRankPoint = int.Parse(data["exp"]);
+        return betData;
+    }
+    public static BetData[] ListFromJson(JSONNode data)
+    {
+        BetData[] list = new BetData[data.Count];
+        for (int i = 0; i < data.Count; i++)
+        {
+            list[i] = BetData.FromJson(data[i]);
+        }
+        return list;
+    }
+}
 public struct BetInfo
 {
     public int Index;
@@ -51,7 +74,7 @@ public class BetCard : CardBase<BetInfo>
         else
         {
             lockedImage.SetAlpha(1);
-            lockText.text = "Unlock at rank " + GameData.RankConfigs[GameData.BetRequires[Info.Index]].Title;
+            lockText.text = "Unlock at rank " + GameData.RankConfigs[GameData.Bets[Info.Index].BetRequire].Title;
             unlockSession.SetActive(false);
         }
         if (BG)

@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using static TMPro.SpriteAssetUtilities.TexturePacker_JsonArray;
 
 public struct ProfileInfo
 {
@@ -31,6 +30,7 @@ public class ProfileCollection : CardCollectionBase<ProfileInfo>
     [SerializeField] TextMeshProUGUI username;
     [SerializeField] Image rankIcon;
     [SerializeField] TextMeshProUGUI rank;
+    [SerializeField] TextMeshProUGUI pointRank;
     [SerializeField] Slider rankProgress;
     [SerializeField] TextMeshProUGUI battles;
     [SerializeField] TextMeshProUGUI shipDestroyed;
@@ -106,12 +106,13 @@ public class ProfileCollection : CardCollectionBase<ProfileInfo>
         {
             rankProgress.maxValue = GameData.RankConfigs[infos.Rank].Point;
             rankProgress.value = infos.Point;
+            pointRank?.SetText(rankProgress.value + "/" + rankProgress.maxValue);
         }
         if (battles)
         {
             battles.text = (infos.Wins + infos.Losts).ToString();
         }
-        if (shipDestroyed)
+        if (shipDestroyed && !infos.Achievement.IsNullOrEmpty())
         {
             shipDestroyed.text = infos.Achievement[(int)AchievementType.ENVOVY_OF_WAR].ToString();
         }

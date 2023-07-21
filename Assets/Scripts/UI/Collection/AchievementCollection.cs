@@ -27,7 +27,8 @@ public class AchievementCollection : CardCollectionBase<AchievementInfo>
                 SetCardPreview(newCard.Info);
             };
         infos = new List<AchievementInfo>();
-        var list = isPlayer == 1 ? GameData.AchievementConfig.ToList() : GameData.AchievementConfig.ToList().GetRange(0, numberOfChild);
+        var list = isSelection == false ? GameData.AchievementConfig.ToList() : GameData.AchievementConfig.ToList().GetRange(0, numberOfChild);
+        var progress = isPlayer == 1 ? GameData.Player.AchievementProgress : GameData.Opponent.AchievementProgress;
         for (int i = 0; i < list.Count; i++)
         {
             AchievementInfo info = list[i];
@@ -53,6 +54,7 @@ public class AchievementCollection : CardCollectionBase<AchievementInfo>
                         SetCardPreview(info);
                     };
             }
+            info.Progress = progress[i];
 
             infos.Add(info);
         }
@@ -60,7 +62,7 @@ public class AchievementCollection : CardCollectionBase<AchievementInfo>
         if (previewCard != null)
         {
             SelectedCard = cards[0];
-            ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECIEVE_OBTAIN_ACHIEVEMENT, RecieveObtainAchievemnt);
+            ServerMessenger.AddListener<JSONNode>(ServerResponse.RECIEVE_OBTAIN_ACHIEVEMENT, RecieveObtainAchievemnt);
         }
 
     }
@@ -96,7 +98,7 @@ public class AchievementCollection : CardCollectionBase<AchievementInfo>
     {
         if (previewCard != null)
         {
-            ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.RECIEVE_OBTAIN_ACHIEVEMENT, RecieveObtainAchievemnt);
+            ServerMessenger.RemoveListener<JSONNode>(ServerResponse.RECIEVE_OBTAIN_ACHIEVEMENT, RecieveObtainAchievemnt);
         }
     }
 

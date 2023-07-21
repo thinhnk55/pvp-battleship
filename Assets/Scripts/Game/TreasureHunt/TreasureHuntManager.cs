@@ -31,7 +31,7 @@ public class TreasureHuntManager : SingletonMono<TreasureHuntManager>
 
     private void OnEnable()
     {
-        ServerMessenger.AddListener<JSONNode>(GameServerEvent.RECIEVE_TREASURE_SHOT, OnCellShot);
+        ServerMessenger.AddListener<JSONNode>(ServerResponse.RECIEVE_TREASURE_SHOT, OnCellShot);
         message.text = "";
         delayShootCell = false;
         LeanTouch.OnFingerUpdate += Instance.SelectingTarget;
@@ -40,7 +40,7 @@ public class TreasureHuntManager : SingletonMono<TreasureHuntManager>
 
     private void OnDisable()
     {
-        ServerMessenger.RemoveListener<JSONNode>(GameServerEvent.RECIEVE_TREASURE_SHOT, OnCellShot);
+        ServerMessenger.RemoveListener<JSONNode>(ServerResponse.RECIEVE_TREASURE_SHOT, OnCellShot);
         LeanTouch.OnFingerUp -= Instance.OnFingerUp;
     }
 
