@@ -14,15 +14,15 @@
       },
       "oauth_client": [
         {
-          "client_id": "555442977696-a8emp418m35hchis52u6io7tumr5u50m.apps.googleusercontent.com",
+          "client_id": "555442977696-4f71dek81o74p3vlosne6on1idrm9gne.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.meepo.sea.battle.ship",
-            "certificate_hash": "b3b1a5154f6e03772212165ddd9d8bdbe6d6dbcf"
+            "certificate_hash": "13a78f58707db9b301e6699b46f3eac09e410844"
           }
         },
         {
-          "client_id": "555442977696-ba1scmc0da7dq591bevec60h0rlefo1v.apps.googleusercontent.com",
+          "client_id": "555442977696-0e53ilirr6l6hvu7u567bu4a4c0ekodg.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -35,8 +35,15 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "555442977696-ba1scmc0da7dq591bevec60h0rlefo1v.apps.googleusercontent.com",
+              "client_id": "555442977696-0e53ilirr6l6hvu7u567bu4a4c0ekodg.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "555442977696-c90m79mek3jnahq991ijp3bif09g6hv1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.meepo.sea.battle.ship"
+              }
             }
           ]
         }

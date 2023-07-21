@@ -31,6 +31,7 @@ public class LoginGoogle : ISocialAuth
         Debug.Log("Call Sigin");
 
         GoogleSignIn.DefaultInstance.SignIn().ContinueWith(OnAuthenticationFinished);
+        Debug.Log("Call Sigin Done");
     }
 
     private void OnSignOut()
@@ -51,18 +52,23 @@ public class LoginGoogle : ISocialAuth
             {
                 if (enumerator.MoveNext())
                 {
+                    Debug.Log("Error Movenext");
                     GoogleSignIn.SignInException error = (GoogleSignIn.SignInException)enumerator.Current;
+                    Debug.Log(error);
                 }
                 else
                 {
+                    Debug.Log("Error!!!!!!!!");
                 }
             }
         }
         else if (task.IsCanceled)
         {
+            Debug.Log("isCanceled!!!");
         }
         else
         {
+            Debug.Log("Login Done");
             HTTPClient.Instance.LoginGoogle(task.Result.IdToken);
             Debug.Log(task.Result.IdToken);
             
@@ -92,7 +98,9 @@ public class LoginGoogle : ISocialAuth
 
     public void Initialize()
     {
+        Debug.Log("init1 Day la ban 10");
         configuration = new GoogleSignInConfiguration { WebClientId = webClientId, RequestEmail = true, RequestIdToken = true };
+        Debug.Log("init2");
     }
 
     public void SignUp()
