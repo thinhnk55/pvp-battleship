@@ -10,7 +10,7 @@ namespace Framework {
         public WebSocket ws;
         protected virtual void Start()
         {
-            ws = new WebSocket(ServerConfig.WebSocketURL);//+ "?id="+ PDataAuth.AuthData.userId + "&token=" + PDataAuth.AuthData.token);
+            ws = new WebSocket(ServerConfig.WebSocketURL + "?id="+ UnityEngine.Random.Range(1,1000) + "&token=" + PDataAuth.AuthData.token);
             ws.OnOpen += OnOpen;
             ws.OnMessage += OnMessage;
             ws.OnError += OnError;

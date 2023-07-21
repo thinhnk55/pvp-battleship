@@ -355,7 +355,7 @@ public class WSClient : WSClientBase
         };
         Instance.Send(jsonNode);
     }
-    public static void SubmitShip(List<Ship> ships)
+    public static void SubmitShip(int bet,List<Ship> ships)
     {
         JSONNode jsonNode = new JSONClass();
         JSONArray jsonArray = new JSONArray();
@@ -364,14 +364,15 @@ public class WSClient : WSClientBase
             jsonArray.Add(ship.ToJson());
         }
         jsonNode.Add("id", ServerRequest._SUBMIT_SHIP.ToJson());
-        jsonNode.Add("ship", jsonArray);
+        jsonNode.Add("r", bet.ToJson());
+        jsonNode.Add("s", jsonArray);
         Instance.Send(jsonNode);
     }
     public static void AttackOpponent(int room, int x, int y)
     {
         JSONNode jsonNode = new JSONClass
         {
-            { "id", ServerResponse.ATTACK.ToJson() },
+            { "id", ServerResponse._ATTACK.ToJson() },
             { "r",  room.ToJson() },
             { "x",  x.ToJson() },
             { "y",  y.ToJson() },

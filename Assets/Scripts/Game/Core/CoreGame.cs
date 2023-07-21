@@ -112,11 +112,10 @@ public class CoreGame : SingletonMono<CoreGame>
         stateMachine.AddState(GameState.Out, null, null, null);
         stateMachine.CurrentState = GameState.Pre;
         ServerMessenger.AddListener<JSONNode>(ServerResponse._MATCH, Instance.Match);
-        ServerMessenger.AddListener<JSONNode>(ServerResponse.START, Instance.GameStart);
+        ServerMessenger.AddListener<JSONNode>(ServerResponse._GAME_START, Instance.GameStart);
         ServerMessenger.AddListener<JSONNode>(ServerResponse.ENEMY_OUT_GAME, Instance.EnemyOutGame);
         ServerMessenger.AddListener<JSONNode>(ServerResponse.ENDGAME, Instance.EndGame);
-        ServerMessenger.AddListener<JSONNode>(ServerResponse.NEW_TURN, Instance.EndTurn);
-        ServerMessenger.AddListener<JSONNode>(ServerResponse.BEINGATTACKED, Instance.HandleBeingAttacked);
+        ServerMessenger.AddListener<JSONNode>(ServerResponse._END_TURN, Instance.EndTurn);
         if (reconnect!=null)
         {
             Instance.Reconnect(reconnect);
@@ -142,11 +141,10 @@ public class CoreGame : SingletonMono<CoreGame>
         Instance.opponent.vertLine.gameObject.SetActive(false);
         stateMachine.CurrentState = GameState.Out;
         ServerMessenger.RemoveListener<JSONNode>(ServerResponse._MATCH, Instance.Match);
-        ServerMessenger.RemoveListener<JSONNode>(ServerResponse.START, Instance.GameStart);
+        ServerMessenger.RemoveListener<JSONNode>(ServerResponse._GAME_START, Instance.GameStart);
         ServerMessenger.RemoveListener<JSONNode>(ServerResponse.ENEMY_OUT_GAME, Instance.EnemyOutGame);
         ServerMessenger.RemoveListener<JSONNode>(ServerResponse.ENDGAME, Instance.EndGame);
-        ServerMessenger.RemoveListener<JSONNode>(ServerResponse.NEW_TURN, Instance.EndTurn);
-        ServerMessenger.RemoveListener<JSONNode>(ServerResponse.BEINGATTACKED, Instance.HandleBeingAttacked);
+        ServerMessenger.RemoveListener<JSONNode>(ServerResponse._END_TURN, Instance.EndTurn);
         Debug.Log("Destroyed");
         base.OnDestroy();
     }
@@ -270,7 +268,11 @@ public class CoreGame : SingletonMono<CoreGame>
     #region CallBackServer
     public void Match(JSONNode json)
     {
-        WSClient.SubmitShip(player.ships);
+        Instance.roomId = int.Parse(json["d"]["r"]);
+        Instance.playerChair = int.Parse(json["d"]["p1"]["u"]) == PDataAuth.AuthData.userId ? int.Parse(json["d"]["p1"]["c"]) : int.Parse(json["d"]["p2"]["c"]);
+        bet = int.Parse(json["d"]["t"]);
+        WSClient.SubmitShip(Instance.roomId, player.ships);
+
     }
     void GameStart(JSONNode json)
     {
@@ -279,70 +281,73 @@ public class CoreGame : SingletonMono<CoreGame>
         Instance.opponent.battleFieldSprite.sprite = SpriteFactory.ResourceIcons[(int)PNonConsumableType.BATTLE_FIELD].sprites[GameData.Opponent.BattleField.Data];
         Debug.Log(GameData.Opponent.Username);
         Instance.ingameUI.SetActive(true);
-        Instance.roomId = int.Parse(json["r"]);
-        Instance.playerChair = int.Parse(json["c"]);
         CoinVFX.CoinVfx(Instance.searchUI.tresure.transform, Instance.searchUI.avatar1.transform.position, Instance.searchUI.avatar2.transform.position);
-        PConsumableType.BERI.AddValue(-GameData.Bets[bet].BetRequire);
+        timeInit = json["d"]["c"].AsInt;
         //opponent.diamond.text = json["d"];
         //opponent.beri.text = json["b"];
         //opponent.point.text = json["p"];
         DOVirtual.DelayedCall(1.5f, () =>
         {
-            Instance.playerTurn = int.Parse(json["turn"]) == playerChair;
+            Instance.playerTurn = int.Parse(json["d"]["f"]) == playerChair;
             Instance.stateMachine.CurrentState = GameState.Turn;
         });
     }
 
-    void HandleBeingAttacked(JSONNode json)
+    void EndTurn(JSONNode json)
     {
-        Instance.playerTurn = playerChair == int.Parse(json["c"]);
+        Instance.playerTurn = playerChair == int.Parse(json["d"]["c"]);
         Board board = playerTurn ? Instance.opponent : Instance.player;
         var missle = ObjectPoolManager.SpawnObject<Missle>(PrefabFactory.Missle);
-        missle.Init(board.octiles[int.Parse(json["y"])][int.Parse(json["x"])].Position);
+        missle.Init(board.octiles[int.Parse(json["d"]["y"])][int.Parse(json["d"]["x"])].Position);
         DOVirtual.DelayedCall(Octile.timeAttackAnim, () =>
         {
 
-            int status = int.Parse(json["s"]);
-            int x = int.Parse(json["x"]);
-            int y = int.Parse(json["y"]);
-            if (status == 2)
+            int status = int.Parse(json["d"]["r"]);
+            int x = int.Parse(json["d"]["x"]);
+            int y = int.Parse(json["d"]["y"]);
+            switch (status)
             {
-                Ship ship;
-                int type = int.Parse(json["ship"]["type"]);
-                if (Instance.playerTurn)
-                {
-                    ship = Instantiate(PrefabFactory.Ships[type]).GetComponent<Ship>();
-                    ship.board = board;
-                    ship.FromJson(json["ship"]);
-                }
-                else
-                {
-                    ship = board.octiles[y][x].ship;
-                }
-                ship.BeingDestroyed();
-
-            }
-            else if (status == 1)
-            {
-                board.octiles[y][x].BeingAttacked(true);
-            }
-            else if (status == 0)
-            {
-                board.octiles[y][x].BeingAttacked(false);
+                case 1:
+                    board.octiles[y][x].BeingAttacked(false);
+                    break;
+                case 2:
+                    board.octiles[y][x].BeingAttacked(true);
+                    break;
+                case 3:
+                    Ship ship;
+                    int type = int.Parse(json["ship"]["type"]);
+                    if (Instance.playerTurn)
+                    {
+                        ship = Instantiate(PrefabFactory.Ships[type]).GetComponent<Ship>();
+                        ship.board = board;
+                        ship.FromJson(json["ship"]);
+                    }
+                    else
+                    {
+                        ship = board.octiles[y][x].ship;
+                    }
+                    ship.BeingDestroyed();
+                    break;
+                case 4:
+                    EndGame(json);
+                    break;
+                case 5:
+                    EndGame(json);
+                    break;
+                case 6:
+                    EndGame(json);
+                    break;
+                default:
+                    break;
             }
         });
-
-        //board.HandleAttacked(x,y,status, ship);
-    }
-
-    public void EndTurn(JSONNode json)
-    {
         DOVirtual.DelayedCall(1f, () =>
         {
             Instance.playerTurn = playerChair == int.Parse(json["c"]);
             Instance.stateMachine.CurrentState = GameState.Turn;
         });
     }
+
     void EndGame(JSONNode json)
     {
         DOVirtual.DelayedCall(3, () =>
@@ -352,17 +357,18 @@ public class CoreGame : SingletonMono<CoreGame>
             Instance.stateMachine.CurrentState = GameState.Out;
             Instance.ingameUI.SetActive(false);
             Instance.postUI.gameObject.SetActive(true);
-            Instance.postUI.amount.text = json["w"];
-            Messenger.Broadcast(GameEvent.GAME_END, int.Parse(json["c"]) == playerChair);
-            if (int.Parse(json["c"]) == playerChair)
+            Instance.postUI.amount.text = json["e"];
+            Messenger.Broadcast(GameEvent.GAME_END, int.Parse(json["w"]) == playerChair);
+            if (int.Parse(json["w"]) == playerChair)
             {
-                PConsumableType.BERI.AddValue(int.Parse(json["w"]));
+                PConsumableType.BERI.SetValue(int.Parse(json["gw"]));
                 Instance.postUI.ResultPlayer.sprite = SpriteFactory.Win;
                 Instance.postUI.ResultOpponent.sprite = SpriteFactory.Lose;
                 CoinVFX.CoinVfx(postUI.avatar1.transform, postUI.treasure.transform.position, postUI.treasure.transform.position);
             }
             else
             {
+                PConsumableType.BERI.SetValue(int.Parse(json["gl"]));
                 Instance.postUI.ResultPlayer.sprite = SpriteFactory.Lose;
                 Instance.postUI.ResultOpponent.sprite = SpriteFactory.Win;
                 CoinVFX.CoinVfx(postUI.avatar2.transform, postUI.treasure.transform.position, postUI.treasure.transform.position);

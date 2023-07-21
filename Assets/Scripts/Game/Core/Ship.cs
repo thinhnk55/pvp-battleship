@@ -523,7 +523,7 @@ public class Ship : CacheMonoBehaviour
 
     }
 
-    public JSONClass ToJson() {
+    public JSONNode ToJson() {
         int d = 0;
         if (dir == Vector2Int.right)
         {
@@ -541,21 +541,20 @@ public class Ship : CacheMonoBehaviour
         {
             d = 1;
         }
-
-        JSONClass json = new JSONClass
+        JSONNode json = new JSONArray
         {
-            { "type", (poses.Count - 1).ToJson()  },
-            { "x", octilesComposition[0].pos.x.ToJson()  },
-            { "y", octilesComposition[0].pos.y.ToJson()  },
-            { "dir", d.ToJson()  }
+            (poses.Count - 1).ToJson(),
+            d.ToJson(),
+            octilesComposition[0].pos.x.ToJson(),
+            octilesComposition[0].pos.y.ToJson(),
         };
         return json;
     }
 
     public Ship FromJson(JSONNode json)
     {
-        poses = CoreGame.shipConfigs[int.Parse(json["type"])];
-        int dir = int.Parse(json["dir"]);
+        poses = CoreGame.shipConfigs[int.Parse(json[0])];
+        int dir = int.Parse(json[1]);
         switch (dir)
         {
             case 0:
@@ -573,7 +572,7 @@ public class Ship : CacheMonoBehaviour
             default:
                 break;
         }
-        Position = board.octiles[int.Parse(json["y"])][int.Parse(json["x"])].Position;
+        Position = board.octiles[int.Parse(json[3])][int.Parse(json[2])].Position;
         tweenRotate.Kill();
         Vector3 angle = Vector3.zero;
         if (this.dir == Vector2Int.left)
@@ -599,7 +598,7 @@ public class Ship : CacheMonoBehaviour
         EulerAngles = angle;
         transform.parent = board.shipRoot.transform;
         GetComponent<LeanDragTranslate>().enabled = false;
-        board.AssignShip(this, int.Parse(json["x"]), int.Parse(json["y"]));
+        board.AssignShip(this, int.Parse(json[2]), int.Parse(json[3]));
         return this;
     }
 }
