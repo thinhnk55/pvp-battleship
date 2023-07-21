@@ -33,7 +33,9 @@ namespace Framework {
         }
         public void Send(JSONNode json)
         {
+            Debug.Log("Start Send");
             ws.Send(json.ToString());
+            Debug.Log("Send Done");
             Debug.Log(json);
         }
         public void OnOpen(object sender, EventArgs e)

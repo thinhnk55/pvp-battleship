@@ -56,7 +56,7 @@ public class HTTPClient : SingletonMono<HTTPClient>
 
         JSONNode json = new JSONClass()
         {
-            {"token",  idToken},
+            {"id_token",  idToken},
             {"device_id", deviceId },
             {"session_info", new JSONClass()}
         };
@@ -68,7 +68,7 @@ public class HTTPClient : SingletonMono<HTTPClient>
                 if (int.Parse(jsonRes["error"]) == 0)
                 {
                     PDataAuth.AuthData = new AuthData();
-                    PDataAuth.AuthData.userId = int.Parse(jsonRes["data"]["userId"]);
+                    PDataAuth.AuthData.userId = int.Parse(jsonRes["data"]["userid"]);
                     PDataAuth.AuthData.username = jsonRes["data"]["username"];
                     PDataAuth.AuthData.refresh_token = jsonRes["data"]["refresh_token"];
                     PDataAuth.AuthData.token = jsonRes["data"]["token"];

@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "555442977696",
+    "project_id": "battle-ship-388308",
+    "storage_bucket": "battle-ship-388308.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:555442977696:android:7852005106d0726d0802c5",
+        "android_client_info": {
+          "package_name": "com.meepo.sea.battle.ship"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "555442977696-4f71dek81o74p3vlosne6on1idrm9gne.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.meepo.sea.battle.ship",
+            "certificate_hash": "13a78f58707db9b301e6699b46f3eac09e410844"
+          }
+        },
+        {
+          "client_id": "555442977696-0e53ilirr6l6hvu7u567bu4a4c0ekodg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD4rHs7dWwUmZ4Bb6NFrHtwFTf3HZngRKk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "555442977696-0e53ilirr6l6hvu7u567bu4a4c0ekodg.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "555442977696-c90m79mek3jnahq991ijp3bif09g6hv1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.meepo.sea.battle.ship"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
