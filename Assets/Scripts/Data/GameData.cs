@@ -139,27 +139,27 @@ public class ProfileData
     }
     public static ProfileData FromJsonOpponent(ProfileData profileData, JSONNode data)
     {
-        profileData.Username = new PDataUnit<string>(data["n"]);
-        profileData.Point = int.Parse(data["p"]);
-        profileData.Avatar = new PDataUnit<int>(int.Parse(data["a"]));
-        profileData.FrameAvatar = new PDataUnit<int>(int.Parse(data["f"]));
-        profileData.BattleField = new PDataUnit<int>(int.Parse(data["ba"]));
-        profileData.SkinShip = new PDataUnit<int>(int.Parse(data["sk"]));
-        profileData.WinStreak = int.Parse(data["wSM"]);
-        profileData.Wins = int.Parse(data["wC"]);
-        profileData.Losts = int.Parse(data["lC"]);
-        profileData.Battles = profileData.Wins + profileData.Losts;
-        profileData.AchievementSelected = data["outst"].ToList().ToArray();
-        if (profileData.AchievementProgress.Count == 0)
-        {
-            profileData.AchievementProgress = new List<int>(GameData.AchievementConfig.Count);
-            for (int i = 0; i < profileData.AchievementProgress.Capacity; i++)
-            {
-                profileData.AchievementProgress.Add(0); 
-            }
-        }
-        profileData.AchievementProgress[(int)AchievementType.DOMINATOR] = int.Parse(data["sD"]);
-        profileData.AchievementProgress[(int)AchievementType.ENVOVY_OF_WAR] = int.Parse(data["pG"]);
+        profileData.Username = new PDataUnit<string>(data["p"]["n"]);
+        profileData.Point = int.Parse(data["p"]["e"]);
+        profileData.Avatar = new PDataUnit<int>(int.Parse(data["p"]["a"]));
+        profileData.FrameAvatar = new PDataUnit<int>(0);// = new PDataUnit<int>(int.Parse(data["f"]));
+        profileData.BattleField = new PDataUnit<int>(0);//= new PDataUnit<int>(int.Parse(data["ba"]));
+        profileData.SkinShip = new PDataUnit<int>(0);//= new PDataUnit<int>(int.Parse(data["sk"]));
+        //profileData.WinStreak = int.Parse(data["wSM"]);
+        //profileData.Wins = int.Parse(data["wC"]);
+        //profileData.Losts = int.Parse(data["lC"]);
+        //profileData.Battles = profileData.Wins + profileData.Losts;
+        // profileData.AchievementSelected = data["outst"].ToList().ToArray();
+        //if (profileData.AchievementProgress.Count == 0)
+        //{
+        //    profileData.AchievementProgress = new List<int>(GameData.AchievementConfig.Count);
+        //    for (int i = 0; i < profileData.AchievementProgress.Capacity; i++)
+        //    {
+        //        profileData.AchievementProgress.Add(0); 
+        //    }
+        //}
+        //profileData.AchievementProgress[(int)AchievementType.DOMINATOR] = int.Parse(data["sD"]);
+        //profileData.AchievementProgress[(int)AchievementType.ENVOVY_OF_WAR] = int.Parse(data["pG"]);
         return profileData;
     }
     public override string ToString()

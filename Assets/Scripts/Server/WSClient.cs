@@ -15,9 +15,6 @@ public class WSClient : WSClientBase
     {
         base.Start();
         ServerMessenger.AddListener<JSONNode>(ServerResponse._GET_PROFILE, OnLogin);
-        ServerMessenger.AddListener<JSONNode>(ServerResponse.GetLuckyShot, OnLogin);
-        ServerMessenger.AddListener<JSONNode>(ServerResponse._GET_PROFILE, OnLogin);
-        ServerMessenger.AddListener<JSONNode>(ServerResponse._GET_PROFILE, OnLogin);
         ServerMessenger.AddListener<JSONNode>(ServerResponse._GET_CONFIG, GetConfig);
         ServerMessenger.AddListener<JSONNode>(ServerResponse.RECIEVE_LUCKY_SHOT_CONFIG, ReceiveLuckyShotConfig);
         ServerMessenger.AddListener<JSONNode>(ServerResponse.RECIEVE_SHOP_CONFIG, ReceiveShopConfig);
@@ -69,6 +66,7 @@ public class WSClient : WSClientBase
         PConsumableType.GEM.SetValue(int.Parse(data["d"]["d"]));
         PConsumableType.BERI.SetValue(int.Parse(data["d"]["g"]));
         PNonConsumableType.AVATAR.FromJson(data["d"]["l"]);
+        PDataAuth.AuthData.userId = int.Parse(data["d"]["u"]);
         //PNonConsumableType.AVATAR_FRAME.FromJson(data["statistics"]["a_f"]);
         //PNonConsumableType.BATTLE_FIELD.FromJson(data["statistics"]["bfA"]);
         //PNonConsumableType.SKIN_SHIP.FromJson(data["statistics"]["ssA"]);
@@ -392,7 +390,7 @@ public class WSClient : WSClientBase
     {
         JSONNode jsonNode = new JSONClass
         {
-            { "id", ServerResponse.QUIT_GAME_REQUEST.ToJson() },
+            { "id", ServerResponse._QUIT_GAME.ToJson() },
             { "r", room.ToJson() },
         };
         Instance.Send(jsonNode);

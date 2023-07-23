@@ -113,8 +113,7 @@ public class CoreGame : SingletonMono<CoreGame>
         stateMachine.CurrentState = GameState.Pre;
         ServerMessenger.AddListener<JSONNode>(ServerResponse._MATCH, Instance.Match);
         ServerMessenger.AddListener<JSONNode>(ServerResponse._GAME_START, Instance.GameStart);
-        ServerMessenger.AddListener<JSONNode>(ServerResponse.ENEMY_OUT_GAME, Instance.EnemyOutGame);
-        ServerMessenger.AddListener<JSONNode>(ServerResponse.ENDGAME, Instance.EndGame);
+        ServerMessenger.AddListener<JSONNode>(ServerResponse._GAME_DESTROY, Instance.EnemyOutGame);
         ServerMessenger.AddListener<JSONNode>(ServerResponse._END_TURN, Instance.EndTurn);
         if (reconnect!=null)
         {
@@ -142,8 +141,7 @@ public class CoreGame : SingletonMono<CoreGame>
         stateMachine.CurrentState = GameState.Out;
         ServerMessenger.RemoveListener<JSONNode>(ServerResponse._MATCH, Instance.Match);
         ServerMessenger.RemoveListener<JSONNode>(ServerResponse._GAME_START, Instance.GameStart);
-        ServerMessenger.RemoveListener<JSONNode>(ServerResponse.ENEMY_OUT_GAME, Instance.EnemyOutGame);
-        ServerMessenger.RemoveListener<JSONNode>(ServerResponse.ENDGAME, Instance.EndGame);
+        ServerMessenger.RemoveListener<JSONNode>(ServerResponse._GAME_DESTROY, Instance.EnemyOutGame);
         ServerMessenger.RemoveListener<JSONNode>(ServerResponse._END_TURN, Instance.EndTurn);
         Debug.Log("Destroyed");
         base.OnDestroy();
@@ -248,7 +246,6 @@ public class CoreGame : SingletonMono<CoreGame>
     }
     public void QuitGame()
     {
-        SceneTransitionHelper.Load(ESceneName.Home);
         WSClient.QuitGame(roomId);
     }
     public void GoHome()
@@ -270,26 +267,25 @@ public class CoreGame : SingletonMono<CoreGame>
     {
         Instance.roomId = int.Parse(json["d"]["r"]);
         Instance.playerChair = int.Parse(json["d"]["p1"]["u"]) == PDataAuth.AuthData.userId ? int.Parse(json["d"]["p1"]["c"]) : int.Parse(json["d"]["p2"]["c"]);
+        Debug.Log(PDataAuth.AuthData.userId + "_"+ int.Parse(json["d"]["p1"]["u"]) + "_" + int.Parse(json["d"]["p2"]["u"]));
         bet = int.Parse(json["d"]["t"]);
         WSClient.SubmitShip(Instance.roomId, player.ships);
-
+        GameData.Opponent = int.Parse(json["d"]["p1"]["u"]) == PDataAuth.AuthData.userId ? ProfileData.FromJsonOpponent(GameData.Opponent, json["d"]["p2"]) : ProfileData.FromJsonOpponent(GameData.Opponent, json["d"]["p1"]);
+        Instance.searchUI.opponentProfile.UpdateUIs();
+        Instance.opponent.battleFieldSprite.sprite = SpriteFactory.ResourceIcons[(int)PNonConsumableType.BATTLE_FIELD].sprites[GameData.Opponent.BattleField.Data];
+        CoinVFX.CoinVfx(Instance.searchUI.tresure.transform, Instance.searchUI.avatar1.transform.position, Instance.searchUI.avatar2.transform.position);
     }
     void GameStart(JSONNode json)
     {
-        GameData.Opponent = ProfileData.FromJsonOpponent(GameData.Opponent, json);
-        Instance.searchUI.opponentProfile.UpdateUIs();
-        Instance.opponent.battleFieldSprite.sprite = SpriteFactory.ResourceIcons[(int)PNonConsumableType.BATTLE_FIELD].sprites[GameData.Opponent.BattleField.Data];
-        Debug.Log(GameData.Opponent.Username);
-        Instance.ingameUI.SetActive(true);
-        CoinVFX.CoinVfx(Instance.searchUI.tresure.transform, Instance.searchUI.avatar1.transform.position, Instance.searchUI.avatar2.transform.position);
         timeInit = json["d"]["c"].AsInt;
+        Instance.playerTurn = int.Parse(json["d"]["f"]) == playerChair;
+        Instance.stateMachine.CurrentState = GameState.Turn;
+        Instance.ingameUI.SetActive(true);
         //opponent.diamond.text = json["d"];
         //opponent.beri.text = json["b"];
         //opponent.point.text = json["p"];
         DOVirtual.DelayedCall(1.5f, () =>
         {
-            Instance.playerTurn = int.Parse(json["d"]["f"]) == playerChair;
-            Instance.stateMachine.CurrentState = GameState.Turn;
         });
     }
 
@@ -309,6 +305,7 @@ public class CoreGame : SingletonMono<CoreGame>
             {
                 case 1:
                     board.octiles[y][x].BeingAttacked(false);
+                    Instance.playerTurn = !Instance.playerTurn;
                     break;
                 case 2:
                     board.octiles[y][x].BeingAttacked(true);

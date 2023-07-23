@@ -31,8 +31,7 @@ public class HTTPClientBase
         byte[] bodyRaw = UTF8Encoding.UTF8.GetBytes(data);
         using UnityWebRequest webRequest = new(url, "POST");
 
-        Debug.Log(url);
-        Debug.Log(data);
+        Debug.Log(url + data);
         webRequest.SetRequestHeader("Content-Type", "application/json");
         webRequest.uploadHandler = new UploadHandlerRaw(bodyRaw);
         webRequest.downloadHandler = new DownloadHandlerBuffer();

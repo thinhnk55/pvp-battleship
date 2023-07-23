@@ -13,9 +13,12 @@
         _GET_CONFIG = 4002,
 
         _MATCH = 4104,
-        _ATTACK = 4110,
         _GAME_START = 4105,
+        _ATTACK = 4110,
         _END_TURN = 4112,
+        _QUIT_GAME = 4115,
+        _GAME_DESTROY = 4116,
+        _GAME_RECONNECT = 4117,
 
         GetLuckyShot,
         SEARCH_OPPONENT = 9001,
