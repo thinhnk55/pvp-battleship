@@ -334,6 +334,10 @@ public class Ship : CacheMonoBehaviour
         }
 
     }
+    public void Move(int x, int y)
+    {
+        tweenMove = transform.DOMove(board.octiles[y][x].Position, tweenTime);
+    }
     public bool CheckShip(Board board, int x, int y, out int _x, out int _y, out bool inside, bool hold = false)
     {
         _x = x;
@@ -595,5 +599,50 @@ public class Ship : CacheMonoBehaviour
         GetComponent<LeanDragTranslate>().enabled = false;
         board.AssignShip(this, int.Parse(json["x"]), int.Parse(json["y"]));
         return this;
+    }
+
+    public static Vector2Int GetDir(int dir)
+    {
+        Vector2Int Dir = Vector2Int.zero;
+        switch (dir)
+        {
+            case 0:
+                Dir = Vector2Int.left;
+                break;
+            case 1:
+                Dir = Vector2Int.up;
+                break;
+            case 2:
+                Dir = Vector2Int.right;
+                break;
+            case 3:
+                Dir = Vector2Int.down;
+                break;
+            default:
+                break;
+        }
+        return Dir;
+    }
+
+    public static float GetAngle(Vector2Int dir)
+    {
+        float angle = 0;
+        if (dir == Vector2Int.left)
+        {
+            angle = 0;
+        }
+        else if (dir == Vector2Int.up)
+        {
+            angle = 270;
+        }
+        else if (dir == Vector2Int.right)
+        {
+            angle = 180;
+        }
+        else if (dir == Vector2Int.down)
+        {
+            angle = 90;
+        }
+        return angle;
     }
 }
