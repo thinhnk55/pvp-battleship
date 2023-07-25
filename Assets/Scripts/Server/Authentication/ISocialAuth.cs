@@ -14,6 +14,7 @@ public enum SocialAuthType
 public interface ISocialAuth
 {
     void Initialize();
+    void Update();
     void SignUp();
     void SignIn();
     void SignOut();

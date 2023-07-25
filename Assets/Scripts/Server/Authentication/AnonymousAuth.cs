@@ -24,4 +24,7 @@ public class AnonymousAuth : ISocialAuth
         throw new System.NotImplementedException();
     }
 
+    public void Update()
+    {
+    }
 }

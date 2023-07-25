@@ -13,6 +13,7 @@ namespace Framework
     public class Authentication : SingletonMono<Authentication>, IAuthentication
     {
         public string Token;
+        public SocialAuthType type;
         public TextMeshProUGUI Error;
         Dictionary<SocialAuthType, ISocialAuth> auths;
 
@@ -49,6 +50,7 @@ namespace Framework
                         break;
                     case SocialAuthType.Apple:
 #if UNITY_IOS
+                        auth = new LoginApple();
 #endif
                         break;
                     case SocialAuthType.Anonymous:
@@ -118,6 +120,26 @@ namespace Framework
             }
         }
 
+        public void Initialize()
+        {
+            auths[this.type].Initialize();
+        }
+
+        private void Update()
+        {
+            if(auths!=null)
+                auths[this.type].Update();  
+        }
+
+        public void SignUp()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SignOut()
+        {
+            throw new NotImplementedException();
+        }
 
         public void Authenticate()
         {
@@ -126,7 +148,7 @@ namespace Framework
 
         public void Signup(int type)
         {
-            auths[(SocialAuthType)type].SignUp();
+            throw new NotImplementedException();
         }
 
         public void Signin(int type)
@@ -136,7 +158,7 @@ namespace Framework
 
         public void Signout(int type)
         {
-            auths[(SocialAuthType)type].SignOut();
+            throw new NotImplementedException();
         }
 
         public void Delete()
@@ -144,10 +166,9 @@ namespace Framework
             throw new NotImplementedException();
         }
 
-        public async void UpdatePlayerName()
+        public void UpdatePlayerName()
         {
-            await AuthenticationService.Instance.UpdatePlayerNameAsync("newPlayerName");
-            Debug.Log(AuthenticationService.Instance.PlayerName);
+            throw new NotImplementedException();
         }
     }
 }

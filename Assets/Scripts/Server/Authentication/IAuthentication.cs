@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public interface IAuthentication
-{    public void Authenticate();
+{
+    public void Authenticate();
     public void Signup(int type);
     public void Signin(int type);
     public void Signout(int type);

@@ -59,7 +59,6 @@ public class WSClient : WSClientBase
     }
     public void OnLogin(JSONNode data)
     {
-        Debug.Log("ONLOGIN");
         MusicType.MAINMENU.PlayMusic();
         PConsumableType.GEM.SetValue(int.Parse(data["profile"]["d"]));
         PConsumableType.BERI.SetValue(int.Parse(data["profile"]["b"]));
@@ -76,7 +75,6 @@ public class WSClient : WSClientBase
         Timer<QuestCard>.Instance.BeginPoint = 300000000; //long.Parse(data["timer"]["as"]).NowFrom0001From1970();
         GameData.ProgressGift = int.Parse(data["timer"]["cr"]);
         CoreGame.timeInit = int.Parse(data["t"]);
-        Debug.Log("Onlogin Done1");
         for (int i = 0; i < data["v"].Count; i++)
         {
             if (GameData.Versions[i] != int.Parse(data["v"][i]))
@@ -116,8 +114,8 @@ public class WSClient : WSClientBase
                 }
             }
         }
-        Debug.Log("OnLoginDone2");
         SceneTransitionHelper.Load(ESceneName.Home);
+        Authentication.Instance.Initialize();
         Timer<LuckyShot>.Instance.TriggerInterval_Sec = GameData.LuckyShotCoolDown;
         Timer<Gift>.Instance.TriggerInterval_Sec = GameData.GiftCoolDown;
         Timer<RankCollection>.Instance.TriggerInterval_Sec = GameData.RankReceiveCoolDown;
