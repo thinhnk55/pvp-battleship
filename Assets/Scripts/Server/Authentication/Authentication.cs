@@ -125,11 +125,11 @@ namespace Framework
             auths[this.type].Initialize();
         }
 
-        private void Update()
+/*        private void Update()
         {
             if(auths!=null)
                 auths[this.type].Update();  
-        }
+        }*/
 
         public void SignUp()
         {
