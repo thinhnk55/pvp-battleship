@@ -45,6 +45,7 @@ public class GameData : PDataBlock<GameData>
     [SerializeField] private int giftCoolDown; public static int GiftCoolDown { get { return Instance.giftCoolDown; } set { Instance.giftCoolDown = value; } }
     [SerializeField] private int changeQuestCoolDown; public static int ChangeQuestCoolDown { get { return Instance.changeQuestCoolDown; } set { Instance.changeQuestCoolDown = value; } }
     [SerializeField] private RoyalPass royalPass; public static RoyalPass RoyalPass { get { return Instance.royalPass; } set { Instance.royalPass = value; } }
+    [SerializeField] private List<BoardInfo> listBoard; public static List<BoardInfo> ListBoard { get { return Instance.listBoard; } set { Instance.listBoard = value; } }
     protected override void Init()
     {
         base.Init();
@@ -68,6 +69,8 @@ public class GameData : PDataBlock<GameData>
         Instance.joinTreasureRoom = Instance.joinTreasureRoom ?? new JoinTreasureRoom();
         Instance.joinTreasureRoom.Board = Instance.joinTreasureRoom.Board ?? new List<List<int>>();
         Instance.royalPass = Instance.royalPass ?? new RoyalPass();
+        Instance.listBoard = Instance.listBoard ?? new List<BoardInfo>() { new BoardInfo() { boardInfo = new List<ShipInfo>()}, new BoardInfo() { boardInfo = new List<ShipInfo>() }, new BoardInfo() { boardInfo = new List<ShipInfo>() }, 
+            new BoardInfo(){ boardInfo = new List<ShipInfo>()} , new BoardInfo(){ boardInfo = new List<ShipInfo>()} , new BoardInfo(){ boardInfo = new List<ShipInfo>()} };
 
     }
 }
