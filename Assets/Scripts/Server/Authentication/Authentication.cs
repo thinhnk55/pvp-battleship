@@ -125,11 +125,13 @@ namespace Framework
             auths[this.type].Initialize();
         }
 
+#if PLATFORM_IOS
         private void Update()
         {
             if(auths!=null)
                 auths[this.type].Update();  
         }
+#endif
 
         public void SignUp()
         {
