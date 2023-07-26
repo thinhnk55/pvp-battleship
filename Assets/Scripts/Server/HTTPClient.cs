@@ -60,7 +60,12 @@ public class HTTPClient : SingletonMono<HTTPClient>
 
     public void LoginDeviceId()
     {
+
         string deviceId = SystemInfo.deviceUniqueIdentifier;
+        char salt = (char)(deviceId[deviceId.Length / 2] + 15);
+        string username = deviceId;
+        string password = SHA256Hash.GetSHA256Hash(deviceId+salt);
+        password = password.Substring(15, 12); //arg1: startIndex; arg2: passwordLength;
 /*        SHA256 sha256 = SHA256.Create();
         byte[] hashBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(deviceId));
         StringBuilder builder = new StringBuilder();
@@ -71,12 +76,13 @@ public class HTTPClient : SingletonMono<HTTPClient>
         string hash = builder.ToString();*/
         JSONNode json = new JSONClass()
         {
-            {"deviceId", deviceId},
-            {"sessionInfo", new JSONClass()}
+            {"password", password },
+            {"username", username },
+            {"device_id", deviceId},
+            {"session_info", new JSONClass()}
         };
 
-        HTTPPost(json, "");
-
+        HTTPPost(json, "login");
     }
 
     public void LoginGoogle(string idToken)
