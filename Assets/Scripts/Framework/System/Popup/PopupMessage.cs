@@ -7,13 +7,16 @@ namespace Framework
     public class PopupMessage : PopupBehaviour
     {
         [Header("Reference")]
+        [SerializeField] TextMeshProUGUI _header;
         [SerializeField] TextMeshProUGUI _txtContent;
-        [SerializeField] Image _imgContent;
-
-        public void Construct(string msg, Sprite sprite)
+        [SerializeField] GameObject _icon;
+        [SerializeField] GameObject _iconContainer;
+        public void Construct(string header, string msg, GameObject icon)
         {
+            _header.text = header;
             _txtContent.text = msg;
-            _imgContent.sprite = sprite;
+            DestroyImmediate(_icon);
+            _icon = Instantiate(icon, _iconContainer.transform);
         }
     }
 }

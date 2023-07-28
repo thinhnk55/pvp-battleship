@@ -43,6 +43,8 @@ namespace Framework
         [SerializeField] private Sprite unobtainableRankBG; public static Sprite UnobtainableRankBG { get { return Instance.unobtainableRankBG; } }
         [SerializeField] private Sprite shipLuckyShot; public static Sprite ShipLuckyShot { get { return Instance.shipLuckyShot; } }
         [SerializeField] private Sprite royalPassTreasure; public static Sprite RoyalPassTreasure { get { return Instance.royalPassTreasure; } }
+        [SerializeField] private Sprite royalPassMilestone; public static Sprite RoyalPassMilestone { get { return Instance.royalPassMilestone; } }
+        [SerializeField] private Sprite royalPassMilestoneOrder; public static Sprite RoyalPassMilestoneOrder { get { return Instance.royalPassMilestoneOrder; } }
         [SerializeField] private Sprite royalPassBeri; public static Sprite RoyalPassBeri { get { return Instance.royalPassBeri; } }
         [SerializeField] private Sprite royalPassGem; public static Sprite RoyalPassGem { get { return Instance.royalPassGem; } }
         [SerializeField] private Sprite royalPassOther; public static Sprite RoyalPassOther { get { return Instance.royalPassOther; } }

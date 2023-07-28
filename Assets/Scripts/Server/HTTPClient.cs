@@ -14,14 +14,6 @@ public class HTTPClient : SingletonMono<HTTPClient>
     public void LoginDeviceId()
     {
         string deviceId = SystemInfo.deviceUniqueIdentifier;
-/*        SHA256 sha256 = SHA256.Create();
-        byte[] hashBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(deviceId));
-        StringBuilder builder = new StringBuilder();
-        foreach (byte b in hashBytes)
-        {
-            builder.Append(b.ToString("x2")); // Convert each byte to a hexadecimal string
-        }
-        string hash = builder.ToString();*/
         JSONNode json = new JSONClass()
         {
             {"deviceId", deviceId},
@@ -33,7 +25,7 @@ public class HTTPClient : SingletonMono<HTTPClient>
                 if (int.Parse(jsonRes["error"]) == 0)
                 {
                     PDataAuth.AuthData = new AuthData();
-                    PDataAuth.AuthData.userId = int.Parse(jsonRes["data"]["userid"]);
+                    PDataAuth.AuthData.userId = UnityEngine.Random.Range(0,100);// int.Parse(jsonRes["data"]["userid"]);
                     PDataAuth.AuthData.username = jsonRes["data"]["username"];
                     PDataAuth.AuthData.refresh_token = jsonRes["data"]["refresh_token"];
                     PDataAuth.AuthData.token = jsonRes["data"]["token"];
@@ -48,8 +40,14 @@ public class HTTPClient : SingletonMono<HTTPClient>
                 }
                 else
                 {
+                    PDataAuth.AuthData = new AuthData();
+                    PDataAuth.AuthData.userId = UnityEngine.Random.Range(0, 100);
+                    PDataAuth.AuthData.username = "";
+                    PDataAuth.AuthData.refresh_token = "";
+                    PDataAuth.AuthData.token = "";
                     Debug.Log(res);
                 }
+                Instantiate(websocket, transform.parent);
             }
          ));
     }

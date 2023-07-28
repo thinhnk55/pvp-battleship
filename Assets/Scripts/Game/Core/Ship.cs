@@ -3,6 +3,8 @@ using Framework;
 using Lean.Common;
 using Lean.Touch;
 using SimpleJSON;
+using Spine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -202,6 +204,7 @@ public class Ship : CacheMonoBehaviour
         isDestroyed = true;
         renderer.sprite = destroyedSprite;
         board.ships.Remove(this);
+        board.destroyedShips.Add(this);
         SoundType.SHIP_EXPLOSION.PlaySound();
         for (int i = 0; i < octilesOccupy.Count; i++)
         {
@@ -600,5 +603,19 @@ public class Ship : CacheMonoBehaviour
         GetComponent<LeanDragTranslate>().enabled = false;
         board.AssignShip(this, int.Parse(json[2]), int.Parse(json[3]));
         return this;
+    }
+
+    internal void Reveal()
+    {
+        float currentScale = transform.localScale.x;
+        transform.localScale = Vector3.zero;
+        transform.DOScale(currentScale * 0.9f, 0.75f).OnComplete(() =>
+        {
+            Tween sequence = DOTween.Sequence()
+                .Insert(0, transform.DOScale(currentScale * 1.0f, 0.75f))
+                .Insert(0.75f, transform.DOScale(currentScale * 0.9f, 0.75f))
+                .SetLoops(-1).Play();
+        });
+
     }
 }

@@ -9,12 +9,13 @@ namespace Framework
 {
     public enum TransactionType
     {
-        USD_GEM,
-        GEM_BERI,
-        BERI_AVATAR,
-        BERI_AVATAR_FRAME,
-        BERI_BATTLE_FIELD,
-        BERI_SKIN_SHIP,
+        starter,
+        usd,
+        diamond,
+        gold_avatar,
+        gold_frame,
+        gold_battlefield,
+        gold_skinship,
         GEM_ELITE,
     }
     public class TransactionCollection : CardCollectionBase<TransactionInfo>

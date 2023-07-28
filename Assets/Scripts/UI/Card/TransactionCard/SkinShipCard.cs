@@ -15,7 +15,7 @@ public class SkinShipCard : TransactionCard
                 Button.onClick.RemoveAllListeners();
                 Button.onClick.AddListener(() =>
                 {
-                    WSClient.RequestChangeSkinShip(info.Index);
+                    WSClient.ChangeSkinShip(info.Index);
                 });
             }
         }

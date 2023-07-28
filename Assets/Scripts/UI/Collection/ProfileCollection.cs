@@ -71,14 +71,14 @@ public class ProfileCollection : CardCollectionBase<ProfileInfo>
             }
             else
             {
-                avatar.sprite = SpriteFactory.Avatars[infos.Avatar];
+                avatar.sprite = SpriteFactory.ResourceIcons[(int)PNonConsumableType.AVATAR].sprites[infos.Avatar];
             }
         }
         if (frame)
         {
             if (infos.Frame >= 0)
             {
-                frame.sprite = SpriteFactory.ResourceIcons[(int)PNonConsumableType.AVATAR_FRAME].sprites[infos.Frame];
+                frame.sprite = SpriteFactory.ResourceIcons[(int)PNonConsumableType.AVATAR_FRAME].sprites.GetLoop(infos.Frame);
                 frame.SetAlpha(1);
             }
             else
@@ -88,7 +88,7 @@ public class ProfileCollection : CardCollectionBase<ProfileInfo>
         }
         if (frameTail)
         {
-            frameTail.sprite = SpriteFactory.Tailframes[infos.Frame];
+            frameTail.sprite = SpriteFactory.Tailframes.GetLoop(infos.Frame);
         }
         if (username)
         {
@@ -114,7 +114,7 @@ public class ProfileCollection : CardCollectionBase<ProfileInfo>
         }
         if (shipDestroyed && !infos.Achievement.IsNullOrEmpty())
         {
-            shipDestroyed.text = infos.Achievement[(int)AchievementType.ENVOVY_OF_WAR].ToString();
+            shipDestroyed.text = infos.Achievement[(int)AchievementType.DESTROY_SHIP].ToString();
         }
         if (perfectGame)
         {

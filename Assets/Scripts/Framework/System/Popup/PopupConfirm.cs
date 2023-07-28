@@ -9,7 +9,8 @@ namespace Framework
         [Header("Reference")]
         [SerializeField] TextMeshProUGUI _txtHeader;
         [SerializeField] TextMeshProUGUI _txtContent;
-        [SerializeField] Image _icon;
+        [SerializeField] GameObject _icon;
+        [SerializeField] GameObject _iconContainer;
         [SerializeField] Button _btnYes;
         [SerializeField] Button _btnNo;
 
@@ -23,11 +24,12 @@ namespace Framework
             _btnYes.onClick.AddListener(ButtonClickYesCallback);
         }
 
-        public void Construct(string header, string content, Sprite sprite, Callback<bool> onComfirm)
+        public void Construct(string header, string content, GameObject icon, Callback<bool> onComfirm)
         {
             _txtHeader.text = header;
             _txtContent.text = content;
-            _icon.sprite = sprite;
+            DestroyImmediate(_icon);
+            _icon = Instantiate(icon, _iconContainer.transform);
             OnConfirm += onComfirm;
         }
 

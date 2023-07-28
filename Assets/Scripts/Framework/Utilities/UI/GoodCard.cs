@@ -9,6 +9,7 @@ namespace Framework
     {
         public float Value;
         public int Type;
+        public GameObject obj;
     }
     public class GoodCard : CardBase<GoodInfo>
     {

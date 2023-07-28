@@ -23,7 +23,7 @@ public class BetCollection : CardCollectionBase<BetInfo>
                 Index = _i,
                 IsQualified = isQualified,
                 RewardAmount = GameData.Bets[i].BetRankPoint,
-                EntryStake = GameData.Bets[i].BetRequire,
+                EntryStake = GameData.Bets[i].Bet,
                 OnClick = () =>
                 {
                     if (GameData.Bets[_i].BetRequire <= PConsumableType.BERI.GetValue())

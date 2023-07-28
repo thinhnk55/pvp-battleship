@@ -13,6 +13,7 @@ public class Board : CacheMonoBehaviour
     public float width, height, cellWidth, cellHieght;
 
     public List<Ship> ships;
+    public List<Ship> destroyedShips;
     public List<List<Octile>> octiles;
     [SerializeField] GameObject octileRoot;
     [SerializeField] public GameObject shipRoot;
@@ -34,6 +35,7 @@ public class Board : CacheMonoBehaviour
     }
     public void InitBoard(int row, int column)
     {
+        destroyedShips = new List<Ship> ();
         octileRoot.DestroyChildrenImmediate();
         octiles = new List<List<Octile>>();
         cam = Camera.main;
@@ -62,7 +64,7 @@ public class Board : CacheMonoBehaviour
         int y = (int)((leanFinger.GetLastWorldPosition(0).y - transform.position.y + height / 2) / cellHieght);
         if (Octile.Check(this, x, y , out int _x, out int _y) && !octiles[_y][_x].Attacked)
         {
-            WSClient.AttackOpponent(CoreGame.Instance.roomId, _x, _y);
+            WSClient.AttackOpponent(CoreGame.roomId, _x, _y);
         }
         horzLine.SetActive(false);
         vertLine.SetActive(false);

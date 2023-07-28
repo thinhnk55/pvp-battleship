@@ -2,23 +2,47 @@
 {
     public enum ServerRequest
     {
-        _GET_CONFIG = 4002,
-        _FIND_MATCH = 4101,
+        _CONFIG = 4002,
+        _CHECK_RANK = 4003,
+        _RANK_REWARD = 4004,
+        _CONFIG_SHOP = 4030,
+        _TRANSACTION = 4031,
         _CANCEL_FIND_MATCH = 4103,
+        _CHANGE_AVATAR = 4010,
+        _CHANGE_FRAME = 4011,
+        _CHANGE_BATTLE_FIELD = 4012,
+        _CHANGE_ACHIEVEMENT = 4013,
+        _CHANGE_NAME = 4014,
+
+        _FIND_MATCH = 4101,
         _SUBMIT_SHIP = 4110,
+        _REMATCH = 4114,
     }
     public enum ServerResponse
     {
-        _GET_PROFILE = 4001,
-        _GET_CONFIG = 4002,
+        _PROFILE = 4001,
+        _CONFIG = 4002,
+        _CHECK_RANK = 4003,
+        _RANK_REWARD = 4004,
+        _CHANGE_AVATAR = 4010,
+        _CHANGE_FRAME = 4011,
+        _CHANGE_BATTLE_FIELD = 4012,
+        _CHANGE_ACHIEVEMENT = 4013,
+        _CHANGE_NAME = 4014,
+        _CONFIG_SHOP = 4030,
+        _TRANSACTION = 4031,
 
+        _QUIT_SEARCH = 4103,
         _MATCH = 4104,
         _GAME_START = 4105,
-        _ATTACK = 4110,
+        _ATTACK = 4111,
         _END_TURN = 4112,
+        _TURN_MISS = 4113,
+        _REMATCH = 4114,
         _QUIT_GAME = 4115,
         _GAME_DESTROY = 4116,
         _GAME_RECONNECT = 4117,
+        _REMATCH_ACCEPT = 4118,
 
         GetLuckyShot,
         SEARCH_OPPONENT = 9001,

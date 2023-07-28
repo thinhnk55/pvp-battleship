@@ -24,11 +24,26 @@ public class LayoutCalibrator : MonoBehaviour
             width += texts[i].preferredWidth;
         }
         GetComponent<RectTransform>().SetWidth(width + padding);
-
     }
 
-    void Update()
+    public void Calibrate()
     {
-        
+        rects = new List<RectTransform>();
+        foreach (var image in GetComponentsInChildren<Image>())
+        {
+            rects.Add(image.GetComponent<RectTransform>());
+        } ; 
+        float width = 0;
+        for (int i = 0; i < rects.Count; i++)
+        {
+            if (rects[i] != null)
+                width += rects[i].sizeDelta.x;
+        }
+        GetComponent<RectTransform>().anchoredPosition = new Vector2(-width, GetComponent<RectTransform>().anchoredPosition.y);
+        for (int i = 0; i < texts.Count; i++)
+        {
+            width += texts[i].preferredWidth;
+        }
+        GetComponent<RectTransform>().SetWidth(width + padding);
     }
 }

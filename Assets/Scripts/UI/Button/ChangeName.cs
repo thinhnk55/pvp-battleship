@@ -19,7 +19,7 @@ public class ChangeName : MonoBehaviour
         {
             if (IsValid(inputField.text, out string message))
             {
-                WSClient.RequestChangeName(inputField.text);
+                WSClient.ChangeName(inputField.text);
                 messageTxt.text = message;
             }
             else
@@ -28,21 +28,21 @@ public class ChangeName : MonoBehaviour
             }
         });
         inputField.onSelect.AddListener((text) => { inputField.placeholder.GetComponent<TextMeshProUGUI>().text = ""; });
-        ServerMessenger.AddListener<JSONNode>(ServerResponse.RECIEVE_CHANGE_NAME, ReceiveChangeName);
+        ServerMessenger.AddListener<JSONNode>(ServerResponse._CHANGE_NAME, ReceiveChangeName);
     }
     protected void OnDestroy()
     {
-        ServerMessenger.RemoveListener<JSONNode>(ServerResponse.RECIEVE_CHANGE_NAME, ReceiveChangeName);
+        ServerMessenger.RemoveListener<JSONNode>(ServerResponse._CHANGE_NAME, ReceiveChangeName);
     }
     public void ReceiveChangeName(JSONNode json)
     {
-        if (json["n"] == GameData.Player.Username.Data)
+        if (json["d"]["n"] == GameData.Player.Username.Data)
         {
             messageTxt.text = "This Name already in used";
         }
         else
         {
-            GameData.Player.Username.Data = json["n"];
+            GameData.Player.Username.Data = json["d"]["n"];
             popup.ForceClose();
         }
     }
@@ -54,7 +54,7 @@ public class ChangeName : MonoBehaviour
             message = "Please fill your name";
             return false;
         }
-        else if (text.Length > 16 || text.Length <3)
+        else if (text.Length > 16 || text.Length <=3)
         {
             message = "Name too short or too long";
             return false;

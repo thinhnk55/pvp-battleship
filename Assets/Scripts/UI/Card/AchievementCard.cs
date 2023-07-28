@@ -10,19 +10,19 @@ using UnityEngine.UI;
 [Serializable]
 public enum AchievementType
 {
-    ENVOVY_OF_WAR,
-    COLLECTOR,
-    EXPERIENCER,
-    DOMINATOR,
-    PAYLOAD_POWERHOUSE,
-    PREDATOR,
-    FIGHTER,
-    EXAMINATOR,
-    UNSTOPABLE,
-    TACTICAL_GENIUS,
-    LIFE_IS_FRAGILE,
-    SHOPAHOLIC,
-
+    DESTROY_SHIP,
+    AVATAR_COLLECTOR,
+    WIN,
+    WIN_STREAK_MAX,
+    DESTROY_ACCUMULATIVE,
+    DESTROY_SHIP_1,
+    DESTROY_SHIP_2,
+    DESTROY_SHIP_3,
+    DESTROY_SHIP_4,
+    PERFECT_GAME,
+    WIN_WITH_1_SHIP,
+    SPEND_GEM,
+    FRAME_COLLECTOR,
 }
 [Serializable]
 public struct AchievementUnit
@@ -61,7 +61,7 @@ public struct AchievementInfo
         AchievementInfo info = new AchievementInfo()
         {
             Id = id,
-            Title = title.Substring(0, title.Length - 1),
+            Title = GameConfig.AchievementName[id],
             AchivementUnits = achievementUnits.ToArray(),
         };
         return info;
@@ -77,29 +77,29 @@ public struct AchievementInfo
     {
         switch (achievementType)
         {
-            case AchievementType.ENVOVY_OF_WAR:
+            case AchievementType.DESTROY_SHIP:
                 return $"Destroy {amount} ships";
-            case AchievementType.COLLECTOR:
+            case AchievementType.AVATAR_COLLECTOR:
                 return $"Collect {amount} avatars";
-            case AchievementType.EXPERIENCER:
+            case AchievementType.WIN:
                 return $"Win 100 battles";
-            case AchievementType.DOMINATOR:
+            case AchievementType.WIN_STREAK_MAX:
                 return $"{amount}-game winning streak";
-            case AchievementType.PAYLOAD_POWERHOUSE:
+            case AchievementType.DESTROY_ACCUMULATIVE:
                 return $"destroy {amount} ships consecutively in battle";
-            case AchievementType.PREDATOR:
+            case AchievementType.DESTROY_SHIP_1:
                 return $"Destroy {amount} single-deck ships";
-            case AchievementType.FIGHTER:
+            case AchievementType.DESTROY_SHIP_2:
                 return $"Destroy {amount} two-deck ships";
-            case AchievementType.EXAMINATOR:
+            case AchievementType.DESTROY_SHIP_3:
                 return $"Destroy {amount} three-deck ships";
-            case AchievementType.UNSTOPABLE:
+            case AchievementType.DESTROY_SHIP_4:
                 return $"Destroy {amount} four-deck ships";
-            case AchievementType.TACTICAL_GENIUS:
+            case AchievementType.PERFECT_GAME:
                 return $"Win {amount} battles without losing any ships";
-            case AchievementType.LIFE_IS_FRAGILE:
+            case AchievementType.WIN_WITH_1_SHIP:
                 return $"Win {amount} battles when you have only one ship left that hasn't been destroyed";
-            case AchievementType.SHOPAHOLIC:
+            case AchievementType.SPEND_GEM:
                 return $"Spend {amount} gem";
             default:
                 return "";
@@ -117,6 +117,7 @@ public class AchievementCard : CardBase<AchievementInfo>
     [SerializeField] protected TextMeshProUGUI RewardAmount;
     [SerializeField] protected Slider Progress;
     [SerializeField] protected TextMeshProUGUI TextProgress;
+    [SerializeField] protected TextMeshProUGUI TextObtain;
     public override void BuildUI(AchievementInfo info)
     {
         base.BuildUI(info);
@@ -153,6 +154,18 @@ public class AchievementCard : CardBase<AchievementInfo>
         if (TextProgress)
         {
             TextProgress.text = info.Progress.ToString() + "/" + info.AchivementUnits[obtain].Task.ToString();
+        }
+        if (TextObtain)
+        {
+            if (info.Progress < info.AchivementUnits[obtain].Task)
+            {
+                TextObtain.text = "";
+                Progress.gameObject.SetActive(true);
+            }
+            else
+            {
+                Progress.gameObject.SetActive(false);
+            }
         }
         OnClick = info.onClick;
         if (Button)

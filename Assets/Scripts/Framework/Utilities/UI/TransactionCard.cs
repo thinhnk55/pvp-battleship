@@ -23,23 +23,82 @@ namespace Framework {
             TransactionInfo transactionInfo = new TransactionInfo();
             transactionInfo.TransactionType = (TransactionType)id;
             transactionInfo.Index = index;
-            transactionInfo.Cost = new GoodInfo[data["cost"].Count];
-            transactionInfo.Product = new GoodInfo[data["product"].Count];
-            transactionInfo.Bonus = (int)(float.Parse(data["bonus"]) * 100);
-            for (int i = 0; i < data["cost"].Count; i++)
+            if (!data["promotion"].IsNull)
+            {
+                transactionInfo.Bonus = (int)(data["promotion"].AsFloat * 100);
+            }
+
+            List<float> cost_value = new List<float>();
+            List<int> cost_type = new List<int>();
+            List<int> product_value = new List<int>();
+            List<int> product_type = new List<int>();
+            switch ((TransactionType)id)
+            {
+                case TransactionType.starter:
+                    cost_type.Add(0);
+                    cost_value.Add(data["price"].AsFloat);
+                    for (int i = 0; i < data["code"].Count; i++)
+                    {
+                        product_value.Add(data["code"][i].AsInt);
+                    }
+                    for (int i = 0; i < data["product"].Count; i++)
+                    {
+                        product_type.Add(data["product"][i].AsInt);
+                    }
+                    break;
+                case TransactionType.usd:
+                    cost_type.Add(0);
+                    cost_value.Add(data["price"].AsFloat);
+                    product_type.Add((int)PConsumableType.GEM);
+                    product_value.Add(data["quantity"].AsInt);
+                    break;
+                case TransactionType.diamond:
+                    cost_type.Add((int)PConsumableType.GEM);
+                    cost_value.Add(data["price"].AsInt);
+                    product_type.Add((int)PConsumableType.BERI);
+                    product_value.Add(data["quantity"].AsInt);
+                    break;
+                case TransactionType.gold_avatar:
+                    cost_type.Add((int)PConsumableType.BERI);
+                    cost_value.Add(data["price"].AsInt);
+                    product_type.Add((int)PNonConsumableType.AVATAR);
+                    product_value.Add(data["avatar"].AsInt);
+                    break;
+                case TransactionType.gold_frame:
+                    cost_type.Add((int)PConsumableType.BERI);
+                    cost_value.Add(data["price"].AsInt);
+                    product_type.Add((int)PNonConsumableType.AVATAR_FRAME);
+                    product_value.Add(data["avatar_frame"].AsInt);
+                    break;
+                case TransactionType.gold_battlefield:
+                    cost_type.Add((int)PConsumableType.BERI);
+                    cost_value.Add(data["price"].AsInt);
+                    product_type.Add((int)PNonConsumableType.BATTLE_FIELD);
+                    product_value.Add(data["battlefield"].AsInt);
+                    break;
+                case TransactionType.gold_skinship:
+                    break;
+                case TransactionType.GEM_ELITE:
+                    break;
+                default:
+                    break;
+            }
+            transactionInfo.Cost = new GoodInfo[cost_value.Count];
+            transactionInfo.Product = new GoodInfo[product_value.Count];
+            for (int i = 0; i < cost_value.Count; i++)
             {
                 transactionInfo.Cost[i] = new GoodInfo()
                 {
-                    Value = float.Parse(data["cost"][i]),
-                    Type = int.Parse(data["cost_type"][i]),
+                    Value = cost_value[i],
+                    Type = cost_type[i],
                 };
             }
-            for (int i = 0; i < data["product"].Count; i++)
+            for (int i = 0; i < product_type.Count; i++)
             {
                 transactionInfo.Product[i] = new GoodInfo()
                 {
-                    Value = float.Parse(data["product"][i]),
-                    Type = int.Parse(data["product_type"][i]),
+                    Value = product_value[i],
+                    Type = product_type[i],
                 };
             }
             return transactionInfo;
@@ -119,7 +178,7 @@ namespace Framework {
             {
                 status.text = GetStatus(info);
             }
-            if (info.Cost[0].Type >= 0)
+            if (info.Cost[0].Value >= 0)
             {
                 if (info.Cost[0].Type >0)
                 {
@@ -138,7 +197,7 @@ namespace Framework {
                     {
                         if (info.Cost[i].Value == (int)info.Cost[i].Value)
                         {
-                            costAmount[i].text = info.Cost[i].Value.ToString("F0");
+                            costAmount[i].text = GetStringNumber((long)info.Cost[i].Value);
                         }
                         else
                         {
@@ -184,7 +243,7 @@ namespace Framework {
                     {
                         Button.onClick.AddListener(() =>
                         {
-                            PopupHelper.CreateConfirm(PrefabFactory.PopupConfirm, "CONFIRM", "Do you want to buy this item?", productIcon[0].sprite ,(confirm) => {
+                            PopupHelper.CreateConfirm(PrefabFactory.PopupConfirm, "CONFIRM", "Do you want to buy this item?", productIcon[0].transform.parent.gameObject ,(confirm) => {
                                 if (confirm)
                                 {
                                     TransactionAction(info.TransactionType, info)?.Invoke();
@@ -198,7 +257,7 @@ namespace Framework {
                     {
                         Button.onClick.AddListener(() =>
                         {
-                            IAP.PurchaseProduct($"{ApplicationConfig.BundleId}.{((PConsumableType)info.Product[0].Type).ToString().ToLower()}.{info.Product[0].Value}", (success, product) =>
+                            IAP.PurchaseProduct($"{ApplicationConfig.BundleId}.{((PConsumableType)info.Product[0].Type).ToString().ToLower()}.{info.Index}", (success, product) =>
                             {
                                 if (success)
                                 {
@@ -216,11 +275,17 @@ namespace Framework {
                 for (int i = 0; i < costAmount.Length; i++)
                 {
                     costAmount[i].text = "Royal Pass";
+                    RectTransform rect = costIcon[i].GetComponent<RectTransform>();
+                    rect.transform.parent = productIcon[0].transform;
+                    rect.anchorMax = new Vector2(1,1);
+                    rect.anchorMin = new Vector2(1,1);
+                    rect.localScale = new Vector2(1,1);
+                    rect.SetWidth(rect.sizeDelta.x * 2);
+                    costIcon[i].GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+                    costIcon[i]?.SetSprite(SpriteFactory.ResourceIcons[(int)PNonConsumableType.ELITE].sprites[0]);
+                    costAmount[i].GetComponentInParent<LayoutCalibrator>().Calibrate();
                 }
             }
-
-
-
         }
 
         protected override void OnClicked(TransactionInfo info)
@@ -235,11 +300,12 @@ namespace Framework {
         {
             UnityAction action = null;
             action += () => { };
-            if (transactionType == TransactionType.USD_GEM)
+            if (transactionType == TransactionType.usd)
             {
                 action = () =>
                 {
-                    RequestTransactionMoney(JSON.Parse(product.receipt));
+                    Debug.Log(product.receipt.Substring(0, product.receipt.Length));
+                    RequestTransaction( (int)Info.TransactionType, Info.Index, JSON.Parse(product.receipt.Substring(0, product.receipt.Length)));
                 };
             }
             else
@@ -258,25 +324,41 @@ namespace Framework {
             }
             return action;
         }
-        public static void RequestTransaction(int id, int index)
+        public static void RequestTransaction(int id, int index, JSONNode data = null)
         {
             JSONNode jsonNode = new JSONClass()
             {
-                { "id", ServerResponse.REQUEST_TRANSACTION.ToJson() },
-                { "itemId", id.ToJson() },
-                { "itemIndex", index.ToJson() },
+                { "id", ServerResponse._TRANSACTION.ToJson() },
+                { "s", id.ToJson() },
+                { "p", index.ToJson() },
             };
+            if (data!=null)
+            {
+                jsonNode.Add("r", data);
+            }
             WSClientBase.Instance.Send(jsonNode);
         }
 
-        public static void RequestTransactionMoney(JSONNode data)
+        public static string GetStringNumber(long number)
         {
-            JSONNode jsonNode = new JSONClass()
+            string s = "";
+            if (number < 1000)
             {
-                { "id", ServerResponse.REQUEST_TRANSACTION_MONEY.ToJson() },
-                { "data", data},
-            };
-            WSClientBase.Instance.Send(jsonNode);
+                s = (number).ToString();
+            }
+            else if (number / 1000 < 1000)
+            {
+                s = (number/1000).ToString() + "K";
+            }
+            else if (number / 1000000 < 1000)
+            {
+                s = (number / 1000000).ToString() + "M";
+            }
+            else if (number / 1000000000 < 1000)
+            {
+                s = (number / 1000000000).ToString() + "B";
+            }
+            return s;
         }
     }
     

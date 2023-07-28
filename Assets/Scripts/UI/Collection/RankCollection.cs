@@ -29,13 +29,13 @@ public class RankCollection : CardCollectionBase<RankInfo>
         indicator.transform.parent = cards[GameData.Player.Rank].transform;
         indicator.GetComponent<RectTransform>().anchoredPosition = Vector3.up * offsetIndicator;
         SelectedCard = cards[GameData.Player.Rank];
-        rankIndicator.sprite = SpriteFactory.Avatars[GameData.Player.Avatar.Data];
+        rankIndicator.sprite = SpriteFactory.ResourceIcons[(int)PNonConsumableType.AVATAR].sprites[GameData.Player.Avatar.Data];
         Timer<RankCollection>.Instance.Init(OnTrigger, OnElapse);
-        ServerMessenger.AddListener<JSONNode>(ServerResponse.RECIEVE_RANK, ReceiveRank);
+        ServerMessenger.AddListener<JSONNode>(ServerResponse._RANK_REWARD, ReceiveRank);
     }
     private void OnDestroy()
     {
-        ServerMessenger.RemoveListener<JSONNode>(ServerResponse.RECIEVE_RANK, ReceiveRank);
+        ServerMessenger.RemoveListener<JSONNode>(ServerResponse._RANK_REWARD, ReceiveRank);
 
     }
     public void SetCardPreview(RankInfo info)
@@ -44,7 +44,7 @@ public class RankCollection : CardCollectionBase<RankInfo>
         {
             info.OnClick = () =>
             {
-                WSClient.RequestRank();
+                WSClient.GetRankReward();
             };
         }
         else
@@ -78,7 +78,7 @@ public class RankCollection : CardCollectionBase<RankInfo>
 
     void ReceiveRank(JSONNode json)
     {
-        PConsumableType.BERI.AddValue(int.Parse(json["value"]));
+        PConsumableType.BERI.SetValue(int.Parse(json["d"]["g"]));
         CoinVFX.CoinVfx(resource, Position, Position);
         Timer<RankCollection>.Instance.BeginPoint = DateTime.UtcNow.Ticks;
         SetCardPreview(SelectedCard.Info);

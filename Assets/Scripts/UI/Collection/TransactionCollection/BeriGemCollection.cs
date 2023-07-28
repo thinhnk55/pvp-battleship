@@ -11,8 +11,8 @@ public class BeriGemCollection : TransactionCollection
     {
         List<TransactionInfo> transactionInfos = GameData.TransactionConfigs[transactionType];
         dealCard.BuildUI(transactionInfos.Last());
-        bigCard.BuildUI(transactionInfos[transactionInfos.Count-2]);
-        var list = transactionInfos.GetRange(0, transactionInfos.Count - 2);
+        bigCard.BuildUI(transactionInfos[transactionInfos.Count-1]);
+        var list = transactionInfos.GetRange(0, transactionInfos.Count - 1);
         list.Reverse();
         BuildUIs(list);
     }

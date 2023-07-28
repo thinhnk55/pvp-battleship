@@ -16,6 +16,8 @@ public struct RoyalPassInfo
 }
 public class RoyalPassCard : CardBase<RoyalPassInfo>
 {
+    [SerializeField] Image BG;
+    [SerializeField] Image OrderBG;
     [SerializeField] Image unlocked;
     [SerializeField] Image obtained;
     [SerializeField] TextMeshProUGUI Id;
@@ -30,6 +32,8 @@ public class RoyalPassCard : CardBase<RoyalPassInfo>
     public override void BuildUI(RoyalPassInfo info)
     {
         base.BuildUI(info);
+        BG?.SetSprite(info.Id % 5 == 0 ? SpriteFactory.RoyalPassMilestone : BG.sprite);
+        OrderBG?.SetSprite(info.Id % 5 == 0 ? SpriteFactory.RoyalPassMilestoneOrder : BG.sprite);
         if (!info.Unlocked || info.Obtained)
         {
             gameObject.SetChildrenRecursively<Image>((img) => { img.color = Color.gray; });
