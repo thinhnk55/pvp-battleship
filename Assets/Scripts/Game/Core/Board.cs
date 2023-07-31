@@ -1,3 +1,4 @@
+using DG.Tweening;
 using Framework;
 using Lean.Common;
 using Lean.Touch;
@@ -98,6 +99,7 @@ public class Board : CacheMonoBehaviour
         ship.octilesComposition.Clear();
         ship.board = this;
         // assign new pos
+        ship.Move(x,y);
         ship.octilesOccupy.Add(octiles[y][x]);
         ship.octilesComposition.Add(octiles[y][x]);
         for (int i = 0; i < curPoses.Count; i++)

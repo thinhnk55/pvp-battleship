@@ -41,7 +41,7 @@ public class CoreGame : SingletonMono<CoreGame>
     [SerializeField] GameObject lineRoot;
     public GameObject shipListPlayer;
     [SerializeField] GameObject shipListOpponent;
-    [SerializeField] List<Ship> shipsPlayer;
+    public List<Ship> shipsPlayer;
     [SerializeField] List<Ship> shipsOpponent;
     List<List<GameObject>> lines;
     public Camera cam;

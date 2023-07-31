@@ -13,6 +13,7 @@ namespace Framework
     public class Authentication : SingletonMono<Authentication>, IAuthentication
     {
         public string Token;
+        public SocialAuthType type;
         public TextMeshProUGUI Error;
         Dictionary<SocialAuthType, ISocialAuth> auths;
 
@@ -26,6 +27,7 @@ namespace Framework
             catch (Exception e){
                 Debug.LogException(e);
             }
+            SetupEvents();
 
             auths = new Dictionary<SocialAuthType, ISocialAuth>();
             for (int i = 0; i <= (int)SocialAuthType.Anonymous; i++)
@@ -35,7 +37,8 @@ namespace Framework
                 {
                     case SocialAuthType.Google:
 #if UNITY_ANDROID || UNITY_IOS
-#endif
+                        auth = new LoginGoogle();
+#endif                  
                         break;
                     case SocialAuthType.GooglePlay:
 #if UNITY_ANDROID
@@ -47,6 +50,7 @@ namespace Framework
                         break;
                     case SocialAuthType.Apple:
 #if UNITY_IOS
+                        auth = new LoginApple();
 #endif
                         break;
                     case SocialAuthType.Anonymous:
@@ -59,11 +63,84 @@ namespace Framework
                 if (auth != null)
                 {
                     auth.Initialize();
-                    
                     auths.Add((SocialAuthType)i, auth);
                 }
 
+                Debug.Log(auth);
             }
+        }
+        void SetupEvents()
+        {
+            AuthenticationService.Instance.SignedIn += () => {
+                // Shows how to get a playerID
+                Debug.Log($"PlayerID: {AuthenticationService.Instance.PlayerId}");
+
+                // Shows how to get an access token
+                Debug.Log($"Access Token: {AuthenticationService.Instance.AccessToken}");
+                SceneTransitionHelper.Load(ESceneName.Home);
+
+
+            };
+            AuthenticationService.Instance.SignInFailed += (err) => {
+                Debug.LogError("fail:"+ err);
+                SceneTransitionHelper.Load(ESceneName.Home);
+            };
+
+            AuthenticationService.Instance.SignedOut += () => {
+                Debug.Log("Player signed out.");
+            };
+
+            AuthenticationService.Instance.Expired += () =>
+            {
+                Debug.Log("Player session could not be refreshed and expired.");
+            };
+        }
+        async Task SignInAnonymouslyAsync()
+        {
+            try
+            {
+                await AuthenticationService.Instance.SignInAnonymouslyAsync();
+                Debug.Log("Sign in anonymously succeeded!");
+
+                // Shows how to get the playerID
+                Debug.Log($"PlayerID: {AuthenticationService.Instance.PlayerId}");
+
+            }
+            catch (AuthenticationException ex)
+            {
+                // Compare error code to AuthenticationErrorCodes
+                // Notify the player with the proper error message
+                Debug.LogException(ex);
+            }
+            catch (RequestFailedException ex)
+            {
+                // Compare error code to CommonErrorCodes
+                // Notify the player with the proper error message
+                Debug.LogException(ex);
+            }
+        }
+
+        public void Initialize()
+        {
+            auths[this.type].Initialize();
+        }
+
+#if PLATFORM_IOS
+        private void Update()
+        {
+            if(auths!=null)
+                auths[this.type].Update();  
+        }
+#endif
+
+        public void SignUp()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SignOut()
+        {
+            throw new NotImplementedException();
         }
 
         public void Authenticate()
@@ -73,7 +150,7 @@ namespace Framework
 
         public void Signup(int type)
         {
-            auths[(SocialAuthType)type].SignUp();
+            throw new NotImplementedException();
         }
 
         public void Signin(int type)
@@ -83,7 +160,7 @@ namespace Framework
 
         public void Signout(int type)
         {
-            auths[(SocialAuthType)type].SignOut();
+            throw new NotImplementedException();
         }
 
         public void Delete()
@@ -91,10 +168,9 @@ namespace Framework
             throw new NotImplementedException();
         }
 
-        public async void UpdatePlayerName()
+        public void UpdatePlayerName()
         {
-            await AuthenticationService.Instance.UpdatePlayerNameAsync("newPlayerName");
-            Debug.Log(AuthenticationService.Instance.PlayerName);
+            throw new NotImplementedException();
         }
     }
 }

@@ -8,6 +8,7 @@ namespace Framework {
     public abstract class WSClientBase : SingletonMono<WSClientBase>
     {
         public WebSocket ws;
+
         protected virtual void Start()
         {
             ws = new WebSocket(ServerConfig.WebSocketURL + "?id="+ PDataAuth.AuthData.userId + "&token=" + PDataAuth.AuthData.token);
@@ -32,7 +33,9 @@ namespace Framework {
         }
         public void Send(JSONNode json)
         {
+            Debug.Log("Start Send");
             ws.Send(json.ToString());
+            Debug.Log("Send Done");
             Debug.Log(json);
         }
         public void OnOpen(object sender, EventArgs e)
