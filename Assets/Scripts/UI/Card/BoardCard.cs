@@ -110,7 +110,7 @@ public class BoardCard : CardBase<BoardInfo>
             {
                 Button.onClick.AddListener(() =>
                 {
-                    PopupHelper.CreateMessage(PrefabFactory.PopupMessage, "Not Valid", null);
+                    PopupHelper.CreateMessage(PrefabFactory.PopupMessage, "Message", "Not Valid", null);
 
                 });
 
