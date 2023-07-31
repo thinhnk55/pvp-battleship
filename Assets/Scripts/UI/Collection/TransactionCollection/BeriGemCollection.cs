@@ -10,7 +10,6 @@ public class BeriGemCollection : TransactionCollection
     protected void Awake()
     {
         List<TransactionInfo> transactionInfos = GameData.TransactionConfigs[transactionType];
-        dealCard.BuildUI(transactionInfos.Last());
         bigCard.BuildUI(transactionInfos[transactionInfos.Count-1]);
         var list = transactionInfos.GetRange(0, transactionInfos.Count - 1);
         list.Reverse();

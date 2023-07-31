@@ -57,11 +57,10 @@ public struct AchievementInfo
             });
         }
 
-        string title = jsonUnits[0]["name"];
         AchievementInfo info = new AchievementInfo()
         {
             Id = id,
-            Title = GameConfig.AchievementName[id],
+            Title = GameConfig.AchievementName.GetLoop(id),
             AchivementUnits = achievementUnits.ToArray(),
         };
         return info;
@@ -139,25 +138,25 @@ public class AchievementCard : CardBase<AchievementInfo>
 
         //show unobtained info
         if (Icon != null)
-            Icon.sprite = SpriteFactory.Achievements[info.Id].sprites[obtain];
+            Icon.sprite = SpriteFactory.Achievements[info.Id].sprites.GetClamp(obtain);
         if (Title)
             Title.text = info.Title;
         if (Description)
-            Description.text = info.AchivementUnits[obtain].Description;
+            Description.text = info.AchivementUnits.GetClamp(obtain).Description;
         if (RewardAmount != null)
-            RewardAmount.text = "x " + info.AchivementUnits[obtain].RewardAmount.ToString();
+            RewardAmount.text = "x " + info.AchivementUnits.GetClamp(obtain).RewardAmount.ToString();
         if (Progress != null)
         {
-            Progress.maxValue = info.AchivementUnits[obtain].Task;
+            Progress.maxValue = info.AchivementUnits.GetClamp(obtain).Task;
             Progress.value = info.Progress;
         }
         if (TextProgress)
         {
-            TextProgress.text = info.Progress.ToString() + "/" + info.AchivementUnits[obtain].Task.ToString();
+            TextProgress.text = info.Progress.ToString() + "/" + info.AchivementUnits.GetClamp(obtain).Task.ToString();
         }
         if (TextObtain)
         {
-            if (info.Progress < info.AchivementUnits[obtain].Task)
+            if (info.Progress < info.AchivementUnits.GetClamp(obtain).Task)
             {
                 TextObtain.text = "";
                 Progress.gameObject.SetActive(true);

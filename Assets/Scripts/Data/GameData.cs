@@ -51,10 +51,7 @@ public class GameData : PDataBlock<GameData>
         Instance.opponent = Instance.opponent ?? new ProfileData();
         Instance.opponent.AchievementSelected = Instance.opponent.AchievementSelected ?? new int[3] { -1, -1, -1 };
         Instance.opponent.AchievementProgress = Instance.opponent.AchievementProgress ?? new List<int>();
-        Instance.player.Achievement = Instance.player.Achievement ?? new List<int>();
-        Instance.player.AchievementProgress = Instance.player.Achievement ?? new List<int>();
-        Instance.player.AchievementObtained = Instance.player.AchievementObtained ?? new List<int>();
-        Instance.player.AchievementSelected = Instance.player.AchievementSelected ?? new int[3] { -1, -1, -1 };
+
         Instance.achievementConfig = Instance.achievementConfig ?? new Dictionary<AchievementType, AchievementInfo>();
         Instance.luckyShotResult = Instance.luckyShotResult ?? new List<int>();
         Instance.luckyShotConfig = Instance.luckyShotConfig ?? new List<int>();
@@ -117,7 +114,6 @@ public class ProfileData
     [SerializeField] private int losts; public int Losts { get { return losts; } set { losts = value; winRate = wins / (wins + losts + 0.001f); } }
     public int Battles { get => Wins + Losts; }
     [SerializeField] private float winRate; public float WinRate { get { return winRate; } }
-    public List<int> Achievement;
     public int []AchievementSelected;
     public List<int> AchievementObtained;
     public List<int> AchievementProgress;
@@ -138,6 +134,23 @@ public class ProfileData
         profileData.WinStreak = data["d"]["s"]["ws"].AsInt;
         profileData.WinStreakMax = data["d"]["s"]["ml"].AsInt;
         //profileData.Achievement = data["statistics"]["achie"].ToList();
+        profileData.AchievementProgress = new List<int>() { data["d"]["s"]["t"].AsInt, 
+            data["d"]["s"]["a"].AsInt,
+            data["d"]["s"]["w"].AsInt,
+            data["d"]["s"]["wm"].AsInt,
+            data["d"]["s"]["k"].AsInt,
+            data["d"]["s"]["s"][0].AsInt,
+            data["d"]["s"]["s"][1].AsInt,
+            data["d"]["s"]["s"][2].AsInt,
+            data["d"]["s"]["s"][3].AsInt,
+            data["d"]["s"]["wa"].AsInt,
+            data["d"]["s"]["w1"].AsInt,
+            data["d"]["s"]["d"].AsInt,
+            data["d"]["s"]["f"].AsInt,
+        };
+        profileData.AchievementObtained = profileData.AchievementObtained ?? new List<int>();
+        profileData.AchievementSelected = profileData.AchievementSelected ?? new int[3] { -1, -1, -1 };
+
         profileData.AchievementProgress[(int)AchievementType.DESTROY_SHIP_3] = data["d"]["s"]["achie"].AsInt;
         //profileData.AchievementObtained = data["statistics"]["achie_r"].ToList();
         profileData.AchievementSelected = data["d"]["a"]["aa"].ToList().ToArray();

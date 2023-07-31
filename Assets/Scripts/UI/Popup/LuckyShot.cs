@@ -28,15 +28,17 @@ public class LuckyShot : SingletonMono<LuckyShot>
         GameData.RocketCount.OnDataChanged += Instance.OnRocketChange;
         Timer<LuckyShot>.Instance.Init(Instance.OnTriggerTimer, Instance.OnElapseTimer);
         GameData.RocketCount.Data = Mathf.Clamp(GameData.RocketCount.Data + Timer<LuckyShot>.Instance.TriggersFromMark, 0, 3);
+        ServerMessenger.AddListener<JSONNode>(ServerResponse.RECIEVE_REWARD_ROCKET, RewardAds);
         int count = rockets.Count;
         for (int i = 0; i < GameData.RocketCount.Data - count; i++)
         {
             Instance.rockets.Add(Instantiate(rocketPrefab, rocketRoot.transform));
         }
+
+        // To do
         Instance.shots = shotRoot.GetComponentsInChildren<Button>().ToList();
         StartCoroutine(Instance.Init());
 
-        ServerMessenger.AddListener<JSONNode>(ServerResponse.RECIEVE_REWARD_ROCKET, RewardAds);
 
     }
     private void Update()
@@ -78,8 +80,6 @@ public class LuckyShot : SingletonMono<LuckyShot>
     {
         GameData.RocketCount.Data--;
         int amount = GameData.LuckyShotConfig[int.Parse(node["index"])];
-        Debug.Log(GameData.LuckyShotConfig[int.Parse(node["index"])]);
-        
         PConsumableType.BERI.AddValue(amount);
         if(amount == 0)
         {
@@ -135,31 +135,31 @@ public class LuckyShot : SingletonMono<LuckyShot>
             countDown.text = $"Free Rocket - {Timer<LuckyShot>.Instance.RemainTime_Sec.Hour_Minute_Second_1()}";
         }
     }
-    public IEnumerator Suffle()
+    public IEnumerator Suffle()    // To do
     {
         yield return new WaitForSeconds(0.5f);
-        shotRoot.GetComponent<GridLayoutGroup>().enabled = false;
-        Vector3[] poses = new Vector3[shots.Count];
-        for (int i = 0; i < shots.Count; i++)
+        Instance.shotRoot.GetComponent<GridLayoutGroup>().enabled = false;
+        Vector3[] poses = new Vector3[Instance.shots.Count];
+        for (int i = 0; i < Instance.shots.Count; i++)
         {
-            shots[i].onClick.RemoveAllListeners();
-            poses[i] = shots[i].transform.position;
-            shots[i].transform.DOMove(shots[4].transform.position,1).SetEase(Ease.InCirc);
+            Instance.shots[i].onClick.RemoveAllListeners();
+            poses[i] = Instance.shots[i].transform.position;
+            Instance.shots[i].transform.DOMove(Instance.shots[4].transform.position,1).SetEase(Ease.InCirc);
         }
 
         yield return new WaitForSeconds(1);
         for (int i = 0; i < shots.Count; i++)
         {
-            shots[i].GetComponent<Image>().sprite = SpriteFactory.Unknown;
-            shots[i].onClick.RemoveAllListeners();
-            shots[i].transform.DOMove(poses[i], 1).SetEase(Ease.InCirc);
+            Instance.shots[i].GetComponent<Image>().sprite = SpriteFactory.Unknown;
+            Instance.shots[i].onClick.RemoveAllListeners();
+            Instance.shots[i].transform.DOMove(poses[i], 1).SetEase(Ease.InCirc);
         }
         yield return new WaitForSeconds(1);
-        shotRoot.GetComponent<GridLayoutGroup>().enabled = true;
-        for (int i = 0; i < shots.Count; i++)
+        Instance.shotRoot.GetComponent<GridLayoutGroup>().enabled = true;
+        for (int i = 0; i < Instance.shots.Count; i++)
         {
             int _i = i;
-            shots[i].onClick.AddListener(() =>
+            Instance.shots[i].onClick.AddListener(() =>
             {
                 if (GameData.RocketCount.Data > 0)
                 {

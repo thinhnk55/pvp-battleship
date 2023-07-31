@@ -18,6 +18,7 @@ public class WSClient : WSClientBase
         ServerMessenger.AddListener<JSONNode>(ServerResponse._CONFIG, GetConfig);
         ServerMessenger.AddListener<JSONNode>(ServerResponse._CONFIG_SHOP, GetConfigShop);
         ServerMessenger.AddListener<JSONNode>(ServerResponse._CHECK_RANK, GetCheckRank);
+        ServerMessenger.AddListener<JSONNode>(ServerResponse._CONFIG_ACHIEVEMENT, GetConfigAchievement);
         ServerMessenger.AddListener<JSONNode>(ServerResponse._TRANSACTION, RecieveTransaction);
 
         ServerMessenger.AddListener<JSONNode>(ServerResponse.RECIEVE_LUCKY_SHOT_CONFIG, ReceiveLuckyShotConfig);
@@ -47,6 +48,7 @@ public class WSClient : WSClientBase
         ServerMessenger.RemoveListener<JSONNode>(ServerResponse._CONFIG, GetConfig);
         ServerMessenger.RemoveListener<JSONNode>(ServerResponse._CONFIG_SHOP, GetConfigShop);
         ServerMessenger.RemoveListener<JSONNode>(ServerResponse._CHECK_RANK, GetCheckRank);
+        ServerMessenger.RemoveListener<JSONNode>(ServerResponse._CONFIG_ACHIEVEMENT, GetConfigAchievement);
         ServerMessenger.RemoveListener<JSONNode>(ServerResponse._TRANSACTION, RecieveTransaction);
 
         ServerMessenger.RemoveListener<JSONNode>(ServerResponse.RECIEVE_LUCKY_SHOT_CONFIG, ReceiveLuckyShotConfig);
@@ -73,6 +75,7 @@ public class WSClient : WSClientBase
         GetConfig();
         GetConfigShop();
         GetCheckRank();
+        GetConfigAchievement();
         AdsManager.SetUserId(PDataAuth.AuthData.userId.ToString());
         MusicType.MAINMENU.PlayMusic();
         PConsumableType.GEM.SetValue(int.Parse(data["d"]["d"]));
@@ -131,7 +134,6 @@ public class WSClient : WSClientBase
         Array @enum = Enum.GetValues(typeof(TransactionType));
         for (int i = 0; i < @enum.Length; i++)
         {
-            Debug.Log(data["d"]["shops"][@enum.GetValue(i).ToString()]);
             if (i>0)
             {
                 GameData.TransactionConfigs.Add((TransactionType)i, TransactionInfo.ListFromJson(data["d"]["shops"][@enum.GetValue(i).ToString()], i));
@@ -179,6 +181,23 @@ public class WSClient : WSClientBase
         // gift
         SceneTransitionHelper.Load(ESceneName.Home);
 
+    }
+    void GetConfigAchievement()
+    {
+        JSONNode jsonNode = new JSONClass()
+        {
+            { "id", ServerRequest._CONFIG_ACHIEVEMENT.ToJson() },
+            { "v", new JSONData(0) },
+        };
+        Instance.Send(jsonNode);
+    }
+    void GetConfigAchievement(JSONNode data)
+    {
+        GameData.AchievementConfig = new Dictionary<AchievementType, AchievementInfo>();
+        for (int i = 0; i < data["d"]["achievements"].Count; i++)
+        {
+            GameData.AchievementConfig.Add((AchievementType)i, AchievementInfo.FromJson(data["d"]["achievements"][i], i));
+        }
     }
     private void RequestBetConfig()
     {

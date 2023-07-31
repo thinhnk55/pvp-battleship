@@ -27,7 +27,7 @@ public class CoreGame : SingletonMono<CoreGame>
     public static int bet;
     public static bool rematch = false;
     public static int roomId;
-    public int playerChair;
+    public static int playerChair;
     public static List<List<Vector2Int>> shipConfigs = new List<List<Vector2Int>>()
     {
         new List<Vector2Int>() { new Vector2Int(0, 0),  },
@@ -368,6 +368,7 @@ public class CoreGame : SingletonMono<CoreGame>
     }
     public void NewMatch()
     {
+        rematch = false;
         SceneTransitionHelper.Reload();
         WSClient.QuitGame(roomId);
     }
@@ -390,7 +391,7 @@ public class CoreGame : SingletonMono<CoreGame>
     public void Match(JSONNode json)
     {
         roomId = int.Parse(json["d"]["r"]);
-        Instance.playerChair = int.Parse(json["d"]["p1"]["u"]) == PDataAuth.AuthData.userId ? int.Parse(json["d"]["p1"]["c"]) : int.Parse(json["d"]["p2"]["c"]);
+        playerChair = int.Parse(json["d"]["p1"]["u"]) == PDataAuth.AuthData.userId ? int.Parse(json["d"]["p1"]["c"]) : int.Parse(json["d"]["p2"]["c"]);
         Debug.Log(PDataAuth.AuthData.userId + "_"+ int.Parse(json["d"]["p1"]["u"]) + "_" + int.Parse(json["d"]["p2"]["u"]));
         bet = int.Parse(json["d"]["t"]);
         WSClient.SubmitShip(roomId, player.ships);
@@ -401,6 +402,9 @@ public class CoreGame : SingletonMono<CoreGame>
     }
     void GameStart(JSONNode json)
     {
+        timeInit = json["d"]["c"].AsInt;
+        Instance.playerTurn = int.Parse(json["d"]["f"]) == playerChair;
+        Debug.Log(json["d"]["f"].AsInt + "_" + playerChair);
         if (stateMachine.CurrentState == GameState.PreRematch)
         {
             Instance.stateMachine.CurrentState = GameState.SearchRematch;
@@ -409,13 +413,11 @@ public class CoreGame : SingletonMono<CoreGame>
         {
             Instance.stateMachine.CurrentState = GameState.Turn;
         }
-        timeInit = json["d"]["c"].AsInt;
-        Instance.playerTurn = int.Parse(json["d"]["f"]) == Instance.playerChair;
     }
 
     void EndTurn(JSONNode json)
     {
-        Instance.playerTurn = Instance.playerChair == int.Parse(json["d"]["c"]);
+        Instance.playerTurn = playerChair == int.Parse(json["d"]["c"]);
         Board board = Instance.playerTurn ? Instance.opponent : Instance.player;
         int status = int.Parse(json["d"]["r"]);
         if (status != 5)
@@ -517,8 +519,8 @@ public class CoreGame : SingletonMono<CoreGame>
             Instance.ingameUI.SetActive(false);
             Instance.postUI.gameObject.SetActive(true);
             Instance.postUI.amount.text = json["d"]["e"];
-            Messenger.Broadcast(GameEvent.GAME_END, int.Parse(json["d"]["w"]) == Instance.playerChair);
-            if (int.Parse(json["d"]["w"]) == Instance.playerChair)
+            Messenger.Broadcast(GameEvent.GAME_END, int.Parse(json["d"]["w"]) == playerChair);
+            if (int.Parse(json["d"]["w"]) == playerChair)
             {
                 PConsumableType.BERI.SetValue(int.Parse(json["d"]["gw"]));
                 Instance.postUI.ResultPlayer.sprite = SpriteFactory.Win;
@@ -629,8 +631,8 @@ public class CoreGame : SingletonMono<CoreGame>
         
         bet = int.Parse(data["t"]);
         roomId = int.Parse(data["r"]);
-        Instance.playerChair = int.Parse(data["p1"]["u"]) == PDataAuth.AuthData.userId ? int.Parse(data["p1"]["c"]) : int.Parse(data["p2"]["c"]);
-        Instance.playerTurn = int.Parse(data["n"]) == Instance.playerChair;
+        playerChair = int.Parse(data["p1"]["u"]) == PDataAuth.AuthData.userId ? int.Parse(data["p1"]["c"]) : int.Parse(data["p2"]["c"]);
+        Instance.playerTurn = int.Parse(data["n"]) == playerChair;
         Instance.turnTime = int.Parse(data["c"]);
         timeInit = int.Parse(data["a"]);
         Instance.ingameUI.SetActive(true);

@@ -160,6 +160,7 @@ namespace Framework {
 
         [SerializeField] protected TextMeshProUGUI bonus;
         [SerializeField] protected TextMeshProUGUI status;
+        [SerializeField] protected Image otherIcon;
 
         public override void BuildUI(TransactionInfo info)
         {
@@ -275,14 +276,9 @@ namespace Framework {
                 for (int i = 0; i < costAmount.Length; i++)
                 {
                     costAmount[i].text = "Royal Pass";
-                    RectTransform rect = costIcon[i].GetComponent<RectTransform>();
-                    rect.transform.parent = productIcon[0].transform;
-                    rect.anchorMax = new Vector2(1,1);
-                    rect.anchorMin = new Vector2(1,1);
-                    rect.localScale = new Vector2(1,1);
-                    rect.SetWidth(rect.sizeDelta.x * 2);
-                    costIcon[i].GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
-                    costIcon[i]?.SetSprite(SpriteFactory.ResourceIcons[(int)PNonConsumableType.ELITE].sprites[0]);
+                    DestroyImmediate(costIcon[i].gameObject);
+                    otherIcon?.SetSprite(SpriteFactory.ResourceIcons[(int)PNonConsumableType.ELITE].sprites[0]);
+                    otherIcon.SetAlpha(1);
                     costAmount[i].GetComponentInParent<LayoutCalibrator>().Calibrate();
                 }
             }

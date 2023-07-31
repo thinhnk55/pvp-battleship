@@ -5,18 +5,24 @@
         _CONFIG = 4002,
         _CHECK_RANK = 4003,
         _RANK_REWARD = 4004,
-        _CONFIG_SHOP = 4030,
-        _TRANSACTION = 4031,
         _CANCEL_FIND_MATCH = 4103,
         _CHANGE_AVATAR = 4010,
         _CHANGE_FRAME = 4011,
         _CHANGE_BATTLE_FIELD = 4012,
         _CHANGE_ACHIEVEMENT = 4013,
         _CHANGE_NAME = 4014,
+        _CONFIG_ACHIEVEMENT = 4020,
+        _ACHIEVEMENT_REWARD = 4021,
+        _CONFIG_SHOP = 4030,
+        _TRANSACTION = 4031,
+
+
 
         _FIND_MATCH = 4101,
         _SUBMIT_SHIP = 4110,
         _REMATCH = 4114,
+
+
     }
     public enum ServerResponse
     {
@@ -29,6 +35,8 @@
         _CHANGE_BATTLE_FIELD = 4012,
         _CHANGE_ACHIEVEMENT = 4013,
         _CHANGE_NAME = 4014,
+        _CONFIG_ACHIEVEMENT = 4020,
+        _ACHIEVEMENT_REWARD = 4021,
         _CONFIG_SHOP = 4030,
         _TRANSACTION = 4031,
 
@@ -43,6 +51,7 @@
         _GAME_DESTROY = 4116,
         _GAME_RECONNECT = 4117,
         _REMATCH_ACCEPT = 4118,
+
 
         GetLuckyShot,
         SEARCH_OPPONENT = 9001,
