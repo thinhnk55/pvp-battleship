@@ -58,7 +58,7 @@ public class HTTPClient : SingletonMono<HTTPClient>
             {"session_info", new JSONClass()}
         };
 
-        HTTPPost(json, "login");
+        HTTPPost(json, "anonymous-login");
     }
 
     public void LoginGoogle(string idToken)
