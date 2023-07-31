@@ -227,7 +227,7 @@ public class Ship : CacheMonoBehaviour
 
     public void OnSelected(LeanSelectByFinger leanSelectByFinger,LeanFinger leanFinger)
     {
-        if (CoreGame.Instance.stateMachine.CurrentState != GameState.Pre)
+        if (CoreGame.Instance.stateMachine.CurrentState != GameState.Pre && (CoreGame.Instance.stateMachine.CurrentState != GameState.PreRematch || !CoreGame.rematch))
             return;
         timeSelecting = 0;
         if (octilesOccupy.Count > 0)
@@ -293,7 +293,7 @@ public class Ship : CacheMonoBehaviour
         onSelecting = false;
         if (leanFinger.Age < LeanTouch.CurrentTapThreshold)
             return;
-        if (CoreGame.Instance.stateMachine.CurrentState != GameState.Pre)
+        if (CoreGame.Instance.stateMachine.CurrentState != GameState.Pre && (CoreGame.Instance.stateMachine.CurrentState != GameState.PreRematch || !CoreGame.rematch))
             return;
         int x = (int)((leanFinger.GetLastWorldPosition(0).x - CoreGame.Instance.player.transform.position.x + CoreGame.Instance.player.width / 2) / CoreGame.Instance.player.cellWidth);
         int y = (int)((leanFinger.GetLastWorldPosition(0).y - CoreGame.Instance.player.transform.position.y + CoreGame.Instance.player.height / 2) / CoreGame.Instance.player.cellHieght);
@@ -302,7 +302,8 @@ public class Ship : CacheMonoBehaviour
     }
     public bool CheckAndAssignShip(Board board,int x, int y, bool assignBackup, bool isRotate = false)
     {
-        if (CoreGame.Instance.stateMachine.CurrentState != GameState.Pre && CoreGame.Instance.stateMachine.CurrentState != GameState.Search)
+        if (CoreGame.Instance.stateMachine.CurrentState != GameState.Pre && CoreGame.Instance.stateMachine.CurrentState != GameState.Search
+            && CoreGame.Instance.stateMachine.CurrentState != GameState.PreRematch && CoreGame.Instance.stateMachine.CurrentState != GameState.SearchRematch)
             return false;
         tweenMove.Kill();
         // valid
@@ -348,7 +349,8 @@ public class Ship : CacheMonoBehaviour
         _x = x;
         _y = y;
         inside = false;
-        if (CoreGame.Instance.stateMachine.CurrentState != GameState.Pre && CoreGame.Instance.stateMachine.CurrentState != GameState.Search)
+        if (CoreGame.Instance.stateMachine.CurrentState != GameState.Pre && CoreGame.Instance.stateMachine.CurrentState != GameState.Search
+                        && CoreGame.Instance.stateMachine.CurrentState != GameState.PreRematch && CoreGame.Instance.stateMachine.CurrentState != GameState.SearchRematch)
             return false;
         inside = true;
         if (x + leftMost < 0)
@@ -414,7 +416,7 @@ public class Ship : CacheMonoBehaviour
     }
     public void RotateShip(LeanFinger leanFinger)
     {
-        if (CoreGame.Instance.stateMachine.CurrentState != GameState.Pre)
+        if (CoreGame.Instance.stateMachine.CurrentState != GameState.Pre && (CoreGame.Instance.stateMachine.CurrentState != GameState.PreRematch || !CoreGame.rematch))
             return;
         if (leanFinger.Age< LeanTouch.CurrentTapThreshold)
         {

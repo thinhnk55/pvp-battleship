@@ -272,6 +272,7 @@ public class CoreGame : SingletonMono<CoreGame>
         Instance.shipListPlayer.gameObject.SetActive(false);
         Instance.searchUI.opponentProfile.UpdateUIs();
         Instance.opponent.battleFieldSprite.sprite = SpriteFactory.ResourceIcons[(int)PNonConsumableType.BATTLE_FIELD].sprites[GameData.Opponent.BattleField.Data];
+        DOVirtual.DelayedCall(3, () => { stateMachine.CurrentState = GameState.Turn; });
     }
     void UpdateSearchRematch()
     {
@@ -283,6 +284,7 @@ public class CoreGame : SingletonMono<CoreGame>
     }
     void StartTurn()
     {
+        Instance.ingameUI.SetActive(true);
         Instance.TurnTime = timeInit;
         if (Instance.playerTurn)
         {
@@ -349,8 +351,14 @@ public class CoreGame : SingletonMono<CoreGame>
     }
     public void GoHome()
     {
-        rematch = false;
-        SceneTransitionHelper.Load(ESceneName.Home);
+        if (rematch)
+        {
+            QuitGame();
+        }
+        else
+        {
+            SceneTransitionHelper.Load(ESceneName.Home);
+        }
     }
     public void Rematch()
     {
@@ -367,10 +375,13 @@ public class CoreGame : SingletonMono<CoreGame>
     {
         if (shipListPlayer.transform.childCount == 0)
         {
-            Instance.searchUI.gameObject.SetActive(true);
-            Instance.stateMachine.CurrentState = GameState.SearchRematch;
+            rematch = false;
             CoinVFX.CoinVfx(Instance.searchUI.tresure.transform, Instance.searchUI.avatar1.transform.position, Instance.searchUI.avatar2.transform.position);
-            DOVirtual.DelayedCall(2, () => WSClient.SubmitShip(roomId, player.ships));
+            WSClient.SubmitShip(roomId, player.ships);
+            btnReady.GetComponent<Button>().enabled = false;
+            btnReady.GetComponent<Image>().color = Color.gray;
+            buttonAuto.enabled = false;
+            buttonAuto.GetComponent<Image>().color = Color.gray;
         }
     }
     #endregion
@@ -390,16 +401,22 @@ public class CoreGame : SingletonMono<CoreGame>
     }
     void GameStart(JSONNode json)
     {
+        if (stateMachine.CurrentState == GameState.PreRematch)
+        {
+            Instance.stateMachine.CurrentState = GameState.SearchRematch;
+        }
+        else
+        {
+            Instance.stateMachine.CurrentState = GameState.Turn;
+        }
         timeInit = json["d"]["c"].AsInt;
-        Instance.playerTurn = int.Parse(json["d"]["f"]) == playerChair;
-        Instance.stateMachine.CurrentState = GameState.Turn;    
-        Instance.ingameUI.SetActive(true);
+        Instance.playerTurn = int.Parse(json["d"]["f"]) == Instance.playerChair;
     }
 
     void EndTurn(JSONNode json)
     {
-        Instance.playerTurn = playerChair == int.Parse(json["d"]["c"]);
-        Board board = playerTurn ? Instance.opponent : Instance.player;
+        Instance.playerTurn = Instance.playerChair == int.Parse(json["d"]["c"]);
+        Board board = Instance.playerTurn ? Instance.opponent : Instance.player;
         int status = int.Parse(json["d"]["r"]);
         if (status != 5)
         {
@@ -500,8 +517,8 @@ public class CoreGame : SingletonMono<CoreGame>
             Instance.ingameUI.SetActive(false);
             Instance.postUI.gameObject.SetActive(true);
             Instance.postUI.amount.text = json["d"]["e"];
-            Messenger.Broadcast(GameEvent.GAME_END, int.Parse(json["d"]["w"]) == playerChair);
-            if (int.Parse(json["d"]["w"]) == playerChair)
+            Messenger.Broadcast(GameEvent.GAME_END, int.Parse(json["d"]["w"]) == Instance.playerChair);
+            if (int.Parse(json["d"]["w"]) == Instance.playerChair)
             {
                 PConsumableType.BERI.SetValue(int.Parse(json["d"]["gw"]));
                 Instance.postUI.ResultPlayer.sprite = SpriteFactory.Win;
@@ -526,12 +543,16 @@ public class CoreGame : SingletonMono<CoreGame>
         if (rematch)
         {
             rematch = false;
-            rematchChatB.transform.parent.gameObject.SetActive(true);
-            rematchChatB.text = "SORRY I HAVE TO GO!";
-        }
-        else
-        {
-            
+            if (stateMachine.CurrentState == GameState.PreRematch || stateMachine.CurrentState == GameState.SearchRematch)
+            {
+                SceneTransitionHelper.Load(ESceneName.Home);
+            }
+            else if (stateMachine.CurrentState == GameState.Out)
+            {
+                rematchChatB.transform.parent.gameObject.SetActive(true);
+                rematchChatB.text = "SORRY I HAVE TO GO!";
+            }
+
         }
     }
     public void Reconnect(JSONNode data)

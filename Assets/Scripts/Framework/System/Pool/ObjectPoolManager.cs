@@ -57,8 +57,6 @@ public class ObjectPoolManager : SingletonMono<ObjectPoolManager>
             pool = objectPoolDict[prefab];
         }
         obj = pool.GetItem<T>(root);
-        if (root != null)
-            obj.transform.parent = root.transform;
         return obj;
     }
     /// <typeparam name="T"></typeparam>
@@ -94,8 +92,6 @@ public class ObjectPoolManager : SingletonMono<ObjectPoolManager>
             pool = objectPoolDict[prefab];
         }
         obj = pool.GetItem<T>(root);
-        if (root != null)
-            obj.transform.parent = root.transform;
         obj.transform.position = pos;
         return obj;
     }
