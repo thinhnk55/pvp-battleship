@@ -6,7 +6,6 @@ using UnityEngine;
 public class BeriGemCollection : TransactionCollection
 {
     [SerializeField] TransactionCard bigCard;
-    [SerializeField] TransactionCard dealCard;
     protected void Awake()
     {
         List<TransactionInfo> transactionInfos = GameData.TransactionConfigs[transactionType];
