@@ -1,13 +1,22 @@
 using Framework;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class AchievementCardSelection : AchievementCard
 {
     public override void BuildUI(AchievementInfo info)
     {
+        if (info.Id == -1)
+        {
+            gameObject.SetChildrenRecursively<Image>((img) => { img.SetAlpha(0); });
+            gameObject.SetChildrenRecursively<TextMeshProUGUI>((t) => { t.SetText(""); });
+            return;
+        }
         //base.BuildUI(info);
+        gameObject.SetChildrenRecursively<Image>((img) => { img.SetAlpha(1); });
         Id = info.Id;
         int completed = 0;
 

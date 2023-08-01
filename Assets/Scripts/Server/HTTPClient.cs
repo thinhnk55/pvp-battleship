@@ -41,15 +41,7 @@ public class HTTPClient : SingletonMono<HTTPClient>
         char salt = (char)(deviceId[deviceId.Length / 2] + 15);
         string username = deviceId;
         string password = SHA256Hash.GetSHA256Hash(deviceId+salt);
-        password = password.Substring(15, 12); //arg1: startIndex; arg2: passwordLength;
-/*        SHA256 sha256 = SHA256.Create();
-        byte[] hashBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(deviceId));
-        StringBuilder builder = new StringBuilder();
-        foreach (byte b in hashBytes)
-        {
-            builder.Append(b.ToString("x2")); // Convert each byte to a hexadecimal string
-        }
-        string hash = builder.ToString();*/
+        password = password.Substring(15, 12); 
         JSONNode json = new JSONClass()
         {
             {"password", password },

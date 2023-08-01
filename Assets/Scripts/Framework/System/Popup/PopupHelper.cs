@@ -42,7 +42,7 @@ namespace Framework
         public static PopupGoods CreateGoods(GameObject prefab, string msg, List<GoodInfo> goods)
         {
             PopupGoods popup = Create<PopupGoods>(prefab);
-            popup.Construct(msg, goods, null);
+            popup.Construct(msg, goods);
             return popup;
         }
     }

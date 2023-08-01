@@ -8,7 +8,7 @@ namespace Framework
     {
         public static int GetMileStone(this List<int> milestones, int progress)
         {
-            int mileStone = 0;
+            int mileStone = -1;
             for (int i = 0; i < milestones.Count; i++)
             {
                 if (progress > milestones[i])

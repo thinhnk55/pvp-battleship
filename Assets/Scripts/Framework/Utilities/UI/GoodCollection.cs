@@ -1,15 +1,16 @@
-using Framework;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
-
-public class GoodCollection : CardCollectionBase<GoodInfo>
+namespace Framework
 {
-    public override void UpdateUIs()
+    public class GoodCollection : CardCollectionBase<GoodInfo>
     {
-        throw new System.NotImplementedException();
-    }
+        public override void UpdateUIs()
+        {
+            throw new System.NotImplementedException();
+        }
 
+    }
 }
+

@@ -296,8 +296,9 @@ public class WSClient : WSClientBase
     #region Lucky Shot
     public void LuckyShotConfig(JSONNode data)
     {
-        Timer<LuckyShot>.Instance.TriggerInterval_Sec = data["t"].AsInt / 1000;
-        Timer<LuckyShot>.Instance.BeginPoint = data["t"].AsLong;
+        Timer<LuckyShot>.Instance.TriggerInterval_Sec = data["d"]["t"].AsInt / 1000;
+        GameData.RocketCount.Data = data["d"]["l"]["r"].AsInt;
+        Timer<LuckyShot>.Instance.BeginPoint = data["d"]["l"]["t"].AsLong.NowFrom0001From1970();
         SceneTransitionHelper.Load(ESceneName.Home);
     }
     public static void LuckyShotConfig()

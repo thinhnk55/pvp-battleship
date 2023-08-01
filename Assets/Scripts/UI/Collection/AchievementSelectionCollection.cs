@@ -24,6 +24,10 @@ public class AchievementSelectionCollection : AchievementCollection
                     info.Obtained = GameData.Player.AchievementObtained[GameData.Player.AchievementSelected[i]];
                     infosArr.Add(info);
                 }
+                else
+                {
+                    infosArr.Add(new AchievementInfo() { Id = -1 });
+                }
             }
         }
         else
@@ -35,6 +39,10 @@ public class AchievementSelectionCollection : AchievementCollection
                     AchievementInfo info = GameData.AchievementConfig[(AchievementType)(GameData.Opponent.AchievementSelected[i])];
                     info.Obtained = GameData.Opponent.AchievementObtained[GameData.Opponent.AchievementSelected[i]];
                     infosArr.Add(info);
+                }
+                else
+                {
+                    infosArr.Add(new AchievementInfo() { Id = -1});
                 }
             }
         }

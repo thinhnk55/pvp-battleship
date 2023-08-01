@@ -27,7 +27,6 @@ namespace Framework
         {
             _txtHeader.text = header;
             _txtContent.text = content;
-            DestroyImmediate(_icon);
             _icon.sprite = icon;
             OnConfirm += onComfirm;
         }

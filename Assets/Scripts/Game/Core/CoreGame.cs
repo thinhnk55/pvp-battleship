@@ -28,6 +28,7 @@ public class CoreGame : SingletonMono<CoreGame>
     public static bool rematch = false;
     public static int roomId;
     public static int playerChair;
+
     public static List<List<Vector2Int>> shipConfigs = new List<List<Vector2Int>>()
     {
         new List<Vector2Int>() { new Vector2Int(0, 0),  },
@@ -331,7 +332,7 @@ public class CoreGame : SingletonMono<CoreGame>
     }
     public void QuitSearch(JSONNode data)
     {
-        if (data["e"].AsInt == 0 && data["t"].AsInt == roomId)
+        if (data["e"].AsInt == 0)
         {
             Instance.stateMachine.CurrentState = GameState.Pre;
             Instance.searchUI.gameObject.SetActive(false);
@@ -345,7 +346,6 @@ public class CoreGame : SingletonMono<CoreGame>
     }
     public void QuitGame()
     {
-        SceneTransitionHelper.Load(ESceneName.Home);
         WSClient.QuitGame(roomId);
         rematch = false;
     }
@@ -556,6 +556,11 @@ public class CoreGame : SingletonMono<CoreGame>
             }
 
         }
+        else
+        {
+
+        }
+
     }
     public void Reconnect(JSONNode data)
     {

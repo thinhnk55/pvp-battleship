@@ -177,25 +177,46 @@ public class ProfileData
     {
         profileData.Username = new PDataUnit<string>(data["p"]["n"]);
         profileData.Point = data["p"]["e"].AsInt;
-        profileData.Avatar = new PDataUnit<int>(data["p"]["a"]["a"].AsInt);
-        profileData.FrameAvatar = new PDataUnit<int>(0);// = new PDataUnit<int>(int.Parse(data["f"]));
-        profileData.BattleField = new PDataUnit<int>(0);//= new PDataUnit<int>(int.Parse(data["ba"]));
+        profileData.Avatar = new PDataUnit<int>(data["d"]["a"]["a"].AsInt);
+        profileData.FrameAvatar = new PDataUnit<int>(data["d"]["a"]["f"].AsInt);
+        profileData.BattleField = new PDataUnit<int>(data["d"]["a"]["b"].AsInt);
         profileData.SkinShip = new PDataUnit<int>(0);//= new PDataUnit<int>(int.Parse(data["sk"]));
-        //profileData.WinStreak = int.Parse(data["wSM"]);
-        //profileData.Wins = int.Parse(data["wC"]);
-        //profileData.Losts = int.Parse(data["lC"]);
-        //profileData.Battles = profileData.Wins + profileData.Losts;
-        // profileData.AchievementSelected = data["outst"].ToList().ToArray();
-        //if (profileData.AchievementProgress.Count == 0)
-        //{
-        //    profileData.AchievementProgress = new List<int>(GameData.AchievementConfig.Count);
-        //    for (int i = 0; i < profileData.AchievementProgress.Capacity; i++)
-        //    {
-        //        profileData.AchievementProgress.Add(0); 
-        //    }
-        //}
-        //profileData.AchievementProgress[(int)AchievementType.DOMINATOR] = int.Parse(data["sD"]);
-        //profileData.AchievementProgress[(int)AchievementType.ENVOVY_OF_WAR] = int.Parse(data["pG"]);
+        //
+        profileData.AchievementProgress = new List<int>() { data["d"]["s"]["t"].AsInt,
+            data["d"]["s"]["a"].AsInt,
+            data["d"]["s"]["w"].AsInt,
+            data["d"]["s"]["wm"].AsInt,
+            data["d"]["s"]["k"].AsInt,
+            data["d"]["s"]["s"][0].AsInt,
+            data["d"]["s"]["s"][1].AsInt,
+            data["d"]["s"]["s"][2].AsInt,
+            data["d"]["s"]["s"][3].AsInt,
+            data["d"]["s"]["wa"].AsInt,
+            data["d"]["s"]["w1"].AsInt,
+            data["d"]["s"]["d"].AsInt,
+            data["d"]["s"]["f"].AsInt,
+        };
+        profileData.Wins = data["d"]["s"]["w"].AsInt;
+        profileData.Losts = data["d"]["s"]["l"].AsInt;
+        profileData.WinStreak = data["d"]["s"]["ws"].AsInt;
+        profileData.WinStreakMax = data["d"]["s"]["ml"].AsInt;
+
+        profileData.AchievementObtained = new List<int>(data["d"]["a"]["ra"].Count);
+        for (int i = 0; i < GameData.AchievementConfig.Count; i++)
+        {
+            profileData.AchievementObtained.Add(data["d"]["a"]["ra"][i]["l"].AsInt);
+        }
+
+        for (int i = 0; i < data["d"]["a"]["ra"].Count; i++)
+        {
+            profileData.AchievementObtained[data["d"]["a"]["ra"][i]["a"].AsInt] = data["d"]["a"]["ra"][i]["l"].AsInt;
+        }
+        //profileData.AchievementObtained = data["statistics"]["achie_r"].ToList();
+        profileData.AchievementSelected = new int[3] { -1, -1, -1 };
+        for (int i = 0; i < data["d"]["a"]["aa"].Count; i++)
+        {
+            profileData.AchievementSelected[i] = data["d"]["a"]["aa"][i].AsInt;
+        }
         return profileData;
     }
     public override string ToString()
