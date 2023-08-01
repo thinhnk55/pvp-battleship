@@ -20,16 +20,12 @@ public class WSClient : WSClientBase
         ServerMessenger.AddListener<JSONNode>(ServerResponse._CHECK_RANK, GetCheckRank);
         ServerMessenger.AddListener<JSONNode>(ServerResponse._CONFIG_ACHIEVEMENT, GetConfigAchievement);
         ServerMessenger.AddListener<JSONNode>(ServerResponse._TRANSACTION, RecieveTransaction);
+        ServerMessenger.AddListener<JSONNode>(ServerResponse._LUCKYSHOT_CONFIG, LuckyShotConfig);
 
-        ServerMessenger.AddListener<JSONNode>(ServerResponse.RECIEVE_LUCKY_SHOT_CONFIG, ReceiveLuckyShotConfig);
-        ServerMessenger.AddListener<JSONNode>(ServerResponse.RECIEVE_SHOP_CONFIG, ReceiveShopConfig);
         ServerMessenger.AddListener<JSONNode>(ServerResponse.RECIEVE_TRANSACTION, RecieveTransaction);
-        ServerMessenger.AddListener<JSONNode>(ServerResponse.RECEIVE_RANK_CONFIG, ReceiveRankConfig);
         ServerMessenger.AddListener<JSONNode>(ServerResponse.RECIEVE_TREASURE_CONFIG, ReceiveTreasureConfig);
-        ServerMessenger.AddListener<JSONNode>(ServerResponse.RECEIVE_COUNTDOWN_CONFIG, ReceiveCountDownConfig);
         ServerMessenger.AddListener<JSONNode>(ServerResponse.RECIEVE_ROYAL_CONFIG, ReceiveRoyalPassConfig);
         ServerMessenger.AddListener<JSONNode>(ServerResponse.RECIEVE_JOIN_TREASURE_ROOM, ReceiveJoinTreasureRoom);
-        ServerMessenger.AddListener<JSONNode>(ServerResponse.RECIEVE_BET_CONFIG, ReceiveBetConfig);
 
 
         //not config
@@ -50,16 +46,12 @@ public class WSClient : WSClientBase
         ServerMessenger.RemoveListener<JSONNode>(ServerResponse._CHECK_RANK, GetCheckRank);
         ServerMessenger.RemoveListener<JSONNode>(ServerResponse._CONFIG_ACHIEVEMENT, GetConfigAchievement);
         ServerMessenger.RemoveListener<JSONNode>(ServerResponse._TRANSACTION, RecieveTransaction);
+        ServerMessenger.RemoveListener<JSONNode>(ServerResponse._LUCKYSHOT_CONFIG, LuckyShotConfig);
 
-        ServerMessenger.RemoveListener<JSONNode>(ServerResponse.RECIEVE_LUCKY_SHOT_CONFIG, ReceiveLuckyShotConfig);
-        ServerMessenger.RemoveListener<JSONNode>(ServerResponse.RECIEVE_SHOP_CONFIG, ReceiveShopConfig);
         ServerMessenger.RemoveListener<JSONNode>(ServerResponse.RECIEVE_TRANSACTION, RecieveTransaction);
-        ServerMessenger.RemoveListener<JSONNode>(ServerResponse.RECEIVE_RANK_CONFIG, ReceiveRankConfig);
         ServerMessenger.RemoveListener<JSONNode>(ServerResponse.RECIEVE_TREASURE_CONFIG, ReceiveTreasureConfig);
-        ServerMessenger.RemoveListener<JSONNode>(ServerResponse.RECEIVE_COUNTDOWN_CONFIG, ReceiveCountDownConfig);
         ServerMessenger.RemoveListener<JSONNode>(ServerResponse.RECIEVE_ROYAL_CONFIG, ReceiveRoyalPassConfig);
         ServerMessenger.RemoveListener<JSONNode>(ServerResponse.RECIEVE_JOIN_TREASURE_ROOM, ReceiveJoinTreasureRoom);
-        ServerMessenger.RemoveListener<JSONNode>(ServerResponse.RECIEVE_BET_CONFIG, ReceiveBetConfig);
 
         //not config
         ServerMessenger.RemoveListener<JSONNode>(ServerResponse.RECIEVE_RECEIVE_ROYALPASS, ReceiveReceiveRoyalPass);
@@ -76,6 +68,7 @@ public class WSClient : WSClientBase
         GetConfigShop();
         GetCheckRank();
         GetConfigAchievement();
+        LuckyShotConfig();
         AdsManager.SetUserId(PDataAuth.AuthData.userId.ToString());
         MusicType.MAINMENU.PlayMusic();
         PConsumableType.GEM.SetValue(int.Parse(data["d"]["d"]));
@@ -118,35 +111,51 @@ public class WSClient : WSClientBase
         Instance.Send(jsonNode);
     }
     #endregion
-    #region Config
-    void GetConfigShop()
+    #region Profile
+    public static void ChangeAvatar(int i)
     {
         JSONNode jsonNode = new JSONClass()
         {
-            { "id", ServerRequest._CONFIG_SHOP.ToJson() },
-            { "v", new JSONData(0) },
+            { "id", ServerResponse._CHANGE_AVATAR.ToJson() },
+            { "a", i.ToJson()}
         };
         Instance.Send(jsonNode);
     }
-    void GetConfigShop(JSONNode data)
+    public static void ChangeFrame(int i)
     {
-        GameData.TransactionConfigs = new Dictionary<TransactionType, List<TransactionInfo>>();
-        Array @enum = Enum.GetValues(typeof(TransactionType));
-        for (int i = 0; i < @enum.Length; i++)
+        JSONNode jsonNode = new JSONClass()
         {
-            if (i>0)
-            {
-                GameData.TransactionConfigs.Add((TransactionType)i, TransactionInfo.ListFromJson(data["d"]["shops"][@enum.GetValue(i).ToString()], i));
-            }
-            else
-            {
-                List<TransactionInfo> infos = new List<TransactionInfo>();
-                infos.Add(TransactionInfo.FromJson(data["d"]["shops"][@enum.GetValue(i).ToString()], i, 0));
-                GameData.TransactionConfigs.Add((TransactionType)i, infos);
-            }
-
-        }
-        SceneTransitionHelper.Load(ESceneName.Home);
+            { "id", ServerResponse._CHANGE_FRAME.ToJson() },
+            { "f", i.ToJson()}
+        };
+        Instance.Send(jsonNode);
+    }
+    public static void ChangeBattleField(int i)
+    {
+        JSONNode jsonNode = new JSONClass()
+        {
+            { "id", ServerResponse._CHANGE_BATTLE_FIELD.ToJson() },
+            { "b", i.ToString()}
+        };
+        Instance.Send(jsonNode);
+    }
+    public static void ChangeSkinShip(int i)
+    {
+        JSONNode jsonNode = new JSONClass()
+        {
+            { "id", ServerResponse.REQUEST_CHANGE_SKIN_SHIP.ToJson() },
+            { "s", i.ToString()}
+        };
+        Instance.Send(jsonNode);
+    }
+    public static void ChangeName(string name)
+    {
+        JSONNode jsonNode = new JSONClass()
+        {
+            { "id", ServerResponse._CHANGE_NAME.ToJson() },
+            { "n", name}
+        };
+        Instance.Send(jsonNode);
     }
 
     void GetConfig()
@@ -172,16 +181,76 @@ public class WSClient : WSClientBase
         }
         // royalpass
 
-        // achievement
-
         // luckyshot
-
-        // shop 
 
         // gift
         SceneTransitionHelper.Load(ESceneName.Home);
 
     }
+
+    private void RequestRoyalPassConfig()
+    {
+        JSONNode jsonNode = new JSONClass()
+        {
+            { "id", ServerResponse.REQUEST_COUNTDOWN_CONFIG.ToJson() },
+        };
+        Instance.Send(jsonNode);
+    }
+    private void ReceiveRoyalPassConfig(JSONNode data)
+    {
+        GameData.RoyalPass = RoyalPass.ConfigFromJson(GameData.RoyalPass, data);
+        SceneTransitionHelper.Load(ESceneName.Home);
+    }
+
+    public static void RequestGiftConfig()
+    {
+        JSONNode jsonNode = new JSONClass()
+        {
+            { "id", ServerResponse.REQUEST_GIFT_CONFIG.ToJson() },
+        };
+        Instance.Send(jsonNode);
+    }
+    public static void ReceiveGiftConfig(JSONNode json)
+    {
+        GameData.GiftConfig = new List<int>();
+        for (int i = 0; i < json["list"].Count; i++)
+        {
+            GameData.GiftConfig.Add(int.Parse(json["list"][i]));
+        }
+    }
+    #endregion
+    #region Shop
+    void GetConfigShop()
+    {
+        JSONNode jsonNode = new JSONClass()
+        {
+            { "id", ServerRequest._CONFIG_SHOP.ToJson() },
+            { "v", new JSONData(0) },
+        };
+        Instance.Send(jsonNode);
+    }
+    void GetConfigShop(JSONNode data)
+    {
+        GameData.TransactionConfigs = new Dictionary<TransactionType, List<TransactionInfo>>();
+        Array @enum = Enum.GetValues(typeof(TransactionType));
+        for (int i = 0; i < @enum.Length; i++)
+        {
+            if (i > 0)
+            {
+                GameData.TransactionConfigs.Add((TransactionType)i, TransactionInfo.ListFromJson(data["d"]["shops"][@enum.GetValue(i).ToString()], i));
+            }
+            else
+            {
+                List<TransactionInfo> infos = new List<TransactionInfo>();
+                infos.Add(TransactionInfo.FromJson(data["d"]["shops"][@enum.GetValue(i).ToString()], i, 0));
+                GameData.TransactionConfigs.Add((TransactionType)i, infos);
+            }
+
+        }
+        SceneTransitionHelper.Load(ESceneName.Home);
+    }
+    #endregion
+    #region Achievement
     void GetConfigAchievement()
     {
         JSONNode jsonNode = new JSONClass()
@@ -199,136 +268,53 @@ public class WSClient : WSClientBase
             GameData.AchievementConfig.Add((AchievementType)i, AchievementInfo.FromJson(data["d"]["achievements"][i], i));
         }
     }
-    private void RequestBetConfig()
+    public static void RequestObtainAchievemnt(int id)
     {
-        JSONNode jsonNode = new JSONClass()
+        JSONNode jsonNode = new JSONClass
         {
-            { "id", ServerResponse.REQUEST_BET_CONFIG.ToJson() },
+            { "id", ServerResponse._ACHIEVEMENT_REWARD.ToJson() },
+            { "a", id.ToJson() },
         };
         Instance.Send(jsonNode);
     }
-    private void ReceiveBetConfig(JSONNode json)
+    public static void RequestChangeAchievement(int[] indexs)
     {
-
-    }
-    private void RequestRoyalPassConfig()
-    {
-        JSONNode jsonNode = new JSONClass()
+        JSONArray array = new JSONArray();
+        JSONNode node = new JSONClass();
+        for (int i = 0; i < indexs.Length; i++)
         {
-            { "id", ServerResponse.REQUEST_COUNTDOWN_CONFIG.ToJson() },
-        };
-        Instance.Send(jsonNode);
-    }
-    private void ReceiveRoyalPassConfig(JSONNode data)
-    {
-        GameData.RoyalPass = RoyalPass.ConfigFromJson(GameData.RoyalPass, data);
-        SceneTransitionHelper.Load(ESceneName.Home);
-    }
-    private void RequestCountDownConfig()
-    {
-        JSONNode jsonNode = new JSONClass()
-        {
-            { "id", ServerResponse.REQUEST_ROYAL_CONFIG.ToJson() },
-        };
-        Instance.Send(jsonNode);
-    }
-    private void ReceiveCountDownConfig(JSONNode data)
-    {
-        GameData.LuckyShotCoolDown = int.Parse(data["lucky_shot"]) / 1000;
-        GameData.RankReceiveCoolDown = int.Parse(data["rank_receive"]) / 1000;
-        GameData.GiftCoolDown = int.Parse(data["consolation_gift"]) / 1000;
-        GameData.ChangeQuestCoolDown = 60;//int.Parse(data["consolation_gift"]) / 1000;
-        Timer<LuckyShot>.Instance.TriggerInterval_Sec = int.Parse(data["lucky_shot"]) / 1000;
-        Timer<Gift>.Instance.TriggerInterval_Sec = int.Parse(data["consolation_gift"]) / 1000;
-        Timer<RankCollection>.Instance.TriggerInterval_Sec = int.Parse(data["rank_receive"]) / 1000;
-        Timer<QuestCard>.Instance.TriggerInterval_Sec = 60; //int.Parse(data["quest"]) / 1000;
-        SceneTransitionHelper.Load(ESceneName.Home);
-    }
-
-    public void ReceiveAchievementConfig(JSONNode data)
-    {
-        GameData.AchievementConfig = new Dictionary<AchievementType, AchievementInfo>();
-        for (int i = 0; i < data["achie"].Count; i++)
-        {
-            GameData.AchievementConfig.Add((AchievementType)i, AchievementInfo.FromJson(data["achie"][i], i));
+            array.Add(new JSONData(indexs[i]));
         }
+        JSONNode jsonNode = new JSONClass()
+        {
+            { "id", ServerRequest._CHANGE_ACHIEVEMENT.ToJson() },
+            { "a", array },
+        };
+        Instance.Send(jsonNode);
+    }
+    #endregion
+    #region Lucky Shot
+    public void LuckyShotConfig(JSONNode data)
+    {
+        Timer<LuckyShot>.Instance.TriggerInterval_Sec = data["t"].AsInt / 1000;
+        Timer<LuckyShot>.Instance.BeginPoint = data["t"].AsLong;
         SceneTransitionHelper.Load(ESceneName.Home);
     }
-    public void ReceiveLuckyShotConfig(JSONNode data)
-    {
-        List<int> luckyShots = data["list"].ToList();
-        GameData.LuckyShotConfig = luckyShots;
-        GameData.LuckyShotConfig.Log();
-        SceneTransitionHelper.Load(ESceneName.Home);
-    }
-    public void ReceiveRankConfig(JSONNode data)
-    {
-        GameData.RankConfigs = RankConfig.ListFromJson(data);
-        SceneTransitionHelper.Load(ESceneName.Home);
-    }
-    public void RequestRankConfig()
+    public static void LuckyShotConfig()
     {
         JSONNode jsonNode = new JSONClass()
         {
-            { "id", ServerResponse.REQUEST_RANK_CONFIG.ToJson() },
+            { "id", ServerRequest._LUCKYSHOT_CONFIG.ToJson() },
         };
         Instance.Send(jsonNode);
     }
-    public static void RequestLuckyShotConfig()
+    public static void RequestShot()
     {
         JSONNode jsonNode = new JSONClass()
         {
-            { "id", ServerResponse.REQUEST_LUCKY_SHOT_CONFIG.ToJson() },
+            { "id", ServerRequest._LUCKYSHOT_FIRE.ToJson() },
         };
         Instance.Send(jsonNode);
-    }
-    public static void RequestAchievementConfig()
-    {
-        JSONNode jsonNode = new JSONClass()
-        {
-            { "id", ServerResponse.REQUEST_ACHIEVEMENT.ToJson() },
-        };
-        Instance.Send(jsonNode);
-    }
-    public static void RequestShopConfig()
-    {
-        JSONNode jsonNode = new JSONClass()
-        {
-            { "id", ServerResponse.REQUEST_SHOP_CONFIG.ToJson() },
-        };
-        Instance.Send(jsonNode);
-    }
-    public void ReceiveShopConfig(JSONNode data)
-    {
-        for (int i = 0; i < data["list"].Count; i++)
-        {
-            if (GameData.TransactionConfigs.ContainsKey((TransactionType)i))
-            {
-                GameData.TransactionConfigs[(TransactionType)i] = TransactionInfo.ListFromJson(data["list"][i], i);
-            }
-            else
-            {
-                GameData.TransactionConfigs.Add((TransactionType)i, TransactionInfo.ListFromJson(data["list"][i], i));
-            }
-
-        }
-        SceneTransitionHelper.Load(ESceneName.Home);
-    }
-    public static void RequestGiftConfig()
-    {
-        JSONNode jsonNode = new JSONClass()
-        {
-            { "id", ServerResponse.REQUEST_GIFT_CONFIG.ToJson() },
-        };
-        Instance.Send(jsonNode);
-    }
-    public static void ReceiveGiftConfig(JSONNode json)
-    {
-        GameData.GiftConfig = new List<int>();
-        for (int i = 0; i < json["list"].Count; i++)
-        {
-            GameData.GiftConfig.Add(int.Parse(json["list"][i]));
-        }
     }
     #endregion
     #region TREASUREHUNT
@@ -510,91 +496,13 @@ public class WSClient : WSClientBase
 
         Messenger.Broadcast(GameEvent.TRANSACTION,id, index);
     }
-    public static void RequestObtainAchievemnt(int id, int obtained)
-    {
-        JSONNode jsonNode = new JSONClass
-        {
-            { "id", ServerResponse.REQUEST_OBTAIN_ACHIEVEMENT.ToJson() },
-            { "achieId", id.ToJson() },
-            { "achieIndex", (obtained + 1).ToJson() }
-        };
-        Instance.Send(jsonNode);
-    }
+
     
     public static void RequestGift()
     {
         JSONNode jsonNode = new JSONClass()
         {
             { "id", ServerResponse.REQUEST_GIFT.ToJson() },
-        };
-        Instance.Send(jsonNode);
-    }
-    public static void RequestChangeAchievement(int[] indexs)
-    {
-        JSONArray array = new JSONArray();
-        JSONNode node = new JSONClass();
-        for (int i = 0; i < indexs.Length; i++)
-        {
-            array.Add(new JSONData(indexs[i]));
-        }
-        JSONNode jsonNode = new JSONClass()
-        {
-            { "id", ServerResponse.REQUEST_ACHIEVEMENT_CHANGE.ToJson() },
-            { "outst", array },
-        };
-        Instance.Send(jsonNode);
-    }
-    public static void RequestShot()
-    {
-        JSONNode jsonNode = new JSONClass()
-        {
-            { "id", ServerResponse.REQUEST_LUCKY_SHOT.ToJson() },
-        };
-        Instance.Send(jsonNode);
-    }
-    public static void ChangeName(string name)
-    {
-        JSONNode jsonNode = new JSONClass()
-        {
-            { "id", ServerResponse._CHANGE_NAME.ToJson() },
-            { "n", name}
-        };
-        Instance.Send(jsonNode);
-    }
-
-    public static void ChangeAvatar(int i)
-    {
-        JSONNode jsonNode = new JSONClass()
-        {
-            { "id", ServerResponse._CHANGE_AVATAR.ToJson() },
-            { "a", i.ToJson()}
-        };
-        Instance.Send(jsonNode);
-    }
-    public static void ChangeFrame(int i)
-    {
-        JSONNode jsonNode = new JSONClass()
-        {
-            { "id", ServerResponse._CHANGE_FRAME.ToJson() },
-            { "f", i.ToJson()}
-        };
-        Instance.Send(jsonNode);
-    }
-    public static void ChangeBattleField(int i)
-    {
-        JSONNode jsonNode = new JSONClass()
-        {
-            { "id", ServerResponse._CHANGE_BATTLE_FIELD.ToJson() },
-            { "b", i.ToString()}
-        };
-        Instance.Send(jsonNode);
-    }
-    public static void ChangeSkinShip(int i)
-    {
-        JSONNode jsonNode = new JSONClass()
-        {
-            { "id", ServerResponse.REQUEST_CHANGE_SKIN_SHIP.ToJson() },
-            { "s", i.ToString()}
         };
         Instance.Send(jsonNode);
     }

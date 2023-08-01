@@ -66,7 +66,7 @@ namespace Framework
                     auths.Add((SocialAuthType)i, auth);
                 }
 
-                Debug.Log(auth);
+                Debug.Log(((SocialAuthType)i).ToString() + auth);
             }
         }
         void SetupEvents()

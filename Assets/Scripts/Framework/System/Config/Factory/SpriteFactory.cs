@@ -17,6 +17,7 @@ namespace Framework
         [SerializeField] private Sprite octile; public static Sprite Octile { get { return Instance.octile; } }
         [SerializeField] private Sprite missed; public static Sprite Missed { get { return Instance.missed; } }
         [SerializeField] private Sprite occupied; public static Sprite Occupied { get { return Instance.occupied; } }
+        [SerializeField] private Sprite occupiedPre; public static Sprite OccupiedPre { get { return Instance.occupiedPre; } }
         [SerializeField] private Sprite unoccupiable; public static Sprite Unoccupiable { get { return Instance.unoccupiable; } }
         [SerializeField] private Sprite attacked; public static Sprite Attacked { get { return Instance.attacked; } }
         [SerializeField] private Sprite destroyed; public static Sprite Destroyed { get { return Instance.destroyed; } }
@@ -29,6 +30,7 @@ namespace Framework
         [SerializeField] private Sprite[] avatars; public static Sprite[] Avatars { get { return Instance.avatars; } }
         [SerializeField] private Sprite[] frames; public static Sprite[] Frames { get { return Instance.frames; } }
         [SerializeField] private Sprite[] tailframes; public static Sprite[] Tailframes { get { return Instance.tailframes; } }
+        [SerializeField] private Sprite[] battleFields; public static Sprite[] BattleFields { get { return Instance.battleFields; } }
         [SerializeField] private ListSprite[] resourceIcons; public static ListSprite[] ResourceIcons { get { return Instance.resourceIcons; } }
         [SerializeField] private Sprite unKnowmAvatar; public static Sprite Unknown { get { return Instance.unKnowmAvatar; } }
         [SerializeField] private Sprite x; public static Sprite X { get { return Instance.x; } }

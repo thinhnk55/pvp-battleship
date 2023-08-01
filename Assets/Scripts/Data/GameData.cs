@@ -109,9 +109,8 @@ public class ProfileData
                 return winStreakMax.Value;
             }
         }
-        set { GameData.Player.AchievementProgress[(int)AchievementType.WIN_STREAK_MAX] = value; } }
+        set { AchievementProgress[(int)AchievementType.WIN_STREAK_MAX] = value; } }
     [SerializeField] private int loseStreak; public int LoseStreak { get ;  set ;  }
-
     [SerializeField] private int loseStreakMax; public int LoseStreakMax{  get; set; }
     [SerializeField] private int wins; public int Wins { get { return wins; } set { wins = value; winRate = wins / (wins + losts + 0.001f); } }
     [SerializeField] private int losts; public int Losts { get { return losts; } set { losts = value; winRate = wins / (wins + losts + 0.001f); } }
@@ -132,10 +131,8 @@ public class ProfileData
         PNonConsumableType.AVATAR.SetValue(data["d"]["a"]["al"].ToList());
         PNonConsumableType.AVATAR_FRAME.SetValue(data["d"]["a"]["fl"].ToList());
         PNonConsumableType.BATTLE_FIELD.SetValue(data["d"]["a"]["bl"].ToList());
-        profileData.Wins = data["d"]["s"]["w"].AsInt;
-        profileData.Losts = data["d"]["s"]["l"].AsInt;
-        profileData.WinStreak = data["d"]["s"]["ws"].AsInt;
-        profileData.WinStreakMax = data["d"]["s"]["ml"].AsInt;
+
+        // statistic / achievement
         //profileData.Achievement = data["statistics"]["achie"].ToList();
         profileData.AchievementProgress = new List<int>() { data["d"]["s"]["t"].AsInt, 
             data["d"]["s"]["a"].AsInt,
@@ -151,12 +148,28 @@ public class ProfileData
             data["d"]["s"]["d"].AsInt,
             data["d"]["s"]["f"].AsInt,
         };
-        profileData.AchievementObtained = profileData.AchievementObtained ?? new List<int>();
-        profileData.AchievementSelected = profileData.AchievementSelected ?? new int[3] { -1, -1, -1 };
+        profileData.Wins = data["d"]["s"]["w"].AsInt;
+        profileData.Losts = data["d"]["s"]["l"].AsInt;
+        profileData.WinStreak = data["d"]["s"]["ws"].AsInt;
+        profileData.WinStreakMax = data["d"]["s"]["ml"].AsInt;
+        //
 
-        profileData.AchievementProgress[(int)AchievementType.DESTROY_SHIP_3] = data["d"]["s"]["achie"].AsInt;
+        profileData.AchievementObtained = new List<int>(data["d"]["a"]["ra"].Count);
+        for (int i = 0; i < GameData.AchievementConfig.Count; i++)
+        {
+            profileData.AchievementObtained.Add(data["d"]["a"]["ra"][i]["l"].AsInt);
+        }
+
+        for (int i = 0; i < data["d"]["a"]["ra"].Count; i++)
+        {
+            profileData.AchievementObtained[data["d"]["a"]["ra"][i]["a"].AsInt] = data["d"]["a"]["ra"][i]["l"].AsInt;
+        }
         //profileData.AchievementObtained = data["statistics"]["achie_r"].ToList();
-        profileData.AchievementSelected = data["d"]["a"]["aa"].ToList().ToArray();
+        profileData.AchievementSelected = new int[3] {-1,-1,-1};
+        for (int i = 0; i < data["d"]["a"]["aa"].Count; i++)
+        {
+            profileData.AchievementSelected[i] = data["d"]["a"]["aa"][i].AsInt;
+        }
         Debug.Log(profileData.ToString());
         return profileData;
     }

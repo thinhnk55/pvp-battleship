@@ -15,7 +15,7 @@ public class LuckyShot : SingletonMono<LuckyShot>
     public int indexShot;
     public List<GameObject> rockets;
     public List<Button> shots;
-
+    [SerializeField] GameObject adsButton;
     [SerializeField] GameObject rocketRoot;
     [SerializeField] GameObject rocketPrefab;
     [SerializeField] GameObject shotRoot;
@@ -34,7 +34,10 @@ public class LuckyShot : SingletonMono<LuckyShot>
         {
             Instance.rockets.Add(Instantiate(rocketPrefab, rocketRoot.transform));
         }
-
+        if (GameData.RocketCount.Data >= 3)
+        {
+            Destroy(adsButton);
+        }
         // To do
         Instance.shots = shotRoot.GetComponentsInChildren<Button>().ToList();
         StartCoroutine(Instance.Init());
@@ -78,8 +81,8 @@ public class LuckyShot : SingletonMono<LuckyShot>
     }
     private void RecieveLuckyShot(JSONNode node)
     {
-        GameData.RocketCount.Data--;
-        int amount = GameData.LuckyShotConfig[int.Parse(node["index"])];
+        GameData.RocketCount.Data = node["d"]["l"]["r"].AsInt;
+        int amount = GameData.LuckyShotConfig[int.Parse(node["d"]["b"])];
         PConsumableType.BERI.AddValue(amount);
         if(amount == 0)
         {

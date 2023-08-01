@@ -12,7 +12,7 @@ public class AchievementSelectionCollection : AchievementCollection
 
     private void Start()
     {
-        ServerMessenger.AddListener<JSONNode>(ServerResponse.RECIEVE_ACHIEVEMENT_CHANGE, ReceiveChangeAchievement);
+        ServerMessenger.AddListener<JSONNode>(ServerResponse._CHANGE_ACHIEVEMENT, ReceiveChangeAchievement);
         List<AchievementInfo> infosArr = new List<AchievementInfo>();
         if (isPlayer == 1)
         {
@@ -20,8 +20,8 @@ public class AchievementSelectionCollection : AchievementCollection
             {
                 if (GameData.Player.AchievementSelected[i]>=0)
                 {
-                    AchievementInfo info = GameData.AchievementConfig[(AchievementType)(GameData.Player.AchievementSelected[i] / 100)];
-                    info.Obtained = GameData.Player.AchievementObtained[GameData.Player.AchievementSelected[i] / 100];
+                    AchievementInfo info = GameData.AchievementConfig[(AchievementType)(GameData.Player.AchievementSelected[i])];
+                    info.Obtained = GameData.Player.AchievementObtained[GameData.Player.AchievementSelected[i]];
                     infosArr.Add(info);
                 }
             }
@@ -32,8 +32,8 @@ public class AchievementSelectionCollection : AchievementCollection
             {
                 if (GameData.Opponent.AchievementSelected[i] >= 0)
                 {
-                    AchievementInfo info = GameData.AchievementConfig[(AchievementType)(GameData.Opponent.AchievementSelected[i] / 100)];
-                    info.Obtained = GameData.Opponent.AchievementObtained[GameData.Opponent.AchievementSelected[i] / 100];
+                    AchievementInfo info = GameData.AchievementConfig[(AchievementType)(GameData.Opponent.AchievementSelected[i])];
+                    info.Obtained = GameData.Opponent.AchievementObtained[GameData.Opponent.AchievementSelected[i]];
                     infosArr.Add(info);
                 }
             }
@@ -44,7 +44,7 @@ public class AchievementSelectionCollection : AchievementCollection
 
     private void OnDestroy()
     {
-        ServerMessenger.RemoveListener<JSONNode>(ServerResponse.RECIEVE_ACHIEVEMENT_CHANGE, ReceiveChangeAchievement);
+        ServerMessenger.RemoveListener<JSONNode>(ServerResponse._CHANGE_ACHIEVEMENT, ReceiveChangeAchievement);
     }
 
     public void Select(int slot)
@@ -55,8 +55,8 @@ public class AchievementSelectionCollection : AchievementCollection
 
     public void ReceiveChangeAchievement(JSONNode json)
     {
-        var info = GameData.AchievementConfig[(AchievementType)(idNewSelect / 100)];
-        info.Obtained = GameData.Player.AchievementObtained[idNewSelect / 100];
+        var info = GameData.AchievementConfig[(AchievementType)(idNewSelect)];
+        info.Obtained = GameData.Player.AchievementObtained[idNewSelect];
         if (slot >= contentRoot.childCount)
         {
             AddUI(info);

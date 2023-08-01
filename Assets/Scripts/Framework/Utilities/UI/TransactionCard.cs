@@ -244,7 +244,7 @@ namespace Framework {
                     {
                         Button.onClick.AddListener(() =>
                         {
-                            PopupHelper.CreateConfirm(PrefabFactory.PopupConfirm, "CONFIRM", "Do you want to buy this item?", productIcon[0].transform.parent.gameObject ,(confirm) => {
+                            PopupHelper.CreateConfirm(PrefabFactory.PopupConfirm, "CONFIRM", "Do you want to buy this item?", productIcon[0].sprite ,(confirm) => {
                                 if (confirm)
                                 {
                                     TransactionAction(info.TransactionType, info)?.Invoke();

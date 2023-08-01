@@ -111,7 +111,7 @@ public class CoreGame : SingletonMono<CoreGame>
         Instance.shipsPlayer.Reverse();
         if (GameData.Player.BattleField != null)
         {
-            Instance.player.battleFieldSprite.sprite = SpriteFactory.ResourceIcons[5].sprites[GameData.Player.BattleField.Data];
+            Instance.player.battleFieldSprite.sprite = SpriteFactory.BattleFields[GameData.Player.BattleField.Data];
         }
         Instance.shipsOpponent = shipListOpponent.GetComponentsInChildren<Ship>().ToList();
         stateMachine = new StateMachine<GameState>();
@@ -271,7 +271,7 @@ public class CoreGame : SingletonMono<CoreGame>
         Instance.searchUI.gameObject.SetActive(true);
         Instance.shipListPlayer.gameObject.SetActive(false);
         Instance.searchUI.opponentProfile.UpdateUIs();
-        Instance.opponent.battleFieldSprite.sprite = SpriteFactory.ResourceIcons[(int)PNonConsumableType.BATTLE_FIELD].sprites[GameData.Opponent.BattleField.Data];
+        Instance.opponent.battleFieldSprite.sprite = SpriteFactory.BattleFields[GameData.Opponent.BattleField.Data];
         DOVirtual.DelayedCall(3, () => { stateMachine.CurrentState = GameState.Turn; });
     }
     void UpdateSearchRematch()
@@ -397,7 +397,7 @@ public class CoreGame : SingletonMono<CoreGame>
         WSClient.SubmitShip(roomId, player.ships);
         GameData.Opponent = int.Parse(json["d"]["p1"]["u"]) == PDataAuth.AuthData.userId ? ProfileData.FromJsonOpponent(GameData.Opponent, json["d"]["p2"]) : ProfileData.FromJsonOpponent(GameData.Opponent, json["d"]["p1"]);
         Instance.searchUI.opponentProfile.UpdateUIs();
-        Instance.opponent.battleFieldSprite.sprite = SpriteFactory.ResourceIcons[(int)PNonConsumableType.BATTLE_FIELD].sprites[GameData.Opponent.BattleField.Data];
+        Instance.opponent.battleFieldSprite.sprite = SpriteFactory.BattleFields[GameData.Opponent.BattleField.Data];
         CoinVFX.CoinVfx(Instance.searchUI.tresure.transform, Instance.searchUI.avatar1.transform.position, Instance.searchUI.avatar2.transform.position);
     }
     void GameStart(JSONNode json)
@@ -503,7 +503,7 @@ public class CoreGame : SingletonMono<CoreGame>
         for (int i = 0; i < json["d"]["s"].Count; i++)
         {
             int type = int.Parse(json["d"]["s"][i][0]);
-            if (!Instance.opponent.destroyedShips.Find((ship) => { return ship.octilesComposition[0].pos == new Vector2Int(int.Parse(json["d"]["s"][i][3]), int.Parse(json["d"]["s"][i][2])); }))
+            if (!Instance.opponent.destroyedShips.Find((ship) => { return ship.octilesComposition[0].pos == new Vector2Int(int.Parse(json["d"]["s"][i][2]), int.Parse(json["d"]["s"][i][3])); }))
             {
                 Ship ship = Instantiate(PrefabFactory.Ships[type]).GetComponent<Ship>();
                 ship.board = Instance.opponent;
@@ -567,7 +567,7 @@ public class CoreGame : SingletonMono<CoreGame>
             ProfileData.FromJsonOpponent(GameData.Opponent, data["p2"]) : 
             ProfileData.FromJsonOpponent(GameData.Opponent, data["p1"]);
         Instance.searchUI.opponentProfile.UpdateUIs();
-        Instance.opponent.battleFieldSprite.sprite = SpriteFactory.ResourceIcons[(int)PNonConsumableType.BATTLE_FIELD].sprites[GameData.Opponent.BattleField.Data];
+        Instance.opponent.battleFieldSprite.sprite = SpriteFactory.BattleFields[GameData.Opponent.BattleField.Data];
         for (int i = 0; i < data["s"].Count; i++)
         {
             Ship ship = Instance.shipsPlayer.Find((ship) => { 
