@@ -15,7 +15,7 @@ public class LuckyShot : SingletonMono<LuckyShot>
     public int indexShot;
     public List<GameObject> rockets;
     public List<Button> shots;
-
+    [SerializeField] GameObject adsButton;
     [SerializeField] GameObject rocketRoot;
     [SerializeField] GameObject rocketPrefab;
     [SerializeField] GameObject shotRoot;
@@ -24,17 +24,19 @@ public class LuckyShot : SingletonMono<LuckyShot>
 
     private void Start()
     {
-        ServerMessenger.AddListener<JSONNode>(ServerResponse.RECIEVE_LUCKY_SHOT, Instance.RecieveLuckyShot);
-        GameData.RocketCount.OnDataChanged += Instance.OnRocketChange;
+        ServerMessenger.AddListener<JSONNode>(ServerResponse._LUCKYSHOT_FIRE, Instance.RecieveLuckyShot);
         Timer<LuckyShot>.Instance.Init(Instance.OnTriggerTimer, Instance.OnElapseTimer);
         GameData.RocketCount.Data = Mathf.Clamp(GameData.RocketCount.Data + Timer<LuckyShot>.Instance.TriggersFromMark, 0, 3);
-        ServerMessenger.AddListener<JSONNode>(ServerResponse.RECIEVE_REWARD_ROCKET, RewardAds);
-        int count = rockets.Count;
+        int count = Instance.rockets.Count;
         for (int i = 0; i < GameData.RocketCount.Data - count; i++)
         {
             Instance.rockets.Add(Instantiate(rocketPrefab, rocketRoot.transform));
         }
-
+        if (GameData.RocketCount.Data >= 3)
+        {
+            Destroy(adsButton);
+        }
+        GameData.RocketCount.OnDataChanged += Instance.OnRocketChange;
         // To do
         Instance.shots = shotRoot.GetComponentsInChildren<Button>().ToList();
         StartCoroutine(Instance.Init());
@@ -48,7 +50,7 @@ public class LuckyShot : SingletonMono<LuckyShot>
     protected override void OnDestroy()
     {
 
-        ServerMessenger.RemoveListener<JSONNode>(ServerResponse.RECIEVE_LUCKY_SHOT, Instance.RecieveLuckyShot);
+        ServerMessenger.RemoveListener<JSONNode>(ServerResponse._LUCKYSHOT_FIRE, Instance.RecieveLuckyShot);
         GameData.RocketCount.OnDataChanged -= Instance.OnRocketChange;
         Timer<LuckyShot>.Instance.OnTrigger -= Instance.OnTriggerTimer;
         Timer<LuckyShot>.Instance.OnElapse -= Instance.OnElapseTimer;
@@ -78,19 +80,23 @@ public class LuckyShot : SingletonMono<LuckyShot>
     }
     private void RecieveLuckyShot(JSONNode node)
     {
-        GameData.RocketCount.Data--;
-        int amount = GameData.LuckyShotConfig[int.Parse(node["index"])];
-        PConsumableType.BERI.AddValue(amount);
-        if(amount == 0)
+        if (node["e"].AsInt == 0)
         {
-            Instance.shots[indexShot].GetComponent<Image>().sprite = SpriteFactory.X;
+            GameData.RocketCount.Data = node["d"]["l"]["r"].AsInt;
+            int amount = int.Parse(node["d"]["b"]);
+            PConsumableType.BERI.AddValue(amount);
+            if (amount == 0)
+            {
+                Instance.shots[indexShot].GetComponent<Image>().sprite = SpriteFactory.X;
+            }
+            else
+            {
+                Instance.shots[indexShot].GetComponent<Image>().sprite = SpriteFactory.ShipLuckyShot;
+                CoinVFX.CoinVfx(Instance.resourceUI.transform, Instance.shots[indexShot].transform.position, Instance.shots[indexShot].transform.position);
+            }
+            StartCoroutine(Instance.Suffle());
         }
-        else
-        {
-            Instance.shots[indexShot].GetComponent<Image>().sprite = SpriteFactory.ShipLuckyShot;
-            CoinVFX.CoinVfx(Instance.resourceUI.transform, Instance.shots[indexShot].transform.position, Instance.shots[indexShot].transform.position);
-        }
-        StartCoroutine(Instance.Suffle());
+
     }
 
     public void OnRocketChange(int oldValue, int newValue)
@@ -100,7 +106,7 @@ public class LuckyShot : SingletonMono<LuckyShot>
             for (int i = 0; i < newValue - oldValue; i++)
             {
                 Debug.Log("New Rocket");
-                rockets.Add(Instantiate(rocketPrefab, rocketRoot.transform));
+                Instance.rockets.Add(Instantiate(rocketPrefab, rocketRoot.transform));
             }
         }
         else
@@ -128,11 +134,11 @@ public class LuckyShot : SingletonMono<LuckyShot>
     {
         if (GameData.RocketCount.Data >= 3)
         {
-            countDown.text = "Full";
+            Instance.countDown.text = "Full";
         }
         else
         {
-            countDown.text = $"Free Rocket - {Timer<LuckyShot>.Instance.RemainTime_Sec.Hour_Minute_Second_1()}";
+            Instance.countDown.text = $"Free Rocket - {Timer<LuckyShot>.Instance.RemainTime_Sec.Hour_Minute_Second_1()}";
         }
     }
     public IEnumerator Suffle()    // To do

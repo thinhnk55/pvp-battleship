@@ -43,7 +43,7 @@ public class RankCard : CardBase<RankInfo>
             {
                 slider.gameObject.SetActive(false);
             }
-            slider.maxValue = GameData.RankConfigs[GameData.Player.Rank].Point;
+            slider.maxValue = GameData.RankConfigs[GameData.Player.Rank + 1].Point;
             slider.value = GameData.Player.Point;
             pointText?.SetText(slider.value + "/" + slider.maxValue);
         }

@@ -9,18 +9,14 @@ namespace Framework
     {
         [Header("Reference")]
         [SerializeField] TextMeshProUGUI _txtContent;
-        [SerializeField] GameObject _icon;
-        [SerializeField] GameObject _iconContainer;
         [SerializeField] GoodCollection view;
 
-        public void Construct(string msg, List<GoodInfo> goodInfos, List<GameObject> gameObjects)
+        public virtual void Construct(string msg, List<GoodInfo> goodInfos)
         {
             if (_txtContent)
             {
                 _txtContent.text = msg;
             }
-            DestroyImmediate(_icon);
-            _icon = Instantiate(_icon, _iconContainer.transform);
             view.BuildUIs(goodInfos);
         }
 

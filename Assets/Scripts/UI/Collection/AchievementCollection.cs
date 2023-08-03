@@ -27,20 +27,20 @@ public class AchievementCollection : CardCollectionBase<AchievementInfo>
                 SetCardPreview(newCard.Info);
             };
         infos = new List<AchievementInfo>();
-        var list = isSelection == false ? GameData.AchievementConfig.ToList() : GameData.AchievementConfig.ToList().GetRange(0, numberOfChild);
+        var list = isSelection == false ? GameData.AchievementConfig.ToList() : GameData.AchievementConfig.ToList();
         var progress = isPlayer == 1 ? GameData.Player.AchievementProgress : GameData.Opponent.AchievementProgress;
         for (int i = 0; i < list.Count; i++)
         {
             AchievementInfo info = list[i];
             if (isSelection)
             {
-                if (!GameData.Player.AchievementSelected.Any((select) => select!=-1 && select /100 == info.Id))
+                if (!GameData.Player.AchievementSelected.Any((select) => select!=-1 && select == info.Id))
                 {
                     info.onClick = () =>
                     {
-                        AchievementSelectionCollection.idNewSelect = info.Id * 100 + Mathf.Clamp(GameData.Player.AchievementObtained[info.Id], 0, 4);
+                        AchievementSelectionCollection.idNewSelect = info.Id;//* 100 + Mathf.Clamp(GameData.Player.AchievementObtained[info.Id], 0, 4);
                         int[] arr = new int[3] { GameData.Player.AchievementSelected[0], GameData.Player.AchievementSelected[1], GameData.Player.AchievementSelected[2] };
-                        arr[AchievementSelectionCollection.slot] = info.Id * 100 + Mathf.Clamp(GameData.Player.AchievementObtained[info.Id], 0, 4);
+                        arr[AchievementSelectionCollection.slot] = info.Id; //* 100 + Mathf.Clamp(GameData.Player.AchievementObtained[info.Id], 0, 4);
                         WSClient.RequestChangeAchievement(arr);
                         popup.ForceClose();
                     };
@@ -62,7 +62,7 @@ public class AchievementCollection : CardCollectionBase<AchievementInfo>
         if (previewCard != null)
         {
             SelectedCard = cards[0];
-            ServerMessenger.AddListener<JSONNode>(ServerResponse.RECIEVE_OBTAIN_ACHIEVEMENT, RecieveObtainAchievemnt);
+            ServerMessenger.AddListener<JSONNode>(ServerResponse._ACHIEVEMENT_REWARD, RecieveObtainAchievemnt);
         }
 
     }
@@ -74,22 +74,24 @@ public class AchievementCollection : CardCollectionBase<AchievementInfo>
     public void SetCardPreview(AchievementInfo info)
     {
         AchievementInfo _info = info;
-        info.onClick = ()=> WSClient.RequestObtainAchievemnt(_info.Id, GameData.Player.AchievementObtained[info.Id]);
+        info.onClick = ()=> WSClient.RequestObtainAchievemnt(_info.Id);
         previewCard.BuildUI(info);
     }
 
     void RecieveObtainAchievemnt(JSONNode json)
     {
-        AchievementInfo info = GameData.AchievementConfig[(AchievementType)int.Parse(json["achieId"])];
-        if (int.Parse(json["s"]) == 1)
+        AchievementInfo info = GameData.AchievementConfig[(AchievementType)int.Parse(json["d"]["a"])];
+        if (int.Parse(json["e"]) == 0)
         {
-            GameData.Player.AchievementObtained[int.Parse(json["achieId"])] = GameData.Player.AchievementObtained[int.Parse(json["achieId"])] + 1;
+            GameData.Player.AchievementObtained[int.Parse(json["d"]["a"])] = int.Parse(json["d"]["l"]);
+            info.Progress = GameData.Player.AchievementProgress[int.Parse(json["d"]["a"])];
             if (previewCard != null)
                 info.onClick = () =>
                 {
                     SetCardPreview(info);
                 };
-            cards[int.Parse(json["achieId"])].BuildUI(info);
+            cards[int.Parse(json["d"]["a"])].BuildUI(info);
+            PConsumableType.BERI.SetValue(json["d"]["g"].AsInt);
         }
         SetCardPreview(info);
     }
@@ -98,7 +100,7 @@ public class AchievementCollection : CardCollectionBase<AchievementInfo>
     {
         if (previewCard != null)
         {
-            ServerMessenger.RemoveListener<JSONNode>(ServerResponse.RECIEVE_OBTAIN_ACHIEVEMENT, RecieveObtainAchievemnt);
+            ServerMessenger.RemoveListener<JSONNode>(ServerResponse._ACHIEVEMENT_REWARD, RecieveObtainAchievemnt);
         }
     }
 

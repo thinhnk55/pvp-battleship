@@ -408,7 +408,7 @@ public class Ship : CacheMonoBehaviour
         _y = y;
         if (board.CheckUnoccupied(this, x, y))
         {
-            occupyRenderer.sprite = SpriteFactory.Occupied;
+            occupyRenderer.sprite = SpriteFactory.OccupiedPre;
             return true;
         }
         occupyRenderer.sprite = SpriteFactory.Unoccupiable;

@@ -134,29 +134,29 @@ public class AchievementCard : CardBase<AchievementInfo>
                 break;
         }
 
-        int obtain = Mathf.Clamp(GameData.Player.AchievementObtained[info.Id], 0, 4 );
+        int obtain = Mathf.Clamp(GameData.Player.AchievementObtained.GetClamp(info.Id), 0, 4 );
 
         //show unobtained info
         if (Icon != null)
-            Icon.sprite = SpriteFactory.Achievements[info.Id].sprites.GetClamp(obtain);
+            Icon.sprite = SpriteFactory.Achievements.GetClamp(info.Id).sprites[obtain];
         if (Title)
             Title.text = info.Title;
         if (Description)
-            Description.text = info.AchivementUnits.GetClamp(obtain).Description;
+            Description.text = info.AchivementUnits[obtain].Description;
         if (RewardAmount != null)
-            RewardAmount.text = "x " + info.AchivementUnits.GetClamp(obtain).RewardAmount.ToString();
+            RewardAmount.text = "x " + info.AchivementUnits[obtain].RewardAmount.ToString();
         if (Progress != null)
         {
-            Progress.maxValue = info.AchivementUnits.GetClamp(obtain).Task;
+            Progress.maxValue = info.AchivementUnits[obtain].Task;
             Progress.value = info.Progress;
         }
         if (TextProgress)
         {
-            TextProgress.text = info.Progress.ToString() + "/" + info.AchivementUnits.GetClamp(obtain).Task.ToString();
+            TextProgress.text = info.Progress.ToString() + "/" + info.AchivementUnits[obtain].Task.ToString();
         }
         if (TextObtain)
         {
-            if (info.Progress < info.AchivementUnits.GetClamp(obtain).Task)
+            if (info.Progress < info.AchivementUnits[obtain].Task)
             {
                 TextObtain.text = "";
                 Progress.gameObject.SetActive(true);
