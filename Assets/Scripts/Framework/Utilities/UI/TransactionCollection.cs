@@ -9,14 +9,14 @@ namespace Framework
 {
     public enum TransactionType
     {
-        starter,
-        usd,
-        diamond,
-        gold_avatar,
-        gold_frame,
-        gold_battlefield,
-        gold_skinship,
-        GEM_ELITE,
+        starter = 0,
+        usd = 1,
+        diamond = 2,
+        gold_avatar = 3,
+        gold_frame = 4,
+        gold_battlefield = 5,
+        gold_skinship = 6,
+        elite = 7,
     }
     public class TransactionCollection : CardCollectionBase<TransactionInfo>
     {

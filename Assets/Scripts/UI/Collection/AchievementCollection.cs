@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 
 public class AchievementCollection : CardCollectionBase<AchievementInfo>
@@ -27,8 +28,9 @@ public class AchievementCollection : CardCollectionBase<AchievementInfo>
                 SetCardPreview(newCard.Info);
             };
         infos = new List<AchievementInfo>();
-        var list = isSelection == false ? GameData.AchievementConfig.ToList() : GameData.AchievementConfig.ToList();
+        var list = GameData.AchievementConfig.ToList();
         var progress = isPlayer == 1 ? GameData.Player.AchievementProgress : GameData.Opponent.AchievementProgress;
+        var obtain = isPlayer == 1 ? GameData.Player.AchievementObtained : GameData.Opponent.AchievementObtained;
         for (int i = 0; i < list.Count; i++)
         {
             AchievementInfo info = list[i];
@@ -55,8 +57,17 @@ public class AchievementCollection : CardCollectionBase<AchievementInfo>
                     };
             }
             info.Progress = progress[i];
+            info.Obtained = GameData.Player.AchievementObtained[i];
 
             infos.Add(info);
+        }
+        if (isSelection)
+        {
+            infos.RemoveAll((info) => info.Obtained == 0);
+        }
+        else
+        {
+            Sort();
         }
         BuildUIs(infos);
         if (previewCard != null)
@@ -74,28 +85,66 @@ public class AchievementCollection : CardCollectionBase<AchievementInfo>
     public void SetCardPreview(AchievementInfo info)
     {
         AchievementInfo _info = info;
-        info.onClick = ()=> WSClient.RequestObtainAchievemnt(_info.Id);
+        if (info.AchivementUnits[info.Obtained].Task > info.Progress)
+        {
+            info.onClick = () => WSClient.RequestObtainAchievemnt(_info.Id);
+        }
         previewCard.BuildUI(info);
     }
 
     void RecieveObtainAchievemnt(JSONNode json)
     {
-        AchievementInfo info = GameData.AchievementConfig[(AchievementType)int.Parse(json["d"]["a"])];
-        if (int.Parse(json["e"]) == 0)
+        if (json["e"].AsInt ==0)
         {
-            GameData.Player.AchievementObtained[int.Parse(json["d"]["a"])] = int.Parse(json["d"]["l"]);
+            AchievementInfo info = GameData.AchievementConfig[(AchievementType)int.Parse(json["d"]["a"])];
+            GameData.Player.AchievementObtained[int.Parse(json["d"]["a"])] = int.Parse(json["d"]["l"]) + 1;
             info.Progress = GameData.Player.AchievementProgress[int.Parse(json["d"]["a"])];
+            info.Obtained = json["d"]["l"].AsInt + 1;
             if (previewCard != null)
                 info.onClick = () =>
                 {
                     SetCardPreview(info);
                 };
-            cards[int.Parse(json["d"]["a"])].BuildUI(info);
+            cards.Find((card)=> card.Info.Id == info.Id).BuildUI(info);
             PConsumableType.BERI.SetValue(json["d"]["g"].AsInt);
+            SetCardPreview(info);
         }
-        SetCardPreview(info);
+       
     }
+    void Sort()
+    {
+        infos.Sort((x, y) =>
+        {
+            if (x.Obtained <= x.AchivementUnits.Length - 1 && y.Obtained <= y.AchivementUnits.Length - 1)
+            {
+                if (x.AchivementUnits[x.Obtained].Task > x.Progress && y.AchivementUnits[y.Obtained].Task < y.Progress)
+                {
+                    return 1; // x comes before y
+                }
+                else if (x.AchivementUnits[x.Obtained].Task < x.Progress && y.AchivementUnits[y.Obtained].Task > y.Progress)
+                {
+                    return -1; // x comes after y
+                }
+                else
+                {
+                    return 0; // x and y are equal in terms of sorting order
+                }
+            }
+            else if (x.Obtained <= x.AchivementUnits.Length - 1)
+            {
+                return -1; // x comes before y (y is not in the specified range)
+            }
+            else if (y.Obtained <= y.AchivementUnits.Length - 1)
+            {
+                return 1; // x comes after y (x is not in the specified range)
+            }
+            else
+            {
+                return 0; // x and y are equal in terms of sorting order (both are not in the specified range)
+            }
 
+        });
+    }
     private void OnDestroy()
     {
         if (previewCard != null)

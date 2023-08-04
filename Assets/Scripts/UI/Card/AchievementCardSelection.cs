@@ -15,7 +15,7 @@ public class AchievementCardSelection : AchievementCard
             gameObject.SetChildrenRecursively<TextMeshProUGUI>((t) => { t.SetText(""); });
             return;
         }
-        //base.BuildUI(info);
+        this.Info = info;
         gameObject.SetChildrenRecursively<Image>((img) => { img.SetAlpha(1); });
         Id = info.Id;
         int completed = 0;

@@ -25,7 +25,7 @@ namespace Framework
                 if (info.Type == (int)PNonConsumableType.AVATAR || info.Type == (int)PNonConsumableType.AVATAR_FRAME)
                 {
                     var rect = icon.GetComponent<RectTransform>();
-                    rect.SetWidth(rect.sizeDelta.y * 0.8f);
+                    rect.SetScaleX(0.84f);
                 }
                 BG?.SetSprite(SpriteFactory.RoyalPassOther);
             }

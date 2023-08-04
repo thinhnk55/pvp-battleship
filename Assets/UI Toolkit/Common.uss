@@ -1,0 +1,21 @@
+.button {
+    width: 200px;
+    height: 200px;
+    -unity-text-outline-color: rgba(0, 0, 0, 0);
+    max-height: none;
+    max-width: none;
+    -unity-text-align: upper-center;
+    visibility: visible;
+    border-left-color: rgba(255, 235, 83, 0);
+    border-right-color: rgba(255, 235, 83, 0);
+    border-top-color: rgba(255, 235, 83, 0);
+    border-bottom-color: rgba(255, 235, 83, 0);
+    border-left-width: 5px;
+    border-right-width: 5px;
+    border-top-width: 5px;
+    border-bottom-width: 5px;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 3px;
+}

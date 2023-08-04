@@ -15,9 +15,12 @@
         _ACHIEVEMENT_REWARD = 4021,
         _CONFIG_SHOP = 4030,
         _TRANSACTION = 4031,
-        _LUCKYSHOT_CONFIG = 4040,
+        _LUCKYSHOT_EARN = 4040,
         _LUCKYSHOT_FIRE = 4041,
-
+        _CONFIG_RP = 4050,
+        _RP_DAILYQUEST_REWARD = 4052,
+        _RP_SEASONQUEST_REWARD = 4053,
+        _RP_REWARD = 4054,
 
         _FIND_MATCH = 4101,
         _SUBMIT_SHIP = 4110,
@@ -40,8 +43,12 @@
         _ACHIEVEMENT_REWARD = 4021,
         _CONFIG_SHOP = 4030,
         _TRANSACTION = 4031,
-        _LUCKYSHOT_CONFIG = 4040,
+        _LUCKYSHOT_EARN = 4040,
         _LUCKYSHOT_FIRE = 4041,
+        _CONFIG_RP = 4050,
+        _RP_DAILYQUEST_REWARD = 4052,
+        _RP_SEASONQUEST_REWARD = 4053,
+        _RP_REWARD = 4054,
 
         _QUIT_SEARCH = 4103,
         _MATCH = 4104,

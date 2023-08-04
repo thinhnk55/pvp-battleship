@@ -21,7 +21,6 @@ namespace Framework
         [SerializeField] private GameObject textPrefab; public static GameObject TextPrefab { get { return Instance.textPrefab; } }
         [SerializeField] private GameObject audioSourcePrefab; public static GameObject AudioSourcePrefab { get { return Instance.audioSourcePrefab; } }
         #endregion
-
         [SerializeField] private GameObject octile; public static GameObject Octile { get { return Instance.octile; } }
         [SerializeField] private GameObject octileUI; public static GameObject OctileUI { get { return Instance.octileUI; } }
         [SerializeField] private GameObject[] ships; public static GameObject[] Ships { get { return Instance.ships; } }
@@ -32,6 +31,9 @@ namespace Framework
         [SerializeField] private GameObject popupMessage; public static GameObject PopupMessage { get { return Instance.popupMessage; } }
         [SerializeField] private GameObject popupGood; public static GameObject PopupGood { get { return Instance.popupGood; } }
         [SerializeField] private GameObject popupUserTerms; public static GameObject PopupUserTerms { get { return Instance.popupUserTerms; } }
+        [SerializeField] private GameObject popupRPGood; public static GameObject PopupRPGood { get { return Instance.popupRPGood; } }
+
+
     }
 }
 

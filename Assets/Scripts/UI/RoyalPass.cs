@@ -9,14 +9,15 @@ using UnityEngine;
 public enum RoyalPassQuestType
 {
     SHIP_DESTROY,
-    WIN_COUNT,
+    PLAY_COUNT,
     SHIP_1_DESTROY,
     SHIP_2_DESTROY,
     SHIP_3_DESTROY,
     SHIP_4_DESTROY,
-    PLAY_COUNT,
+    WIN_COUNT,
     LUCKY_SHOT_COUNT,
-    DESTROY_SHIP_CONSECUTIVE,
+    DESTROY_SHIP_CONSECUTIVE_2,
+    DESTROY_SHIP_CONSECUTIVE_3,
     ALIVE_1_SHIP
 }
 public class RoyalPass
@@ -28,7 +29,8 @@ public class RoyalPass
         public RoyalPassQuestType Type;
         public int Require;
     }
-    public long End;
+    public int Season;
+    public int Version;
     public PDataUnit<int> Point = new PDataUnit<int>(0);
     public int PointPerLevel;
     public int Level { get => Point.Data / PointPerLevel; }
@@ -76,7 +78,10 @@ public class RoyalPass
             case RoyalPassQuestType.LUCKY_SHOT_COUNT:
                 s = $"Play {value} times Lucky Shot";
                 break;
-            case RoyalPassQuestType.DESTROY_SHIP_CONSECUTIVE:
+            case RoyalPassQuestType.DESTROY_SHIP_CONSECUTIVE_2:
+                s = $"Destroy 2 ships consecutively in {value} different battles";
+                break;
+            case RoyalPassQuestType.DESTROY_SHIP_CONSECUTIVE_3:
                 s = $"Destroy 3 ships consecutively in {value} different battles";
                 break;
             case RoyalPassQuestType.ALIVE_1_SHIP:
@@ -89,17 +94,16 @@ public class RoyalPass
     }
     public static RoyalPass ConfigFromJson(RoyalPass royalPass, JSONNode json)
     {
-        
-        royalPass.End = long.Parse(json["end"]).NowFrom0001From1970() - DateTime.UtcNow.Ticks;
-
-        royalPass.PointPerLevel = int.Parse(json["r"]);
+        Timer<RoyalPass>.Instance.BeginPoint = long.Parse(json["start_timestamp"]).NowFrom0001From1970();
+        Timer<RoyalPass>.Instance.TriggerInterval_Sec = (int)(long.Parse(json["end_timestamp"]).NowFrom0001From1970() - Timer<RoyalPass>.Instance.BeginPoint);
+        royalPass.PointPerLevel = int.Parse(json["point_per_milestone"]);
         royalPass.SeasonQuests = new RoyalPassQuest[json["season_quest"].Count];
         for (int i = 0; i < json["season_quest"].Count; i++)
         {
             RoyalPassQuest quest = new RoyalPassQuest()
             {
                 Reward = int.Parse(json["season_quest"][i]["reward"]),
-                Type = json["season_quest"][i]["require_type"].ToEnum<RoyalPassQuestType>(),
+                Type = json["season_quest"][i]["type"].ToEnum<RoyalPassQuestType>(),
                 Require = int.Parse(json["season_quest"][i]["require"]),
             };
             royalPass.SeasonQuests[i] = quest;
@@ -110,21 +114,21 @@ public class RoyalPass
             RoyalPassQuest quest = new RoyalPassQuest()
             {
                 Reward = int.Parse(json["daily_quest"][i]["reward"]),
-                Type = json["daily_quest"][i]["require_type"].ToEnum<RoyalPassQuestType>(),
+                Type = json["daily_quest"][i]["type"].ToEnum<RoyalPassQuestType>(),
                 Require = int.Parse(json["daily_quest"][i]["require"]),
             };
             royalPass.Quests[i] = quest;
         }
-        royalPass.RewardNormals = new List<Framework.GoodInfo>[json["normal"].Count];
-        for (int i = 0; i < json["normal"].Count; i++)
+        royalPass.RewardNormals = new List<Framework.GoodInfo>[json["free"].Count];
+        for (int i = 0; i < json["free"].Count; i++)
         {
             royalPass.RewardNormals[i] = new List<Framework.GoodInfo>();
-            for (int j = 0; j < json["normal"][i]["reward"].Count; j++)
+            for (int j = 0; j < json["free"][i]["reward"].Count; j++)
             {
                 royalPass.RewardNormals[i].Add(new Framework.GoodInfo()
                 {
-                    Value = int.Parse(json["normal"][i]["reward"][j]),
-                    Type = int.Parse(json["normal"][i]["reward_type"][j])
+                    Value = int.Parse(json["free"][i]["reward"][j]),
+                    Type = int.Parse(json["free"][i]["reward_type"][j])
                 });
             }
 
@@ -146,33 +150,68 @@ public class RoyalPass
     }
     public static void DataFromJson(RoyalPass royalPass, JSONNode json)
     {
-
+        royalPass.Season = json["i"].AsInt;
+        royalPass.Version = 0;
         royalPass.SeasonQuestsObtained = new PDataUnit<HashSet<int>>(new HashSet<int>());
-        for (int i = 0; i < json["rsq"].Count; i++)
+        for (int i = 0; i < json["s"]["r"].Count; i++)
         {
-            royalPass.SeasonQuestsObtained.Data.Add(json["rsq"][i].AsInt);
+            royalPass.SeasonQuestsObtained.Data.Add(json["s"]["r"][i].AsInt);
         }
-        royalPass.SeasonQuestsProgress = new int[json["sq"].Count];
-        for (int i = 0; i < json["sq"].Count; i++)
+        royalPass.SeasonQuestsProgress = new int[royalPass.SeasonQuests.Length];
+        for (int i = 0; i < royalPass.SeasonQuests.Length; i++)
         {
-            royalPass.SeasonQuestsProgress[i] = json["sq"][i].AsInt;
+            switch (royalPass.SeasonQuests[i].Type)
+            {
+                case RoyalPassQuestType.SHIP_DESTROY:
+                    royalPass.SeasonQuestsProgress[i] = json["s"]["t"].AsInt;
+                    break;
+                case RoyalPassQuestType.PLAY_COUNT:
+                    royalPass.SeasonQuestsProgress[i] = json["s"]["p"].AsInt;
+                    break;
+                case RoyalPassQuestType.SHIP_1_DESTROY:
+                    royalPass.SeasonQuestsProgress[i] = json["s"]["s"][0].AsInt;
+                    break;
+                case RoyalPassQuestType.SHIP_2_DESTROY:
+                    royalPass.SeasonQuestsProgress[i] = json["s"]["s"][1].AsInt;
+                    break;
+                case RoyalPassQuestType.SHIP_3_DESTROY:
+                    royalPass.SeasonQuestsProgress[i] = json["s"]["s"][2].AsInt;
+                    break;
+                case RoyalPassQuestType.SHIP_4_DESTROY:
+                    royalPass.SeasonQuestsProgress[i] = json["s"]["s"][3].AsInt;
+                    break;
+                case RoyalPassQuestType.WIN_COUNT:
+                    royalPass.SeasonQuestsProgress[i] = json["s"]["w"].AsInt;
+                    break;
+                case RoyalPassQuestType.LUCKY_SHOT_COUNT:
+                    royalPass.SeasonQuestsProgress[i] = json["s"]["l"].AsInt;
+                    break;
+                case RoyalPassQuestType.DESTROY_SHIP_CONSECUTIVE_2:
+                    royalPass.SeasonQuestsProgress[i] = json["s"]["t"].AsInt;
+                    break;
+                case RoyalPassQuestType.DESTROY_SHIP_CONSECUTIVE_3:
+                    royalPass.SeasonQuestsProgress[i] = json["s"]["k3"].AsInt;
+                    break;
+                case RoyalPassQuestType.ALIVE_1_SHIP:
+                    royalPass.SeasonQuestsProgress[i] = json["s"]["w1"].AsInt;
+                    break;
+                default:
+                    break;
+            }
         }
         royalPass.CurrentQuests = new PDataUnit<int[]>(new int[3] {-1,-1,-1});
-        royalPass.CurrentQuestsProgress = new int[json["pg"].Count];
-        for (int i = 0; i < json["dq"].Count; i++)
+        royalPass.CurrentQuestsProgress = new int[json["d"]["q"].Count];
+        for (int i = 0; i < json["d"]["q"].Count; i++)
         {
-            royalPass.CurrentQuests.Data[i] = json["dq"][i].AsInt;
-            royalPass.CurrentQuestsProgress[i] = json["pg"][i].AsInt;
+            royalPass.CurrentQuests.Data[i] = json["d"]["q"][i].AsInt;
+            royalPass.NormalObtains.Data.Add(json["d"]["p"][i].AsInt);
         }
-        royalPass.Point.Data = int.Parse(json["rp"]);
-        royalPass.UnlockedElite = int.Parse(json["u"]) == 1;
-        if (royalPass.UnlockedElite)
-        {
-            royalPass.EliteObtains = new PDataUnit<HashSet<int>>(new HashSet<int>());
-            royalPass.EliteObtains.Data.AddRange(json["re"].ToList());
-        }
+        royalPass.Point.Data = int.Parse(json["p"]);
+        royalPass.UnlockedElite = int.Parse(json["t"]) == 1;
+        royalPass.EliteObtains = new PDataUnit<HashSet<int>>(new HashSet<int>());
+        royalPass.EliteObtains.Data.AddRange(json["e"].ToList());
         royalPass.NormalObtains = new PDataUnit<HashSet<int>>(new HashSet<int>());
-        royalPass.NormalObtains.Data.AddRange(json["rn"].ToList());
+        royalPass.NormalObtains.Data.AddRange(json["f"].ToList());
 
     }
 }

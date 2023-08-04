@@ -13,7 +13,6 @@ public class HTTPClient : SingletonMono<HTTPClient>
         StartCoroutine(HTTPClientBase.Post(ServerConfig.HttpURL + "/" +typeLogin, json.ToString()
             , (res) => {
                 JSONNode jsonRes = JSONNode.Parse(res);
-                Debug.Log("SendDone");
                 if (int.Parse(jsonRes["error"]) == 0)
                 {
                     PDataAuth.AuthData = new AuthData();
@@ -68,7 +67,6 @@ public class HTTPClient : SingletonMono<HTTPClient>
             {"device_id", deviceId },
             {"session_info", new JSONClass()}
         };
-        Debug.Log("SendJson");
         HTTPPost(json, "gg-login");
     }
 

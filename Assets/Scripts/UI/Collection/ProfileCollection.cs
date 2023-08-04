@@ -104,7 +104,7 @@ public class ProfileCollection : CardCollectionBase<ProfileInfo>
         }
         if (rankProgress)
         {
-            rankProgress.maxValue = GameData.RankConfigs[infos.Rank].Point;
+            rankProgress.maxValue = GameData.RankConfigs.GetClamp(infos.Rank+1).Point;
             rankProgress.value = infos.Point;
             pointRank?.SetText(rankProgress.value + "/" + rankProgress.maxValue);
         }

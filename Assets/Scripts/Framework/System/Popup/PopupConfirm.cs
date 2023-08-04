@@ -25,6 +25,11 @@ namespace Framework
 
         public void Construct(string header, string content, Sprite icon, Callback<bool> onComfirm)
         {
+            _txtHeader.text = header;
+            _txtContent.text = content;
+            _icon.sprite = icon;
+            RectTransform rect = _icon.GetComponent<RectTransform>();
+            rect.SetScaleX(icon.GetSize().x / icon.GetSize().y);
             
             _txtHeader?.SetText(header);
             _txtContent?.SetText(content);

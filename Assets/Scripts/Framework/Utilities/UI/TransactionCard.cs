@@ -78,7 +78,7 @@ namespace Framework {
                     break;
                 case TransactionType.gold_skinship:
                     break;
-                case TransactionType.GEM_ELITE:
+                case TransactionType.elite:
                     break;
                 default:
                     break;
@@ -133,6 +133,15 @@ namespace Framework {
                 product.Type.Transact((int)product.Value);
             }
             PopupHelper.CreateGoods(PrefabFactory.PopupGood, "You have received", Product.ToList());
+            if (Product.Length > 1)
+            {
+                //PopupHelper.CreateGoods(PrefabFactory.PopupGood, "You have received", Product.ToList());
+
+            }
+            else
+            {
+                //PopupHelper.CreateMessage(PrefabFactory.PopupMessage, "Message" , "You have received", SpriteFactory.ResourceIcons[Product[0].Type].sprites.GetLoop(Index));
+            }
         }
         public bool IsAffordble()
         {
@@ -210,13 +219,13 @@ namespace Framework {
                 {
                     for (int i = 0; i < costAmount.Length; i++)
                     {
-                        if (info.Cost[i].Value == (int)info.Cost[i].Value)
+                        if (info.Product.Length==1)
                         {
-                            costAmount[i].text = IAP.GetProductPriceFromStore(ApplicationConfig.BundleId + "." + "gem" + "." + info.Index);
+                            costAmount[i].text = IAP.GetProductPriceFromStore(ApplicationConfig.BundleId + "." + ((PConsumableType)info.Product[0].Type).ToString().ToLower() + "." + info.Index);
                         }
                         else
                         {
-                            costAmount[i].text = IAP.GetProductPriceFromStore(ApplicationConfig.BundleId + "." + "gem" + "." + info.Index);
+                            costAmount[i].text = IAP.GetProductPriceFromStore(ApplicationConfig.BundleId + "." + ((TransactionType)info.TransactionType).ToString().ToLower());
                         }
                     }
                     for (int i = 0; i < costIcon.Length; i++)
@@ -256,16 +265,33 @@ namespace Framework {
                     }
                     else
                     {
-                        Button.onClick.AddListener(() =>
+                        if (info.Product.Length == 1)
                         {
-                            IAP.PurchaseProduct($"{ApplicationConfig.BundleId}.{((PConsumableType)info.Product[0].Type).ToString().ToLower()}.{info.Index}", (success, product) =>
+                            Button.onClick.AddListener(() =>
                             {
-                                if (success)
+                                IAP.PurchaseProduct($"{ApplicationConfig.BundleId}.{((PConsumableType)info.Product[0].Type).ToString().ToLower()}.{info.Index}", (success, product) =>
                                 {
-                                    TransactionAction(info.TransactionType, info, product)?.Invoke();
-                                }
+                                    if (success)
+                                    {
+                                        TransactionAction(info.TransactionType, info, product)?.Invoke();
+                                    }
+                                });
                             });
-                        });
+                        }
+                        else
+                        {
+                            Button.onClick.AddListener(() =>
+                            {
+                                IAP.PurchaseProduct($"{ApplicationConfig.BundleId}.{info.TransactionType.ToString().ToLower()}", (success, product) =>
+                                {
+                                    if (success)
+                                    {
+                                        TransactionAction(info.TransactionType, info, product)?.Invoke();
+                                    }
+                                });
+                            });
+                        }
+
                     }
 
                 }
@@ -344,7 +370,7 @@ namespace Framework {
             }
             else if (number / 1000 < 1000)
             {
-                s = (number/1000).ToString() + "K";
+                s = (number / 1000).ToString() + "K";
             }
             else if (number / 1000000 < 1000)
             {

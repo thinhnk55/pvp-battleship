@@ -41,7 +41,10 @@ public class QuestCollection : CardCollectionBase<QuestInfo>
                     Obtained = false,
                     OnCollect = (info) =>
                     {
-                        WSClient.RequestQuest(_i);
+                        if (GameData.RoyalPass.CurrentQuestsProgress[i] > GameData.RoyalPass.Quests[GameData.RoyalPass.CurrentQuests.Data[i]].Require)
+                        {
+                            WSClient.DailyQuestReward(_i);
+                        }
                     },
                     OnChange = (info) =>
                     {
