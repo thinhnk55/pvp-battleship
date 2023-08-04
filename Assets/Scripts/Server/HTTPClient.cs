@@ -25,6 +25,11 @@ public class HTTPClient : SingletonMono<HTTPClient>
                     {
                         Instantiate(websocket, transform.parent);
                     }
+                    if(WSClient.Instance.ws.ReadyState == WebSocketSharp.WebSocketState.Closed)
+                    {
+                        Debug.Log("Reconnect");
+                        WSClient.Instance.ws.Connect();
+                    }
                 }
                 else
                 {

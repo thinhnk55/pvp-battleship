@@ -6,20 +6,24 @@ using TMPro;
 using Unity.Services.Authentication;
 using Unity.Services.Core;
 using UnityEngine;
-
+using UnityEngine.UI;
 
 namespace Framework
 {
     public class Authentication : SingletonMono<Authentication>, IAuthentication
     {
-        public string Token;
+       // public string Token;
         public SocialAuthType type;
-        public TextMeshProUGUI Error;
-        Dictionary<SocialAuthType, ISocialAuth> auths;
+        //public TextMeshProUGUI Error;
+        private Dictionary<SocialAuthType, ISocialAuth> auths;
+        [SerializeField] GameObject LoadingUI;
+        [SerializeField] GameObject ButtonGroupIos;
+        [SerializeField] GameObject ButtonGroupAndroid;
 
         protected async override void Awake()
         {
             base.Awake();
+            SetUpLoginScreen();
             try
             {
                 await UnityServices.InitializeAsync();
@@ -27,7 +31,7 @@ namespace Framework
             catch (Exception e){
                 Debug.LogException(e);
             }
-            SetupEvents();
+            //SetupEvents();
 
             auths = new Dictionary<SocialAuthType, ISocialAuth>();
             for (int i = 0; i <= (int)SocialAuthType.Anonymous; i++)
@@ -66,9 +70,19 @@ namespace Framework
                     auths.Add((SocialAuthType)i, auth);
                 }
 
-                Debug.Log(((SocialAuthType)i).ToString() + auth);
+                //Debug.Log(((SocialAuthType)i).ToString() + auth);
             }
         }
+
+        void SetUpLoginScreen()
+        {
+#if PLATFORM_ANDROID
+            ButtonGroupIos.SetActive(false);
+#else
+            ButtonGroupAndroid.SetActive(false);
+#endif
+        }
+
         void SetupEvents()
         {
             AuthenticationService.Instance.SignedIn += () => {
@@ -122,7 +136,7 @@ namespace Framework
 
         public void Initialize()
         {
-            auths[this.type].Initialize();
+            //auths[this.type].Initialize();
         }
 
 #if PLATFORM_IOS
@@ -155,7 +169,15 @@ namespace Framework
 
         public void Signin(int type)
         {
+            if (!IsAllowedLogin()) return;
+
             auths[(SocialAuthType)type].SignIn();
+            LoadingUI.SetActive(true);
+        }
+
+        public bool IsAllowedLogin()
+        {
+            return GameData.AcceptLoginTerm[0] && GameData.AcceptLoginTerm[1];
         }
 
         public void Signout(int type)

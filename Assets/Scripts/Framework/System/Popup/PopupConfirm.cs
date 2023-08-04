@@ -25,9 +25,10 @@ namespace Framework
 
         public void Construct(string header, string content, Sprite icon, Callback<bool> onComfirm)
         {
-            _txtHeader.text = header;
-            _txtContent.text = content;
-            _icon.sprite = icon;
+            
+            _txtHeader?.SetText(header);
+            _txtContent?.SetText(content);
+            _icon?.SetSprite(icon);
             OnConfirm += onComfirm;
         }
 
