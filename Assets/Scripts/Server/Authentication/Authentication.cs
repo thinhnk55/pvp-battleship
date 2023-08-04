@@ -177,7 +177,22 @@ namespace Framework
 
         public bool IsAllowedLogin()
         {
-            return GameData.AcceptLoginTerm[0] && GameData.AcceptLoginTerm[1];
+            if(GameData.AcceptLoginTerm[0] && GameData.AcceptLoginTerm[1])
+            {
+                return true;
+            }
+            else
+            {
+                if (!GameData.AcceptLoginTerm[0])
+                {
+                    ButtonOpenTermPopup.OnOpenTermPopup(ButtonOpenTermPopup.TermType.PRIVATE_POLICY);
+                }
+                else
+                {
+                    ButtonOpenTermPopup.OnOpenTermPopup(ButtonOpenTermPopup.TermType.USER_AGREEMENT);
+                }
+                return false;
+            }
         }
 
         public void Signout(int type)
