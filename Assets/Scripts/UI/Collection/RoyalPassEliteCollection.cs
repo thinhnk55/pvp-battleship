@@ -38,7 +38,7 @@ public class RoyalPassEliteCollection : CardCollectionBase<RoyalPassInfo>
                 Elite = true,
                 Obtain = (info) =>
                 {
-                    WSClient.RequestReceiveRoyalPass(info.Id, 1);
+                    WSClient.RoyalPassReward(info.Id, 1);
                 }
             });
         }

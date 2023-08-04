@@ -29,13 +29,12 @@ public class RoyalPassPopup : MonoBehaviour
         TransactionInfo transactionInfo = new TransactionInfo()
         {
             Product = new GoodInfo[1] { new GoodInfo() { Type = (int)PNonConsumableType.ELITE, Value = 0 } },
-            Cost = new GoodInfo[1] { GameData.TransactionConfigs[TransactionType.GEM_ELITE][0].Cost[0] },
-            TransactionType = TransactionType.GEM_ELITE,
+            Cost = new GoodInfo[1] { new GoodInfo() { Type = 0} },
+            TransactionType = TransactionType.elite,
             Index = 0,
         };
         upgradePassCard.BuildUI(transactionInfo);
 
-        Timer<RoyalPass>.Instance.TriggerInterval_Sec = GameData.RoyalPass.End.NowFrom0001From1970().ToSecond();
         Timer<RoyalPass>.Instance.OnElapse += OnElapsed;
         Timer<RoyalPass>.Instance.OnTrigger += OnTrigger;
         upgradePass.SetActive(!GameData.RoyalPass.UnlockedElite);
@@ -67,7 +66,7 @@ public class RoyalPassPopup : MonoBehaviour
                 Elite = false,
                 Obtain = (info) =>
                 {
-                    WSClient.RequestReceiveRoyalPass(GameData.RoyalPass.Level, 0);
+                    WSClient.RoyalPassReward(GameData.RoyalPass.Level, 0);
                 }   
             });
             eliteCollection.ModifyUIAt(GameData.RoyalPass.Level, new RoyalPassInfo()
@@ -79,7 +78,7 @@ public class RoyalPassPopup : MonoBehaviour
                 Elite = true,
                 Obtain = (info) =>
                 {
-                    WSClient.RequestReceiveRoyalPass(GameData.RoyalPass.Level, 0);
+                    WSClient.RoyalPassReward(GameData.RoyalPass.Level, 0);
                 }
             });
         }
@@ -111,9 +110,9 @@ public class RoyalPassPopup : MonoBehaviour
 
     public void UpgradePass()
     {
-        if (GameData.TransactionConfigs[TransactionType.GEM_ELITE][0].Cost[0].Value > PConsumableType.GEM.GetValue())
+        if (GameData.TransactionConfigs[TransactionType.elite][0].Cost[0].Value > PConsumableType.GEM.GetValue())
         {
-            TransactionCard.RequestTransaction((int)TransactionType.GEM_ELITE, 0);
+            TransactionCard.RequestTransaction((int)TransactionType.elite, 0);
         }
         else
         {

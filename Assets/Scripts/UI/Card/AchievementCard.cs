@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEditor;
+using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.UI;
 [Serializable]
@@ -100,10 +101,13 @@ public struct AchievementInfo
                 return $"Win {amount} battles when you have only one ship left that hasn't been destroyed";
             case AchievementType.SPEND_GEM:
                 return $"Spend {amount} gem";
+            case AchievementType.FRAME_COLLECTOR:
+                return $"Collect {amount} frames";
             default:
                 return "";
         }
     }
+
 }
 
 public class AchievementCard : CardBase<AchievementInfo>
@@ -134,37 +138,44 @@ public class AchievementCard : CardBase<AchievementInfo>
                 break;
         }
 
-        int obtain = Mathf.Clamp(GameData.Player.AchievementObtained.GetClamp(info.Id), 0, 4 );
-
         //show unobtained info
         if (Icon != null)
-            Icon.sprite = SpriteFactory.Achievements.GetClamp(info.Id).sprites[obtain];
+            Icon.sprite = SpriteFactory.Achievements.GetClamp(info.Id).sprites[info.Obtained];
         if (Title)
             Title.text = info.Title;
         if (Description)
-            Description.text = info.AchivementUnits[obtain].Description;
+            Description.text = info.AchivementUnits.GetClamp(info.Obtained).Description;
         if (RewardAmount != null)
-            RewardAmount.text = "x " + info.AchivementUnits[obtain].RewardAmount.ToString();
+            RewardAmount.text = "x " + TransactionCard.GetStringNumber(info.AchivementUnits.GetClamp(info.Obtained).RewardAmount);
         if (Progress != null)
         {
-            Progress.maxValue = info.AchivementUnits[obtain].Task;
+            Progress.maxValue = info.AchivementUnits.GetClamp(info.Obtained).Task;
             Progress.value = info.Progress;
         }
         if (TextProgress)
         {
-            TextProgress.text = info.Progress.ToString() + "/" + info.AchivementUnits[obtain].Task.ToString();
+            TextProgress.text = info.Progress.ToString() + "/" + info.AchivementUnits.GetClamp(info.Obtained).Task.ToString();
         }
         if (TextObtain)
         {
-            if (info.Progress < info.AchivementUnits[obtain].Task)
+            if (info.Obtained >= info.AchivementUnits.Length)
             {
-                TextObtain.text = "";
-                Progress.gameObject.SetActive(true);
+                TextObtain.text = "Completed";
+                Progress.gameObject.SetActive(false);
             }
             else
             {
-                Progress.gameObject.SetActive(false);
+                if (info.Progress < info.AchivementUnits.GetClamp(info.Obtained).Task)
+                {
+                    TextObtain.text = "";
+                    Progress.gameObject.SetActive(true);
+                }
+                else{
+                    TextObtain.text = "Obtain";
+                    Progress.gameObject.SetActive(false);
+                }
             }
+
         }
         OnClick = info.onClick;
         if (Button)

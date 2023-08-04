@@ -13,8 +13,9 @@ public class LuckyShot : SingletonMono<LuckyShot>
 {
 
     public int indexShot;
-    public List<GameObject> rockets;
+    public List<Image> rockets;
     public List<Button> shots;
+    [SerializeField] GameObject earnButton;
     [SerializeField] GameObject adsButton;
     [SerializeField] GameObject rocketRoot;
     [SerializeField] GameObject rocketPrefab;
@@ -22,19 +23,29 @@ public class LuckyShot : SingletonMono<LuckyShot>
     [SerializeField] GameObject resourceUI;
     [SerializeField] TextMeshProUGUI countDown;
 
+    [SerializeField] Sprite emptyRocket;
+    [SerializeField] Sprite rocket;
     private void Start()
     {
         ServerMessenger.AddListener<JSONNode>(ServerResponse._LUCKYSHOT_FIRE, Instance.RecieveLuckyShot);
         Timer<LuckyShot>.Instance.Init(Instance.OnTriggerTimer, Instance.OnElapseTimer);
-        GameData.RocketCount.Data = Mathf.Clamp(GameData.RocketCount.Data + Timer<LuckyShot>.Instance.TriggersFromMark, 0, 3);
+        GameData.RocketCount.Data = Mathf.Clamp(GameData.RocketCount.Data, 0, 3);
         int count = Instance.rockets.Count;
-        for (int i = 0; i < GameData.RocketCount.Data - count; i++)
+        if (GameData.RocketCount.Data == 3)
         {
-            Instance.rockets.Add(Instantiate(rocketPrefab, rocketRoot.transform));
+            Instance.earnButton.SetActive(false);
+            Instance.adsButton.SetActive(false);
         }
-        if (GameData.RocketCount.Data >= 3)
+        for (int i = 0; i < rockets.Count; i++)
         {
-            Destroy(adsButton);
+            if (i< GameData.RocketCount.Data)
+            {
+                rockets[i].SetSprite(rocket);
+            }
+            else
+            {
+                rockets[i].SetSprite(emptyRocket);
+            }
         }
         GameData.RocketCount.OnDataChanged += Instance.OnRocketChange;
         // To do
@@ -103,32 +114,35 @@ public class LuckyShot : SingletonMono<LuckyShot>
     {
         if (newValue > oldValue)
         {
+            if (newValue == 3)
+            {
+                Instance.earnButton.SetActive(false);
+                Instance.adsButton.SetActive(false);
+            }
             for (int i = 0; i < newValue - oldValue; i++)
             {
                 Debug.Log("New Rocket");
-                Instance.rockets.Add(Instantiate(rocketPrefab, rocketRoot.transform));
+                //
+                rockets[oldValue + i].SetSprite(rocket);
             }
         }
         else
         {
             if (oldValue == 3)
             {
-                Timer<LuckyShot>.Instance.BeginPoint = DateTime.UtcNow.Ticks; 
+                Instance.earnButton.SetActive(true);
+                Instance.adsButton.SetActive(true);
             }
             for (int i = 0; i < oldValue - newValue; i++)
             {
-                Destroy(Instance.rockets[0]);
-                Instance.rockets.RemoveAt(0);
+                //
+                rockets[newValue + i].SetSprite(emptyRocket);
             }
         }
     }
     public void OnTriggerTimer()
     {
-        if (GameData.RocketCount.Data<3)
-        {
-            GameData.RocketCount.Data++;
 
-        }
     }
     public void OnElapseTimer()
     {
@@ -138,7 +152,14 @@ public class LuckyShot : SingletonMono<LuckyShot>
         }
         else
         {
-            Instance.countDown.text = $"Free Rocket - {Timer<LuckyShot>.Instance.RemainTime_Sec.Hour_Minute_Second_1()}";
+            if (Timer<LuckyShot>.Instance.TriggersFromBegin>=1)
+            {
+                Instance.countDown.text = $"Collect";
+            }
+            else
+            {
+                Instance.countDown.text = $"{Timer<LuckyShot>.Instance.RemainTime_Sec.Hour_Minute_Second_1()}";
+            }
         }
     }
     public IEnumerator Suffle()    // To do
@@ -179,5 +200,10 @@ public class LuckyShot : SingletonMono<LuckyShot>
     public void RewardAds(JSONNode json)
     {
         GameData.RocketCount.Data++;
+    }
+
+    public void Earn()
+    {
+        WSClient.LuckyShotEarn();
     }
 }

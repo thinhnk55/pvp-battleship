@@ -38,7 +38,7 @@ public class SeasonQuestCollection : CardCollectionBase<QuestInfo>
                 Obtained = GameData.RoyalPass.SeasonQuestsObtained.Data.Contains(i),
                 OnCollect = (info) =>
                 {
-                    WSClient.RequestSeasonQuest(info.Id);
+                    WSClient.SeasonQuestReward(info.Id);
                 },
 
             });

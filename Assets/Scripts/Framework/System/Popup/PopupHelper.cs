@@ -31,7 +31,7 @@ namespace Framework
             return popup;
         }
 
-        public static PopupMessage CreateMessage(GameObject prefab, string header , string msg, GameObject icon)
+        public static PopupMessage CreateMessage(GameObject prefab, string header , string msg, Sprite icon)
         {
             PopupMessage popup = Create<PopupMessage>(prefab);
             popup.Construct(header, msg, icon);

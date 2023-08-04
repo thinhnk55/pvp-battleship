@@ -9,14 +9,12 @@ namespace Framework
         [Header("Reference")]
         [SerializeField] TextMeshProUGUI _header;
         [SerializeField] TextMeshProUGUI _txtContent;
-        [SerializeField] GameObject _icon;
-        [SerializeField] GameObject _iconContainer;
-        public void Construct(string header, string msg, GameObject icon)
+        [SerializeField] Image _icon;
+        public void Construct(string header, string msg, Sprite icon)
         {
             _header.text = header;
             _txtContent.text = msg;
-            DestroyImmediate(_icon);
-            _icon = Instantiate(icon, _iconContainer.transform);
+            _icon.sprite = icon;
         }
     }
 }

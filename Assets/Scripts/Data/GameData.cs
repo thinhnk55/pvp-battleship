@@ -154,21 +154,21 @@ public class ProfileData
         profileData.WinStreakMax = data["d"]["s"]["ml"].AsInt;
         //
 
-        profileData.AchievementObtained = new List<int>(data["d"]["a"]["ra"].Count);
+        profileData.AchievementObtained = new List<int>(data["d"]["a"]["ac"]["r"].Count);
         for (int i = 0; i < GameData.AchievementConfig.Count; i++)
         {
-            profileData.AchievementObtained.Add(data["d"]["a"]["ra"][i]["l"].AsInt);
+            profileData.AchievementObtained.Add(0);
         }
 
-        for (int i = 0; i < data["d"]["a"]["ra"].Count; i++)
+        for (int i = 0; i < data["d"]["a"]["ac"]["r"].Count; i++)
         {
-            profileData.AchievementObtained[data["d"]["a"]["ra"][i]["a"].AsInt] = data["d"]["a"]["ra"][i]["l"].AsInt;
+            profileData.AchievementObtained[data["d"]["a"]["ac"]["r"][i]["a"].AsInt] = data["d"]["a"]["ac"]["r"][i]["l"].AsInt + 1;
         }
         //profileData.AchievementObtained = data["statistics"]["achie_r"].ToList();
         profileData.AchievementSelected = new int[3] {-1,-1,-1};
-        for (int i = 0; i < data["d"]["a"]["aa"].Count; i++)
+        for (int i = 0; i < data["d"]["a"]["ac"]["a"].Count; i++)
         {
-            profileData.AchievementSelected[i] = data["d"]["a"]["aa"][i].AsInt;
+            profileData.AchievementSelected[i] = data["d"]["a"]["ac"]["a"][i].AsInt;
         }
         Debug.Log(profileData.ToString());
         return profileData;
@@ -201,21 +201,21 @@ public class ProfileData
         profileData.WinStreak = data["d"]["s"]["ws"].AsInt;
         profileData.WinStreakMax = data["d"]["s"]["ml"].AsInt;
 
-        profileData.AchievementObtained = new List<int>(data["d"]["a"]["ra"].Count);
+        profileData.AchievementObtained = new List<int>(data["d"]["a"]["ac"]["r"].Count);
         for (int i = 0; i < GameData.AchievementConfig.Count; i++)
         {
-            profileData.AchievementObtained.Add(data["d"]["a"]["ra"][i]["l"].AsInt);
+            profileData.AchievementObtained.Add(0);
         }
 
-        for (int i = 0; i < data["d"]["a"]["ra"].Count; i++)
+        for (int i = 0; i < data["d"]["a"]["ac"]["r"].Count; i++)
         {
-            profileData.AchievementObtained[data["d"]["a"]["ra"][i]["a"].AsInt] = data["d"]["a"]["ra"][i]["l"].AsInt;
+            profileData.AchievementObtained[data["d"]["a"]["ac"]["r"][i]["a"].AsInt] = data["d"]["a"]["ac"]["r"][i]["l"].AsInt + 1;
         }
         //profileData.AchievementObtained = data["statistics"]["achie_r"].ToList();
         profileData.AchievementSelected = new int[3] { -1, -1, -1 };
-        for (int i = 0; i < data["d"]["a"]["aa"].Count; i++)
+        for (int i = 0; i < data["d"]["a"]["ac"]["a"].Count; i++)
         {
-            profileData.AchievementSelected[i] = data["d"]["a"]["aa"][i].AsInt;
+            profileData.AchievementSelected[i] = data["d"]["a"]["ac"]["a"][i].AsInt;
         }
         return profileData;
     }

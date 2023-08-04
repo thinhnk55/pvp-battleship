@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEditor.PlayerSettings;
 
 namespace Framework
 {
@@ -18,6 +19,7 @@ namespace Framework
                 _txtContent.text = msg;
             }
             view.BuildUIs(goodInfos);
+            view.SetLayout();
         }
 
     }

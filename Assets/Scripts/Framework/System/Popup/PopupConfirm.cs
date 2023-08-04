@@ -28,6 +28,8 @@ namespace Framework
             _txtHeader.text = header;
             _txtContent.text = content;
             _icon.sprite = icon;
+            RectTransform rect = _icon.GetComponent<RectTransform>();
+            rect.SetScaleX(icon.GetSize().x / icon.GetSize().y);
             OnConfirm += onComfirm;
         }
 
