@@ -191,7 +191,7 @@ public class LoginApple : ISocialAuth
                 var appleIdCredential = credential as IAppleIDCredential;
                 Debug.Log("Sign in with apple: " + Encoding.UTF8.GetString(appleIdCredential.AuthorizationCode));
                 HTTPClient.Instance.LoginApple(Encoding.UTF8.GetString(appleIdCredential.AuthorizationCode));
-                //this.SetupGameMenu(credential.User, credential);
+                this.SetupGameMenu(credential.User, credential);
             },
             error =>
             {

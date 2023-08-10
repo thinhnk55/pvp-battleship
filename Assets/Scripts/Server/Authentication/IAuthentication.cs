@@ -6,7 +6,7 @@ public interface IAuthentication
 {
     public void Authenticate();
     public void Signup(int type);
-    public void Signin(int type);
+    public void Signin(TypeLogin type);
     public void Signout(int type);
     public void Delete();
     public void UpdatePlayerName();

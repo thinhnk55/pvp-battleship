@@ -309,6 +309,7 @@ public class Ship : CacheMonoBehaviour
         // valid
         if (CheckShip(board, x, y, out int _x, out int _y, out bool inside))
         {
+            Debug.LogWarning("CheckShip");
             board.AssignShip(this, _x, _y);
             occupyRenderer.enabled = false;
             transform.parent = board.shipRoot.transform;

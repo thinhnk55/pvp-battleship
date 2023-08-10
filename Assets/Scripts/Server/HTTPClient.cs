@@ -10,25 +10,25 @@ public class HTTPClient : SingletonMono<HTTPClient>
 
     private void HTTPPost(JSONNode json, String typeLogin)
     {
-        StartCoroutine(HTTPClientBase.Post(ServerConfig.HttpURL + "/" +typeLogin, json.ToString()
+        StartCoroutine(HTTPClientBase.Post(ServerConfig.HttpURL +typeLogin, json.ToString()
             , (res) => {
                 JSONNode jsonRes = JSONNode.Parse(res);
                 if (int.Parse(jsonRes["error"]) == 0)
                 {
                     PDataAuth.AuthData = new AuthData();
-                    PDataAuth.AuthData.userId = int.Parse(jsonRes["data"]["userid"]);
+                    PDataAuth.AuthData.userId = int.Parse(jsonRes["data"]["id"]);
                     PDataAuth.AuthData.username = jsonRes["data"]["username"];
-                    PDataAuth.AuthData.refresh_token = jsonRes["data"]["refresh_token"];
+                    //PDataAuth.AuthData.refresh_token = jsonRes["data"]["refresh_token"];
                     PDataAuth.AuthData.token = jsonRes["data"]["token"];
                     if (WSClient.Instance == null)
                     {
                         Instantiate(websocket, transform.parent);
                     }
-                    if(WSClient.Instance.ws.ReadyState == WebSocketSharp.WebSocketState.Closed)
+/*                    if (WSClient.Instance.ws.ReadyState == WebSocketSharp.WebSocketState.Closed)
                     {
                         Debug.Log("Reconnect");
                         WSClient.Instance.ws.Connect();
-                    }
+                    }*/
                 }
                 else
                 {
@@ -54,7 +54,16 @@ public class HTTPClient : SingletonMono<HTTPClient>
             {"session_info", new JSONClass()}
         };
 
-        HTTPPost(json, "anonymous-login");
+        HTTPPost(json, "login");
+    }
+
+    public void LoginByGuest(string token)
+    {
+        JSONNode json = new JSONClass()
+        {
+            {"token", token}
+        };
+        HTTPPost(json, "/login/guest");
     }
 
     public void LoginGoogle(string idToken)
@@ -63,11 +72,9 @@ public class HTTPClient : SingletonMono<HTTPClient>
 
         JSONNode json = new JSONClass()
         {
-            {"id_token",  idToken},
-            {"device_id", deviceId },
-            {"session_info", new JSONClass()}
+            {"token",  idToken},
         };
-        HTTPPost(json, "gg-login");
+        HTTPPost(json, "/login/google");
     }
 
     public void LoginApple(string authentication)
@@ -76,12 +83,9 @@ public class HTTPClient : SingletonMono<HTTPClient>
 
         JSONNode json = new JSONClass()
         {
-            {"appleCode",  authentication},
-            {"device_id", deviceId },
-            {"session_info", new JSONClass() },
-            {"type", "ios" }
+            {"token",  authentication},
         };
 
-        HTTPPost(json, "ap-register");
+        HTTPPost(json, "/login/apple");
     }
 }

@@ -102,6 +102,7 @@ public class Board : CacheMonoBehaviour
         ship.Move(x,y);
         ship.octilesOccupy.Add(octiles[y][x]);
         ship.octilesComposition.Add(octiles[y][x]);
+        ship.transform.parent = this.shipRoot.transform;
         for (int i = 0; i < curPoses.Count; i++)
         {
             for (int j = -1; j < 2; j++)

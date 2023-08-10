@@ -15,7 +15,8 @@ namespace Framework
        // public string Token;
         public SocialAuthType type;
         //public TextMeshProUGUI Error;
-        private Dictionary<SocialAuthType, ISocialAuth> auths;
+        private Dictionary<SocialAuthType, ISocialAuth> auths = new Dictionary<SocialAuthType, ISocialAuth>();
+
         [SerializeField] GameObject LoadingUI;
         [SerializeField] GameObject ButtonGroupIos;
         [SerializeField] GameObject ButtonGroupAndroid;
@@ -33,7 +34,9 @@ namespace Framework
             }
             //SetupEvents();
 
+
             auths = new Dictionary<SocialAuthType, ISocialAuth>();
+
             for (int i = 0; i <= (int)SocialAuthType.Anonymous; i++)
             {
                 ISocialAuth auth = null;
@@ -58,10 +61,10 @@ namespace Framework
 #endif
                         break;
                     case SocialAuthType.Anonymous:
-                        auth = new AnonymousAuth();
+                        auth = new LoginGuest();
                         break;
                     default:
-                        auth = new AnonymousAuth();
+                        auth = new LoginGuest();
                         break;
                 }
                 if (auth != null)
@@ -167,11 +170,11 @@ namespace Framework
             throw new NotImplementedException();
         }
 
-        public void Signin(int type)
+        public void Signin(TypeLogin type)
         {
             if (!IsAllowedLogin()) return;
 
-            auths[(SocialAuthType)type].SignIn();
+            auths[type.AuthType].SignIn();
             LoadingUI.SetActive(true);
         }
 

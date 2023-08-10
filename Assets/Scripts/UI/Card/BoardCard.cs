@@ -2,6 +2,7 @@ using Framework;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+//using Unity.Android.Types;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -18,6 +19,7 @@ public struct ShipInfo
         info.x = ship.octilesComposition[0].pos.x;
         info.y = ship.octilesComposition[0].pos.y;
         info.type = ship.octilesComposition.Count - 1;
+        Debug.LogError(info.x + " ; " + info.y + "=>>>>" + info.type);
         int d = 0;
         if (ship.Dir == Vector2Int.right)
         {
@@ -53,6 +55,7 @@ public class BoardCard : CardBase<BoardInfo>
     [SerializeField] Transform rootShips;
     RectTransform rect;
     [SerializeField] Button DeleteBtn;
+    [SerializeField] GameObject Board;
     private void Awake()
     {
         rect = GetComponent<RectTransform>();
@@ -94,16 +97,17 @@ public class BoardCard : CardBase<BoardInfo>
         {
             RenderShip(info.boardInfo[i]);
         }
+        // O nay chua luu doi hinh
         if (info.boardInfo.Count==0)
         {
-            DeleteBtn.gameObject.SetActive(false);
+            Board.SetActive(false);
+            //DeleteBtn.gameObject.SetActive(false);
             Button.onClick.RemoveAllListeners();
             if (CoreGame.Instance.player.ships.Count==10)
             {
                 Button.onClick.AddListener(()=>
                 {
                     Save();
-
                 });
             }
             else
@@ -118,11 +122,12 @@ public class BoardCard : CardBase<BoardInfo>
         }
         else
         {
+            Board.SetActive(true);
             Button.onClick.RemoveAllListeners();
             Button.onClick.AddListener(Load);
             DeleteBtn.onClick.RemoveAllListeners();
             DeleteBtn.onClick.AddListener(Delete);
-            DeleteBtn.gameObject.SetActive(true);
+            //DeleteBtn.gameObject.SetActive(true);
         }
     }
 
@@ -133,7 +138,7 @@ public class BoardCard : CardBase<BoardInfo>
         {
             CoreGame.Instance.player.AssignShip(CoreGame.Instance.shipsPlayer[i], Info.boardInfo[i].x, Info.boardInfo[i].y);
             CoreGame.Instance.player.ships[i].Dir = Ship.GetDir(Info.boardInfo[i].dir);
-            Collection.GetComponent<PopupBehaviour>().ForceClose();
+            Collection.GetComponent<PopupBehaviour>().ForceClose();     
         }
     }
 
@@ -144,8 +149,10 @@ public class BoardCard : CardBase<BoardInfo>
         s.transform.eulerAngles = new Vector3(0,0,- ship.dir * 90);
     }
 
+    // Luu bang luu doi hinh vao game data
     public void Save()
     {
+        Board.SetActive(true);
         BoardInfo info = new BoardInfo();
         info.Id = Info.Id;
         info.row = CoreGame.Instance.player.row;
@@ -172,6 +179,7 @@ public class BoardCard : CardBase<BoardInfo>
     }
     public void Delete()
     {
+        Board.SetActive(false);
         BoardInfo info = new BoardInfo();
         info.Id = Info.Id;
         info.row = CoreGame.Instance.player.row;
