@@ -170,11 +170,11 @@ namespace Framework
             throw new NotImplementedException();
         }
 
-        public void Signin(TypeLogin type)
+        public void Signin(LoginType type)
         {
             if (!IsAllowedLogin()) return;
 
-            auths[type.AuthType].SignIn();
+            auths[type.authType].SignIn();
             LoadingUI.SetActive(true);
         }
 
