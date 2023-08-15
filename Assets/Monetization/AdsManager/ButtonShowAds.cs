@@ -11,9 +11,9 @@ public class ButtonShowAds : ButtonBase
     [SerializeField] UnityEvent rewardCallback;
     [SerializeField] int adsIndex;
 
-    public void ShowAds()
+    public void ShowAds(string customData = null)
     {
-         AdsManager.ShowRewardAds(()=> rewardCallback?.Invoke(), AdsManager.RewardAdUnitId[adsIndex]);
+         AdsManager.ShowRewardAds(()=> rewardCallback?.Invoke(), AdsManager.RewardAdUnitId[adsIndex], customData);
     }
 
     protected override void Button_OnClicked()
