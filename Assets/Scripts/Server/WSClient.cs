@@ -35,7 +35,8 @@ public class WSClient : WSClientBase
         ServerMessenger.AddListener<JSONNode>(ServerResponse.RECIEVE_JOIN_TREASURE_ROOM, ReceiveJoinTreasureRoom);
 
         //not config
-        ServerMessenger.AddListener<JSONNode>(ServerResponse.RECIEVE_CHANGE_QUEST, ReceiveChangeQuest);
+        ServerMessenger.AddListener<JSONNode>(ServerResponse._RP_CHANGE_QUEST, ReceiveChangeQuest);
+        ServerMessenger.AddListener<JSONNode>(ServerResponse._RP_CHANGE_QUEST, AddQuest);
         ServerMessenger.AddListener<JSONNode>(ServerResponse.RECIEVE_CLAIM_ALL_ROYALPASS, ReceiveClaimAllRoyalPass);
         ServerMessenger.AddListener<JSONNode>(ServerResponse._GAME_RECONNECT, RecieveReconnect);
 
@@ -59,7 +60,8 @@ public class WSClient : WSClientBase
         ServerMessenger.RemoveListener<JSONNode>(ServerResponse.RECIEVE_JOIN_TREASURE_ROOM, ReceiveJoinTreasureRoom);
 
         //not config
-        ServerMessenger.RemoveListener<JSONNode>(ServerResponse.RECIEVE_CHANGE_QUEST, ReceiveChangeQuest);
+        ServerMessenger.RemoveListener<JSONNode>(ServerResponse._RP_CHANGE_QUEST, ReceiveChangeQuest);
+        ServerMessenger.RemoveListener<JSONNode>(ServerResponse._RP_CHANGE_QUEST, AddQuest);
         ServerMessenger.RemoveListener<JSONNode>(ServerResponse.RECIEVE_CLAIM_ALL_ROYALPASS, ReceiveClaimAllRoyalPass);
         ServerMessenger.RemoveListener<JSONNode>(ServerResponse._GAME_RECONNECT, RecieveReconnect);
 
@@ -77,24 +79,18 @@ public class WSClient : WSClientBase
         MusicType.MAINMENU.PlayMusic();
         PConsumableType.GEM.SetValue(int.Parse(data["d"]["d"]));
         PConsumableType.BERI.SetValue(int.Parse(data["d"]["g"]));
-        PNonConsumableType.AVATAR_FRAME.FromJson(data["d"]["a"]["a_l"]);
-        PNonConsumableType.AVATAR_FRAME.FromJson(data["d"]["a"]["f_l"]);
-        PNonConsumableType.BATTLE_FIELD.FromJson(data["d"]["a"]["b_l"]);
+        PNonConsumableType.AVATAR.FromJson(data["d"]["a"]["k"]["al"]);
+        PNonConsumableType.AVATAR_FRAME.FromJson(data["d"]["a"]["k"]["fl"]);
+        PNonConsumableType.BATTLE_FIELD.FromJson(data["d"]["a"]["k"]["bl"]);
+        PNonConsumableType.ELITE.GetValue().Add(data["d"]["a"]["r"]["t"].AsInt == 1? 0 : 1);
         GameData.RocketCount.Data = data["d"]["a"]["l"]["r"].AsInt;
+        GameData.Player = ProfileData.FromJson(GameData.Player, data);
         Timer<LuckyShot>.Instance.BeginPoint = data["d"]["a"]["l"]["t"].AsLong.NowFrom0001From1970();
         RoyalPass.DataFromJson(GameData.RoyalPass, data["d"]["a"]["r"]);
-        //PNonConsumableType.SKIN_SHIP.FromJson(data["d"]["a"]["ssA"]);
-        GameData.Player = ProfileData.FromJson(GameData.Player, data);
-        //RoyalPass.DataFromJson(GameData.RoyalPass, data["royalPass"]);
-        //Timer<LuckyShot>.Instance.BeginPoint = long.Parse(data["timer"]["lfb"]).NowFrom0001From1970();
-        //Timer<Gift>.Instance.BeginPoint = long.Parse(data["timer"]["lcr"]).NowFrom0001From1970();
-        //Timer<RoyalPass>.Instance.BeginPoint = GameData.RoyalPass.End;
-        //Timer<QuestCard>.Instance.BeginPoint = 300000000; //long.Parse(data["timer"]["as"]).NowFrom0001From1970();
-        //GameData.ProgressGift = int.Parse(data["timer"]["cr"]);
-        //CoreGame.timeInit = int.Parse(data["t"]);
         Timer<LuckyShot>.Instance.TriggerInterval_Sec = GameData.LuckyShotCoolDown;
         Timer<Gift>.Instance.TriggerInterval_Sec = GameData.GiftCoolDown;
         Timer<RankCollection>.Instance.TriggerInterval_Sec = GameData.RankReceiveCoolDown;
+        GameData.Starter = data["d"]["a"]["s"].AsInt == 1;
     }
     #region Rank
     private void GetCheckRank()
@@ -262,7 +258,6 @@ public class WSClient : WSClientBase
         TransactionType id = data["d"]["s"].ToEnum<TransactionType>();
         int index = data["d"]["p"].AsInt;
         GameData.TransactionConfigs[id][index].Transact();
-        Messenger.Broadcast(GameEvent.TRANSACTION, id, index);
     }
     #endregion
     #region Achievement
@@ -679,7 +674,7 @@ public class WSClient : WSClientBase
         for (int i = 0; i < json["elite"].Count; i++)
         {
             eliteReceive.Add(json["elite"][i].AsInt);
-            var list = GameData.RoyalPass.RewardElites[json["normal"][i].AsInt];
+            var list = GameData.RoyalPass.RewardElites[json["elite"][i].AsInt];
             for (int j = 0; j < list.Count; j++)
             {
                 if (list[j].Type.GetPResourceType() == PResourceType.Nonconsumable)
@@ -714,8 +709,19 @@ public class WSClient : WSClientBase
     }
     private void ReceiveChangeQuest(JSONNode json)
     {
-        GameData.RoyalPass.CurrentQuests.Data[json["index"].AsInt] = json["n"].AsInt;
+        GameData.RoyalPass.CurrentQuests.Data[json["d"]["i"].AsInt] = json["d"]["n"].AsInt;
         Timer<QuestCard>.Instance.Begin();
+    }
+    private void AddQuest()
+    {
+        JSONNode jsonNode = new JSONClass()
+        {
+            { "id", ServerResponse.REQUEST_CLAIM_ALL_ROYALPASS.ToJson() },
+        };
+    }
+    private void AddQuest(JSONNode json)
+    {
+        GameData.RoyalPass.CurrentQuests.Data[json["d"]["i"].AsInt] = json["d"]["n"].AsInt;
     }
     #endregion
     #region Other Feature

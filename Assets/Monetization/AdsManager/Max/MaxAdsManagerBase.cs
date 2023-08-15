@@ -170,8 +170,9 @@ public abstract class MaxAdsManagerBase : IAdsManager
     public virtual void ShowInterstialAds()
     {
     }
-    public virtual void ShowRewardAds(Callback onRewardShowed, string id)
+    public virtual void ShowRewardAds(Callback onRewardShowed, string id, string customdata = null)
     {
+
     }
  
     public void SetUserId(string id)

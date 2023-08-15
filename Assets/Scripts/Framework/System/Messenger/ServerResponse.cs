@@ -21,6 +21,9 @@
         _RP_DAILYQUEST_REWARD = 4052,
         _RP_SEASONQUEST_REWARD = 4053,
         _RP_REWARD = 4054,
+        _RP_CHANGE_QUEST = 4055,
+        _RP_UPGRADE = 4056,
+        _RP_ADD_QUEST = 4057,
         _CONFIG_ADS = 4060,
 
         _FIND_MATCH = 4101,
@@ -50,6 +53,9 @@
         _RP_DAILYQUEST_REWARD = 4052,
         _RP_SEASONQUEST_REWARD = 4053,
         _RP_REWARD = 4054,
+        _RP_CHANGE_QUEST = 4055,
+        _RP_UPGRADE = 4056,
+        _RP_ADD_QUEST = 4057,
         _CONFIG_ADS = 4060,
 
         _QUIT_SEARCH = 4103,

@@ -1,5 +1,6 @@
 using DG.Tweening;
 using Framework;
+using SimpleJSON;
 using System;
 using System.Collections.Generic;
 using TMPro;
@@ -16,7 +17,7 @@ public class RoyalPassPopup : MonoBehaviour
     [SerializeField] private RoyalPassFreeCollection freeCollection;
     [SerializeField] private RoyalPassEliteCollection eliteCollection;
     [SerializeField] private GameObject upgradePass;
-    [SerializeField] private TransactionCard upgradePassCard;
+    [SerializeField] private GameObject upgradePassCard;
 
     private Tween pointTweenText;
     void Start()
@@ -33,13 +34,18 @@ public class RoyalPassPopup : MonoBehaviour
             TransactionType = TransactionType.elite,
             Index = 0,
         };
-        upgradePassCard.BuildUI(transactionInfo);
 
         Timer<RoyalPass>.Instance.OnElapse += OnElapsed;
         Timer<RoyalPass>.Instance.OnTrigger += OnTrigger;
-        upgradePass.SetActive(!GameData.RoyalPass.UnlockedElite);
+        upgradePass.SetActive(!PNonConsumableType.ELITE.GetValue().Contains(0));
         PNonConsumableType.ELITE.GetData().OnDataChanged += RoyalPassPopup_OnDataChanged;
     }
+
+    private void OnEliteUnlock(bool arg1, bool arg2)
+    {
+        eliteCollection.UpdateUIs();
+    }
+
     private void OnDestroy()
     {
         Timer<RoyalPass>.Instance.OnElapse -= OnElapsed;
@@ -48,7 +54,6 @@ public class RoyalPassPopup : MonoBehaviour
     }
     private void RoyalPassPopup_OnDataChanged(HashSet<int> arg1, HashSet<int> arg2)
     {
-        GameData.RoyalPass.UnlockedElite = true;
         upgradePass.SetActive(false);
         eliteCollection.UpdateUIs();
     }
@@ -110,16 +115,28 @@ public class RoyalPassPopup : MonoBehaviour
 
     public void UpgradePass()
     {
-        if (GameData.TransactionConfigs[TransactionType.elite][0].Cost[0].Value > PConsumableType.GEM.GetValue())
+        IAP.PurchaseProduct($"{ApplicationConfig.BundleId}.elite", (success, product) =>
         {
-            TransactionCard.RequestTransaction((int)TransactionType.elite, 0);
-        }
-        else
-        {
+            if (success)
+            {
+                JSONNode jsonNode = new JSONClass
+                {
+                    { "id", ServerResponse._RP_UPGRADE.ToJson() },
+                    { "r", JSON.Parse(product.receipt.Replace("\\", "").Replace("\"{", "{").Replace("}\"", "}")) }
+                };
+                WSClientBase.Instance.Send(jsonNode);
+            }
+        });
 
-        }
     }
+    public void UpgradePass(JSONNode data)
+    {
+        if (data["e"].AsInt == 0)
+        {
+            PNonConsumableType.ELITE.AddValue(0);
+        }
 
+    }
     public void ClaimAll()
     {
         WSClient.RequestClaimAllRoyalPass();

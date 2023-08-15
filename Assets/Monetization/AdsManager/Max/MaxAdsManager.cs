@@ -42,12 +42,12 @@ namespace Monetization
                 MaxSdk.ShowInterstitial(AdsManager.InterAdUnitId);
             }
         }
-        public override void ShowRewardAds(Callback onRewardShowed, string rewardAdUnitId)
+        public override void ShowRewardAds(Callback onRewardShowed, string rewardAdUnitId, string customdata = null)
         {
             OnRewardShowed = onRewardShowed;
             if (MaxSdk.IsRewardedAdReady(rewardAdUnitId))
             {
-                MaxSdk.ShowRewardedAd(rewardAdUnitId);
+                MaxSdk.ShowRewardedAd(rewardAdUnitId, null, customdata);
             }
         }
     }

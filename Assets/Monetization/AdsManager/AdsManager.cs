@@ -50,9 +50,9 @@ namespace Monetization
         {
             adsManager.ShowInterstialAds();
         }
-        public static void ShowRewardAds(Callback onRewardShowed, string id)
+        public static void ShowRewardAds(Callback onRewardShowed, string id, string customdata = null)
         {
-            adsManager.ShowRewardAds(onRewardShowed, id);
+            adsManager.ShowRewardAds(onRewardShowed, id, customdata);
         }
         public static void SetUserId(string id)
         {

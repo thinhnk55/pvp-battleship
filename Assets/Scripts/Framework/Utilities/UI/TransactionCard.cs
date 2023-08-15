@@ -79,6 +79,10 @@ namespace Framework {
                 case TransactionType.gold_skinship:
                     break;
                 case TransactionType.elite:
+                    cost_type.Add(0);
+                    cost_value.Add(data["price"].AsFloat);
+                    product_value.Add(1);
+                    product_type.Add((int)PNonConsumableType.ELITE);
                     break;
                 default:
                     break;
@@ -265,7 +269,7 @@ namespace Framework {
                     }
                     else
                     {
-                        if (info.Product.Length == 1)
+                        if (info.Product.Length == 1 && info.TransactionType!= TransactionType.elite)
                         {
                             Button.onClick.AddListener(() =>
                             {
@@ -322,12 +326,11 @@ namespace Framework {
         {
             UnityAction action = null;
             action += () => { };
-            if (transactionType == TransactionType.usd)
+            if (Info.Cost[0].Type == 0)
             {
                 action = () =>
                 {
-                    Debug.Log(product.receipt.Substring(0, product.receipt.Length));
-                    RequestTransaction( (int)Info.TransactionType, Info.Index, JSON.Parse(product.receipt.Substring(0, product.receipt.Length)));
+                    RequestTransaction((int)Info.TransactionType, Info.Index, product.receipt.Replace("\\","").Replace("\"{","{").Replace("}\"", "}"));
                 };
             }
             else
@@ -346,7 +349,7 @@ namespace Framework {
             }
             return action;
         }
-        public static void RequestTransaction(int id, int index, JSONNode data = null)
+        public static void RequestTransaction(int id, int index, string data = null)
         {
             JSONNode jsonNode = new JSONClass()
             {
@@ -356,7 +359,7 @@ namespace Framework {
             };
             if (data!=null)
             {
-                jsonNode.Add("r", data);
+                jsonNode.Add("r", JSON.Parse(data));
             }
             WSClientBase.Instance.Send(jsonNode);
         }

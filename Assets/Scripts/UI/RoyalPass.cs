@@ -38,7 +38,6 @@ public class RoyalPass
     public int[] NormalProgresses;
     public List<Framework.GoodInfo>[] RewardNormals;
 
-    public bool UnlockedElite;
     public int[] EliteProgresses;
     public PDataUnit<HashSet<int>> EliteObtains =  new PDataUnit<HashSet<int>>(new HashSet<int>());
     public List<Framework.GoodInfo>[] RewardElites;
@@ -204,10 +203,9 @@ public class RoyalPass
         for (int i = 0; i < json["d"]["q"].Count; i++)
         {
             royalPass.CurrentQuests.Data[i] = json["d"]["q"][i].AsInt;
-            royalPass.NormalObtains.Data.Add(json["d"]["p"][i].AsInt);
+            royalPass.CurrentQuestsProgress[i] = json["d"]["p"][i].AsInt;
         }
         royalPass.Point.Data = int.Parse(json["p"]);
-        royalPass.UnlockedElite = int.Parse(json["t"]) == 1;
         royalPass.EliteObtains = new PDataUnit<HashSet<int>>(new HashSet<int>());
         royalPass.EliteObtains.Data.AddRange(json["e"].ToList());
         royalPass.NormalObtains = new PDataUnit<HashSet<int>>(new HashSet<int>());

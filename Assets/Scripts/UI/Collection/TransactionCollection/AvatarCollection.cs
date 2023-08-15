@@ -39,7 +39,7 @@ public class AvatarCollection : TransactionCollection
         for (int i = 0; i < GameData.TransactionConfigs[transactionType].Count; i++)
         {
             var transaction = GameData.TransactionConfigs[transactionType][i];
-            if ((isUnlocked == PNonConsumableType.AVATAR.GetValue().Contains((int)transaction.Product[0].Value)  && isObtainable && transaction.Cost[0].Value >= 0) 
+            if ((isUnlocked == PNonConsumableType.AVATAR.GetValue().Contains((int)transaction.Product[0].Value)  && isObtainable) 
                 || (!isObtainable && transaction.Cost[0].Value==-1 && !PNonConsumableType.AVATAR.GetValue().Contains((int)transaction.Product[0].Value)))
             {
                 transactionInfos.Add(transaction);

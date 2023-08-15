@@ -33,7 +33,7 @@ public class RoyalPassEliteCollection : CardCollectionBase<RoyalPassInfo>
             {
                 Id = _i,
                 Obtained = GameData.RoyalPass.EliteObtains.Data.Contains(_i),
-                Unlocked = GameData.RoyalPass.UnlockedElite && GameData.RoyalPass.Level >= _i,
+                Unlocked = PNonConsumableType.ELITE.GetValue().Contains(0) && GameData.RoyalPass.Level >= _i,
                 Reward = goods,
                 Elite = true,
                 Obtain = (info) =>
