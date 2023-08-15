@@ -28,6 +28,7 @@ public class LuckyShot : SingletonMono<LuckyShot>
     private void Start()
     {
         ServerMessenger.AddListener<JSONNode>(ServerResponse._LUCKYSHOT_FIRE, Instance.RecieveLuckyShot);
+        ServerMessenger.AddListener<JSONNode>(ServerResponse.RECIEVE_REWARD_ROCKET, RewardAds);
         Timer<LuckyShot>.Instance.Init(Instance.OnTriggerTimer, Instance.OnElapseTimer);
         GameData.RocketCount.Data = Mathf.Clamp(GameData.RocketCount.Data, 0, 3);
         int count = Instance.rockets.Count;
@@ -62,6 +63,7 @@ public class LuckyShot : SingletonMono<LuckyShot>
     {
 
         ServerMessenger.RemoveListener<JSONNode>(ServerResponse._LUCKYSHOT_FIRE, Instance.RecieveLuckyShot);
+        ServerMessenger.RemoveListener<JSONNode>(ServerResponse.RECIEVE_REWARD_ROCKET, RewardAds);
         GameData.RocketCount.OnDataChanged -= Instance.OnRocketChange;
         Timer<LuckyShot>.Instance.OnTrigger -= Instance.OnTriggerTimer;
         Timer<LuckyShot>.Instance.OnElapse -= Instance.OnElapseTimer;
@@ -197,9 +199,9 @@ public class LuckyShot : SingletonMono<LuckyShot>
         }
     }
 
-    public void RewardAds(JSONNode json)
+    public void RewardAds(JSONNode data)
     {
-        GameData.RocketCount.Data++;
+        GameData.RocketCount.Data = int.Parse(data["l"]["r"]);
     }
 
     public void Earn()

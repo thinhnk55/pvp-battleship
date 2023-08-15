@@ -13,6 +13,12 @@ namespace Monetization
         Open,
         Native
     }
+
+    public enum AdsName
+    {
+        battleship_android_luckyshot_rocket,
+    }
+
     public class AdsManager : MonoBehaviour
     {
 #if UNITY_IOS

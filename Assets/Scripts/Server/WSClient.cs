@@ -1,4 +1,5 @@
 using Framework;
+using JetBrains.Annotations;
 using Monetization;
 using SimpleJSON;
 using Sirenix.Utilities;
@@ -29,6 +30,7 @@ public class WSClient : WSClientBase
         ServerMessenger.AddListener<JSONNode>(ServerResponse._RP_SEASONQUEST_REWARD, SeasonQuestReward);
         ServerMessenger.AddListener<JSONNode>(ServerResponse._RP_REWARD, RoyalPassReward);
 
+        ServerMessenger.AddListener<JSONNode>(ServerResponse._CONFIG_ADS, ReceiveAdsConfig);
         ServerMessenger.AddListener<JSONNode>(ServerResponse.RECIEVE_TREASURE_CONFIG, ReceiveTreasureConfig);
         ServerMessenger.AddListener<JSONNode>(ServerResponse.RECIEVE_JOIN_TREASURE_ROOM, ReceiveJoinTreasureRoom);
 
@@ -69,6 +71,8 @@ public class WSClient : WSClientBase
         GetCheckRank();
         GetConfigAchievement();
         GetConfigRoyalPass();
+
+        RequestAdsConfig();
         AdsManager.SetUserId(PDataAuth.AuthData.userId.ToString());
         MusicType.MAINMENU.PlayMusic();
         PConsumableType.GEM.SetValue(int.Parse(data["d"]["d"]));
@@ -305,6 +309,30 @@ public class WSClient : WSClientBase
     }
     #endregion
     #region Lucky Shot
+    public void RequestAdsConfig()
+    {
+        JSONNode jsonNode = new JSONClass()
+        {
+            { "id", ServerRequest._CONFIG_ADS.ToJson() },
+            { "v",  new JSONData(0)}
+        };
+        Instance.Send(jsonNode);
+    }
+    public void ReceiveAdsConfig(JSONNode data) 
+    {
+        Debug.LogError(data["d"]["ad_unit"].Count);
+        for (int i=0; i < data["d"]["ad_unit"].Count; i++)
+        {
+            switch (data["d"]["ad_unit"][i]["name"].ToString())
+            {
+                case "battleship_android_luckyshot_rocket":
+                    Debug.Log("alo");
+                    GameData.BeriBonusAmount = int.Parse(data["d"]["ad_unit"][i]["reward"]);
+                    Debug.Log(GameData.BeriBonusAmount);
+                    break;
+            }
+        }
+    }
     public void LuckyShotEarn(JSONNode data)
     {
         GameData.RocketCount.Data = data["d"]["l"]["r"].AsInt;
