@@ -41,7 +41,7 @@ public class QuestCollection : CardCollectionBase<QuestInfo>
                     Obtained = false,
                     OnCollect = (info) =>
                     {
-                        if (GameData.RoyalPass.CurrentQuestsProgress[i] > GameData.RoyalPass.Quests[GameData.RoyalPass.CurrentQuests.Data[i]].Require)
+                        if (GameData.RoyalPass.CurrentQuestsProgress[_i] > GameData.RoyalPass.Quests[GameData.RoyalPass.CurrentQuests.Data[_i]].Require)
                         {
                             WSClient.DailyQuestReward(_i);
                         }
@@ -52,7 +52,20 @@ public class QuestCollection : CardCollectionBase<QuestInfo>
                     }
                 });
             }
-
+        }
+        if (infos.Count<3)
+        {
+            infos.Add(new QuestInfo()
+            {
+                Id = -1,
+                Require = 0,
+                Progress = 0,
+                Reward = 0,
+                Description = "",
+                Obtained = false,
+                OnCollect = null,
+                OnChange = null
+            });
         }
         BuildUIs(infos);
     }
@@ -65,7 +78,7 @@ public class QuestCollection : CardCollectionBase<QuestInfo>
     {
         JSONNode jsonNode = new JSONClass()
         {
-            { "id", ServerResponse.REQUEST_CHANGE_QUEST.ToJson() },
+            { "id", ServerResponse._RP_CHANGE_QUEST.ToJson() },
             { "index", new JSONData(index)},
         };
         WSClient.Instance.Send(jsonNode);

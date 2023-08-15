@@ -21,6 +21,9 @@
         _RP_DAILYQUEST_REWARD = 4052,
         _RP_SEASONQUEST_REWARD = 4053,
         _RP_REWARD = 4054,
+        _RP_CHANGE_QUEST = 4055,
+        _RP_UPGRADE = 4056,
+        _RP_ADD_QUEST = 4057,
 
         _FIND_MATCH = 4101,
         _SUBMIT_SHIP = 4110,
@@ -49,6 +52,9 @@
         _RP_DAILYQUEST_REWARD = 4052,
         _RP_SEASONQUEST_REWARD = 4053,
         _RP_REWARD = 4054,
+        _RP_CHANGE_QUEST = 4055,
+        _RP_UPGRADE = 4056,
+        _RP_ADD_QUEST = 4057,
 
         _QUIT_SEARCH = 4103,
         _MATCH = 4104,

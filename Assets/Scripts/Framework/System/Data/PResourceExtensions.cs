@@ -62,7 +62,7 @@ namespace Framework
             type.GetData().Data.Clear();
             for (int i = 0; i < data.Count; i++)
             {
-                type.AddValue(int.Parse(data[i]));
+                type.AddValue(data[i].AsInt);
             }
         }
     }

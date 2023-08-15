@@ -24,6 +24,7 @@ public class QuestCard : CardBase<QuestInfo>
     [SerializeField] TextMeshProUGUI progress;
     [SerializeField] Button collect;
     [SerializeField] Button change;
+    [SerializeField] Button add;
     [SerializeField] Image obtainIndicator;
 
     protected override void OnClicked(QuestInfo info)
@@ -34,45 +35,55 @@ public class QuestCard : CardBase<QuestInfo>
     public override void BuildUI(QuestInfo info)
     {
         base.BuildUI(info);
-        reward?.SetText(info.Reward.ToString());
-        des?.SetText(info.Description);
-        progress?.SetText(info.Progress.ToString()+"/"+info.Require.ToString());
-        if (!info.Obtained)
-        {
-            obtainIndicator?.gameObject.SetActive(false);
-            collect?.onClick.AddListener(() =>
+        if (info.Id != -1) {
+            add?.gameObject.SetActive(false);
+            reward?.SetText(info.Reward.ToString());
+            des?.SetText(info.Description);
+            progress?.SetText(info.Progress.ToString() + "/" + info.Require.ToString());
+            if (!info.Obtained)
             {
-                if (info.OnCollect != null)
+                obtainIndicator?.gameObject.SetActive(false);
+                collect?.onClick.AddListener(() =>
                 {
-                    info.OnCollect?.Invoke(info);
-                }
-            });
-            change?.onClick.AddListener(() =>
-            {
-                if (info.OnChange != null)
-                {
-                    info.OnChange?.Invoke(info);
-                }
-
-            });
-        }
-        else
-        {
-            if (!change) // not the normal quest
-            {
-                obtainIndicator?.gameObject.SetActive(true);
-                gameObject.SetChildrenRecursively<Image>((img) =>
-                {
-                    img.color = Color.gray;
+                    if (info.OnCollect != null)
+                    {
+                        info.OnCollect?.Invoke(info);
+                    }
                 });
-                collect.gameObject.SetActive(false);
-            }
+                change?.onClick.AddListener(() =>
+                {
+                    if (info.OnChange != null)
+                    {
+                        info.OnChange?.Invoke(info);
+                    }
 
+                });
+            }
+            else
+            {
+                if (!change) // season quest
+                {
+                    obtainIndicator?.gameObject.SetActive(true);
+                    gameObject.SetChildrenRecursively<Image>((img) =>
+                    {
+                        img.color = Color.gray;
+                    });
+                    collect.gameObject.SetActive(false);
+                }
+            }
+            if (progressBar)
+            {
+                progressBar.maxValue = info.Require;
+                progressBar.value = info.Progress;
+            }
         }
-        if (progressBar)
+        else // watch ads card
         {
-            progressBar.maxValue = info.Require;
-            progressBar.value = info.Progress;
+            progressBar.gameObject.SetActive(false);
+            collect.gameObject.SetActive(false);
+            change.gameObject.SetActive(false);
+            des?.SetText("Watch ads add quest");
+            add.gameObject.SetActive(true);
         }
     }
 }
