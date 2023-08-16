@@ -14,9 +14,12 @@ namespace Monetization
         Native
     }
 
-    public enum AdsName
+    public enum AdsIndex
     {
-        battleship_android_luckyshot_rocket,
+        Get_Beri = 0,
+        Get_Rocket = 1,
+        Get_Quest = 2,
+        Change_Quest = 3,
     }
 
     public class AdsManager : MonoBehaviour

@@ -16,7 +16,7 @@ namespace Monetization
             MaxSdkCallbacks.OnSdkInitializedEvent += (MaxSdkBase.SdkConfiguration sdkConfiguration) =>
             {
                 // AppLovin SDK is initialized, start loading ads
-                InitializeBannerAds();
+                //InitializeBannerAds();
                 //InitializeInterstitialAds();
                 InitializeRewardedAds();
             };
