@@ -11,7 +11,7 @@ namespace Framework
             base.Button_OnClicked();
             WSClientBase.Instance.ws.Close();
             SceneTransitionHelper.Load(ESceneName.PreHome);
-            //WSClientBase.Instance;
+            DestroyImmediate(WSClientBase.Instance.gameObject); 
         }
     }
 

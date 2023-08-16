@@ -27,7 +27,7 @@ public class LuckyShot : SingletonMono<LuckyShot>
     [SerializeField] Sprite rocket;
     private void Start()
     {
-        ServerMessenger.AddListener<JSONNode>(ServerResponse.RECIEVE_REWARD_ROCKET, RewardAds);
+        //ServerMessenger.AddListener<JSONNode>(ServerResponse.RECIEVE_REWARD_ROCKET, RewardAds);
         ServerMessenger.AddListener<JSONNode>(ServerResponse._LUCKYSHOT_FIRE, Instance.LuckyShotFire);
         Timer<LuckyShot>.Instance.Init(Instance.OnTriggerTimer, Instance.OnElapseTimer);
         GameData.RocketCount.Data = Mathf.Clamp(GameData.RocketCount.Data, 0, 3);
@@ -61,7 +61,7 @@ public class LuckyShot : SingletonMono<LuckyShot>
     }
     protected override void OnDestroy()
     {
-        ServerMessenger.RemoveListener<JSONNode>(ServerResponse.RECIEVE_REWARD_ROCKET, RewardAds);
+        //ServerMessenger.RemoveListener<JSONNode>(ServerResponse.RECIEVE_REWARD_ROCKET, RewardAds);
         ServerMessenger.RemoveListener<JSONNode>(ServerResponse._LUCKYSHOT_FIRE, Instance.LuckyShotFire);
         GameData.RocketCount.OnDataChanged -= Instance.OnRocketChange;
         Timer<LuckyShot>.Instance.OnTrigger -= Instance.OnTriggerTimer;

@@ -15,14 +15,14 @@ public class SkinShipCollection : TransactionCollection
     void Awake()
     {
         UpdateUIs();
-        ServerMessenger.AddListener<JSONNode>(ServerResponse.RECIEVE_CHANGE_SKIN_SHIP, ReceiveChangeSkinShip);
+        //ServerMessenger.AddListener<JSONNode>(ServerResponse.RECIEVE_CHANGE_SKIN_SHIP, ReceiveChangeSkinShip);
         PNonConsumableType.SKIN_SHIP.GetData().OnDataChanged += OnDataChanged;
 
     }
     private void OnDestroy()
     {
         PNonConsumableType.SKIN_SHIP.GetData().OnDataChanged -= OnDataChanged;
-        ServerMessenger.RemoveListener<JSONNode>(ServerResponse.RECIEVE_CHANGE_SKIN_SHIP, ReceiveChangeSkinShip);
+        //ServerMessenger.RemoveListener<JSONNode>(ServerResponse.RECIEVE_CHANGE_SKIN_SHIP, ReceiveChangeSkinShip);
     }
     private void OnDataChanged(HashSet<int> arg1, HashSet<int> arg2)
     {
@@ -36,7 +36,7 @@ public class SkinShipCollection : TransactionCollection
         for (int i = 0; i < GameData.TransactionConfigs[transactionType].Count; i++)
         {
             var transaction = GameData.TransactionConfigs[transactionType][i];
-            if ((isUnlocked == PNonConsumableType.SKIN_SHIP.GetValue().Contains((int)transaction.Product[0].Value) && isObtainable && transaction.Cost[0].Value >= 0)
+            if ((isUnlocked == PNonConsumableType.SKIN_SHIP.GetValue().Contains((int)transaction.Product[0].Value) && isObtainable && ((isUnlocked) || (!isUnlocked && transaction.Cost[0].Value >= 0)))
                 || (!isObtainable && transaction.Cost[0].Value == -1 && !PNonConsumableType.SKIN_SHIP.GetValue().Contains((int)transaction.Product[0].Value)))
             {
                 transactionInfos.Add(transaction);

@@ -10,7 +10,7 @@ namespace Framework
     {
         [Header("Reference")]
         [SerializeField] TextMeshProUGUI _txtContent;
-        [SerializeField] GoodCollection view;
+        public GoodCollection view;
 
         public virtual void Construct(string msg, List<GoodInfo> goodInfos)
         {
@@ -19,7 +19,7 @@ namespace Framework
                 _txtContent.text = msg;
             }
             view.BuildUIs(goodInfos);
-            view.SetLayout();
+            view.SetLayout(Mathf.Clamp(500 - goodInfos.Count * 100, 180, 500));
         }
 
     }

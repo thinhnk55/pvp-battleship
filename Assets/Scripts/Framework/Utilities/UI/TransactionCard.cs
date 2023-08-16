@@ -136,7 +136,14 @@ namespace Framework {
                 var product = Product[i];
                 product.Type.Transact((int)product.Value);
             }
-            PopupHelper.CreateGoods(PrefabFactory.PopupGood, "You have received", Product.ToList());
+            if (Product.Length == 1 && Product[0].Type.GetPResourceType() == PResourceType.Nonconsumable)
+            {
+                PopupHelper.CreateGoods(PrefabFactory.PopupGoodApply, "You have received", Product.ToList());
+            }
+            else
+            {
+                PopupHelper.CreateGoods(PrefabFactory.PopupGood, "You have received", Product.ToList());
+            }
             if (Product.Length > 1)
             {
                 //PopupHelper.CreateGoods(PrefabFactory.PopupGood, "You have received", Product.ToList());

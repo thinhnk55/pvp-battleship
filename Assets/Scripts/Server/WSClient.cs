@@ -14,7 +14,10 @@ using UnityEngine.UI;
 public class WSClient : WSClientBase
 {
     [SerializeField] string text;
-
+    public void RequestServer()
+    {
+        Instance.Send(JSONNode.Parse(text));
+    }
     protected override void Start()
     {
         base.Start();
@@ -37,7 +40,7 @@ public class WSClient : WSClientBase
         //not config
         ServerMessenger.AddListener<JSONNode>(ServerResponse._RP_CHANGE_QUEST, ReceiveChangeQuest);
         ServerMessenger.AddListener<JSONNode>(ServerResponse._RP_CHANGE_QUEST, AddQuest);
-        ServerMessenger.AddListener<JSONNode>(ServerResponse.RECIEVE_CLAIM_ALL_ROYALPASS, ReceiveClaimAllRoyalPass);
+        //ServerMessenger.AddListener<JSONNode>(ServerResponse.RECIEVE_CLAIM_ALL_ROYALPASS, ReceiveClaimAllRoyalPass);
         ServerMessenger.AddListener<JSONNode>(ServerResponse._GAME_RECONNECT, RecieveReconnect);
 
     }
@@ -62,7 +65,7 @@ public class WSClient : WSClientBase
         //not config
         ServerMessenger.RemoveListener<JSONNode>(ServerResponse._RP_CHANGE_QUEST, ReceiveChangeQuest);
         ServerMessenger.RemoveListener<JSONNode>(ServerResponse._RP_CHANGE_QUEST, AddQuest);
-        ServerMessenger.RemoveListener<JSONNode>(ServerResponse.RECIEVE_CLAIM_ALL_ROYALPASS, ReceiveClaimAllRoyalPass);
+        //ServerMessenger.RemoveListener<JSONNode>(ServerResponse.RECIEVE_CLAIM_ALL_ROYALPASS, ReceiveClaimAllRoyalPass);
         ServerMessenger.RemoveListener<JSONNode>(ServerResponse._GAME_RECONNECT, RecieveReconnect);
 
     }
@@ -73,7 +76,6 @@ public class WSClient : WSClientBase
         GetCheckRank();
         GetConfigAchievement();
         GetConfigRoyalPass();
-
         RequestAdsConfig();
         AdsManager.SetUserId(PDataAuth.AuthData.userId.ToString());
         MusicType.MAINMENU.PlayMusic();
@@ -82,7 +84,11 @@ public class WSClient : WSClientBase
         PNonConsumableType.AVATAR.FromJson(data["d"]["a"]["k"]["al"]);
         PNonConsumableType.AVATAR_FRAME.FromJson(data["d"]["a"]["k"]["fl"]);
         PNonConsumableType.BATTLE_FIELD.FromJson(data["d"]["a"]["k"]["bl"]);
-        PNonConsumableType.ELITE.GetValue().Add(data["d"]["a"]["r"]["t"].AsInt == 1? 0 : 1);
+        PNonConsumableType.ELITE.GetData().Data = new HashSet<int>();
+        if (data["d"]["a"]["r"]["t"].AsInt == 1)
+        {
+            PNonConsumableType.ELITE.GetValue().Add(0);
+        }
         GameData.RocketCount.Data = data["d"]["a"]["l"]["r"].AsInt;
         GameData.Player = ProfileData.FromJson(GameData.Player, data);
         Timer<LuckyShot>.Instance.BeginPoint = data["d"]["a"]["l"]["t"].AsLong.NowFrom0001From1970();
@@ -146,7 +152,7 @@ public class WSClient : WSClientBase
     {
         JSONNode jsonNode = new JSONClass()
         {
-            { "id", ServerResponse.REQUEST_CHANGE_SKIN_SHIP.ToJson() },
+            //{ "id", ServerResponse.REQUEST_CHANGE_SKIN_SHIP.ToJson() },
             { "s", i.ToString()}
         };
         Instance.Send(jsonNode);
@@ -192,25 +198,11 @@ public class WSClient : WSClientBase
 
     }
 
-    private void RequestRoyalPassConfig()
-    {
-        JSONNode jsonNode = new JSONClass()
-        {
-            { "id", ServerResponse.REQUEST_COUNTDOWN_CONFIG.ToJson() },
-        };
-        Instance.Send(jsonNode);
-    }
-    private void ReceiveRoyalPassConfig(JSONNode data)
-    {
-        GameData.RoyalPass = RoyalPass.ConfigFromJson(GameData.RoyalPass, data);
-        SceneTransitionHelper.Load(ESceneName.Home);
-    }
-
     public static void RequestGiftConfig()
     {
         JSONNode jsonNode = new JSONClass()
         {
-            { "id", ServerResponse.REQUEST_GIFT_CONFIG.ToJson() },
+            //{ "id", ServerResponse.REQUEST_GIFT_CONFIG.ToJson() },
         };
         Instance.Send(jsonNode);
     }
@@ -245,8 +237,10 @@ public class WSClient : WSClientBase
             }
             else
             {
-                List<TransactionInfo> infos = new List<TransactionInfo>();
-                infos.Add(TransactionInfo.FromJson(data["d"]["shops"][@enum.GetValue(i).ToString()], i, 0));
+                List<TransactionInfo> infos = new List<TransactionInfo>
+                {
+                    TransactionInfo.FromJson(data["d"]["shops"][@enum.GetValue(i).ToString()], i, 0)
+                };
                 GameData.TransactionConfigs.Add((TransactionType)i, infos);
             }
 
@@ -276,6 +270,9 @@ public class WSClient : WSClientBase
         for (int i = 0; i < data["d"]["achievements"].Count; i++)
         {
             GameData.AchievementConfig.Add((AchievementType)i, AchievementInfo.FromJson(data["d"]["achievements"][i], i));
+            ((QuestType)i).AddListenerOnProgress((oValue, nValue) => { GameData.Player.AchievementProgress[i] += (nValue - oValue); });
+
+           
         }
     }
     public static void RequestObtainAchievemnt(int id)
@@ -505,15 +502,6 @@ public class WSClient : WSClientBase
         };
         Instance.Send(jsonNode);
     }
-
-    public static void RequestReconnect()
-    {
-        JSONNode jsonNode = new JSONClass()
-        {
-            { "id", ServerResponse.REQUEST_RECONNECT.ToJson() },
-        };
-        Instance.Send(jsonNode);
-    }
     public static void RecieveReconnect(JSONNode data)
     {
         CoreGame.reconnect = data["d"];
@@ -593,7 +581,16 @@ public class WSClient : WSClientBase
             }
             if (goods.Count>0)
             {
-                PopupHelper.CreateGoods(PrefabFactory.PopupRPGood, "You have received", goods);
+                if (PNonConsumableType.ELITE.GetValue().Contains(0))
+                {
+                    PopupHelper.CreateGoods(PrefabFactory.PopupGood, "", goods);
+
+                }
+                else
+                {
+                    PopupHelper.CreateGoods(PrefabFactory.PopupRPGood, "You have received", goods);
+
+                }
             }
             GameData.RoyalPass.NormalObtains.Data = receive;
         }
@@ -609,7 +606,7 @@ public class WSClient : WSClientBase
             }
             if (goods.Count > 0)
             {
-                PopupHelper.CreateGoods(PrefabFactory.PopupRPGood, "You have received", goods);
+                PopupHelper.CreateGoods(PrefabFactory.PopupGood, "You have received", goods);
             }
             GameData.RoyalPass.EliteObtains.Data = receive;
         }
@@ -631,7 +628,7 @@ public class WSClient : WSClientBase
         }
         JSONNode jsonNode = new JSONClass()
         {
-            { "id", ServerResponse.REQUEST_CLAIM_ALL_ROYALPASS.ToJson() },
+            //{ "id", ServerResponse.REQUEST_CLAIM_ALL_ROYALPASS.ToJson() },
             { "normal",  jsonNormal},
             { "elite",  jsonElite}
         };
@@ -716,7 +713,7 @@ public class WSClient : WSClientBase
     {
         JSONNode jsonNode = new JSONClass()
         {
-            { "id", ServerResponse.REQUEST_CLAIM_ALL_ROYALPASS.ToJson() },
+            //{ "id", ServerResponse.REQUEST_CLAIM_ALL_ROYALPASS.ToJson() },
         };
     }
     private void AddQuest(JSONNode json)
@@ -729,13 +726,10 @@ public class WSClient : WSClientBase
     {
         JSONNode jsonNode = new JSONClass()
         {
-            { "id", ServerResponse.REQUEST_GIFT.ToJson() },
+            //{ "id", ServerResponse.REQUEST_GIFT.ToJson() },
         };
         Instance.Send(jsonNode);
     }
     #endregion
-    public void RequestServer()
-    {
-        Instance.Send(JSONNode.Parse(text));
-    }
+
 }

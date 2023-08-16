@@ -33,7 +33,7 @@ public class RoyalPass
     public int Version;
     public PDataUnit<int> Point = new PDataUnit<int>(0);
     public int PointPerLevel;
-    public int Level { get => Point.Data / PointPerLevel; }
+    public int Level { get => Mathf.Clamp(Point.Data / PointPerLevel, 0, RewardElites.Length -1 ); }
     public PDataUnit<HashSet<int>> NormalObtains = new PDataUnit<HashSet<int>>(new HashSet<int>());
     public int[] NormalProgresses;
     public List<Framework.GoodInfo>[] RewardNormals;

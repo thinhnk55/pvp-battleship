@@ -39,6 +39,7 @@ public class RoyalPassPopup : MonoBehaviour
         Timer<RoyalPass>.Instance.OnTrigger += OnTrigger;
         upgradePass.SetActive(!PNonConsumableType.ELITE.GetValue().Contains(0));
         PNonConsumableType.ELITE.GetData().OnDataChanged += RoyalPassPopup_OnDataChanged;
+        ServerMessenger.AddListener<JSONNode>(ServerResponse._RP_UPGRADE, UpgradePass);
     }
 
     private void OnEliteUnlock(bool arg1, bool arg2)
@@ -51,6 +52,7 @@ public class RoyalPassPopup : MonoBehaviour
         Timer<RoyalPass>.Instance.OnElapse -= OnElapsed;
         Timer<RoyalPass>.Instance.OnTrigger -= OnTrigger;
         PNonConsumableType.ELITE.GetData().OnDataChanged -= RoyalPassPopup_OnDataChanged;
+        ServerMessenger.RemoveListener<JSONNode>(ServerResponse._RP_UPGRADE, UpgradePass);
     }
     private void RoyalPassPopup_OnDataChanged(HashSet<int> arg1, HashSet<int> arg2)
     {
@@ -113,22 +115,7 @@ public class RoyalPassPopup : MonoBehaviour
         Timer<RoyalPass>.Instance.Elasping();
     }
 
-    public void UpgradePass()
-    {
-        IAP.PurchaseProduct($"{ApplicationConfig.BundleId}.elite", (success, product) =>
-        {
-            if (success)
-            {
-                JSONNode jsonNode = new JSONClass
-                {
-                    { "id", ServerResponse._RP_UPGRADE.ToJson() },
-                    { "r", JSON.Parse(product.receipt.Replace("\\", "").Replace("\"{", "{").Replace("}\"", "}")) }
-                };
-                WSClientBase.Instance.Send(jsonNode);
-            }
-        });
-
-    }
+    
     public void UpgradePass(JSONNode data)
     {
         if (data["e"].AsInt == 0)

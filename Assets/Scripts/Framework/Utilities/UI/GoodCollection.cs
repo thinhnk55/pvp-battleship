@@ -19,10 +19,9 @@ namespace Framework
 
         }
 
-        public void SetLayout()
+        public void SetLayout(float size = 200)
         {
             var grid = contentRoot.GetComponent<GridLayoutGroup>();
-            float size = Mathf.Clamp(500 - cards.Count * 160, 180, 500);
             grid.cellSize = new Vector2(size, size);
         }
     }

@@ -6,22 +6,22 @@ using UnityEngine;
 
 public enum QuestType
 {
-    SHIP_DESTROY,//
-    AVATAR,//
-    WIN_COUNT,//
-    WIN_STREAK,
-    SHIP_DESTROY_CONSECUTIVE,
-    SHIP_0_DESTROY,//
-    SHIP_1_DESTROY,//
-    SHIP_2_DESTROY,//
-    SHIP_3_DESTROY,//
-    PERFECT_GAME,//
-    ALIVE_1_SHIP,//
-    GEM_USED,//
-    AVATAR_FRAME,//
+    SHIP_DESTROY,//ShipDestroyed
+    AVATAR,// OnAvatarChange
+    WIN_COUNT,// GameEnd
+    WIN_STREAK, // GameEnd Todo
+    SHIP_DESTROY_CONSECUTIVE, // ShipDestroyed Todo
+    SHIP_0_DESTROY,// ShipDestroyed
+    SHIP_1_DESTROY,// ShipDestroyed
+    SHIP_2_DESTROY,// ShipDestroyed
+    SHIP_3_DESTROY,// ShipDestroyed
+    PERFECT_GAME,// GameEnd
+    ALIVE_1_SHIP,// GameEnd
+    GEM_USED,// OnGemChange
+    AVATAR_FRAME,// OnAvatarFrameChange
 
-    LUCKY_SHOT_COUNT,
-    DESTROY_SHIP_CONSECUTIVE_3
+    LUCKY_SHOT_COUNT,// LuckyShotFire
+    DESTROY_SHIP_CONSECUTIVE_3 // ShipDestroyed Todo
 
 }
 public static class QuestManager
@@ -38,6 +38,7 @@ public static class QuestManager
 
         Messenger.AddListener<Ship>(GameEvent.SHIP_DESTROY, ShipDestroyed);
         Messenger.AddListener<bool>(GameEvent.GAME_END, GameEnd);
+        ServerMessenger.AddListener(ServerResponse._LUCKYSHOT_FIRE, LuckyShotFire);
         PConsumableType.GEM.GetData().OnDataChanged += OnGemChange;
         PNonConsumableType.AVATAR.GetData().OnDataChanged += OnAvatarChange;
         PNonConsumableType.AVATAR_FRAME.GetData().OnDataChanged += OnAvatarFrameChange;
@@ -96,6 +97,10 @@ public static class QuestManager
             }
             GameData.Player.WinStreak++;
         }
+        else
+        {
+            GameData.Player.WinStreak = 0;
+        }
     }
 
     private static void ShipDestroyed(Ship ship)
@@ -103,7 +108,8 @@ public static class QuestManager
         if (ship.board != CoreGame.Instance.player)
         {
             QuestType.SHIP_DESTROY.AddProgress(1);
-            switch (ship.octilesComposition.Count)
+            int length = ship.octilesComposition.Count - 1;
+            switch (length)
             {
                 case 0:
                     QuestType.SHIP_0_DESTROY.AddProgress(1);
@@ -121,6 +127,10 @@ public static class QuestManager
                     break;
             }
         }
+    }
+    private static void LuckyShotFire()
+    {
+        QuestType.LUCKY_SHOT_COUNT.AddProgress(1);
     }
 }
 

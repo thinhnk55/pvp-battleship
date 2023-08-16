@@ -49,6 +49,8 @@ public class PopupGoodRP : PopupGoods
             }
 
             viewElite.BuildUIs(goods.ToList());
+            viewElite.SetLayout();
+            view.SetLayout(250);
         }
     }
 }
