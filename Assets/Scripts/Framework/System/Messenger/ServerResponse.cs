@@ -59,6 +59,7 @@
         _RP_ADD_QUEST = 4057,
         _CONFIG_ADS = 4060,
         _GIFT = 4061,
+        _REWARD_ADS = 4061,
 
         _QUIT_SEARCH = 4103,
         _MATCH = 4104,

@@ -198,11 +198,6 @@ public class LuckyShot : SingletonMono<LuckyShot>
         }
     }
 
-    public void RewardAds(JSONNode data)
-    {
-        GameData.RocketCount.Data = int.Parse(data["l"]["r"]);
-    }
-
     public void Earn()
     {
         WSClient.LuckyShotEarn();

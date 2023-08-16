@@ -1,4 +1,5 @@
 using Framework;
+using Monetization;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -84,6 +85,10 @@ public class QuestCard : CardBase<QuestInfo>
             change.gameObject.SetActive(false);
             des?.SetText("Watch ads add quest");
             add.gameObject.SetActive(true);
+            add.onClick.AddListener(() =>
+            {
+                //AdsManager.ShowRewardAds(null, AdsManager.RewardAdUnitId[(int)AdsIndex.Get_Quest], customData);
+            });
         }
     }
 }

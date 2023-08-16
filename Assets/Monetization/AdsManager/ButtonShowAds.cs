@@ -9,11 +9,11 @@ using UnityEngine.Events;
 public class ButtonShowAds : ButtonBase
 {
     [SerializeField] UnityEvent rewardCallback;
-    [SerializeField] int adsIndex;
+    [SerializeField] AdsIndex adsIndex;
 
     public void ShowAds(string customData = null)
     {
-         AdsManager.ShowRewardAds(()=> rewardCallback?.Invoke(), AdsManager.RewardAdUnitId[adsIndex], customData);
+         AdsManager.ShowRewardAds(()=> rewardCallback?.Invoke(), AdsManager.RewardAdUnitId[(int)adsIndex], customData);
     }
 
     protected override void Button_OnClicked()

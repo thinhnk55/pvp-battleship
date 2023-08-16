@@ -22,6 +22,7 @@ public  class LoginGuest : ISocialAuth
         string signature = Sign(device, expiredTime);
         data.Add("kid", signature);
         
+
         string id_token = UnityEngine.Purchasing.MiniJSON.Json.Serialize(data);
         string endcode = Convert.ToBase64String(Encoding.UTF8.GetBytes(id_token));
         return endcode;

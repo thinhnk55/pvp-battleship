@@ -9,7 +9,9 @@ using System.ComponentModel;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.UI;
+using static MaxSdkCallbacks;
 
 public class WSClient : WSClientBase
 {
@@ -32,8 +34,8 @@ public class WSClient : WSClientBase
         ServerMessenger.AddListener<JSONNode>(ServerResponse._RP_DAILYQUEST_REWARD, DailyQuestReward);
         ServerMessenger.AddListener<JSONNode>(ServerResponse._RP_SEASONQUEST_REWARD, SeasonQuestReward);
         ServerMessenger.AddListener<JSONNode>(ServerResponse._RP_REWARD, RoyalPassReward);
-
         ServerMessenger.AddListener<JSONNode>(ServerResponse._CONFIG_ADS, ReceiveAdsConfig);
+        ServerMessenger.AddListener<JSONNode>(ServerResponse._REWARD_ADS, ReceiveRewardAds);
         ServerMessenger.AddListener<JSONNode>(ServerResponse.RECIEVE_TREASURE_CONFIG, ReceiveTreasureConfig);
         ServerMessenger.AddListener<JSONNode>(ServerResponse.RECIEVE_JOIN_TREASURE_ROOM, ReceiveJoinTreasureRoom);
 
@@ -58,7 +60,8 @@ public class WSClient : WSClientBase
         ServerMessenger.RemoveListener<JSONNode>(ServerResponse._RP_DAILYQUEST_REWARD, DailyQuestReward);
         ServerMessenger.RemoveListener<JSONNode>(ServerResponse._RP_SEASONQUEST_REWARD, SeasonQuestReward);
         ServerMessenger.RemoveListener<JSONNode>(ServerResponse._RP_REWARD, RoyalPassReward);
-
+        ServerMessenger.RemoveListener<JSONNode>(ServerResponse._CONFIG_ADS, ReceiveAdsConfig);
+        ServerMessenger.RemoveListener<JSONNode>(ServerResponse._REWARD_ADS, ReceiveRewardAds);
         ServerMessenger.RemoveListener<JSONNode>(ServerResponse.RECIEVE_TREASURE_CONFIG, ReceiveTreasureConfig);
         ServerMessenger.RemoveListener<JSONNode>(ServerResponse.RECIEVE_JOIN_TREASURE_ROOM, ReceiveJoinTreasureRoom);
 
@@ -300,7 +303,7 @@ public class WSClient : WSClientBase
         Instance.Send(jsonNode);
     }
     #endregion
-    #region Lucky Shot
+    #region Ads
     public void RequestAdsConfig()
     {
         JSONNode jsonNode = new JSONClass()
@@ -310,21 +313,24 @@ public class WSClient : WSClientBase
         };
         Instance.Send(jsonNode);
     }
-    public void ReceiveAdsConfig(JSONNode data) 
+    public void ReceiveAdsConfig(JSONNode data)
     {
-        Debug.LogError(data["d"]["ad_unit"].Count);
-        for (int i=0; i < data["d"]["ad_unit"].Count; i++)
+        for (int i = 0; i < data["d"]["ad_unit"].Count; i++)
         {
-            switch (data["d"]["ad_unit"][i]["name"].ToString())
-            {
-                case "battleship_android_luckyshot_rocket":
-                    Debug.Log("alo");
-                    GameData.BeriBonusAmount = int.Parse(data["d"]["ad_unit"][i]["reward"]);
-                    Debug.Log(GameData.BeriBonusAmount);
-                    break;
-            }
+            if (GameData.AdsUnitConfigs.ContainsKey(data["d"]["ad_unit"][i]["ad_unit_id"]))
+                continue;
+
+            GameData.AdsUnitConfigs.Add(data["d"]["ad_unit"][i]["ad_unit_id"], data["d"]["ad_unit"][i]["reward"].ToList());
         }
     }
+
+    public void ReceiveRewardAds(JSONNode data)
+    {
+
+    }
+    #endregion
+
+    #region Lucky Shot
     public void LuckyShotEarn(JSONNode data)
     {
         GameData.RocketCount.Data = data["d"]["l"]["r"].AsInt;
