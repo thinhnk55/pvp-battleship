@@ -34,6 +34,7 @@
     }
     public enum ServerResponse
     {
+        _Login = 1,
         _PROFILE = 4001,
         _CONFIG = 4002,
         _CHECK_RANK = 4003,

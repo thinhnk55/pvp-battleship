@@ -24,6 +24,7 @@ namespace Monetization
 
     public class AdsManager : MonoBehaviour
     {
+
 #if UNITY_IOS
         public static string BannerAdUnitId { get => MonetizationConfig.BannerAdsIdIOS; set { } }
         public static string InterAdUnitId { get => MonetizationConfig.IntertialAdsIdIOS; set { } }

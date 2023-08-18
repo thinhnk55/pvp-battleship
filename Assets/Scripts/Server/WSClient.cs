@@ -20,6 +20,7 @@ public class WSClient : WSClientBase
     protected override void Start()
     {
         base.Start();
+        ServerMessenger.AddListener<JSONNode>(ServerResponse._Login, Authentication);
         ServerMessenger.AddListener<JSONNode>(ServerResponse._PROFILE, OnLogin);
         ServerMessenger.AddListener<JSONNode>(ServerResponse._CONFIG, GetConfig);
         ServerMessenger.AddListener<JSONNode>(ServerResponse._CONFIG_SHOP, GetConfigShop);
@@ -46,6 +47,7 @@ public class WSClient : WSClientBase
     protected override void OnDestroy()
     {
         base.OnDestroy();
+        ServerMessenger.RemoveListener<JSONNode>(ServerResponse._Login, Authentication);
         ServerMessenger.RemoveListener<JSONNode>(ServerResponse._PROFILE, OnLogin);
         ServerMessenger.RemoveListener<JSONNode>(ServerResponse._CONFIG, GetConfig);
         ServerMessenger.RemoveListener<JSONNode>(ServerResponse._CONFIG_SHOP, GetConfigShop);
@@ -69,6 +71,32 @@ public class WSClient : WSClientBase
         ServerMessenger.RemoveListener<JSONNode>(ServerResponse._GAME_RECONNECT, RecieveReconnect);
 
     }
+
+    public void Authentication(JSONNode data)
+    {
+        switch (int.Parse(data["e"]))
+        {
+            case 1:
+                Debug.LogError("System Error!!!");
+                SceneTransitionHelper.Load(ESceneName.Home);
+                break;
+            case 2:
+                Debug.LogError("Token invalid");
+                SceneTransitionHelper.Load(ESceneName.Home);
+                break;
+            case 3:
+                Debug.LogError("Have a login account in another device");
+                SceneTransitionHelper.Load(ESceneName.Home);
+                break;
+            case 4:
+                Debug.LogError("Get kicked out of the system by admin");
+                SceneTransitionHelper.Load(ESceneName.Home);
+                break;
+            default:
+                break;
+        }
+    }
+
     public void OnLogin(JSONNode data)
     {
         GetConfig();
@@ -76,8 +104,8 @@ public class WSClient : WSClientBase
         GetCheckRank();
         GetConfigAchievement();
         GetConfigRoyalPass();
-
         RequestAdsConfig();
+
         AdsManager.SetUserId(PDataAuth.AuthData.userId.ToString());
         MusicType.MAINMENU.PlayMusic();
         PConsumableType.GEM.SetValue(int.Parse(data["d"]["d"]));
@@ -311,6 +339,7 @@ public class WSClient : WSClientBase
     {
         JSONNode jsonNode = new JSONClass()
         {
+
             { "id", ServerRequest._CONFIG_ADS.ToJson() },
             { "v",  new JSONData(0)}
         };
@@ -318,12 +347,30 @@ public class WSClient : WSClientBase
     }
     public void ReceiveAdsConfig(JSONNode data)
     {
+        if (int.Parse(data["d"]["version"]) == AdsData.versionAds)
+            return;
+
+        Debug.Log(AdsData.versionAds);
+        AdsData.versionAds = int.Parse(data["d"]["version"]);
+        Debug.Log(AdsData.versionAds);
+
+
+        int platform;
+#if PLATFORM_ANDROID || UNITY_ANDROID
+        platform = 2;
+#else
+        platform = 1;
+#endif
         for (int i = 0; i < data["d"]["ad_unit"].Count; i++)
         {
-            if (GameData.AdsUnitConfigs.ContainsKey(data["d"]["ad_unit"][i]["ad_unit_id"]))
+            if (int.Parse(data["d"]["ad_unit"][i]["platform"]) != platform)
                 continue;
-
-            GameData.AdsUnitConfigs.Add(data["d"]["ad_unit"][i]["ad_unit_id"], data["d"]["ad_unit"][i]["reward"].ToList());
+            AdsData.adsUnitIdMap.Add((RewardType)int.Parse(data["d"]["ad_unit"][i]["reward_type"][0]), data["d"]["ad_unit"][i]["ad_unit_id"]);
+            string key = data["d"]["ad_unit"][i]["ad_unit_id"];
+            AdsRewardConfig value = new AdsRewardConfig();
+            value.reward = data["d"]["ad_unit"][i]["reward"].ToList();
+            value.rewardAdUnitId = data["d"]["ad_unit"][i]["ad_unit_id"];
+            AdsData.rewardTypeToConfigMap.Add(key, value);
         }
     }
 
@@ -331,7 +378,7 @@ public class WSClient : WSClientBase
     {
 
     }
-    #endregion
+#endregion
 
     #region Lucky Shot
     public void LuckyShotEarn(JSONNode data)
