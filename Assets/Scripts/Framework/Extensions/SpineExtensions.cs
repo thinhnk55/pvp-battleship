@@ -7,6 +7,14 @@ namespace Framework
 {
     public static class SpineExtensions
     {
+        public static float GetDuration(this SkeletonAnimation skeletonAnimation, string animName)
+        {
+            return skeletonAnimation.skeleton.Data.FindAnimation(animName).Duration;
+        }
+        public static float GetDuration(this SkeletonGraphic skeletonAnimation, string animName)
+        {
+            return skeletonAnimation.SkeletonData.FindAnimation(animName).Duration;
+        }
         public static void SetAnimation(this SkeletonAnimation skeletonAnimation, string animName, bool loop = false, bool isMix = false, int mixLine = 1)
         {
             var trackEntry = skeletonAnimation.AnimationState.SetAnimation(isMix ? 0 : mixLine, animName, loop);

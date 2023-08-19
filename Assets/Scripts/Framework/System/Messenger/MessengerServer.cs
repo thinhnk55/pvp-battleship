@@ -169,8 +169,6 @@ namespace Framework
         //No parameters
         static public void RemoveListener(ServerResponse gameServerEvent, Callback handler)
         {
-            int index = (int)gameServerEvent;
-
             OnListenerRemoving(gameServerEvent, handler);
             eventTable[gameServerEvent] = (Callback)eventTable[gameServerEvent] - handler;
         }
@@ -178,8 +176,6 @@ namespace Framework
         //Single parameter
         static public void RemoveListener<T>(ServerResponse gameServerEvent, Callback<T> handler)
         {
-            int index = (int)gameServerEvent;
-
             OnListenerRemoving(gameServerEvent, handler);
             eventTable[gameServerEvent] = (Callback<T>)eventTable[gameServerEvent] - handler;
         }
@@ -187,8 +183,6 @@ namespace Framework
         //Two parameters
         static public void RemoveListener<T, U>(ServerResponse gameServerEvent, Callback<T, U> handler)
         {
-            int index = (int)gameServerEvent;
-
             OnListenerRemoving(gameServerEvent, handler);
             eventTable[gameServerEvent] = (Callback<T, U>)eventTable[gameServerEvent] - handler;
         }
@@ -196,8 +190,6 @@ namespace Framework
         //Three parameters
         static public void RemoveListener<T, U, V>(ServerResponse gameServerEvent, Callback<T, U, V> handler)
         {
-            int index = (int)gameServerEvent;
-
             OnListenerRemoving(gameServerEvent, handler);
             eventTable[gameServerEvent] = (Callback<T, U, V>)eventTable[gameServerEvent] - handler;
         }

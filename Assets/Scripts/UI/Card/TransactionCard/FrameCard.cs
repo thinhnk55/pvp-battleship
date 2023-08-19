@@ -15,7 +15,7 @@ public class FrameCard : TransactionCard
                 Button.onClick.RemoveAllListeners();
                 Button.onClick.AddListener(() =>
                 {
-                    WSClient.ChangeFrame(info.Index);
+                    WSClientHandler.ChangeFrame(info.Index);
                 });
             }
         }

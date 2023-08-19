@@ -19,7 +19,7 @@ public class ChangeName : MonoBehaviour
         {
             if (IsValid(inputField.text, out string message))
             {
-                WSClient.ChangeName(inputField.text);
+                WSClientHandler.ChangeName(inputField.text);
                 messageTxt.text = message;
             }
             else

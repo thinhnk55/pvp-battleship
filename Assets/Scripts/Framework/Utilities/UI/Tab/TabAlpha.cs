@@ -8,6 +8,7 @@ namespace Framework
 {
     public class TabAlpha : Tabs
     {
+        public float alpha;
         protected override void ActiveTab(int i)
         {
             base.ActiveTab(i);
@@ -22,7 +23,7 @@ namespace Framework
                 return;
             base.InactiveTab(i);
             Color color = tabs[i].GetComponent<Image>().color;
-            color.a = 0;
+            color.a = alpha;
             tabs[i].GetComponent<Image>().color = color;
         }
     }

@@ -1,17 +1,18 @@
 using Framework;
 using SimpleJSON;
 using System;
+using System.Collections;
+using System.Threading.Tasks;
 using UnityEngine;
 
 
-public class HTTPClient : SingletonMono<HTTPClient>    
+public class HTTPClient : Singleton<HTTPClient>    
 {
-    [SerializeField] GameObject websocket;
-
     private void HTTPPost(JSONNode json, String typeLogin)
     {
-        StartCoroutine(HTTPClientBase.Post(ServerConfig.HttpURL +typeLogin, json.ToString()
-            , (res) => {
+        PCoroutine.PStartCoroutine(HTTPClientBase.Post(ServerConfig.HttpURL + typeLogin, json.ToString()
+            , (res) =>
+            {
                 JSONNode jsonRes = JSONNode.Parse(res);
                 if (int.Parse(jsonRes["error"]) == 0)
                 {
@@ -20,24 +21,22 @@ public class HTTPClient : SingletonMono<HTTPClient>
                     PDataAuth.AuthData.username = jsonRes["data"]["username"];
                     //PDataAuth.AuthData.refresh_token = jsonRes["data"]["refresh_token"];
                     PDataAuth.AuthData.token = jsonRes["data"]["token"];
-                    if (WSClient.Instance == null)
-                    {
-                        Instantiate(websocket, transform.parent);
-                    }
-/*                    if (WSClient.Instance.ws.ReadyState == WebSocketSharp.WebSocketState.Closed)
-                    {
-                        Debug.Log("Reconnect");
-                        WSClient.Instance.ws.Connect();
-                    }*/
+                    WSClientHandler.Instance.Connect();
+
+                    //                    if (WSClient.Instance.ws.ReadyState == WebSocketSharp.WebSocketState.Closed)
+                    //                    {
+                    //                        Debug.Log("Reconnect");
+                    //                        WSClient.Instance.ws.Connect();
+                    //                    }
                 }
                 else
                 {
                     Debug.Log(res);
                 }
-            }
-        ));
-    }
+            })
 
+        );;
+    }
     public void LoginDeviceId()
     {
 

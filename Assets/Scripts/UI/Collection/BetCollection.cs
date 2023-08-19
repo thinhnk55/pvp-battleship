@@ -26,9 +26,13 @@ public class BetCollection : CardCollectionBase<BetInfo>
                 EntryStake = GameData.Bets[i].Bet,
                 OnClick = () =>
                 {
-                    if (GameData.Bets[_i].BetRequire <= PConsumableType.BERI.GetValue())
+                    if (GameData.Bets[_i].Bet <= PConsumableType.BERI.GetValue())
                     {
                         SceneTransitionHelper.Load(ESceneName.MainGame);
+                    }
+                    else
+                    {
+                        PopupHelper.Create(PrefabFactory.PopupShop).GetComponentInChildren<Tabs>().Activate(1);
                     }
                 }
             });

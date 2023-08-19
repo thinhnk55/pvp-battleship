@@ -73,7 +73,7 @@ public class RoyalPassPopup : MonoBehaviour
                 Elite = false,
                 Obtain = (info) =>
                 {
-                    WSClient.RoyalPassReward(GameData.RoyalPass.Level, 0);
+                    WSClientHandler.RoyalPassReward(GameData.RoyalPass.Level, 0);
                 }   
             });
             eliteCollection.ModifyUIAt(GameData.RoyalPass.Level, new RoyalPassInfo()
@@ -85,7 +85,7 @@ public class RoyalPassPopup : MonoBehaviour
                 Elite = true,
                 Obtain = (info) =>
                 {
-                    WSClient.RoyalPassReward(GameData.RoyalPass.Level, 0);
+                    WSClientHandler.RoyalPassReward(GameData.RoyalPass.Level, 0);
                 }
             });
         }
@@ -126,6 +126,6 @@ public class RoyalPassPopup : MonoBehaviour
     }
     public void ClaimAll()
     {
-        WSClient.RequestClaimAllRoyalPass();
+        WSClientHandler.RequestClaimAllRoyalPass();
     }
 }

@@ -16,13 +16,13 @@ public class ApplyGood : ButtonBase
             switch ( (PNonConsumableType)good.Info.Type)
             {
                 case PNonConsumableType.AVATAR:
-                    WSClient.ChangeAvatar((int)good.Info.Value);
+                    WSClientHandler.ChangeAvatar((int)good.Info.Value);
                     break;
                 case PNonConsumableType.AVATAR_FRAME:
-                    WSClient.ChangeFrame((int)good.Info.Value);
+                    WSClientHandler.ChangeFrame((int)good.Info.Value);
                     break;
                 case PNonConsumableType.BATTLE_FIELD:
-                    WSClient.ChangeBattleField((int)good.Info.Value);
+                    WSClientHandler.ChangeBattleField((int)good.Info.Value);
                     break;
                 default:
                     break;

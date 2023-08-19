@@ -15,7 +15,7 @@ public class AvatarCard : TransactionCard
                 Button.onClick.RemoveAllListeners();
                 Button.onClick.AddListener(() =>
                 {
-                    WSClient.ChangeAvatar(info.Index);
+                    WSClientHandler.ChangeAvatar(info.Index);
                 });
             }
         }

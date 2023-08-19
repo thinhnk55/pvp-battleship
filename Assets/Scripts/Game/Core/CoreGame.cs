@@ -248,7 +248,7 @@ public class CoreGame : SingletonMono<CoreGame>
         Instance.preUI.SetActive(false);
         Instance.searchUI.gameObject.SetActive(true);
         Instance.shipListPlayer.gameObject.SetActive(false);
-        WSClient.SearchOpponent(bet, player.ships);
+        WSClientHandler.SearchOpponent(bet, player.ships);
         var profile = new ProfileInfo()
         {
             Avatar = -1,
@@ -328,7 +328,7 @@ public class CoreGame : SingletonMono<CoreGame>
     }
     public void QuitSearch()
     {
-        WSClient.QuitSearch(bet);
+        WSClientHandler.QuitSearch(bet);
     }
     public void QuitSearch(JSONNode data)
     {
@@ -346,7 +346,7 @@ public class CoreGame : SingletonMono<CoreGame>
     }
     public void QuitGame()
     {
-        WSClient.QuitGame(roomId);
+        WSClientHandler.QuitGame(roomId);
         rematch = false;
     }
     public void GoHome()
@@ -364,13 +364,13 @@ public class CoreGame : SingletonMono<CoreGame>
     {
         rematch = true;
         Instance.rematchChatA.transform.parent.gameObject.SetActive(true);
-        WSClient.RequesRematch(roomId);
+        WSClientHandler.RequesRematch(roomId);
     }
     public void NewMatch()
     {
         rematch = false;
         SceneTransitionHelper.Reload();
-        WSClient.QuitGame(roomId);
+        WSClientHandler.QuitGame(roomId);
     }
     public void Ready()
     {
@@ -378,7 +378,7 @@ public class CoreGame : SingletonMono<CoreGame>
         {
             rematch = false;
             CoinVFX.CoinVfx(Instance.searchUI.tresure.transform, Instance.searchUI.avatar1.transform.position, Instance.searchUI.avatar2.transform.position);
-            WSClient.SubmitShip(roomId, player.ships);
+            WSClientHandler.SubmitShip(roomId, player.ships);
             btnReady.GetComponent<Button>().enabled = false;
             btnReady.GetComponent<Image>().color = Color.gray;
             buttonAuto.enabled = false;
@@ -394,8 +394,8 @@ public class CoreGame : SingletonMono<CoreGame>
         playerChair = int.Parse(json["d"]["p1"]["u"]) == PDataAuth.AuthData.userId ? int.Parse(json["d"]["p1"]["c"]) : int.Parse(json["d"]["p2"]["c"]);
         Debug.Log(PDataAuth.AuthData.userId + "_"+ int.Parse(json["d"]["p1"]["u"]) + "_" + int.Parse(json["d"]["p2"]["u"]));
         bet = int.Parse(json["d"]["t"]);
-        WSClient.SubmitShip(roomId, player.ships);
-        GameData.Opponent = int.Parse(json["d"]["p1"]["u"]) == PDataAuth.AuthData.userId ? ProfileData.FromJsonOpponent(GameData.Opponent, json["d"]["p2"]) : ProfileData.FromJsonOpponent(GameData.Opponent, json["d"]["p1"]);
+        WSClientHandler.SubmitShip(roomId, player.ships);
+        GameData.Opponent = int.Parse(json["d"]["p1"]["u"]) == PDataAuth.AuthData.userId ? ProfileData.FromJsonOpponent(GameData.Opponent, json["d"]["p2"]["p"]) : ProfileData.FromJsonOpponent(GameData.Opponent, json["d"]["p1"]["p"]);
         Instance.searchUI.opponentProfile.UpdateUIs();
         Instance.opponent.battleFieldSprite.sprite = SpriteFactory.BattleFields[GameData.Opponent.BattleField.Data];
         CoinVFX.CoinVfx(Instance.searchUI.tresure.transform, Instance.searchUI.avatar1.transform.position, Instance.searchUI.avatar2.transform.position);

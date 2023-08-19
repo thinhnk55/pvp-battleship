@@ -73,7 +73,7 @@ public struct AchievementInfo
         return s;
     }
 
-    static string GetDescription(AchievementType achievementType, int amount = -1)
+    static public string GetDescription(AchievementType achievementType, int amount = -1)
     {
         switch (achievementType)
         {

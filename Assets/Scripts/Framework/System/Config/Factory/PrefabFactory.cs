@@ -34,6 +34,9 @@ namespace Framework
         [SerializeField] private GameObject popupUserTerms; public static GameObject PopupUserTerms { get { return Instance.popupUserTerms; } }
         [SerializeField] private GameObject popupRPGood; public static GameObject PopupRPGood { get { return Instance.popupRPGood; } }
         [SerializeField] private GameObject popupStarter; public static GameObject PopupStarter { get { return Instance.popupStarter; } }
+        [SerializeField] private GameObject popupQuestCompleted; public static GameObject PospupQuestCompleted { get { return Instance.popupQuestCompleted; } }
+        [SerializeField] private GameObject popupShop; public static GameObject PopupShop { get { return Instance.popupShop; } }
+        [SerializeField] private GameObject popupDisconnect; public static GameObject PopupDisconnect { get { return Instance.popupDisconnect; } }
 
 
     }

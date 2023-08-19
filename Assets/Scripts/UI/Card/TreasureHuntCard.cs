@@ -32,7 +32,7 @@ public class TreasureHuntCard : CardBase<TreasureHuntInfo>
     protected override void OnClicked(TreasureHuntInfo info)
     {
         Debug.Log("Onclick "+info.Id);
-        WSClient.RequestJoinTreasureRoom(info.Id);
+        WSClientHandler.RequestJoinTreasureRoom(info.Id);
         OnClick?.Invoke();
     }
     private void Awake()

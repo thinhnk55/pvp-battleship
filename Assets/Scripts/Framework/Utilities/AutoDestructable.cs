@@ -9,9 +9,9 @@ namespace Framework
         public enum DestructType
         {
             Deactive,
-            Descript,
             Disable,
-            Destroy
+            Destroy,
+            None,
         }
         [Header("Config")]
         [SerializeField] protected float delay = 0f;
@@ -56,14 +56,13 @@ namespace Framework
                 case DestructType.Deactive:
                     CacheGameObject.SetActive(false);
                     break;
-                case DestructType.Descript:
-                    Destroy(this);
-                    break;
                 case DestructType.Disable:
                     this.enabled = false;
                     break;
                 case DestructType.Destroy:
                     Destroy(CacheGameObject);
+                    break;
+                case DestructType.None:
                     break;
                 default:
                     break;

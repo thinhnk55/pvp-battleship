@@ -43,7 +43,7 @@ public class AchievementCollection : CardCollectionBase<AchievementInfo>
                         AchievementSelectionCollection.idNewSelect = info.Id;//* 100 + Mathf.Clamp(GameData.Player.AchievementObtained[info.Id], 0, 4);
                         int[] arr = new int[3] { GameData.Player.AchievementSelected[0], GameData.Player.AchievementSelected[1], GameData.Player.AchievementSelected[2] };
                         arr[AchievementSelectionCollection.slot] = info.Id; //* 100 + Mathf.Clamp(GameData.Player.AchievementObtained[info.Id], 0, 4);
-                        WSClient.RequestChangeAchievement(arr);
+                        WSClientHandler.RequestChangeAchievement(arr);
                         popup.ForceClose();
                     };
                 }
@@ -85,9 +85,9 @@ public class AchievementCollection : CardCollectionBase<AchievementInfo>
     public void SetCardPreview(AchievementInfo info)
     {
         AchievementInfo _info = info;
-        if (info.AchivementUnits[info.Obtained].Task > info.Progress)
+        if (info.AchivementUnits[info.Obtained].Task <= info.Progress)
         {
-            info.onClick = () => WSClient.RequestObtainAchievemnt(_info.Id);
+            info.onClick = () => WSClientHandler.RequestObtainAchievemnt(_info.Id);
         }
         previewCard.BuildUI(info);
     }
@@ -117,11 +117,11 @@ public class AchievementCollection : CardCollectionBase<AchievementInfo>
         {
             if (x.Obtained <= x.AchivementUnits.Length - 1 && y.Obtained <= y.AchivementUnits.Length - 1)
             {
-                if (x.AchivementUnits[x.Obtained].Task > x.Progress && y.AchivementUnits[y.Obtained].Task < y.Progress)
+                if (x.AchivementUnits[x.Obtained].Task > x.Progress && y.AchivementUnits[y.Obtained].Task <= y.Progress)
                 {
                     return 1; // x comes before y
                 }
-                else if (x.AchivementUnits[x.Obtained].Task < x.Progress && y.AchivementUnits[y.Obtained].Task > y.Progress)
+                else if (x.AchivementUnits[x.Obtained].Task <= x.Progress && y.AchivementUnits[y.Obtained].Task > y.Progress)
                 {
                     return -1; // x comes after y
                 }

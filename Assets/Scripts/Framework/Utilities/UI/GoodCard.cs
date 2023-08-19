@@ -27,6 +27,7 @@ namespace Framework
                     var rect = icon.GetComponent<RectTransform>();
                     rect.SetScaleX(0.84f);
                 }
+                value.text = "+1";
                 BG?.SetSprite(SpriteFactory.RoyalPassOther);
             }
             else

@@ -19,7 +19,7 @@ public class ButtonUpgradeRP : ButtonBase
                 { "id", ServerResponse._RP_UPGRADE.ToJson() },
                 { "r", JSON.Parse(product.receipt.Replace("\\", "").Replace("\"{", "{").Replace("}\"", "}")) }
             };
-                WSClientBase.Instance.Send(jsonNode);
+                WSClient.Instance.Send(jsonNode);
             }
         });
 

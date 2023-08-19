@@ -18,9 +18,8 @@ namespace Framework
         protected override void Awake()
         {
             base.Awake();
-
-            _btnNo.onClick.AddListener(ButtonClickNoCallback);
-            _btnYes.onClick.AddListener(ButtonClickYesCallback);
+            _btnNo?.onClick.AddListener(ButtonClickNoCallback);
+            _btnYes?.onClick.AddListener(ButtonClickYesCallback);
         }
 
         public void Construct(string header, string content, Sprite icon, Callback<bool> onComfirm)
@@ -30,8 +29,8 @@ namespace Framework
             _icon?.SetSprite(icon);
             if(_icon != null) 
             {
-                RectTransform rect = _icon?.GetComponent<RectTransform>();
-                rect.SetScaleX(icon.GetSize().x / icon.GetSize().y);
+                RectTransform rect = _icon.GetComponent<RectTransform>();
+                rect?.SetScaleX(icon.GetSize().x / icon.GetSize().y);
             }
             OnConfirm += onComfirm;
         }

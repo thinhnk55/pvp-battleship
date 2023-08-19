@@ -65,7 +65,7 @@ public class Board : CacheMonoBehaviour
         int y = (int)((leanFinger.GetLastWorldPosition(0).y - transform.position.y + height / 2) / cellHieght);
         if (Octile.Check(this, x, y , out int _x, out int _y) && !octiles[_y][_x].Attacked)
         {
-            WSClient.AttackOpponent(CoreGame.roomId, _x, _y);
+            WSClientHandler.AttackOpponent(CoreGame.roomId, _x, _y);
         }
         horzLine.SetActive(false);
         vertLine.SetActive(false);

@@ -21,7 +21,7 @@ namespace Framework
             }
         }
 
-        public event Callback<T, T> OnDataChanged;
+        public Callback<T, T> OnDataChanged;
 
         public PDataUnit(T defaultValue)
         {

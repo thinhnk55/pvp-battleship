@@ -368,7 +368,7 @@ namespace Framework {
             {
                 jsonNode.Add("r", JSON.Parse(data));
             }
-            WSClientBase.Instance.Send(jsonNode);
+            WSClient.Instance.Send(jsonNode);
         }
 
         public static string GetStringNumber(long number)

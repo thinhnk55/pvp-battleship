@@ -1,6 +1,7 @@
 using DG.Tweening;
 using Framework;
 using SimpleJSON;
+using Spine.Unity;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -25,6 +26,7 @@ public class LuckyShot : SingletonMono<LuckyShot>
 
     [SerializeField] Sprite emptyRocket;
     [SerializeField] Sprite rocket;
+    [SerializeField] SkeletonGraphic anim;
     private void Start()
     {
         //ServerMessenger.AddListener<JSONNode>(ServerResponse.RECIEVE_REWARD_ROCKET, RewardAds);
@@ -71,24 +73,27 @@ public class LuckyShot : SingletonMono<LuckyShot>
     }
     IEnumerator Init()
     {
-        var list = new List<int>();
-        list.AddRange(GameData.LuckyShotConfig);
-        list.Shuffle();
-        for (int i = 0; i < GameData.LuckyShotConfig.Count; i++)
+        for (int i = 0; i < Instance.shots.Count; i++)
         {
-            if (list[i] == 0)
+            if (PRandom.Bool(0.25f))
             {
                 Instance.shots[i].GetComponent<Image>().sprite = SpriteFactory.ShipLuckyShot;
-
             }
             else
             {
                 Instance.shots[i].GetComponent<Image>().sprite = SpriteFactory.X;
             }
+            int _i = i;
+            Instance.shots[i].onClick.AddListener(() =>
+            {
+                if (GameData.RocketCount.Data > 0)
+                {
+                    indexShot = _i;
+                    WSClientHandler.RequestShot();
+                }
+            });
         }
-
-        yield return new WaitForSeconds(1);
-        yield return StartCoroutine(Instance.Suffle());
+        yield return StartCoroutine(Instance.Door());
     }
     private void LuckyShotFire(JSONNode node)
     {
@@ -106,7 +111,7 @@ public class LuckyShot : SingletonMono<LuckyShot>
                 Instance.shots[indexShot].GetComponent<Image>().sprite = SpriteFactory.ShipLuckyShot;
                 CoinVFX.CoinVfx(Instance.resourceUI.transform, Instance.shots[indexShot].transform.position, Instance.shots[indexShot].transform.position);
             }
-            StartCoroutine(Instance.Suffle());
+            StartCoroutine(Instance.Door());
         }
 
     }
@@ -192,14 +197,28 @@ public class LuckyShot : SingletonMono<LuckyShot>
                 if (GameData.RocketCount.Data > 0)
                 {
                     indexShot = _i;
-                    WSClient.RequestShot();
+                    WSClientHandler.RequestShot();
                 }
             });
         }
     }
-
+    public IEnumerator Door()    // To do
+    {
+        for (int i = 0; i < Instance.shots.Count; i++)
+        {
+            Instance.shots[i].enabled = false;
+        }
+        Instance.anim.SetAnimation("animation", false);
+        Instance.anim.Initialize(false);
+        yield return new WaitForSeconds(anim.GetDuration("animation")*3/4);
+        for (int i = 0; i < Instance.shots.Count; i++)
+        {
+            Instance.shots[i].GetComponent<Image>().sprite = SpriteFactory.Unknown;
+            Instance.shots[i].enabled = true;
+        }
+    }
     public void Earn()
     {
-        WSClient.LuckyShotEarn();
+        WSClientHandler.LuckyShotEarn();
     }
 }

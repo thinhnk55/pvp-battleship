@@ -38,7 +38,7 @@ public class Gift : CacheMonoBehaviour
             countDown.text = "Collect";
             obtain.onClick.AddListener(() =>
             {
-                WSClient.RequestGift();
+                WSClientHandler.RequestGift();
             });
         }
         else
@@ -57,7 +57,7 @@ public class Gift : CacheMonoBehaviour
         countDown.text = Timer<Gift>.Instance.TriggersFromBegin >= 1 ? "Collect" : Timer<Gift>.Instance.RemainTime_Sec.Hour_Minute_Second_1();
         obtain.onClick.AddListener(() =>
         {
-            WSClient.RequestGift();
+            WSClientHandler.RequestGift();
         });
     }
 

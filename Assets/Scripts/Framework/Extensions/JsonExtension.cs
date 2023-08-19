@@ -21,9 +21,8 @@ public static class JsonExtension
         return new JSONData((int)@event);
     }
 
-    public static List<int> ToList(this JSONNode json, bool debug = false)
+    public static List<int> ToListInt(this JSONNode json, bool debug = false)
     {
-
         List<int> list = new List<int>();
         JSONArray ar = json.AsArray;
         for (int i = 0; i < ar.Count; i++)
@@ -36,7 +35,10 @@ public static class JsonExtension
         }
         return list;
     }
-
+    public static void RequestServer(this JSONNode json)
+    {
+        WSClient.Instance.Send(json);
+    }
     public static T ToEnum<T>(this JSONNode json) where T : Enum
     {
         return (T)Enum.ToObject(typeof(T), json.AsInt);

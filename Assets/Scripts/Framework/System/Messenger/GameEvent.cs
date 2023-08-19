@@ -6,5 +6,6 @@
         SELECT_ACHIEVEMENT,
         SHIP_DESTROY,
         GAME_END,
+        LOG_OUT,
     }
 }

@@ -15,7 +15,7 @@ public class BattleFieldCard : TransactionCard
                 Button.onClick.RemoveAllListeners();
                 Button.onClick.AddListener(() =>
                 {
-                    WSClient.ChangeBattleField(info.Index);
+                    WSClientHandler.ChangeBattleField(info.Index);
                 });
             }
         }

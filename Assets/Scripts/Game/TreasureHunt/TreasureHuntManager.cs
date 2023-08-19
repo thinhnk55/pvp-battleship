@@ -168,7 +168,7 @@ public class TreasureHuntManager : SingletonMono<TreasureHuntManager>
         PConsumableType.BERI.AddValue(-GameData.JoinTreasureRoom.ShotCost);
         delayShootCellCoroutine = StartCoroutine(DelayShootCell(1));
         Debug.Log($"shooting cell {x} {y}");
-        WSClient.RequestShootTreasure(x, y);
+        WSClientHandler.RequestShootTreasure(x, y);
     }
 
     public void OnCellShot(JSONNode node)
@@ -246,7 +246,7 @@ public class TreasureHuntManager : SingletonMono<TreasureHuntManager>
 
     public void ExitRoom()
     {
-        WSClient.RequestExitTreasureRoom();
+        WSClientHandler.RequestExitTreasureRoom();
         GetComponent<PopupBehaviour>().ForceClose();
     }
 

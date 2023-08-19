@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-[CustomEditor(typeof(WSClient))]
+[CustomEditor(typeof(WSClientHandler))]
 public class WSClientEditor : Editor
 {
     public override void OnInspectorGUI()
@@ -13,7 +13,7 @@ public class WSClientEditor : Editor
 
         if (GUILayout.Button("Request Server"))
         {
-            ((WSClient)target).RequestServer();
+            //((WSClient)target).RequestServer();
         }
     }
 }

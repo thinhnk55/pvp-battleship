@@ -43,15 +43,34 @@ public class ProfileCollection : CardCollectionBase<ProfileInfo>
     private void Awake()
     {
         UpdateUIs();
-        GameData.Player.Avatar.OnDataChanged += OnDataChanged;
-        GameData.Player.FrameAvatar.OnDataChanged += OnDataChanged;
-        GameData.Player.Username.OnDataChanged += OnDataChanged;
+        if (isPlayer)
+        {
+            GameData.Player.Avatar.OnDataChanged += OnDataChanged;
+            GameData.Player.FrameAvatar.OnDataChanged += OnDataChanged;
+            GameData.Player.Username.OnDataChanged += OnDataChanged;
+        }
+        else
+        {
+            GameData.Opponent.Avatar.OnDataChanged += OnDataChanged;
+            GameData.Opponent.FrameAvatar.OnDataChanged += OnDataChanged;
+            GameData.Opponent.Username.OnDataChanged += OnDataChanged;
+        }
+
     }
     private void OnDestroy()
     {
-        GameData.Player.Avatar.OnDataChanged -= OnDataChanged;
-        GameData.Player.FrameAvatar.OnDataChanged -= OnDataChanged;
-        GameData.Player.Username.OnDataChanged -= OnDataChanged;
+        if (isPlayer)
+        {
+            GameData.Player.Avatar.OnDataChanged -= OnDataChanged;
+            GameData.Player.FrameAvatar.OnDataChanged -= OnDataChanged;
+            GameData.Player.Username.OnDataChanged -= OnDataChanged;
+        }
+        else
+        {
+            GameData.Opponent.Avatar.OnDataChanged -= OnDataChanged;
+            GameData.Opponent.FrameAvatar.OnDataChanged -= OnDataChanged;
+            GameData.Opponent.Username.OnDataChanged -= OnDataChanged;
+        }
     }
     private void OnDataChanged(int arg1, int arg2)
     {

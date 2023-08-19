@@ -12,9 +12,9 @@ namespace Framework
         [SerializeField] Image _icon;
         public void Construct(string header, string msg, Sprite icon)
         {
-            _header.text = header;
-            _txtContent.text = msg;
-            _icon.sprite = icon;
+            _header?.SetText(header);
+            _txtContent?.SetText(msg);
+            _icon?.SetSprite(icon);
         }
     }
 }

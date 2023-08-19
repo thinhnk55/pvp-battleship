@@ -44,7 +44,7 @@ public class RankCollection : CardCollectionBase<RankInfo>
         {
             info.OnClick = () =>
             {
-                WSClient.GetRankReward();
+                WSClientHandler.GetRankReward();
             };
         }
         else

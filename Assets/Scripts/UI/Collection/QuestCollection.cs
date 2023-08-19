@@ -43,7 +43,7 @@ public class QuestCollection : CardCollectionBase<QuestInfo>
                     {
                         if (GameData.RoyalPass.CurrentQuestsProgress[_i] > GameData.RoyalPass.Quests[GameData.RoyalPass.CurrentQuests.Data[_i]].Require)
                         {
-                            WSClient.DailyQuestReward(_i);
+                            WSClientHandler.DailyQuestReward(_i);
                         }
                     },
                     OnChange = (info) =>
@@ -76,11 +76,10 @@ public class QuestCollection : CardCollectionBase<QuestInfo>
 
     private void RequestChangeQuest(int index)
     {
-        JSONNode jsonNode = new JSONClass()
+        new JSONClass()
         {
             { "id", ServerResponse._RP_CHANGE_QUEST.ToJson() },
             { "index", new JSONData(index)},
-        };
-        WSClient.Instance.Send(jsonNode);
+        }.RequestServer();
     }
 }
