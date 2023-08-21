@@ -23,6 +23,7 @@ public class LuckyShot : SingletonMono<LuckyShot>
     [SerializeField] GameObject shotRoot;
     [SerializeField] GameObject resourceUI;
     [SerializeField] TextMeshProUGUI countDown;
+    [SerializeField] Slider countDownSlider;
 
     [SerializeField] Sprite emptyRocket;
     [SerializeField] Sprite rocket;
@@ -155,16 +156,19 @@ public class LuckyShot : SingletonMono<LuckyShot>
         if (GameData.RocketCount.Data >= 3)
         {
             Instance.countDown.text = "Full";
+            countDownSlider.value = 0;
         }
         else
         {
             if (Timer<LuckyShot>.Instance.TriggersFromBegin>=1)
             {
                 Instance.countDown.text = $"Collect";
+                countDownSlider.value = 0;
             }
             else
             {
                 Instance.countDown.text = $"{Timer<LuckyShot>.Instance.RemainTime_Sec.Hour_Minute_Second_1()}";
+                countDownSlider.value = (float)Timer<LuckyShot>.Instance.RemainTime_Sec / Timer<LuckyShot>.Instance.TriggerInterval_Sec;
             }
         }
     }
@@ -208,6 +212,7 @@ public class LuckyShot : SingletonMono<LuckyShot>
         {
             Instance.shots[i].enabled = false;
         }
+        yield return new WaitForSeconds(anim.GetDuration("animation") * 1 / 4);
         Instance.anim.SetAnimation("animation", false);
         Instance.anim.Initialize(false);
         yield return new WaitForSeconds(anim.GetDuration("animation")*3/4);

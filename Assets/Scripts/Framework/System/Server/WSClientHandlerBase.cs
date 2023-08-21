@@ -18,7 +18,7 @@ namespace Framework
         {
             WSClient.Instance.Disconnect();
             ServerMessenger.RemoveListener<JSONNode>(ServerResponse.CheckLoginConnection, CheckLoginConnection);
-            ServerMessenger.RemoveListener(ServerResponse.LostConnection, OnLostConnection);
+            Messenger.RemoveListener(GameEvent.LostConnection, OnLostConnection);
             OnDisconnect();
         }
         public abstract void OnConnect();

@@ -4,6 +4,9 @@ using UnityEngine.Purchasing ;
 using System.Linq;
 using System.Collections.Generic;
 using UnityEngine.Purchasing.Extension;
+using Unity.Services.Core;
+using System.Threading.Tasks;
+
 namespace Framework
 {
     public class IAPBase : SingletonMono<IAPBase>, IDetailedStoreListener
@@ -13,9 +16,10 @@ namespace Framework
         protected Action<bool, Product> purchaseAction;
         protected string _currentBundleId;
 
-        protected override void Awake()
+        protected override async void Awake()
         {
             base.Awake();
+            await UnityServices.InitializeAsync();
             if (!IsInitialized())
             {
                 InitializePurchasing();

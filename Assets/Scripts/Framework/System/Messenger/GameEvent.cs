@@ -2,6 +2,7 @@
 {
     public enum GameEvent
     {
+        LostConnection = 0,
         LUCKYSHOT_FIRE,
         SELECT_ACHIEVEMENT,
         SHIP_DESTROY,

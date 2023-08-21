@@ -4,16 +4,16 @@ using UnityEngine;
 
 public class AudioMono : MonoBehaviour
 {
-    AudioSource audio;
+    AudioSource audioSource;
     public float time;
     private void Awake()
     {
-        audio = GetComponent<AudioSource>();
+        audioSource = GetComponent<AudioSource>();
     }
     private void Update()
     {
-        time = audio.time / audio.clip.length;
-        if (time==1 || !audio.isPlaying)
+        time = audioSource.time / audioSource.clip.length;
+        if (time==1 || !audioSource.isPlaying)
         {
             gameObject.SetActive(false);
         }
