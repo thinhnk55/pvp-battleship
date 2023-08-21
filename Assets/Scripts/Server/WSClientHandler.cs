@@ -71,7 +71,7 @@ public class WSClientHandler : WSClientHandlerBase
 
         //not config
         ServerMessenger.AddListener<JSONNode>(ServerResponse._RP_CHANGE_QUEST, ReceiveChangeQuest);
-        ServerMessenger.AddListener<JSONNode>(ServerResponse._RP_CHANGE_QUEST, AddQuest);
+        ServerMessenger.AddListener<JSONNode>(ServerResponse._RP_ADD_QUEST, AddQuest);
         //ServerMessenger.AddListener<JSONNode>(ServerResponse.RECIEVE_CLAIM_ALL_ROYALPASS, ReceiveClaimAllRoyalPass);
         ServerMessenger.AddListener<JSONNode>(ServerResponse._GAME_RECONNECT, RecieveReconnect);
     }
@@ -95,7 +95,7 @@ public class WSClientHandler : WSClientHandlerBase
 
         //not config
         ServerMessenger.RemoveListener<JSONNode>(ServerResponse._RP_CHANGE_QUEST, ReceiveChangeQuest);
-        ServerMessenger.RemoveListener<JSONNode>(ServerResponse._RP_CHANGE_QUEST, AddQuest);
+        ServerMessenger.RemoveListener<JSONNode>(ServerResponse._RP_ADD_QUEST, AddQuest);
         //ServerMessenger.RemoveListener<JSONNode>(ServerResponse.RECIEVE_CLAIM_ALL_ROYALPASS, ReceiveClaimAllRoyalPass);
         ServerMessenger.RemoveListener<JSONNode>(ServerResponse._GAME_RECONNECT, RecieveReconnect);
     }

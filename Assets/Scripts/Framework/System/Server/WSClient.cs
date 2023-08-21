@@ -17,7 +17,7 @@ namespace Framework {
             ws.OnMessage += OnMessage;
             ws.OnError += OnError;
             ws.Connect();
-            //DontDestroyOnLoad.DontDestroyOnLoad(GameObject.Instantiate(new GameObject("WSPingPong")).AddComponent(typeof(WSPingPong)));
+            WSPingPong.Create();
         }
         public void Disconnect()
         {
@@ -25,7 +25,7 @@ namespace Framework {
             ws.OnMessage -= OnMessage;
             ws.OnError -= OnError;
             ws.Close();
-            //GameObject.Destroy(WSPingPong.Instance.gameObject);
+            WSPingPong.Destroy();
         }
         public void Ping()
         {

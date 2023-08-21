@@ -85,7 +85,7 @@ public class AchievementCollection : CardCollectionBase<AchievementInfo>
     public void SetCardPreview(AchievementInfo info)
     {
         AchievementInfo _info = info;
-        if (info.AchivementUnits[info.Obtained].Task <= info.Progress)
+        if (info.Obtained < 5 && info.AchivementUnits[info.Obtained].Task <= info.Progress)
         {
             info.onClick = () => WSClientHandler.RequestObtainAchievemnt(_info.Id);
         }

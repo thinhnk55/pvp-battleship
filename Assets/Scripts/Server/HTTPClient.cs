@@ -8,9 +8,9 @@ using UnityEngine;
 
 public class HTTPClient : Singleton<HTTPClient>    
 {
-    private void HTTPPost(JSONNode json, String typeLogin)
+    private void HTTPPostLogin(JSONNode json, string loginRoute)
     {
-        PCoroutine.PStartCoroutine(HTTPClientBase.Post(ServerConfig.HttpURL + typeLogin, json.ToString()
+        PCoroutine.PStartCoroutine(HTTPClientBase.Post(ServerConfig.HttpURL + loginRoute, json.ToString()
             , (res) =>
             {
                 JSONNode jsonRes = JSONNode.Parse(res);
@@ -54,7 +54,7 @@ public class HTTPClient : Singleton<HTTPClient>
             {"session_info", new JSONClass()}
         };
 
-        HTTPPost(json, "login");
+        HTTPPostLogin(json, "login");
     }
 
     public void LoginByGuest(string token)
@@ -63,7 +63,7 @@ public class HTTPClient : Singleton<HTTPClient>
         {
             {"token", token}
         };
-        HTTPPost(json, "/login/guest");
+        HTTPPostLogin(json, "/login/guest");
     }
 
     public void LoginGoogle(string idToken)
@@ -74,7 +74,7 @@ public class HTTPClient : Singleton<HTTPClient>
         {
             {"token",  idToken},
         };
-        HTTPPost(json, "/login/google");
+        HTTPPostLogin(json, "/login/google");
     }
 
     public void LoginApple(string authentication)
@@ -86,6 +86,6 @@ public class HTTPClient : Singleton<HTTPClient>
             {"token",  authentication},
         };
 
-        HTTPPost(json, "/login/apple");
+        HTTPPostLogin(json, "/login/apple");
     }
 }
