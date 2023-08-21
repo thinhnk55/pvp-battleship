@@ -12,12 +12,7 @@ public class ButtonWatchBeriAds : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-#if UNITY_ANDROID
-        BeriBonusAmount.text += GameData.AdsUnitConfigs[MonetizationConfig.RewardAdsIdAndroid[(int)AdsIndex.Get_Beri]][0];
-#endif
-#if UNITY_IOS
-        BeriBonusAmount.text += GameData.AdsUnitConfigs[MonetizationConfig.RewardAdsIdIOS[(int)AdsIndex.Get_Beri]][0];
-#endif
+        BeriBonusAmount.text += AdsData.rewardTypeToConfigMap[AdsData.adsUnitIdMap[RewardType.Get_Beri]].reward[0];
     }
 
     private void OnDestroy()

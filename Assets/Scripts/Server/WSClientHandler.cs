@@ -37,19 +37,19 @@ public class WSClientHandler : WSClientHandlerBase
     }
     public override void OnSystemError()
     {
-        throw new NotImplementedException();
+        SceneManager.LoadScene("Loading");
     }
     public override void OnTokenInvalid()
     {
-        throw new NotImplementedException();
+        SceneManager.LoadScene("Loading");
     }
     public override void OnAdminKick()
     {
-        throw new NotImplementedException();
+        SceneManager.LoadScene("Loading");
     }
     public override void OnLoginInOtherDevice()
     {
-        throw new NotImplementedException();
+        SceneManager.LoadScene("Loading");
     }
     public override void OnConnect()
     {
@@ -108,6 +108,7 @@ public class WSClientHandler : WSClientHandlerBase
         GetConfigAchievement();
         GetConfigRoyalPass();
         RequestAdsConfig();
+
         AdsManager.SetUserId(PDataAuth.AuthData.userId.ToString());
         MusicType.MAINMENU.PlayMusic();
         PConsumableType.GEM.SetValue(int.Parse(data["d"]["d"]));
@@ -336,18 +337,37 @@ public class WSClientHandler : WSClientHandlerBase
     {
         new JSONClass()
         {
+
             { "id", ServerRequest._CONFIG_ADS.ToJson() },
             { "v",  new JSONData(0)}
         }.RequestServer();
     }
     public void ReceiveAdsConfig(JSONNode data)
     {
+        if (int.Parse(data["d"]["version"]) == AdsData.versionAds)
+            return;
+
+        Debug.Log(AdsData.versionAds);
+        AdsData.versionAds = int.Parse(data["d"]["version"]);
+        Debug.Log(AdsData.versionAds);
+
+
+        int platform;
+#if PLATFORM_ANDROID || UNITY_ANDROID
+        platform = 2;
+#else
+        platform = 1;
+#endif
         for (int i = 0; i < data["d"]["ad_unit"].Count; i++)
         {
-            if (GameData.AdsUnitConfigs.ContainsKey(data["d"]["ad_unit"][i]["ad_unit_id"]))
+            if (int.Parse(data["d"]["ad_unit"][i]["platform"]) != platform)
                 continue;
-
-            GameData.AdsUnitConfigs.Add(data["d"]["ad_unit"][i]["ad_unit_id"], data["d"]["ad_unit"][i]["reward"].ToListInt());
+            AdsData.adsUnitIdMap.Add((RewardType)int.Parse(data["d"]["ad_unit"][i]["reward_type"][0]), data["d"]["ad_unit"][i]["ad_unit_id"]);
+            string key = data["d"]["ad_unit"][i]["ad_unit_id"];
+            AdsRewardConfig value = new AdsRewardConfig();
+            value.reward = data["d"]["ad_unit"][i]["reward"].ToList();
+            value.rewardAdUnitId = data["d"]["ad_unit"][i]["ad_unit_id"];
+            AdsData.rewardTypeToConfigMap.Add(key, value);
         }
     }
 

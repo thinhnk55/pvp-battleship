@@ -33,7 +33,6 @@ public class GameData : PDataBlock<GameData>
         } 
         set { Instance.rankMilestone = value; } }
     [SerializeField] private Dictionary<TransactionType,List<TransactionInfo>> transactionConfigs; public static Dictionary<TransactionType, List<TransactionInfo>> TransactionConfigs { get { return Instance.transactionConfigs; } set { Instance.transactionConfigs = value; } }
-    [SerializeField] private Dictionary<String, List<int>> adsUnitConfigs; public static Dictionary<String, List<int>> AdsUnitConfigs { get { return Instance.adsUnitConfigs; } set { Instance.adsUnitConfigs = value; } }
     [SerializeField] private List<RankConfig> rankConfigs; public static List<RankConfig> RankConfigs { get { return Instance.rankConfigs; } set { Instance.rankConfigs = value; } }
     [SerializeField] private PDataUnit<int> rocketCount; public static PDataUnit<int> RocketCount { get { return Instance.rocketCount; } set { Instance.rocketCount = value; } }
     [SerializeField] private List<TreasureConfig> treasureConfigs; public static List<TreasureConfig> TreasureConfigs { get { return Instance.treasureConfigs; } set { Instance.treasureConfigs = value; } }
@@ -58,7 +57,6 @@ public class GameData : PDataBlock<GameData>
         Instance.achievementConfig = Instance.achievementConfig ?? new Dictionary<AchievementType, AchievementInfo>();
         Instance.giftConfig = Instance.giftConfig ?? new List<int>();
         Instance.transactionConfigs = Instance.transactionConfigs ?? new Dictionary<TransactionType, List<TransactionInfo>>();
-        Instance.adsUnitConfigs = Instance.adsUnitConfigs ?? new Dictionary<String, List<int>>();
         Instance.rankConfigs = Instance.rankConfigs ?? new List<RankConfig>();
         Instance.rocketCount = new PDataUnit<int>(0);
         Instance.versions = Instance.versions ?? new int?(0);
