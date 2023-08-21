@@ -10,9 +10,9 @@ namespace Framework
         protected CheckLoginStatus checkLoginStatus;
         public virtual void Connect()
         {
-            WSClient.Instance.Connect();
             ServerMessenger.AddListener<JSONNode>(ServerResponse.CheckLoginConnection, CheckLoginConnection);
             ServerMessenger.AddListener(ServerResponse.LostConnection, OnLostConnection);
+            WSClient.Instance.Connect();
         }
         public virtual void Disconnect()
         {

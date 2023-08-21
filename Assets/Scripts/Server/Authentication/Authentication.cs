@@ -1,12 +1,9 @@
-using SimpleJSON;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using TMPro;
 using Unity.Services.Authentication;
 using Unity.Services.Core;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Framework
 {
@@ -212,6 +209,7 @@ namespace Framework
         {
             throw new NotImplementedException();
         }
+
     }
 }
 

@@ -11,12 +11,13 @@ namespace Framework {
 
         public void Connect()
         {
-            ws = new WebSocket(ServerConfig.WebSocketURL + "?id="+ PDataAuth.AuthData.userId + "&token=" + PDataAuth.AuthData.token);
+            ws = new WebSocket(ServerConfig.WebSocketURL + "?id="+ PDataAuth.AuthData?.userId + "&token=" + PDataAuth.AuthData?.token);
+            //ws = new WebSocket(ServerConfig.WebSocketURL + "?id="+ "1" + "&token=" + "test");
             ws.OnOpen += OnOpen;
             ws.OnMessage += OnMessage;
             ws.OnError += OnError;
             ws.Connect();
-            DontDestroyOnLoad.DontDestroyOnLoad(GameObject.Instantiate(new GameObject("WSPingPong")).AddComponent(typeof(WSPingPong)));
+            //DontDestroyOnLoad.DontDestroyOnLoad(GameObject.Instantiate(new GameObject("WSPingPong")).AddComponent(typeof(WSPingPong)));
         }
         public void Disconnect()
         {
@@ -24,7 +25,7 @@ namespace Framework {
             ws.OnMessage -= OnMessage;
             ws.OnError -= OnError;
             ws.Close();
-            GameObject.Destroy(WSPingPong.Instance.gameObject);
+            //GameObject.Destroy(WSPingPong.Instance.gameObject);
         }
         public void Ping()
         {
@@ -58,7 +59,10 @@ namespace Framework {
         }
         public void OnError(object sender, ErrorEventArgs e)
         {
-            Debug.Log("Error : " + e.Exception);
+            MainThreadDispatcher.ExecuteOnMainThread(() =>
+            {
+                Debug.Log("Error : " + e.Exception);
+            });
         }
 
     }

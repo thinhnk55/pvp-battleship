@@ -41,7 +41,7 @@ public class WSClientHandler : WSClientHandlerBase
     }
     public override void OnTokenInvalid()
     {
-        SceneManager.LoadScene("Loading");
+        LoadingScene.Instance.LoadScene("PreHome");
     }
     public override void OnAdminKick()
     {
@@ -216,7 +216,14 @@ public class WSClientHandler : WSClientHandlerBase
         Timer<LuckyShot>.Instance.TriggerInterval_Sec = data["d"]["lucky_shot"]["rocket_restore_period"].AsInt / 1000;
 
         // gift
-        SceneTransitionHelper.Load(ESceneName.Home);
+        if (SceneManager.GetActiveScene().name == "PreHome")
+        {
+            SceneTransitionHelper.Load(ESceneName.Home);
+        }
+        else
+        {
+            LoadingScene.Instance.LoadScene("Home");
+        }
 
     }
 
@@ -265,7 +272,6 @@ public class WSClientHandler : WSClientHandlerBase
             }
 
         }
-        SceneTransitionHelper.Load(ESceneName.Home);
     }
     public static void Transaction(JSONNode data)
     {
@@ -365,7 +371,7 @@ public class WSClientHandler : WSClientHandlerBase
             AdsData.adsUnitIdMap.Add((RewardType)int.Parse(data["d"]["ad_unit"][i]["reward_type"][0]), data["d"]["ad_unit"][i]["ad_unit_id"]);
             string key = data["d"]["ad_unit"][i]["ad_unit_id"];
             AdsRewardConfig value = new AdsRewardConfig();
-            value.reward = data["d"]["ad_unit"][i]["reward"].ToList();
+            value.reward = data["d"]["ad_unit"][i]["reward"].ToListInt();
             value.rewardAdUnitId = data["d"]["ad_unit"][i]["ad_unit_id"];
             AdsData.rewardTypeToConfigMap.Add(key, value);
         }
