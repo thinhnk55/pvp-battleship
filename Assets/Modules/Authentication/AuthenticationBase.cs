@@ -8,7 +8,7 @@ namespace Authentication
 {
     public abstract class AuthenticationBase : SingletonMono<AuthenticationBase>
     {
-        private Dictionary<SocialAuthType, ISocialAuth> auths = new Dictionary<SocialAuthType, ISocialAuth>();
+        protected Dictionary<SocialAuthType, ISocialAuth> auths = new Dictionary<SocialAuthType, ISocialAuth>();
         protected async override void Awake()
         {
             base.Awake();
@@ -45,6 +45,7 @@ namespace Authentication
 #endif
                         break;
                     case SocialAuthType.Anonymous:
+                        Debug.LogError("Anonymous");
                         auth = new LoginGuest();
                         break;
                     default:
@@ -52,6 +53,7 @@ namespace Authentication
                 }
                 if (auth != null)
                 {
+                        Debug.LogError("Anonymous");
                     auth.Initialize();
                     auths.Add((SocialAuthType)i, auth);
                 }

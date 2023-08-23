@@ -73,7 +73,7 @@ public partial class WSClientHandler : Singleton<WSClientHandler>
         };
         WSClient.Instance.OnTokenInvalid += () =>
         {
-            Debug.Log("e = 2");
+            WSClient.Instance.ws.Close();
             if (SceneManager.GetActiveScene().name == "Loading")
             {
                 LoadingScene.Instance.LoadScene("PreHome");
