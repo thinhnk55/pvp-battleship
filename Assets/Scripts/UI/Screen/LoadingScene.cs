@@ -14,7 +14,6 @@ public class LoadingScene : SingletonMono<LoadingScene>
     [SerializeField] Slider loadingBar;
     AudioListener[] aL;
     AsyncOperation asyn;
-    bool flag; // Sau khi hàm LoadScene được gọi thì mới chạy update
 
     protected override void Awake()
     {
@@ -24,17 +23,24 @@ public class LoadingScene : SingletonMono<LoadingScene>
 
     private void Start()
     {
+        loadingBar.maxValue = 100;
+        loadingBar.onValueChanged.AddListener((value) =>
+        {
+            if (value == 100 && asyn.isDone)
+            {
+                SceneManager.UnloadSceneAsync("Loading");
+            }
+        });
+        InvokeRepeating("CheckMultipleAudioListener", 0, 0.1f);
         WSClientHandler.Instance.Connect();
     }
 
     private void Update()
     {
-        if (!flag)
-            return;
+        if(asyn == null) { return; }
 
         currentLoadingTime += Time.deltaTime;
-        loadingBar.value = Mathf.Pow(asyn.progress * 100, currentLoadingTime /loadingDuration);
-
+        loadingBar.value = asyn.progress * 100 * Mathf.Clamp01(currentLoadingTime /loadingDuration);
     }
     public void CheckMultipleAudioListener()
     {
@@ -48,17 +54,7 @@ public class LoadingScene : SingletonMono<LoadingScene>
     public void LoadScene(string sceneName)
     {
         asyn = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
-        asyn.allowSceneActivation = false;
-        loadingBar.maxValue = 100;
-        flag = true;
-        loadingBar.onValueChanged.AddListener((value) =>
-        {
-            if (value == 100)
-            {
-                SceneManager.UnloadSceneAsync("Loading");
-            }
-        });
-        InvokeRepeating("CheckMultipleAudioListener", 0, 0.1f);
+        asyn.allowSceneActivation = true;
     }
 
 }

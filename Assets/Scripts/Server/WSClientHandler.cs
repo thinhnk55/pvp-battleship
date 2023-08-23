@@ -37,22 +37,31 @@ public class WSClientHandler : WSClientHandlerBase
     }
     public override void OnSystemError()
     {
-        SceneManager.LoadScene("Loading");
+        SceneTransitionHelper.Load(ESceneName.PreHome);
     }
     public override void OnTokenInvalid()
     {
-        LoadingScene.Instance.LoadScene("PreHome");
+        Debug.Log("e = 2");
+        if (SceneManager.GetActiveScene().name== "Loading")
+        {
+            LoadingScene.Instance.LoadScene("PreHome");
+        }
+        else
+        {
+            SceneTransitionHelper.Load(ESceneName.PreHome);
+        }
     }
     public override void OnAdminKick()
     {
-        SceneManager.LoadScene("Loading");
+        SceneTransitionHelper.Load(ESceneName.PreHome);
     }
     public override void OnLoginInOtherDevice()
     {
-        SceneManager.LoadScene("Loading");
+        SceneTransitionHelper.Load(ESceneName.PreHome);
     }
     public override void OnConnect()
     {
+        Debug.Log("Onconnect");
         ServerMessenger.AddListener<JSONNode>(ServerResponse._PROFILE, GetData);
         ServerMessenger.AddListener<JSONNode>(ServerResponse._CONFIG, GetConfig);
         ServerMessenger.AddListener<JSONNode>(ServerResponse._CONFIG_SHOP, GetConfigShop);
@@ -223,6 +232,7 @@ public class WSClientHandler : WSClientHandlerBase
         else
         {
             LoadingScene.Instance.LoadScene("Home");
+            //SceneTransitionHelper.Load(ESceneName.Home);
         }
 
     }

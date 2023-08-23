@@ -124,7 +124,10 @@ namespace Framework
             this.eSceneValue = eSceneValue;
             _stateMachine.CurrentState = State.FadeIn;
         }
-
+        public void ChangeScene(ESceneName eSceneName)
+        {
+            eSceneValue = eSceneName;
+        }
         public void Reload()
         {
             Load(eSceneValue);
@@ -161,7 +164,10 @@ namespace Framework
                 GameObject.DontDestroyOnLoad(_instance.CacheGameObject);
             }
         }
-
+        public static void ChangeScene(ESceneName eSceneValue)
+        {
+            _instance.ChangeScene(eSceneValue);
+        }
         public static void Load(ESceneName eSceneValue)
         {
             LazyInit();

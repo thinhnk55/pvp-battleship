@@ -16,10 +16,13 @@ namespace Framework
         }
         public virtual void Disconnect()
         {
+            if (WSClient.Instance.ws.IsAlive)
+            {
+                OnDisconnect();
+            }
             WSClient.Instance.Disconnect();
             ServerMessenger.RemoveListener<JSONNode>(ServerResponse.CheckLoginConnection, CheckLoginConnection);
             Messenger.RemoveListener(GameEvent.LostConnection, OnLostConnection);
-            OnDisconnect();
         }
         public abstract void OnConnect();
         public abstract void OnDisconnect();
