@@ -1,0 +1,16 @@
+Hand.png
+size:376,148
+filter:Linear,Linear
+pma:true
+Layer 525 copy
+bounds:2,10,135,133
+offsets:1,1,137,135
+rotate:90
+Layer 526
+bounds:137,2,143,120
+offsets:1,1,145,122
+rotate:90
+Layer 527
+bounds:259,3,142,112
+offsets:1,1,144,114
+rotate:90

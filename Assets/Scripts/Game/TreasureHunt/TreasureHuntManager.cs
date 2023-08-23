@@ -9,6 +9,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Lean.Touch;
+using Authentication;
 
 public class TreasureHuntManager : SingletonMono<TreasureHuntManager>
 {
@@ -204,7 +205,7 @@ public class TreasureHuntManager : SingletonMono<TreasureHuntManager>
             if (message.text.Length > 400)
                 message.text = message.text.Substring(0, 400);
             UpdatePrize(GameData.JoinTreasureRoom.InitPrize);
-            if (treasureTransform && PDataAuth.AuthData.userId == userId)
+            if (treasureTransform && DataAuth.AuthData.userId == userId)
             {
                 PlayTreasureGetAnim(x, y, int.Parse(node["beri"]));
             }

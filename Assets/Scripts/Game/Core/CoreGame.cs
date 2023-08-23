@@ -1,3 +1,4 @@
+using Authentication;
 using DG.Tweening;
 using Framework;
 using Lean.Touch;
@@ -391,11 +392,11 @@ public class CoreGame : SingletonMono<CoreGame>
     public void Match(JSONNode json)
     {
         roomId = int.Parse(json["d"]["r"]);
-        playerChair = int.Parse(json["d"]["p1"]["u"]) == PDataAuth.AuthData.userId ? int.Parse(json["d"]["p1"]["c"]) : int.Parse(json["d"]["p2"]["c"]);
-        Debug.Log(PDataAuth.AuthData.userId + "_"+ int.Parse(json["d"]["p1"]["u"]) + "_" + int.Parse(json["d"]["p2"]["u"]));
+        playerChair = int.Parse(json["d"]["p1"]["u"]) == DataAuth.AuthData.userId ? int.Parse(json["d"]["p1"]["c"]) : int.Parse(json["d"]["p2"]["c"]);
+        Debug.Log(DataAuth.AuthData.userId + "_"+ int.Parse(json["d"]["p1"]["u"]) + "_" + int.Parse(json["d"]["p2"]["u"]));
         bet = int.Parse(json["d"]["t"]);
         WSClientHandler.SubmitShip(roomId, player.ships);
-        GameData.Opponent = int.Parse(json["d"]["p1"]["u"]) == PDataAuth.AuthData.userId ? ProfileData.FromJsonOpponent(GameData.Opponent, json["d"]["p2"]["p"]) : ProfileData.FromJsonOpponent(GameData.Opponent, json["d"]["p1"]["p"]);
+        GameData.Opponent = int.Parse(json["d"]["p1"]["u"]) == DataAuth.AuthData.userId ? ProfileData.FromJsonOpponent(GameData.Opponent, json["d"]["p2"]["p"]) : ProfileData.FromJsonOpponent(GameData.Opponent, json["d"]["p1"]["p"]);
         Instance.searchUI.opponentProfile.UpdateUIs();
         Instance.opponent.battleFieldSprite.sprite = SpriteFactory.BattleFields[GameData.Opponent.BattleField.Data];
         CoinVFX.CoinVfx(Instance.searchUI.tresure.transform, Instance.searchUI.avatar1.transform.position, Instance.searchUI.avatar2.transform.position);
@@ -568,7 +569,7 @@ public class CoreGame : SingletonMono<CoreGame>
         int[,] arr = new int[Instance.player.octiles.Count, Instance.player.octiles.Count];
         Instance.opponent.gameObject.SetActive(true);
         Instance.opponent.InitBoard(10, 10);
-        GameData.Opponent = int.Parse(data["p1"]["u"]) == PDataAuth.AuthData.userId ? 
+        GameData.Opponent = int.Parse(data["p1"]["u"]) == DataAuth.AuthData.userId ? 
             ProfileData.FromJsonOpponent(GameData.Opponent, data["p2"]) : 
             ProfileData.FromJsonOpponent(GameData.Opponent, data["p1"]);
         Instance.searchUI.opponentProfile.UpdateUIs();
@@ -595,7 +596,7 @@ public class CoreGame : SingletonMono<CoreGame>
         }
         JSONNode boardPlayer; 
         JSONNode boardOpponent;
-        if (int.Parse(data["p1"]["u"]) == PDataAuth.AuthData.userId)
+        if (int.Parse(data["p1"]["u"]) == DataAuth.AuthData.userId)
         {
             boardPlayer = data["b1"];
             boardOpponent = data["b2"];
@@ -636,7 +637,7 @@ public class CoreGame : SingletonMono<CoreGame>
         
         bet = int.Parse(data["t"]);
         roomId = int.Parse(data["r"]);
-        playerChair = int.Parse(data["p1"]["u"]) == PDataAuth.AuthData.userId ? int.Parse(data["p1"]["c"]) : int.Parse(data["p2"]["c"]);
+        playerChair = int.Parse(data["p1"]["u"]) == DataAuth.AuthData.userId ? int.Parse(data["p1"]["c"]) : int.Parse(data["p2"]["c"]);
         Instance.playerTurn = int.Parse(data["n"]) == playerChair;
         Instance.turnTime = int.Parse(data["c"]);
         timeInit = int.Parse(data["a"]);

@@ -16,7 +16,6 @@ namespace Framework
     }
     public class SceneTransition : CacheMonoBehaviour
     {
-
         enum State
         {
             // Wait for load scene command
@@ -30,7 +29,7 @@ namespace Framework
         }
 
         // Index of scene will be loaded
-        ESceneName eSceneValue = ESceneName.Home;
+        ESceneName eSceneValue = ESceneName.Home; public ESceneName ESceneValue { get => eSceneValue; }
         // Scene async
         AsyncOperation _sceneAsync;
         // State machine
@@ -61,7 +60,6 @@ namespace Framework
         #endregion
 
         #region States
-
         void State_OnFadeInStart()
         {
             // Load scene async
@@ -151,7 +149,7 @@ namespace Framework
 
     public static class SceneTransitionHelper
     {
-        static SceneTransition _instance;
+        public static SceneTransition _instance;
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         static void LazyInit()
@@ -172,17 +170,6 @@ namespace Framework
         {
             LazyInit();
             _instance.Load(eSceneValue);
-        }
-        public static void LoadCall(ESceneName eSceneValue, Callback callback)
-        {
-            LazyInit();
-            _instance.OnLoaded = () =>
-            {
-                callback?.Invoke();
-                _instance.OnLoaded = null;
-            };
-            _instance.Load(eSceneValue);
-
         }
         public static void Reload()
         {

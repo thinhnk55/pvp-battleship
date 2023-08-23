@@ -1,12 +1,7 @@
-﻿using DG.Tweening;
-using Framework;
-using System.Collections;
-using System.Collections.Generic;
+﻿using Framework;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.Timeline;
 using UnityEngine.UI;
-
 public class LoadingScene : SingletonMono<LoadingScene>
 {
     [SerializeField] float loadingDuration = 1;
@@ -14,25 +9,18 @@ public class LoadingScene : SingletonMono<LoadingScene>
     [SerializeField] Slider loadingBar;
     AudioListener[] aL;
     AsyncOperation asyn;
-
-    protected override void Awake()
-    {
-        //base.Awake();
-        //WSClientHandler.Instance.Connect();
-    }
-
     private void Start()
     {
         loadingBar.maxValue = 100;
         loadingBar.onValueChanged.AddListener((value) =>
         {
-            if (value == 100 && asyn.isDone)
+            if (loadingBar.value == 100)
             {
                 SceneManager.UnloadSceneAsync("Loading");
             }
         });
         InvokeRepeating("CheckMultipleAudioListener", 0, 0.1f);
-        WSClientHandler.Instance.Connect();
+        WSClient.Instance.Connect(Authentication.DataAuth.AuthData.userId, Authentication.DataAuth.AuthData.token);
     }
 
     private void Update()
@@ -42,7 +30,7 @@ public class LoadingScene : SingletonMono<LoadingScene>
         currentLoadingTime += Time.deltaTime;
         loadingBar.value = asyn.progress * 100 * Mathf.Clamp01(currentLoadingTime /loadingDuration);
     }
-    public void CheckMultipleAudioListener()
+    void CheckMultipleAudioListener()
     {
         aL = FindObjectsOfType<AudioListener>();
         if (aL.Length >= 2)

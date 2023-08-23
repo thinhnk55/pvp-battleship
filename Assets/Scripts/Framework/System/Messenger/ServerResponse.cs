@@ -36,7 +36,6 @@
     public enum ServerResponse
     {
         // Default
-        LostConnection = -1,
         CheckLoginConnection = 1,
         //---------
 

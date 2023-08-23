@@ -8,12 +8,20 @@ using WebSocketSharp;
 namespace Framework {
     public class WSClient : Singleton<WSClient>
     {
+        public event Callback OnConnect;
+        public event Callback OnDisconnect;
+        public event Callback OnLostConnection;
+        public event Callback OnSystemError;
+        public event Callback OnTokenInvalid;
+        public event Callback OnLoginInOtherDevice;
+        public event Callback OnAdminKick;
         public WebSocket ws;
-
-        public void Connect()
+        public void Connect(int userId, string token)
         {
-            ws = new WebSocket(ServerConfig.WebSocketURL + "?id="+ PDataAuth.AuthData?.userId + "&token=" + PDataAuth.AuthData?.token);
-            //ws = new WebSocket(ServerConfig.WebSocketURL + "?id="+ "1" + "&token=" + "test");
+            ServerMessenger.AddListener<JSONNode>(ServerResponse.CheckLoginConnection, CheckLoginConnection);
+            Messenger.AddListener(GameEvent.LostConnection, OnLostConnection);
+            //ws = new WebSocket(ServerConfig.WebSocketURL + "?id="+ userId + "&token=" + token);
+            ws = new WebSocket(ServerConfig.WebSocketURL + "?id="+ 12 + "&token=" + "7lnyeclvtjlk49en9b63dsx8e6q5tqyi");
             ws.OnOpen += OnOpen;
             ws.OnMessage += OnMessage;
             ws.OnError += OnError;
@@ -22,6 +30,12 @@ namespace Framework {
         }
         public void Disconnect()
         {
+            ServerMessenger.RemoveListener<JSONNode>(ServerResponse.CheckLoginConnection, CheckLoginConnection);
+            Messenger.RemoveListener(GameEvent.LostConnection, OnLostConnection);
+            if (ws.IsAlive)
+            {
+                OnDisconnect?.Invoke();
+            }
             ws.OnOpen -= OnOpen;
             ws.OnMessage -= OnMessage;
             ws.OnError -= OnError;
@@ -44,7 +58,7 @@ namespace Framework {
         }
         public void OnMessage(object sender, MessageEventArgs e)
         {
-            Debug.Log(e.Data);
+            Debug.Log($"<color=yellow>{e.Data}</color>");
             MainThreadDispatcher.ExecuteOnMainThread(() =>
             {
                 JSONNode idJson = JSON.Parse(e.Data)["id"];
@@ -65,6 +79,42 @@ namespace Framework {
                 Debug.Log("Error : " + e.Exception);
             });
         }
-
+        /// <summary>
+        /// Handle the login connection status
+        /// </summary>
+        /// <param name="data">
+        /// 0: login successfully
+        /// 1: system error
+        /// 2: token invalid
+        /// 3: login in other device
+        /// 4: admin kick
+        /// </param>
+        public void CheckLoginConnection(JSONNode data)
+        {
+            switch (data["e"].AsInt)
+            {
+                case 0:
+                    OnConnect?.Invoke();
+                    break;
+                case 1:
+                    Disconnect();
+                    OnSystemError?.Invoke();
+                    break;
+                case 2:
+                    Disconnect();
+                    OnTokenInvalid?.Invoke();
+                    break;
+                case 3:
+                    Disconnect();
+                    OnLoginInOtherDevice?.Invoke();
+                    break;
+                case 4:
+                    Disconnect();
+                    OnAdminKick?.Invoke();
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 }

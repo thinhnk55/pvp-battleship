@@ -1,3 +1,4 @@
+using Authentication;
 using Framework;
 using Monetization;
 using SimpleJSON;
@@ -8,108 +9,97 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class WSClientHandler : WSClientHandlerBase
+public partial class WSClientHandler : Singleton<WSClientHandler>
 {
-    #region Singleton
-    public static WSClientHandler Instance
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
+    public static void Init()
     {
-        get
+        WSClient.Instance.OnConnect += () =>
         {
-            if (instance == null)
-            {
-                instance = new WSClientHandler();
-            }
-            return instance;
-        }
-    }
-    private static WSClientHandler instance = null;
-    #endregion
-    #region Inherit
-    public override void OnLostConnection()
-    {
-        PopupHelper.CreateConfirm(PrefabFactory.PopupDisconnect, "Disconnect", "Please reconnect", null, (confirm) =>
+            Debug.Log("Onconnect");
+            ServerMessenger.AddListener<JSONNode>(ServerResponse._PROFILE, GetData);
+            ServerMessenger.AddListener<JSONNode>(ServerResponse._CONFIG, GetConfig);
+            ServerMessenger.AddListener<JSONNode>(ServerResponse._CONFIG_SHOP, GetConfigShop);
+            ServerMessenger.AddListener<JSONNode>(ServerResponse._CHECK_RANK, GetCheckRank);
+            ServerMessenger.AddListener<JSONNode>(ServerResponse._CONFIG_ACHIEVEMENT, GetConfigAchievement);
+            ServerMessenger.AddListener<JSONNode>(ServerResponse._TRANSACTION, Transaction);
+            ServerMessenger.AddListener<JSONNode>(ServerResponse._LUCKYSHOT_EARN, LuckyShotEarn);
+            ServerMessenger.AddListener<JSONNode>(ServerResponse._CONFIG_RP, GetConfigRoyalPass);
+            ServerMessenger.AddListener<JSONNode>(ServerResponse._RP_DAILYQUEST_REWARD, DailyQuestReward);
+            ServerMessenger.AddListener<JSONNode>(ServerResponse._RP_SEASONQUEST_REWARD, SeasonQuestReward);
+            ServerMessenger.AddListener<JSONNode>(ServerResponse._RP_REWARD, RoyalPassReward);
+            ServerMessenger.AddListener<JSONNode>(ServerResponse._CONFIG_ADS, ReceiveAdsConfig);
+            ServerMessenger.AddListener<JSONNode>(ServerResponse._REWARD_ADS, ReceiveRewardAds);
+            ServerMessenger.AddListener<JSONNode>(ServerResponse.RECIEVE_TREASURE_CONFIG, ReceiveTreasureConfig);
+            ServerMessenger.AddListener<JSONNode>(ServerResponse.RECIEVE_JOIN_TREASURE_ROOM, ReceiveJoinTreasureRoom);
+
+            //not config
+            ServerMessenger.AddListener<JSONNode>(ServerResponse._RP_CHANGE_QUEST, ReceiveChangeQuest);
+            ServerMessenger.AddListener<JSONNode>(ServerResponse._RP_ADD_QUEST, AddQuest);
+            //ServerMessenger.AddListener<JSONNode>(ServerResponse.RECIEVE_CLAIM_ALL_ROYALPASS, ReceiveClaimAllRoyalPass);
+            ServerMessenger.AddListener<JSONNode>(ServerResponse._GAME_RECONNECT, RecieveReconnect);
+        };
+        WSClient.Instance.OnDisconnect += () =>
         {
-            if (confirm)
-            {
-                SceneManager.LoadScene("Loading");
-            }
-        });
-    }
-    public override void OnSystemError()
-    {
-        SceneTransitionHelper.Load(ESceneName.PreHome);
-    }
-    public override void OnTokenInvalid()
-    {
-        Debug.Log("e = 2");
-        if (SceneManager.GetActiveScene().name== "Loading")
-        {
-            LoadingScene.Instance.LoadScene("PreHome");
-        }
-        else
+            ServerMessenger.RemoveListener<JSONNode>(ServerResponse._PROFILE, GetData);
+            ServerMessenger.RemoveListener<JSONNode>(ServerResponse._CONFIG, GetConfig);
+            ServerMessenger.RemoveListener<JSONNode>(ServerResponse._CONFIG_SHOP, GetConfigShop);
+            ServerMessenger.RemoveListener<JSONNode>(ServerResponse._CHECK_RANK, GetCheckRank);
+            ServerMessenger.RemoveListener<JSONNode>(ServerResponse._CONFIG_ACHIEVEMENT, GetConfigAchievement);
+            ServerMessenger.RemoveListener<JSONNode>(ServerResponse._TRANSACTION, Transaction);
+            ServerMessenger.RemoveListener<JSONNode>(ServerResponse._LUCKYSHOT_EARN, LuckyShotEarn);
+            ServerMessenger.RemoveListener<JSONNode>(ServerResponse._CONFIG_RP, GetConfigRoyalPass);
+            ServerMessenger.RemoveListener<JSONNode>(ServerResponse._RP_DAILYQUEST_REWARD, DailyQuestReward);
+            ServerMessenger.RemoveListener<JSONNode>(ServerResponse._RP_SEASONQUEST_REWARD, SeasonQuestReward);
+            ServerMessenger.RemoveListener<JSONNode>(ServerResponse._RP_REWARD, RoyalPassReward);
+            ServerMessenger.RemoveListener<JSONNode>(ServerResponse._CONFIG_ADS, ReceiveAdsConfig);
+            ServerMessenger.RemoveListener<JSONNode>(ServerResponse._REWARD_ADS, ReceiveRewardAds);
+            ServerMessenger.RemoveListener<JSONNode>(ServerResponse.RECIEVE_TREASURE_CONFIG, ReceiveTreasureConfig);
+            ServerMessenger.RemoveListener<JSONNode>(ServerResponse.RECIEVE_JOIN_TREASURE_ROOM, ReceiveJoinTreasureRoom);
+
+            //not config
+            ServerMessenger.RemoveListener<JSONNode>(ServerResponse._RP_CHANGE_QUEST, ReceiveChangeQuest);
+            ServerMessenger.RemoveListener<JSONNode>(ServerResponse._RP_ADD_QUEST, AddQuest);
+            //ServerMessenger.RemoveListener<JSONNode>(ServerResponse.RECIEVE_CLAIM_ALL_ROYALPASS, ReceiveClaimAllRoyalPass);
+            ServerMessenger.RemoveListener<JSONNode>(ServerResponse._GAME_RECONNECT, RecieveReconnect);
+        };
+        WSClient.Instance.OnSystemError += () =>
         {
             SceneTransitionHelper.Load(ESceneName.PreHome);
-        }
+        };
+        WSClient.Instance.OnAdminKick += () =>
+        {
+            SceneTransitionHelper.Load(ESceneName.PreHome);
+        };
+        WSClient.Instance.OnTokenInvalid += () =>
+        {
+            Debug.Log("e = 2");
+            if (SceneManager.GetActiveScene().name == "Loading")
+            {
+                LoadingScene.Instance.LoadScene("PreHome");
+            }
+            else
+            {
+                SceneTransitionHelper.Load(ESceneName.PreHome);
+            }
+        };
+        WSClient.Instance.OnLoginInOtherDevice += () =>
+        {
+            SceneTransitionHelper.Load(ESceneName.PreHome);
+        };
+        WSClient.Instance.OnLostConnection += () =>
+        {
+            WSClient.Instance.Disconnect();
+            PopupHelper.CreateConfirm(PrefabFactory.PopupDisconnect, "Disconnect", "Please reconnect", null, (confirm) =>
+            {
+                if (confirm)
+                {
+                    SceneManager.LoadScene("Reconnect");
+                }
+            });
+        };
     }
-    public override void OnAdminKick()
-    {
-        SceneTransitionHelper.Load(ESceneName.PreHome);
-    }
-    public override void OnLoginInOtherDevice()
-    {
-        SceneTransitionHelper.Load(ESceneName.PreHome);
-    }
-    public override void OnConnect()
-    {
-        Debug.Log("Onconnect");
-        ServerMessenger.AddListener<JSONNode>(ServerResponse._PROFILE, GetData);
-        ServerMessenger.AddListener<JSONNode>(ServerResponse._CONFIG, GetConfig);
-        ServerMessenger.AddListener<JSONNode>(ServerResponse._CONFIG_SHOP, GetConfigShop);
-        ServerMessenger.AddListener<JSONNode>(ServerResponse._CHECK_RANK, GetCheckRank);
-        ServerMessenger.AddListener<JSONNode>(ServerResponse._CONFIG_ACHIEVEMENT, GetConfigAchievement);
-        ServerMessenger.AddListener<JSONNode>(ServerResponse._TRANSACTION, Transaction);
-        ServerMessenger.AddListener<JSONNode>(ServerResponse._LUCKYSHOT_EARN, LuckyShotEarn);
-        ServerMessenger.AddListener<JSONNode>(ServerResponse._CONFIG_RP, GetConfigRoyalPass);
-        ServerMessenger.AddListener<JSONNode>(ServerResponse._RP_DAILYQUEST_REWARD, DailyQuestReward);
-        ServerMessenger.AddListener<JSONNode>(ServerResponse._RP_SEASONQUEST_REWARD, SeasonQuestReward);
-        ServerMessenger.AddListener<JSONNode>(ServerResponse._RP_REWARD, RoyalPassReward);
-        ServerMessenger.AddListener<JSONNode>(ServerResponse._CONFIG_ADS, ReceiveAdsConfig);
-        ServerMessenger.AddListener<JSONNode>(ServerResponse._REWARD_ADS, ReceiveRewardAds);
-        ServerMessenger.AddListener<JSONNode>(ServerResponse.RECIEVE_TREASURE_CONFIG, ReceiveTreasureConfig);
-        ServerMessenger.AddListener<JSONNode>(ServerResponse.RECIEVE_JOIN_TREASURE_ROOM, ReceiveJoinTreasureRoom);
-
-        //not config
-        ServerMessenger.AddListener<JSONNode>(ServerResponse._RP_CHANGE_QUEST, ReceiveChangeQuest);
-        ServerMessenger.AddListener<JSONNode>(ServerResponse._RP_ADD_QUEST, AddQuest);
-        //ServerMessenger.AddListener<JSONNode>(ServerResponse.RECIEVE_CLAIM_ALL_ROYALPASS, ReceiveClaimAllRoyalPass);
-        ServerMessenger.AddListener<JSONNode>(ServerResponse._GAME_RECONNECT, RecieveReconnect);
-    }
-    public override void OnDisconnect()
-    {
-        ServerMessenger.RemoveListener<JSONNode>(ServerResponse._PROFILE, GetData);
-        ServerMessenger.RemoveListener<JSONNode>(ServerResponse._CONFIG, GetConfig);
-        ServerMessenger.RemoveListener<JSONNode>(ServerResponse._CONFIG_SHOP, GetConfigShop);
-        ServerMessenger.RemoveListener<JSONNode>(ServerResponse._CHECK_RANK, GetCheckRank);
-        ServerMessenger.RemoveListener<JSONNode>(ServerResponse._CONFIG_ACHIEVEMENT, GetConfigAchievement);
-        ServerMessenger.RemoveListener<JSONNode>(ServerResponse._TRANSACTION, Transaction);
-        ServerMessenger.RemoveListener<JSONNode>(ServerResponse._LUCKYSHOT_EARN, LuckyShotEarn);
-        ServerMessenger.RemoveListener<JSONNode>(ServerResponse._CONFIG_RP, GetConfigRoyalPass);
-        ServerMessenger.RemoveListener<JSONNode>(ServerResponse._RP_DAILYQUEST_REWARD, DailyQuestReward);
-        ServerMessenger.RemoveListener<JSONNode>(ServerResponse._RP_SEASONQUEST_REWARD, SeasonQuestReward);
-        ServerMessenger.RemoveListener<JSONNode>(ServerResponse._RP_REWARD, RoyalPassReward);
-        ServerMessenger.RemoveListener<JSONNode>(ServerResponse._CONFIG_ADS, ReceiveAdsConfig);
-        ServerMessenger.RemoveListener<JSONNode>(ServerResponse._REWARD_ADS, ReceiveRewardAds);
-        ServerMessenger.RemoveListener<JSONNode>(ServerResponse.RECIEVE_TREASURE_CONFIG, ReceiveTreasureConfig);
-        ServerMessenger.RemoveListener<JSONNode>(ServerResponse.RECIEVE_JOIN_TREASURE_ROOM, ReceiveJoinTreasureRoom);
-
-        //not config
-        ServerMessenger.RemoveListener<JSONNode>(ServerResponse._RP_CHANGE_QUEST, ReceiveChangeQuest);
-        ServerMessenger.RemoveListener<JSONNode>(ServerResponse._RP_ADD_QUEST, AddQuest);
-        //ServerMessenger.RemoveListener<JSONNode>(ServerResponse.RECIEVE_CLAIM_ALL_ROYALPASS, ReceiveClaimAllRoyalPass);
-        ServerMessenger.RemoveListener<JSONNode>(ServerResponse._GAME_RECONNECT, RecieveReconnect);
-    }
-    #endregion
-    public void GetData(JSONNode data)
+    public static void GetData(JSONNode data)
     {
         GetConfig();
         GetConfigShop();
@@ -118,7 +108,7 @@ public class WSClientHandler : WSClientHandlerBase
         GetConfigRoyalPass();
         RequestAdsConfig();
 
-        AdsManager.SetUserId(PDataAuth.AuthData.userId.ToString());
+        AdsManager.SetUserId(DataAuth.AuthData.userId.ToString());
         MusicType.MAINMENU.PlayMusic();
         PConsumableType.GEM.SetValue(int.Parse(data["d"]["d"]));
         PConsumableType.BERI.SetValue(int.Parse(data["d"]["g"]));
@@ -140,14 +130,14 @@ public class WSClientHandler : WSClientHandlerBase
         GameData.Starter = data["d"]["a"]["s"].AsInt == 1;
     }
     #region Rank
-    private void GetCheckRank()
+    private static void GetCheckRank()
     {
         new JSONClass
         {
             { "id", ServerRequest._CHECK_RANK.ToJson() },
         }.RequestServer();
     }
-    private void GetCheckRank(JSONNode data)
+    private static void GetCheckRank(JSONNode data)
     {
         Timer<RankCollection>.Instance.BeginPoint = long.Parse(data["d"]["t"]).NowFrom0001From1970();
     }
@@ -201,7 +191,7 @@ public class WSClientHandler : WSClientHandlerBase
         }.RequestServer();
     }
 
-    void GetConfig()
+    static void GetConfig()
     {
         new JSONClass()
         {
@@ -209,7 +199,7 @@ public class WSClientHandler : WSClientHandlerBase
             { "v", new JSONData(0) },
         }.RequestServer();
     }
-    void GetConfig(JSONNode data)
+    static void GetConfig(JSONNode data)
     {
         // rank
         GameData.RankConfigs = RankConfig.ListFromJson(data["d"]["level"]);
@@ -254,7 +244,7 @@ public class WSClientHandler : WSClientHandlerBase
     }
     #endregion
     #region Shop
-    void GetConfigShop()
+    static void GetConfigShop()
     {
         new JSONClass()
         {
@@ -262,7 +252,7 @@ public class WSClientHandler : WSClientHandlerBase
             { "v", new JSONData(0) },
         }.RequestServer();
     }
-    void GetConfigShop(JSONNode data)
+    static void GetConfigShop(JSONNode data)
     {
         GameData.TransactionConfigs = new Dictionary<TransactionType, List<TransactionInfo>>();
         Array @enum = Enum.GetValues(typeof(TransactionType));
@@ -291,7 +281,7 @@ public class WSClientHandler : WSClientHandlerBase
     }
     #endregion
     #region Achievement
-    void GetConfigAchievement()
+    static void GetConfigAchievement()
     {
         new JSONClass()
         {
@@ -299,7 +289,7 @@ public class WSClientHandler : WSClientHandlerBase
             { "v", new JSONData(0) },
         }.RequestServer();
     }
-    void GetConfigAchievement(JSONNode data)
+    static void GetConfigAchievement(JSONNode data)
     {
         GameData.AchievementConfig = new Dictionary<AchievementType, AchievementInfo>();
         for (int i = 0; i < data["d"]["achievements"].Count; i++)
@@ -349,7 +339,7 @@ public class WSClientHandler : WSClientHandlerBase
     }
     #endregion
     #region Ads
-    public void RequestAdsConfig()
+    public static void RequestAdsConfig()
     {
         new JSONClass()
         {
@@ -358,7 +348,7 @@ public class WSClientHandler : WSClientHandlerBase
             { "v",  new JSONData(0)}
         }.RequestServer();
     }
-    public void ReceiveAdsConfig(JSONNode data)
+    public static void ReceiveAdsConfig(JSONNode data)
     {
         if (int.Parse(data["d"]["version"]) == AdsData.versionAds)
             return;
@@ -387,13 +377,13 @@ public class WSClientHandler : WSClientHandlerBase
         }
     }
 
-    public void ReceiveRewardAds(JSONNode data)
+    public static void ReceiveRewardAds(JSONNode data)
     {
 
     }
     #endregion
     #region Lucky Shot
-    public void LuckyShotEarn(JSONNode data)
+    public static void LuckyShotEarn(JSONNode data)
     {
         GameData.RocketCount.Data = data["d"]["l"]["r"].AsInt;
         Timer<LuckyShot>.Instance.BeginPoint = data["d"]["l"]["t"].AsLong.NowFrom0001From1970();
@@ -566,7 +556,7 @@ public class WSClientHandler : WSClientHandlerBase
     }
     #endregion
     #region Royal Pass
-    void GetConfigRoyalPass()
+    static void GetConfigRoyalPass()
     {
         new JSONClass()
         {
@@ -574,7 +564,7 @@ public class WSClientHandler : WSClientHandlerBase
             { "v", new JSONData(0) },
         }.RequestServer();
     }
-    void GetConfigRoyalPass(JSONNode data)
+    static void GetConfigRoyalPass(JSONNode data)
     {
         RoyalPass.ConfigFromJson(GameData.RoyalPass, data["d"]);
     }
@@ -756,19 +746,19 @@ public class WSClientHandler : WSClientHandlerBase
 
 
     }
-    private void ReceiveChangeQuest(JSONNode json)
+    private static void ReceiveChangeQuest(JSONNode json)
     {
         GameData.RoyalPass.CurrentQuests.Data[json["d"]["i"].AsInt] = json["d"]["n"].AsInt;
         Timer<QuestCard>.Instance.Begin();
     }
-    private void AddQuest()
+    private static void AddQuest()
     {
         JSONNode jsonNode = new JSONClass()
         {
             //{ "id", ServerResponse.REQUEST_CLAIM_ALL_ROYALPASS.ToJson() },
         };
     }
-    private void AddQuest(JSONNode json)
+    private static void AddQuest(JSONNode json)
     {
         GameData.RoyalPass.CurrentQuests.Data[json["d"]["i"].AsInt] = json["d"]["n"].AsInt;
     }

@@ -44,7 +44,7 @@ public static class QuestTracker
         PNonConsumableType.AVATAR.GetData().OnDataChanged += OnAvatarChange;
         PNonConsumableType.AVATAR_FRAME.GetData().OnDataChanged += OnAvatarFrameChange;
 
-        ServerMessenger.AddListener(ServerResponse.LostConnection, LostConnection);
+        Messenger.AddListener(GameEvent.LostConnection, LostConnection);
 
     }
     public static void AddQuest(this QuestType requireTypes)

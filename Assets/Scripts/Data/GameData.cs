@@ -46,6 +46,7 @@ public class GameData : PDataBlock<GameData>
     [SerializeField] private List<BoardInfo> listBoard; public static List<BoardInfo> ListBoard { get { return Instance.listBoard; } set { Instance.listBoard = value; } }
     [SerializeField] private bool[] acceptLoginTerm; public static bool[] AcceptLoginTerm { get { return Instance.acceptLoginTerm; } set { Instance.acceptLoginTerm = value; } }
     [SerializeField] private bool starter; public static bool Starter { get { return Instance.starter; } set { Instance.starter = value; } }
+    [SerializeField] private int tutorial; public static int Tutorial { get { return Instance.tutorial; } set { Instance.tutorial = value; } }
     protected override void Init()
     {
         base.Init();

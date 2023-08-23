@@ -8,9 +8,14 @@ public class Home : MonoBehaviour
 {
     private void Start()
     {
-        if (!GameData.Starter)
+        Debug.Log(PDataTime.PlayCount);
+        if (!GameData.Starter && PDataTime.PlayCount>1)
         {
             PopupHelper.Create(PrefabFactory.PopupStarter);
+        } 
+        else if (PDataTime.PlayCount == 1)
+        {
+            PopupHelper.Create(PrefabFactory.PopupTuTorHome);
         }
     }
 }
