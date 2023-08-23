@@ -16,7 +16,7 @@ public class LoadingScene : SingletonMono<LoadingScene>
         {
             if (loadingBar.value == 100)
             {
-                SceneManager.UnloadSceneAsync("Loading");
+                SceneManager.UnloadSceneAsync(SceneManager.GetSceneAt(0));
             }
         });
         InvokeRepeating("CheckMultipleAudioListener", 0, 0.1f);
