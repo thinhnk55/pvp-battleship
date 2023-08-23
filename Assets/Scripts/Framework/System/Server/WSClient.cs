@@ -20,8 +20,8 @@ namespace Framework {
         {
             ServerMessenger.AddListener<JSONNode>(ServerResponse.CheckLoginConnection, CheckLoginConnection);
             Messenger.AddListener(GameEvent.LostConnection, OnLostConnection);
-            //ws = new WebSocket(ServerConfig.WebSocketURL + "?id="+ userId + "&token=" + token);
-            ws = new WebSocket(ServerConfig.WebSocketURL + "?id="+ 12 + "&token=" + "7lnyeclvtjlk49en9b63dsx8e6q5tqyi");
+            ws = new WebSocket(ServerConfig.WebSocketURL + "?id="+ userId + "&token=" + token);
+            //ws = new WebSocket(ServerConfig.WebSocketURL + "?id="+ 12 + "&token=" + "7lnyeclvtjlk49en9b63dsx8e6q5tqyi");
             ws.OnOpen += OnOpen;
             ws.OnMessage += OnMessage;
             ws.OnError += OnError;
@@ -32,6 +32,7 @@ namespace Framework {
         {
             ServerMessenger.RemoveListener<JSONNode>(ServerResponse.CheckLoginConnection, CheckLoginConnection);
             Messenger.RemoveListener(GameEvent.LostConnection, OnLostConnection);
+            Debug.LogError(ws.IsAlive);
             if (ws.IsAlive)
             {
                 OnDisconnect?.Invoke();
@@ -97,20 +98,20 @@ namespace Framework {
                     OnConnect?.Invoke();
                     break;
                 case 1:
-                    Disconnect();
                     OnSystemError?.Invoke();
+                    Disconnect();
                     break;
                 case 2:
-                    Disconnect();
                     OnTokenInvalid?.Invoke();
+                    Disconnect();
                     break;
                 case 3:
-                    Disconnect();
                     OnLoginInOtherDevice?.Invoke();
+                    Disconnect();
                     break;
                 case 4:
-                    Disconnect();
                     OnAdminKick?.Invoke();
+                    Disconnect();
                     break;
                 default:
                     break;

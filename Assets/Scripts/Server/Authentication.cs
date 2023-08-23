@@ -9,11 +9,6 @@ namespace Authentication
 {
     public class Authentication : AuthenticationBase
     {
-       // public string Token;
-        public SocialAuthType type;
-        //public TextMeshProUGUI Error;
-        private Dictionary<SocialAuthType, ISocialAuth> auths = new Dictionary<SocialAuthType, ISocialAuth>();
-
         [SerializeField] GameObject LoadingUI;
         [SerializeField] GameObject ButtonGroupIos;
         [SerializeField] GameObject ButtonGroupAndroid;
