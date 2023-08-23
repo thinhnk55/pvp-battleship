@@ -6,21 +6,32 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class ButtonShowAds : ButtonBase
-{
-    [SerializeField] UnityEvent rewardCallback;
-    [SerializeField] AdsIndex adsIndex;
-
-    public void ShowAds(string customData = null)
+namespace Monetization{
+    public enum AdsIndex
     {
-         AdsManager.ShowRewardAds(()=> rewardCallback?.Invoke(), AdsManager.RewardAdUnitId[(int)adsIndex], customData);
+        Get_Beri = 0,
+        Get_Rocket = 1,
+        Get_Quest = 2,
+        Change_Quest = 3,
     }
 
-    protected override void Button_OnClicked()
+    public class ButtonShowAds : ButtonBase
     {
-        base.Button_OnClicked();
-        Debug.Log("ShowAds");
-        ShowAds();
+        [SerializeField] UnityEvent rewardCallback;
+        [SerializeField] AdsIndex adsIndex;
+
+        public void ShowAds(string customData = null)
+        {
+            AdsManager.ShowRewardAds(() => rewardCallback?.Invoke(), AdsManager.RewardAdUnitId[(int)adsIndex], customData);
+        }
+
+        protected override void Button_OnClicked()
+        {
+            base.Button_OnClicked();
+            Debug.Log("ShowAds");
+            ShowAds();
+        }
+
     }
 
 }

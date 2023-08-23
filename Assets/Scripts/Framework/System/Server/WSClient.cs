@@ -1,6 +1,7 @@
 using Framework;
 using SimpleJSON;
 using System;
+using UnityEditor.Rendering;
 using UnityEngine;
 using WebSocketSharp;
 
@@ -30,7 +31,7 @@ namespace Framework {
         {
             ws.Send("{\"id\":2}");
         }
-
+       
         public void Send(JSONNode json)
         {
             ws.Send(json.ToString());

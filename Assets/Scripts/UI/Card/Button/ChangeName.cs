@@ -67,4 +67,5 @@ public class ChangeName : MonoBehaviour
         message = "";
         return true;
     }
+  
 }
