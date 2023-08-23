@@ -12,7 +12,8 @@ namespace Framework {
 
         public void Connect()
         {
-            ws = new WebSocket(ServerConfig.WebSocketURL + "?id="+ PDataAuth.AuthData.userId + "&token=" + PDataAuth.AuthData.token);
+            ws = new WebSocket(ServerConfig.WebSocketURL + "?id="+ PDataAuth.AuthData?.userId + "&token=" + PDataAuth.AuthData?.token);
+            //ws = new WebSocket(ServerConfig.WebSocketURL + "?id="+ "1" + "&token=" + "test");
             ws.OnOpen += OnOpen;
             ws.OnMessage += OnMessage;
             ws.OnError += OnError;
@@ -59,7 +60,10 @@ namespace Framework {
         }
         public void OnError(object sender, ErrorEventArgs e)
         {
-            Debug.Log("Error : " + e.Exception);
+            MainThreadDispatcher.ExecuteOnMainThread(() =>
+            {
+                Debug.Log("Error : " + e.Exception);
+            });
         }
 
     }

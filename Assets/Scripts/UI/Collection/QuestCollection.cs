@@ -1,4 +1,5 @@
 using Framework;
+using Monetization;
 using SimpleJSON;
 using System;
 using System.Collections;
@@ -48,7 +49,7 @@ public class QuestCollection : CardCollectionBase<QuestInfo>
                     },
                     OnChange = (info) =>
                     {
-                        RequestChangeQuest(_i);
+                        AdsManager.ShowRewardAds(null, AdsManager.RewardAdUnitId[(int)AdsIndex.Change_Quest], _i.ToString());
                     }
                 });
             }

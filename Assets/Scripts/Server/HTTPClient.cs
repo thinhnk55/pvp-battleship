@@ -18,6 +18,7 @@ public class HTTPClient : Singleton<HTTPClient>
                 {
                     PDataAuth.AuthData = new AuthData();
                     PDataAuth.AuthData.userId = int.Parse(jsonRes["data"]["id"]);
+                    Debug.Log("User Id: " + PDataAuth.AuthData.userId);
                     PDataAuth.AuthData.username = jsonRes["data"]["username"];
                     //PDataAuth.AuthData.refresh_token = jsonRes["data"]["refresh_token"];
                     PDataAuth.AuthData.token = jsonRes["data"]["token"];
