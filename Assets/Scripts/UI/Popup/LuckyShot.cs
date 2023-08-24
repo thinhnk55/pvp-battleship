@@ -28,6 +28,7 @@ public class LuckyShot : SingletonMono<LuckyShot>
     [SerializeField] Sprite emptyRocket;
     [SerializeField] Sprite rocket;
     [SerializeField] SkeletonGraphic anim;
+    [SerializeField] Sequence sequence;
     private void Start()
     {
         //ServerMessenger.AddListener<JSONNode>(ServerResponse.RECIEVE_REWARD_ROCKET, RewardAds);
@@ -74,6 +75,7 @@ public class LuckyShot : SingletonMono<LuckyShot>
     }
     IEnumerator Init()
     {
+        indexShot = -1;
         for (int i = 0; i < Instance.shots.Count; i++)
         {
             if (PRandom.Bool(0.25f))
@@ -208,14 +210,25 @@ public class LuckyShot : SingletonMono<LuckyShot>
     }
     public IEnumerator Door()    // To do
     {
+        if (indexShot >0)
+        {
+            sequence = DOTween.Sequence();
+            sequence.Append(Instance.shots[indexShot].transform.DOScale(0.9f, 0.25f))
+                .Append(Instance.shots[indexShot].transform.DOScale(1.1f, 0.25f))
+                .SetLoops(6);
+            Instance.shots[indexShot].image.SetAlpha(1f);
+        }
         for (int i = 0; i < Instance.shots.Count; i++)
         {
             Instance.shots[i].enabled = false;
         }
-        yield return new WaitForSeconds(anim.GetDuration("animation") * 1 / 4);
+        yield return new WaitForSeconds(indexShot>0 ? 2 : 0.5f);
         Instance.anim.SetAnimation("animation", false);
         Instance.anim.Initialize(false);
-        yield return new WaitForSeconds(anim.GetDuration("animation")*3/4);
+        yield return new WaitForSeconds(anim.GetDuration("animation") * 1 / 2);
+        if (indexShot > 0)
+            Instance.shots[indexShot].image.SetAlpha(0);
+        yield return new WaitForSeconds(anim.GetDuration("animation")* 1/ 2);
         for (int i = 0; i < Instance.shots.Count; i++)
         {
             Instance.shots[i].GetComponent<Image>().sprite = SpriteFactory.Unknown;

@@ -21,9 +21,9 @@ public class CoinVFX : CacheMonoBehaviour
     {
         SoundType.COIN_VFX.PlaySound();
         DOVirtual.DelayedCall(delay, () =>
-        {
-            isForce = true;
-        }
+            {
+                isForce = true;
+            }
         );
     }
 
@@ -31,7 +31,7 @@ public class CoinVFX : CacheMonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if ( isForce)
+        if (isForce)
         {
             SoundType.COIN_VFX.PlaySound();
             if (target)
