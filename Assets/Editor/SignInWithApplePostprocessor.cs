@@ -2,14 +2,13 @@
 #define UNITY_XCODE_EXTENSIONS_AVAILABLE
 #endif
 
-using AppleAuth.Editor;
 using UnityEditor;
 using UnityEditor.Callbacks;
 #if UNITY_XCODE_EXTENSIONS_AVAILABLE
 using UnityEditor.iOS.Xcode;
 #endif
 
-namespace AppleAuthSample.Editor
+namespace AppleAuth.Editor
 {
     public static class SignInWithApplePostprocessor
     {

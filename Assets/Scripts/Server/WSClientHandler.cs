@@ -366,6 +366,7 @@ public partial class WSClientHandler : Singleton<WSClientHandler>
 #endif
         for (int i = 0; i < data["d"]["ad_unit"].Count; i++)
         {
+            Debug.Log("for" + data["d"]["ad_unit"].Count);
             if (int.Parse(data["d"]["ad_unit"][i]["platform"]) != platform)
                 continue;
             AdsData.adsUnitIdMap.Add((RewardType)int.Parse(data["d"]["ad_unit"][i]["reward_type"][0]), data["d"]["ad_unit"][i]["ad_unit_id"]);
@@ -379,7 +380,12 @@ public partial class WSClientHandler : Singleton<WSClientHandler>
 
     public static void ReceiveRewardAds(JSONNode data)
     {
+        switch (data["d"]["a"])
+        {
+/*            case AdsData.adsUnitIdMap[RewardType.Get_Beri]
 
+                break;*/
+        }
     }
     #endregion
     #region Lucky Shot
