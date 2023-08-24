@@ -17,51 +17,54 @@ public partial class WSClientHandler : Singleton<WSClientHandler>
         WSClient.Instance.OnConnect += () =>
         {
             Debug.Log("Onconnect");
-            ServerMessenger.AddListener<JSONNode>(ServerResponse._PROFILE, GetData);
             ServerMessenger.AddListener<JSONNode>(ServerResponse._CONFIG, GetConfig);
             ServerMessenger.AddListener<JSONNode>(ServerResponse._CONFIG_SHOP, GetConfigShop);
-            ServerMessenger.AddListener<JSONNode>(ServerResponse._CHECK_RANK, GetCheckRank);
             ServerMessenger.AddListener<JSONNode>(ServerResponse._CONFIG_ACHIEVEMENT, GetConfigAchievement);
+            ServerMessenger.AddListener<JSONNode>(ServerResponse._CONFIG_RP, GetConfigRoyalPass);
+            ServerMessenger.AddListener<JSONNode>(ServerResponse._CONFIG_ADS, ReceiveAdsConfig);
+            ServerMessenger.AddListener<JSONNode>(ServerResponse._GIFT_CONFIG, GetConfigGift);
+
+            //not config
+            ServerMessenger.AddListener<JSONNode>(ServerResponse._PROFILE, GetData);
+            ServerMessenger.AddListener<JSONNode>(ServerResponse._CHECK_RANK, GetCheckRank);
             ServerMessenger.AddListener<JSONNode>(ServerResponse._TRANSACTION, Transaction);
             ServerMessenger.AddListener<JSONNode>(ServerResponse._LUCKYSHOT_EARN, LuckyShotEarn);
-            ServerMessenger.AddListener<JSONNode>(ServerResponse._CONFIG_RP, GetConfigRoyalPass);
             ServerMessenger.AddListener<JSONNode>(ServerResponse._RP_DAILYQUEST_REWARD, DailyQuestReward);
             ServerMessenger.AddListener<JSONNode>(ServerResponse._RP_SEASONQUEST_REWARD, SeasonQuestReward);
             ServerMessenger.AddListener<JSONNode>(ServerResponse._RP_REWARD, RoyalPassReward);
-            ServerMessenger.AddListener<JSONNode>(ServerResponse._CONFIG_ADS, ReceiveAdsConfig);
-            ServerMessenger.AddListener<JSONNode>(ServerResponse._REWARD_ADS, ReceiveRewardAds);
-            ServerMessenger.AddListener<JSONNode>(ServerResponse.RECIEVE_TREASURE_CONFIG, ReceiveTreasureConfig);
-            ServerMessenger.AddListener<JSONNode>(ServerResponse.RECIEVE_JOIN_TREASURE_ROOM, ReceiveJoinTreasureRoom);
-
-            //not config
             ServerMessenger.AddListener<JSONNode>(ServerResponse._RP_CHANGE_QUEST, ReceiveChangeQuest);
             ServerMessenger.AddListener<JSONNode>(ServerResponse._RP_ADD_QUEST, AddQuest);
+            ServerMessenger.AddListener<JSONNode>(ServerResponse._REWARD_ADS, ReceiveRewardAds);
             //ServerMessenger.AddListener<JSONNode>(ServerResponse.RECIEVE_CLAIM_ALL_ROYALPASS, ReceiveClaimAllRoyalPass);
             ServerMessenger.AddListener<JSONNode>(ServerResponse._GAME_RECONNECT, RecieveReconnect);
+            ServerMessenger.AddListener<JSONNode>(ServerResponse.RECIEVE_TREASURE_CONFIG, ReceiveTreasureConfig);
+            ServerMessenger.AddListener<JSONNode>(ServerResponse.RECIEVE_JOIN_TREASURE_ROOM, ReceiveJoinTreasureRoom);
         };
         WSClient.Instance.OnDisconnect += () =>
         {
-            ServerMessenger.RemoveListener<JSONNode>(ServerResponse._PROFILE, GetData);
             ServerMessenger.RemoveListener<JSONNode>(ServerResponse._CONFIG, GetConfig);
             ServerMessenger.RemoveListener<JSONNode>(ServerResponse._CONFIG_SHOP, GetConfigShop);
-            ServerMessenger.RemoveListener<JSONNode>(ServerResponse._CHECK_RANK, GetCheckRank);
             ServerMessenger.RemoveListener<JSONNode>(ServerResponse._CONFIG_ACHIEVEMENT, GetConfigAchievement);
+            ServerMessenger.RemoveListener<JSONNode>(ServerResponse._CONFIG_RP, GetConfigRoyalPass);
+            ServerMessenger.RemoveListener<JSONNode>(ServerResponse._CONFIG_ADS, ReceiveAdsConfig);
+            ServerMessenger.RemoveListener<JSONNode>(ServerResponse._GIFT_CONFIG, GetConfigGift);
+
+
+            //not config
+            ServerMessenger.RemoveListener<JSONNode>(ServerResponse._PROFILE, GetData);
+            ServerMessenger.RemoveListener<JSONNode>(ServerResponse._CHECK_RANK, GetCheckRank);
             ServerMessenger.RemoveListener<JSONNode>(ServerResponse._TRANSACTION, Transaction);
             ServerMessenger.RemoveListener<JSONNode>(ServerResponse._LUCKYSHOT_EARN, LuckyShotEarn);
-            ServerMessenger.RemoveListener<JSONNode>(ServerResponse._CONFIG_RP, GetConfigRoyalPass);
             ServerMessenger.RemoveListener<JSONNode>(ServerResponse._RP_DAILYQUEST_REWARD, DailyQuestReward);
             ServerMessenger.RemoveListener<JSONNode>(ServerResponse._RP_SEASONQUEST_REWARD, SeasonQuestReward);
             ServerMessenger.RemoveListener<JSONNode>(ServerResponse._RP_REWARD, RoyalPassReward);
-            ServerMessenger.RemoveListener<JSONNode>(ServerResponse._CONFIG_ADS, ReceiveAdsConfig);
-            ServerMessenger.RemoveListener<JSONNode>(ServerResponse._REWARD_ADS, ReceiveRewardAds);
-            ServerMessenger.RemoveListener<JSONNode>(ServerResponse.RECIEVE_TREASURE_CONFIG, ReceiveTreasureConfig);
-            ServerMessenger.RemoveListener<JSONNode>(ServerResponse.RECIEVE_JOIN_TREASURE_ROOM, ReceiveJoinTreasureRoom);
-
-            //not config
             ServerMessenger.RemoveListener<JSONNode>(ServerResponse._RP_CHANGE_QUEST, ReceiveChangeQuest);
             ServerMessenger.RemoveListener<JSONNode>(ServerResponse._RP_ADD_QUEST, AddQuest);
+            ServerMessenger.RemoveListener<JSONNode>(ServerResponse._REWARD_ADS, ReceiveRewardAds);
             //ServerMessenger.RemoveListener<JSONNode>(ServerResponse.RECIEVE_CLAIM_ALL_ROYALPASS, ReceiveClaimAllRoyalPass);
             ServerMessenger.RemoveListener<JSONNode>(ServerResponse._GAME_RECONNECT, RecieveReconnect);
+            ServerMessenger.RemoveListener<JSONNode>(ServerResponse.RECIEVE_TREASURE_CONFIG, ReceiveTreasureConfig);
+            ServerMessenger.RemoveListener<JSONNode>(ServerResponse.RECIEVE_JOIN_TREASURE_ROOM, ReceiveJoinTreasureRoom);
         };
         WSClient.Instance.OnSystemError += () =>
         {
@@ -73,7 +76,6 @@ public partial class WSClientHandler : Singleton<WSClientHandler>
         };
         WSClient.Instance.OnTokenInvalid += () =>
         {
-            WSClient.Instance.ws.Close();
             if (SceneManager.GetActiveScene().name == "Loading")
             {
                 LoadingScene.Instance.LoadScene("PreHome");
@@ -106,6 +108,7 @@ public partial class WSClientHandler : Singleton<WSClientHandler>
         GetCheckRank();
         GetConfigAchievement();
         GetConfigRoyalPass();
+        GetConfigGift();
         RequestAdsConfig();
 
         AdsManager.SetUserId(DataAuth.AuthData.userId.ToString());
@@ -226,22 +229,6 @@ public partial class WSClientHandler : Singleton<WSClientHandler>
         }
 
     }
-
-    public static void RequestGiftConfig()
-    {
-        new JSONClass()
-        {
-            //{ "id", ServerResponse.REQUEST_GIFT_CONFIG.ToJson() },
-        };
-    }
-    public static void ReceiveGiftConfig(JSONNode json)
-    {
-        GameData.GiftConfig = new List<int>();
-        for (int i = 0; i < json["list"].Count; i++)
-        {
-            GameData.GiftConfig.Add(int.Parse(json["list"][i]));
-        }
-    }
     #endregion
     #region Shop
     static void GetConfigShop()
@@ -343,7 +330,6 @@ public partial class WSClientHandler : Singleton<WSClientHandler>
     {
         new JSONClass()
         {
-
             { "id", ServerRequest._CONFIG_ADS.ToJson() },
             { "v",  new JSONData(0)}
         }.RequestServer();
@@ -769,12 +755,25 @@ public partial class WSClientHandler : Singleton<WSClientHandler>
         GameData.RoyalPass.CurrentQuests.Data[json["d"]["i"].AsInt] = json["d"]["n"].AsInt;
     }
     #endregion
-    #region Other Feature
-    public static void RequestGift()
+    #region Gift
+    public static void GetConfigGift()
     {
         new JSONClass()
         {
-            //{ "id", ServerResponse.REQUEST_GIFT.ToJson() },
+            { "id", ServerRequest._GIFT_CONFIG.ToJson() },
+            { "v", new JSONData(0) },
+        }.RequestServer();
+    }
+    public static void GetConfigGift(JSONNode data)
+    {
+        GameData.GiftConfig = data["d"]["gold"].ToListInt();
+        Timer<Gift>.Instance.TriggerInterval_Sec = data["d"]["bonus_period"].AsInt;
+    }
+    public static void GetGift()
+    {
+        new JSONClass()
+        {
+            { "id", ServerRequest._GIFT.ToJson() },
         }.RequestServer();
     }
     #endregion

@@ -14,9 +14,6 @@ namespace Framework
         public static long TotalTime { get { return Instance.totalTime; } set { Instance.totalTime = value; } } [SerializeField] long totalTime;
         /// <summary>sum of playtime/// </summary>
         public static long TotalTimePlay { get { return Instance.totalTimePlay; } set { Instance.totalTimePlay = value; } } [SerializeField] long totalTimePlay;
-
-        public static long PlayCount { get { return Instance.playCount; } set { Instance.playCount = value; } } [SerializeField] long playCount;
-
         protected override void Init()
         {
             base.Init();

@@ -23,7 +23,6 @@ namespace Framework
 #if UNITY_EDITOR
             obj.AddComponent<PQuickAction>();
 #endif
-            PDataTime.PlayCount++;
             InitVibration();
         }
 

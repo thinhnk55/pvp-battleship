@@ -4,6 +4,7 @@ using SRF;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class GameData : PDataBlock<GameData>
@@ -46,7 +47,7 @@ public class GameData : PDataBlock<GameData>
     [SerializeField] private List<BoardInfo> listBoard; public static List<BoardInfo> ListBoard { get { return Instance.listBoard; } set { Instance.listBoard = value; } }
     [SerializeField] private bool[] acceptLoginTerm; public static bool[] AcceptLoginTerm { get { return Instance.acceptLoginTerm; } set { Instance.acceptLoginTerm = value; } }
     [SerializeField] private bool starter; public static bool Starter { get { return Instance.starter; } set { Instance.starter = value; } }
-    [SerializeField] private int tutorial; public static int Tutorial { get { return Instance.tutorial; } set { Instance.tutorial = value; } }
+    [SerializeField] private int[] tutorial; public static int[] Tutorial { get { return Instance.tutorial; } set { Instance.tutorial = value; } }
     protected override void Init()
     {
         base.Init();
@@ -68,7 +69,10 @@ public class GameData : PDataBlock<GameData>
         Instance.listBoard = Instance.listBoard ?? new List<BoardInfo>() { new BoardInfo() { boardInfo = new List<ShipInfo>()}, new BoardInfo() { boardInfo = new List<ShipInfo>() }, new BoardInfo() { boardInfo = new List<ShipInfo>() },
             new BoardInfo(){ boardInfo = new List<ShipInfo>()} , new BoardInfo(){ boardInfo = new List<ShipInfo>()} , new BoardInfo(){ boardInfo = new List<ShipInfo>()} };
         Instance.acceptLoginTerm = Instance.acceptLoginTerm ?? new bool[2] { false, false };
-
+        if (Instance.tutorial.IsNullOrEmpty() || Instance.tutorial.Contains(0))
+        {
+            Instance.tutorial = new int[4] { 0,0,0,0};
+        }
     }
 }
 
@@ -171,7 +175,6 @@ public class ProfileData
         {
             profileData.AchievementSelected[i] = data["d"]["a"]["a"]["a"][i].AsInt;
         }
-        Debug.Log(profileData.ToString());
         return profileData;
     }
     public static ProfileData FromJsonOpponent(ProfileData profileData, JSONNode data)

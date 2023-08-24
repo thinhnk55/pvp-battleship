@@ -1,3 +1,4 @@
+using DG.Tweening;
 using Framework;
 using SimpleJSON;
 using System.Collections;
@@ -7,11 +8,6 @@ using UnityEngine;
 public class BetCollection : CardCollectionBase<BetInfo>
 {
     public override void UpdateUIs()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    private void Awake()
     {
         List<BetInfo> infos = new List<BetInfo>();
         for (int i = 0; i < GameData.Bets.Length; i++)
@@ -28,6 +24,7 @@ public class BetCollection : CardCollectionBase<BetInfo>
                 {
                     if (GameData.Bets[_i].Bet <= PConsumableType.BERI.GetValue())
                     {
+                        CoreGame.bet = _i;
                         SceneTransitionHelper.Load(ESceneName.MainGame);
                     }
                     else
@@ -40,5 +37,15 @@ public class BetCollection : CardCollectionBase<BetInfo>
         BuildUIs(infos);
     }
 
-
+    private void Awake()
+    {
+        UpdateUIs();
+        if (GameData.Tutorial[1] == 0)
+        {
+            DOVirtual.DelayedCall(1f, () =>
+            {
+                PopupHelper.Create(PrefabFactory.PopupTuTorBet);
+            });
+        }
+    }
 }
