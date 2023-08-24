@@ -5,9 +5,12 @@ using SimpleJSON;
 using Sirenix.Utilities;
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 public partial class WSClientHandler : Singleton<WSClientHandler>
 {
@@ -343,9 +346,7 @@ public partial class WSClientHandler : Singleton<WSClientHandler>
         if (int.Parse(data["d"]["version"]) == AdsData.versionAds)
             return;
 
-        Debug.Log(AdsData.versionAds);
         AdsData.versionAds = int.Parse(data["d"]["version"]);
-        Debug.Log(AdsData.versionAds);
 
 
         int platform;
@@ -369,7 +370,29 @@ public partial class WSClientHandler : Singleton<WSClientHandler>
 
     public static void ReceiveRewardAds(JSONNode data)
     {
-
+        string ads_unit_id = data["d"]["a"];
+        if (String.Equals(ads_unit_id, AdsData.adsUnitIdMap[RewardType.Get_Beri]))
+        {
+            PConsumableType.BERI.AddValue(int.Parse(data["d"]["g"]));
+        }
+        else if (String.Equals(ads_unit_id, AdsData.adsUnitIdMap[RewardType.Get_Rocket]))
+        {
+            GameData.RocketCount.Data = int.Parse(data["d"]["l"]["r"]);
+        }
+        else if (String.Equals(ads_unit_id, AdsData.adsUnitIdMap[RewardType.Get_Quest]))
+        {
+            GameData.RoyalPass.CurrentQuests.Data = data["d"]["q"]["q"].ToArrayInt();
+            GameData.RoyalPass.CurrentQuestsProgress = data["d"]["q"]["p"].ToArrayInt();
+        }
+        else if (String.Equals(ads_unit_id, AdsData.adsUnitIdMap[RewardType.Change_Quest]))
+        {
+            GameData.RoyalPass.CurrentQuests.Data = data["d"]["q"]["q"].ToArrayInt();
+            GameData.RoyalPass.CurrentQuestsProgress = data["d"]["q"]["p"].ToArrayInt();
+        }
+        else if (String.Equals(ads_unit_id, AdsData.adsUnitIdMap[RewardType.Get_X2DailyGift]))
+        {
+            Gift.OnGetAdsGift(data);
+        }
     }
     #endregion
     #region Lucky Shot

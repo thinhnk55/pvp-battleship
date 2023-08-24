@@ -19,6 +19,7 @@ public class Gift : CacheMonoBehaviour
     void Start()
     {
         progress.text = $"{GameData.ProgressGift}/5";
+        OnGetAdsGift += GetAdsGift;
         Timer<Gift>.Instance.OnTrigger += OnTrigger;
         Timer<Gift>.Instance.OnElapse += OnElapse;
         ServerMessenger.AddListener<JSONNode>(ServerResponse._GIFT, GetGift);
@@ -48,6 +49,7 @@ public class Gift : CacheMonoBehaviour
     }
     private void OnDestroy()
     {
+        OnGetAdsGift -= GetAdsGift;
         Timer<Gift>.Instance.OnTrigger -= OnTrigger;
         Timer<Gift>.Instance.OnElapse -= OnElapse;
         ServerMessenger.RemoveListener<JSONNode>(ServerResponse._GIFT, GetGift);
@@ -86,9 +88,21 @@ public class Gift : CacheMonoBehaviour
             progress.text = $"{GameData.ProgressGift}/5";
         }
     }
+
+    void GetAdsGift(JSONNode data)
+    {
+        PConsumableType.BERI.SetValue(int.Parse(data["d"]["g"]));
+        CoinVFX.CoinVfx(resource, Position, Position);
+        Timer<Gift>.Instance.BeginPoint = DateTime.UtcNow.Ticks;
+        GameData.ProgressGift += int.Parse(data["d"]["i"]) + 1;
+    }
+
     // Update is called once per frame
     void Update()
     {
         Timer<Gift>.Instance.Elasping();
     }
+
+
+    public static Action<JSONNode> OnGetAdsGift;
 }
