@@ -25,7 +25,8 @@
         _RP_UPGRADE = 4056,
         _RP_ADD_QUEST = 4057,
         _CONFIG_ADS = 4060,
-        _GIFT = 4061,
+        _GIFT_CONFIG = 4070,
+        _GIFT = 4071,
 
         _FIND_MATCH = 4101,
         _SUBMIT_SHIP = 4110,
@@ -63,8 +64,9 @@
         _RP_UPGRADE = 4056,
         _RP_ADD_QUEST = 4057,
         _CONFIG_ADS = 4060,
-        _GIFT = 4061,
         _REWARD_ADS = 4061,
+        _GIFT_CONFIG = 4070,
+        _GIFT = 4071,
 
         _QUIT_SEARCH = 4103,
         _MATCH = 4104,

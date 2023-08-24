@@ -32,7 +32,6 @@ namespace Framework {
         {
             ServerMessenger.RemoveListener<JSONNode>(ServerResponse.CheckLoginConnection, CheckLoginConnection);
             Messenger.RemoveListener(GameEvent.LostConnection, OnLostConnection);
-            Debug.LogError(ws.IsAlive);
             if (ws.IsAlive)
             {
                 OnDisconnect?.Invoke();
@@ -51,7 +50,7 @@ namespace Framework {
         public void Send(JSONNode json)
         {
             ws.Send(json.ToString());
-            Debug.Log(json);
+            Debug.Log($"<color=#FFA500>{json}</color>");
         }
         public void OnOpen(object sender, EventArgs e)
         {
@@ -102,6 +101,7 @@ namespace Framework {
                     Disconnect();
                     break;
                 case 2:
+                    ws.Close();
                     OnTokenInvalid?.Invoke();
                     Disconnect();
                     break;

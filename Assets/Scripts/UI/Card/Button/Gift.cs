@@ -21,7 +21,7 @@ public class Gift : CacheMonoBehaviour
         progress.text = $"{GameData.ProgressGift}/5";
         Timer<Gift>.Instance.OnTrigger += OnTrigger;
         Timer<Gift>.Instance.OnElapse += OnElapse;
-        ServerMessenger.AddListener<JSONNode>(ServerResponse._GIFT, ReceiveGift);
+        ServerMessenger.AddListener<JSONNode>(ServerResponse._GIFT, GetGift);
         if (GameData.ProgressGift == 5)
         {
             smallGiftBar.SetActive(false);
@@ -38,7 +38,7 @@ public class Gift : CacheMonoBehaviour
             countDown.text = "Collect";
             obtain.onClick.AddListener(() =>
             {
-                WSClientHandler.RequestGift();
+                WSClientHandler.GetGift();
             });
         }
         else
@@ -50,14 +50,14 @@ public class Gift : CacheMonoBehaviour
     {
         Timer<Gift>.Instance.OnTrigger -= OnTrigger;
         Timer<Gift>.Instance.OnElapse -= OnElapse;
-        ServerMessenger.RemoveListener<JSONNode>(ServerResponse._GIFT, ReceiveGift);
+        ServerMessenger.RemoveListener<JSONNode>(ServerResponse._GIFT, GetGift);
     }
     private void OnTrigger()
     {
         countDown.text = Timer<Gift>.Instance.TriggersFromBegin >= 1 ? "Collect" : Timer<Gift>.Instance.RemainTime_Sec.Hour_Minute_Second_1();
         obtain.onClick.AddListener(() =>
         {
-            WSClientHandler.RequestGift();
+            WSClientHandler.GetGift();
         });
     }
 
@@ -66,9 +66,9 @@ public class Gift : CacheMonoBehaviour
         countDown.text = Timer<Gift>.Instance.TriggersFromBegin >= 1 ? "Collect" : Timer<Gift>.Instance.RemainTime_Sec.Hour_Minute_Second_1();
     }
 
-    void ReceiveGift(JSONNode json)
+    void GetGift(JSONNode json)
     {
-        PConsumableType.BERI.AddValue(int.Parse(json["value"]));
+        PConsumableType.BERI.SetValue(int.Parse(json["d"]["g"]));
         CoinVFX.CoinVfx(resource, Position, Position);
         obtain.onClick.RemoveAllListeners();
         Timer<Gift>.Instance.BeginPoint = DateTime.UtcNow.Ticks;

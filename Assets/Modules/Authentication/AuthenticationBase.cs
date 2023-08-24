@@ -45,7 +45,6 @@ namespace Authentication
 #endif
                         break;
                     case SocialAuthType.Anonymous:
-                        Debug.LogError("Anonymous");
                         auth = new LoginGuest();
                         break;
                     default:
@@ -53,7 +52,6 @@ namespace Authentication
                 }
                 if (auth != null)
                 {
-                        Debug.LogError("Anonymous");
                     auth.Initialize();
                     auths.Add((SocialAuthType)i, auth);
                 }

@@ -24,6 +24,9 @@ public class Board : CacheMonoBehaviour
     public SpriteRenderer battleFieldSprite;
     public int skinShip;
     Camera cam;
+
+    GameObject tutorFormation;
+    GameObject tutorIngame;
     private void Awake()
     {
     }
@@ -31,11 +34,12 @@ public class Board : CacheMonoBehaviour
     {
         if (octiles.IsNullOrEmpty())
         {
-            InitBoard(10, 10);
+           // InitBoard(10, 10);
         }
     }
     public void InitBoard(int row, int column)
     {
+
         destroyedShips = new List<Ship> ();
         octileRoot.DestroyChildrenImmediate();
         octiles = new List<List<Octile>>();
@@ -58,9 +62,29 @@ public class Board : CacheMonoBehaviour
                 octiles[iRow].Add(octile);
             }
         }
+        // turorial
+        if (GameData.Tutorial[2] == 0 && this == CoreGame.Instance.player)
+        {
+            tutorFormation = PopupHelper.Create(PrefabFactory.PopupTuTorFormation).gameObject;
+        }
+        else if (GameData.Tutorial[3] == 0 && this != CoreGame.Instance.player)
+        {
+            tutorIngame = PopupHelper.Create(PrefabFactory.PopupTuTorPlay).gameObject;
+            int r = Random.Range(3, 7);
+            int c = Random.Range(3, 7);
+            tutorIngame.transform.position = octiles[r][c].transform.position;
+        }
     }
     public void BeingAttacked(LeanFinger leanFinger)
     {
+        // tutorial
+        if (GameData.Tutorial[3] == 0 && this != CoreGame.Instance.player)
+        {
+            Destroy(tutorIngame);
+            GameData.Tutorial = new int[4] { 1, 1, 1, 1 };
+        }
+
+        //
         int x = (int)((leanFinger.GetLastWorldPosition(0).x - transform.position.x + width / 2) / cellWidth);
         int y = (int)((leanFinger.GetLastWorldPosition(0).y - transform.position.y + height / 2) / cellHieght);
         if (Octile.Check(this, x, y , out int _x, out int _y) && !octiles[_y][_x].Attacked)
@@ -73,6 +97,8 @@ public class Board : CacheMonoBehaviour
 
     public void SelectingTarget(LeanFinger leanFinger)
     {
+
+
         int x = (int)((leanFinger.GetLastWorldPosition(0).x - transform.position.x + width / 2) / cellWidth);
         int y = (int)((leanFinger.GetLastWorldPosition(0).y - transform.position.y + height / 2) / cellHieght);
         if (Octile.Check(this, x, y, out int _x, out int _y))
@@ -93,6 +119,10 @@ public class Board : CacheMonoBehaviour
 
     public void AssignShip(Ship ship,int x,int y)
     {
+        if (GameData.Tutorial[2] == 0 && this == CoreGame.Instance.player)
+        {
+            Destroy(tutorFormation);
+        }
         List<Vector2Int> curPoses = ship.currentPoses;
         // unassign old pos
         ship.octilesOccupy.Clear();

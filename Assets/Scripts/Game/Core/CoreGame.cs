@@ -64,6 +64,7 @@ public class CoreGame : SingletonMono<CoreGame>
     [SerializeField] TextMeshProUGUI counterRematchObj;
     static float counterRematch;
     float currentCounterRematch;
+    [SerializeField] GameObject btnBackPreGame;
     [SerializeField] GameObject btnBattle;
     [SerializeField] GameObject btnReady;
     [SerializeField] TextMeshProUGUI rematchChatA;
@@ -117,7 +118,7 @@ public class CoreGame : SingletonMono<CoreGame>
         }
         Instance.shipsOpponent = shipListOpponent.GetComponentsInChildren<Ship>().ToList();
         stateMachine = new StateMachine<GameState>();
-        stateMachine.AddState(GameState.Pre, Instance.StartPregame, Instance.UpdatePregame, Instance.EndPregameRematch);
+        stateMachine.AddState(GameState.Pre, Instance.StartPregame, Instance.UpdatePregame, Instance.EndPregame);
         stateMachine.AddState(GameState.PreRematch, Instance.StartPregameReMatch, Instance.UpdatePregameRematch, Instance.EndPregameRematch);
         stateMachine.AddState(GameState.Search, Instance.StartSearch, Instance.UpdateSearch, Instance.EndSearch);
         stateMachine.AddState(GameState.SearchRematch, Instance.StartSearchRematch, Instance.UpdateSearchRematch, Instance.EndSearchRematch);
@@ -176,7 +177,12 @@ public class CoreGame : SingletonMono<CoreGame>
 
     #region StateMachine
     void StartPregame()
-    {      
+    {
+        if (GameData.Tutorial[2]==0)
+        {
+            btnBackPreGame.SetActive(false);
+        }
+
         float sizeWidth = cam.orthographicSize * cam.aspect * 2;
         Instance.preUI.SetActive(true);
         Instance.postUI.gameObject.SetActive(false);
@@ -198,7 +204,10 @@ public class CoreGame : SingletonMono<CoreGame>
     }
     void EndPregame()
     {
-
+        if (GameData.Tutorial[2] == 0)
+        {
+            GameData.Tutorial[2] = 1;
+        }
     }
     void StartPregameReMatch()
     {
@@ -245,7 +254,6 @@ public class CoreGame : SingletonMono<CoreGame>
     void StartSearch()
     {
         Instance.opponent.gameObject.SetActive(true);
-        Instance.opponent.InitBoard(10, 10);
         Instance.preUI.SetActive(false);
         Instance.searchUI.gameObject.SetActive(true);
         Instance.shipListPlayer.gameObject.SetActive(false);
@@ -263,6 +271,7 @@ public class CoreGame : SingletonMono<CoreGame>
     }
     void EndSearch()
     {
+        Instance.opponent.InitBoard(10, 10);
         Instance.searchUI.gameObject.SetActive(false);
     }
     void StartSearchRematch()
