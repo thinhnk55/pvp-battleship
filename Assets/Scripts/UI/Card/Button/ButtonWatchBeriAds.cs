@@ -15,8 +15,9 @@ public class ButtonWatchBeriAds : MonoBehaviour
         BeriBonusAmount.text += AdsData.rewardTypeToConfigMap[AdsData.adsUnitIdMap[RewardType.Get_Beri]].reward[0];
     }
 
+
+
     private void OnDestroy()
     {
-
     }
 }

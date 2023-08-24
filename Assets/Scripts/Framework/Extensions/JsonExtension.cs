@@ -35,6 +35,23 @@ public static class JsonExtension
         }
         return list;
     }
+
+    public static int[] ToArrayInt(this JSONNode json, bool debug = false)
+    {
+        int[] arr = new int[json.Count];
+        JSONArray ar = json.AsArray;
+        for (int i = 0; i < ar.Count; i++)
+        {
+            arr[i] = json[i].AsInt;
+            if (debug)
+            {
+                Debug.Log(ar[i]);
+            }
+        }
+        return arr;
+    }
+
+
     public static void RequestServer(this JSONNode json)
     {
         WSClient.Instance.Send(json);

@@ -17,7 +17,8 @@ public enum RewardType
     Get_Beri = 2,
     Get_Rocket = 3,
     Get_Quest = 4,
-    Change_Quest = 5
+    Change_Quest = 5,
+    Get_X2DailyGift = 6,
 }
 
 public class AdsData : PDataBlock<AdsData>

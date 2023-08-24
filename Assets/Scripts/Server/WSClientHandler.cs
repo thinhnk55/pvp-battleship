@@ -5,9 +5,12 @@ using SimpleJSON;
 using Sirenix.Utilities;
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 public partial class WSClientHandler : Singleton<WSClientHandler>
 {
@@ -339,9 +342,7 @@ public partial class WSClientHandler : Singleton<WSClientHandler>
         if (int.Parse(data["d"]["version"]) == AdsData.versionAds)
             return;
 
-        Debug.Log(AdsData.versionAds);
         AdsData.versionAds = int.Parse(data["d"]["version"]);
-        Debug.Log(AdsData.versionAds);
 
 
         int platform;
@@ -352,7 +353,6 @@ public partial class WSClientHandler : Singleton<WSClientHandler>
 #endif
         for (int i = 0; i < data["d"]["ad_unit"].Count; i++)
         {
-            Debug.Log("for" + data["d"]["ad_unit"].Count);
             if (int.Parse(data["d"]["ad_unit"][i]["platform"]) != platform)
                 continue;
             AdsData.adsUnitIdMap.Add((RewardType)int.Parse(data["d"]["ad_unit"][i]["reward_type"][0]), data["d"]["ad_unit"][i]["ad_unit_id"]);
@@ -366,11 +366,28 @@ public partial class WSClientHandler : Singleton<WSClientHandler>
 
     public static void ReceiveRewardAds(JSONNode data)
     {
-        switch (data["d"]["a"])
+        string ads_unit_id = data["d"]["a"];
+        if (String.Equals(ads_unit_id, AdsData.adsUnitIdMap[RewardType.Get_Beri]))
         {
-/*            case AdsData.adsUnitIdMap[RewardType.Get_Beri]
-
-                break;*/
+            PConsumableType.BERI.AddValue(int.Parse(data["d"]["g"]));
+        }
+        else if (String.Equals(ads_unit_id, AdsData.adsUnitIdMap[RewardType.Get_Rocket]))
+        {
+            GameData.RocketCount.Data = int.Parse(data["d"]["l"]["r"]);
+        }
+        else if (String.Equals(ads_unit_id, AdsData.adsUnitIdMap[RewardType.Get_Quest]))
+        {
+            GameData.RoyalPass.CurrentQuests.Data = data["d"]["q"]["q"].ToArrayInt();
+            GameData.RoyalPass.CurrentQuestsProgress = data["d"]["q"]["p"].ToArrayInt();
+        }
+        else if (String.Equals(ads_unit_id, AdsData.adsUnitIdMap[RewardType.Change_Quest]))
+        {
+            GameData.RoyalPass.CurrentQuests.Data = data["d"]["q"]["q"].ToArrayInt();
+            GameData.RoyalPass.CurrentQuestsProgress = data["d"]["q"]["p"].ToArrayInt();
+        }
+        else if (String.Equals(ads_unit_id, AdsData.adsUnitIdMap[RewardType.Get_X2DailyGift]))
+        {
+            Gift.OnGetAdsGift(data);
         }
     }
     #endregion
