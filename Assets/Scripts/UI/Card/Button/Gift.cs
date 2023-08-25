@@ -72,7 +72,7 @@ public class Gift : CacheMonoBehaviour
 
     private void CreateConfirmReceiveGiftPopup()
     {
-        PopupHelper.CreateConfirm(PrefabFactory.PopupReceiveGift, null,GameData.ProgressGift+"+" +GameData.GiftConfig[GameData.ProgressGift].ToString(), null, (confirm) =>
+        PopupHelper.CreateConfirm(PrefabFactory.PopupReceiveGift, null, "+" +GameData.GiftConfig[GameData.ProgressGift].ToString(), null, (confirm) =>
         {
             if (confirm)
             {
@@ -111,11 +111,11 @@ public class Gift : CacheMonoBehaviour
 
     void GetAdsGift(JSONNode data)
     {
-        PConsumableType.BERI.SetValue(int.Parse(data["d"]["g"]));
+        PConsumableType.BERI.SetValue(int.Parse(data["d"]["x"]["g"]));
         CoinVFX.CoinVfx(resource, Position, Position);
         obtain.onClick.RemoveAllListeners();
         Timer<Gift>.Instance.BeginPoint = DateTime.UtcNow.Ticks;
-        GameData.ProgressGift += int.Parse(data["d"]["i"]) + 1;
+        GameData.ProgressGift += int.Parse(data["d"]["x"]["i"]) + 1;
     }
 
     // Update is called once per frame
