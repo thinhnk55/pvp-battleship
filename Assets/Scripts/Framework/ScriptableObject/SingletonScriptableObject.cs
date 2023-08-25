@@ -15,7 +15,7 @@ namespace Framework
             {
                 if (_instance == null)
                 {
-                    _instance = Resources.Load<T>(string.Format("{0}/{1}", SOSFolderName, typeof(T).Name));
+                    _instance = Resources.Load<T>(string.Format("{0}/{1}/{2}", SOSFolderName, typeof(T).Namespace, typeof(T).Name));
 
 #if UNITY_EDITOR
                     if (_instance == null)

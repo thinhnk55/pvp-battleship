@@ -12,7 +12,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
 
-public partial class WSClientHandler : Singleton<WSClientHandler>
+public class WSClientHandler : Singleton<WSClientHandler>
 {
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
     public static void Init()
@@ -111,8 +111,8 @@ public partial class WSClientHandler : Singleton<WSClientHandler>
         GetCheckRank();
         GetConfigAchievement();
         GetConfigRoyalPass();
-        GetConfigGift();
         RequestAdsConfig();
+        GetConfigGift();
 
         AdsManager.SetUserId(DataAuth.AuthData.userId.ToString());
         MusicType.MAINMENU.PlayMusic();
