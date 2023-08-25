@@ -42,6 +42,8 @@ namespace Framework
         [SerializeField] private GameObject popupTuTorBet; public static GameObject PopupTuTorBet { get { return Instance.popupTuTorBet; } }
         [SerializeField] private GameObject popupTuTorFormation; public static GameObject PopupTuTorFormation { get { return Instance.popupTuTorFormation; } }
         [SerializeField] private GameObject popupTuTorPlay; public static GameObject PopupTuTorPlay { get { return Instance.popupTuTorPlay; } }
+        [SerializeField] private GameObject popupReceiveGift; public static GameObject PopupReceiveGift { get { return Instance.popupReceiveGift; } }
+
 
     }
 }
