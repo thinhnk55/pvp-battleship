@@ -377,13 +377,13 @@ public partial class WSClientHandler : Singleton<WSClientHandler>
         }
         else if (String.Equals(ads_unit_id, AdsData.adsUnitIdMap[RewardType.Get_Quest]))
         {
-            GameData.RoyalPass.CurrentQuests.Data = data["d"]["q"]["q"].ToArrayInt();
-            GameData.RoyalPass.CurrentQuestsProgress = data["d"]["q"]["p"].ToArrayInt();
+            GameData.RoyalPass.CurrentQuestsProgress[int.Parse(data["d"]["i"])] = int.Parse(data["d"]["q"]["p"][int.Parse(data["d"]["i"])]);
+            GameData.RoyalPass.CurrentQuests.Data[int.Parse(data["d"]["i"])] = int.Parse(data["d"]["n"]);
         }
         else if (String.Equals(ads_unit_id, AdsData.adsUnitIdMap[RewardType.Change_Quest]))
         {
-            GameData.RoyalPass.CurrentQuests.Data = data["d"]["q"]["q"].ToArrayInt();
             GameData.RoyalPass.CurrentQuestsProgress = data["d"]["q"]["p"].ToArrayInt();
+            GameData.RoyalPass.CurrentQuests.Data = data["d"]["q"]["q"].ToArrayInt();
         }
         else if (String.Equals(ads_unit_id, AdsData.adsUnitIdMap[RewardType.Get_X2DailyGift]))
         {
