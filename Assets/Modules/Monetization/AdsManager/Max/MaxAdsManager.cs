@@ -20,9 +20,11 @@ namespace Monetization
                 //InitializeInterstitialAds();
                 InitializeRewardedAds();
             };
-            for (int i = 0; i < AdsManager.RewardAdUnitId.Length; i++)
+
+            // Load reward Ads
+            foreach(KeyValuePair<RewardType, string> kvp in AdsData.adsUnitIdMap)
             {
-                LoadAds(AdsManager.RewardAdUnitId[i], AdsType.Reward);
+                LoadAds(kvp.Value, AdsType.Reward);
             }
         }
 

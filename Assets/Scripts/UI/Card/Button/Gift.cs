@@ -1,4 +1,5 @@
 using Framework;
+using Monetization;
 using SimpleJSON;
 using System;
 using System.Collections;
@@ -39,7 +40,7 @@ public class Gift : CacheMonoBehaviour
             countDown.text = "Collect";
             obtain.onClick.AddListener(() =>
             {
-                WSClientHandler.GetGift();
+                CreateConfirmReceiveGiftPopup();
             });
         }
         else
@@ -60,13 +61,32 @@ public class Gift : CacheMonoBehaviour
         obtain.onClick.RemoveAllListeners();
         obtain.onClick.AddListener(() =>
         {
-            WSClientHandler.GetGift();
+            CreateConfirmReceiveGiftPopup();
         });
     }
 
     private void OnElapse()
     {
         countDown.text = Timer<Gift>.Instance.TriggersFromBegin >= 1 ? "Collect" : Timer<Gift>.Instance.RemainTime_Sec.Hour_Minute_Second_1();
+    }
+
+    private void CreateConfirmReceiveGiftPopup()
+    {
+        PopupHelper.CreateConfirm(PrefabFactory.PopupReceiveGift, null, "+" +GameData.GiftConfig[GameData.ProgressGift].ToString(), null, (confirm) =>
+        {
+            if (confirm)
+            {
+                //Get beri
+                Debug.LogWarning("GetX1");
+                WSClientHandler.GetGift();
+            }
+            else
+            {
+                //Watch ads done => Get x3beri
+                Debug.LogWarning("X3");
+                AdsManager.ShowRewardAds(null, AdsData.adsUnitIdMap[RewardType.Get_X2DailyGift]);
+            }
+        });
     }
 
     void GetGift(JSONNode json)
@@ -91,10 +111,11 @@ public class Gift : CacheMonoBehaviour
 
     void GetAdsGift(JSONNode data)
     {
-        PConsumableType.BERI.SetValue(int.Parse(data["d"]["g"]));
+        PConsumableType.BERI.SetValue(int.Parse(data["d"]["x"]["g"]));
         CoinVFX.CoinVfx(resource, Position, Position);
+        obtain.onClick.RemoveAllListeners();
         Timer<Gift>.Instance.BeginPoint = DateTime.UtcNow.Ticks;
-        GameData.ProgressGift += int.Parse(data["d"]["i"]) + 1;
+        GameData.ProgressGift += int.Parse(data["d"]["x"]["i"]) + 1;
     }
 
     // Update is called once per frame
