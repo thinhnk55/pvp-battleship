@@ -10,5 +10,6 @@ public class PVEData : PDataBlock<PVEData>
     {
         base.Init();
         Instance.bets = Instance.bets ?? new List<int>();
+        stageCount = 10;
     }
 }

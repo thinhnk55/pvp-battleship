@@ -20,7 +20,7 @@ namespace Framework
 #if UNITY_EDITOR
                     if (_instance == null)
                     {
-                        string configPath = string.Format("Assets/Resources/{0}/", SOSFolderName);
+                        string configPath = string.Format("Assets/Resources/{0}/{1}", SOSFolderName, typeof(T).Namespace);
                         if (!System.IO.Directory.Exists(configPath))
                             System.IO.Directory.CreateDirectory(configPath);
 

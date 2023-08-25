@@ -11,11 +11,11 @@ public class WSClientPVE : Singleton<WSClientPVE>
     {
         WSClient.Instance.OnConnect += () =>
         {
-            ServerMessenger.AddListener<JSONNode>(ServerResponse._CONFIG, null);
+            //ServerMessenger.AddListener<JSONNode>(ServerResponse._CONFIG, null);
         };
         WSClient.Instance.OnDisconnect += () =>
         {
-            ServerMessenger.RemoveListener<JSONNode>(ServerResponse._CONFIG, null);
+           // ServerMessenger.RemoveListener<JSONNode>(ServerResponse._CONFIG, null);
         };
     }
 }

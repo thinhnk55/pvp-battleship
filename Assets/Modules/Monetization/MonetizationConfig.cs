@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Monetization
 {
-    public class MonetizationConfig : Framework.SingletonScriptableObject<MonetizationConfig>
+    public class MonetizationConfig : Framework.SingletonScriptableObjectModulized<MonetizationConfig>
     {
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         static void Init()

@@ -1,18 +1,27 @@
+using Framework;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
-public class PVEStageCard : MonoBehaviour
+public struct StageInfo
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public int id;
+    public int rewardMul;
+}
+public class PVEStageCard : CardBase<StageInfo>
+{
+    [SerializeField] TextMeshProUGUI id;
+    [SerializeField] TextMeshProUGUI mulReward;
 
-    // Update is called once per frame
-    void Update()
+    public override void BuildUI(StageInfo info)
     {
-        
+        base.BuildUI(info);
+        id?.SetText(info.id.ToString());
+        mulReward?.SetText("x"+ info.rewardMul.ToString());
+    }
+    protected override void OnClicked(StageInfo info)
+    {
+        throw new System.NotImplementedException();
     }
 }

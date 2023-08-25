@@ -1,3 +1,4 @@
+using Framework;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,7 +6,14 @@ using UnityEngine;
 public class PVE : MonoBehaviour
 {
     int stagesCount;
-    int currentStages;
+    PDataUnit<int> currentStages;
 
-    [SerializeField]PVEStageCollection stagesCollection;
+    [SerializeField]PVEStageCollection stagesView;
+
+    private void Awake()
+    {
+        currentStages = new PDataUnit<int>(-1);
+        currentStages.OnDataChanged += stagesView.OnStageChange;
+        currentStages.Data = 0;
+    }
 }

@@ -2,7 +2,7 @@
 
 namespace Framework
 {
-    public class PConfigSO : SingletonScriptableObject<PConfigSO>
+    public class PConfigSO : SingletonScriptableObjectModulized<PConfigSO>
     {
         [Header("App")]
         [SerializeField] string _appID;
