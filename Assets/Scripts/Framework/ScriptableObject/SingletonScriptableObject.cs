@@ -15,12 +15,29 @@ namespace Framework
             {
                 if (_instance == null)
                 {
-                    _instance = Resources.Load<T>(string.Format("{0}/{1}/{2}", SOSFolderName, typeof(T).Namespace, typeof(T).Name));
+                    Debug.Log(typeof(T).Namespace);
+
+                    if (typeof(T).Namespace!=null)
+                    {
+                        _instance = Resources.Load<T>(string.Format("{0}/{1}/{2}", SOSFolderName, typeof(T).Namespace, typeof(T).Name));
+                    }
+                    else
+                    {
+                        _instance = Resources.Load<T>(string.Format("{0}/{1}", SOSFolderName, typeof(T).Name));
+                    }
 
 #if UNITY_EDITOR
                     if (_instance == null)
                     {
-                        string configPath = string.Format("Assets/Resources/{0}/{1}", SOSFolderName, typeof(T).Namespace);
+                        string configPath;
+                        if (typeof(T).Namespace !=null)
+                        {
+                            configPath = string.Format("Assets/Resources/{0}/{1}", SOSFolderName, typeof(T).Namespace);
+                        }
+                        else
+                        {
+                            configPath = string.Format("Assets/Resources/{0}", SOSFolderName);
+                        }
                         if (!System.IO.Directory.Exists(configPath))
                             System.IO.Directory.CreateDirectory(configPath);
 

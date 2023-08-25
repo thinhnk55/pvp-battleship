@@ -3,16 +3,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ApplicationConfig : SingletonScriptableObject<ApplicationConfig>
+namespace Framework
 {
-    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
-    static void Init()
+    public class ApplicationConfig : SingletonScriptableObject<ApplicationConfig>
     {
-        if (_instance == null)
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+        static void Init()
         {
-            Instance.ToString();
+            if (_instance == null)
+            {
+                Instance.ToString();
+            }
         }
+        [SerializeField] private string bundleId; public static string BundleId { get { return Instance.bundleId; } }
+
     }
-    [SerializeField] private string bundleId; public static string BundleId { get { return Instance.bundleId; } }
 
 }
