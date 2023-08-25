@@ -57,6 +57,7 @@ public class Gift : CacheMonoBehaviour
     private void OnTrigger()
     {
         countDown.text = Timer<Gift>.Instance.TriggersFromBegin >= 1 ? "Collect" : Timer<Gift>.Instance.RemainTime_Sec.Hour_Minute_Second_1();
+        obtain.onClick.RemoveAllListeners();
         obtain.onClick.AddListener(() =>
         {
             WSClientHandler.GetGift();

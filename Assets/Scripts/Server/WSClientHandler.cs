@@ -128,12 +128,16 @@ public partial class WSClientHandler : Singleton<WSClientHandler>
         }
         GameData.RocketCount.Data = data["d"]["a"]["l"]["r"].AsInt;
         GameData.Player = ProfileData.FromJson(GameData.Player, data);
-        Timer<LuckyShot>.Instance.BeginPoint = data["d"]["a"]["l"]["t"].AsLong.NowFrom0001From1970();
         RoyalPass.DataFromJson(GameData.RoyalPass, data["d"]["a"]["r"]);
+        
+        Timer<LuckyShot>.Instance.BeginPoint = data["d"]["a"]["l"]["t"].AsLong.NowFrom0001From1970();
         Timer<LuckyShot>.Instance.TriggerInterval_Sec = GameData.LuckyShotCoolDown;
         Timer<Gift>.Instance.TriggerInterval_Sec = GameData.GiftCoolDown;
+        Timer<Gift>.Instance.BeginPoint = data["d"]["a"]["d"]["t"].AsLong.NowFrom0001From1970();
         Timer<RankCollection>.Instance.TriggerInterval_Sec = GameData.RankReceiveCoolDown;
         GameData.Starter = data["d"]["a"]["s"].AsInt == 1;
+        GameData.ProgressGift = data["d"]["a"]["d"]["i"].AsInt;
+
     }
     #region Rank
     private static void GetCheckRank()
@@ -784,7 +788,7 @@ public partial class WSClientHandler : Singleton<WSClientHandler>
     public static void GetConfigGift(JSONNode data)
     {
         GameData.GiftConfig = data["d"]["gold"].ToListInt();
-        Timer<Gift>.Instance.TriggerInterval_Sec = data["d"]["bonus_period"].AsInt;
+        Timer<Gift>.Instance.TriggerInterval_Sec = data["d"]["bonus_period"].AsInt / 1000;
     }
     public static void GetGift()
     {
