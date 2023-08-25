@@ -74,8 +74,6 @@ public class BoardCard : CardBase<BoardInfo>
         octiles = new List<List<Octile>>();
         float cellHieght = rect.sizeDelta.y / info.row;
         float cellWidth = rect.sizeDelta.x / info.column;
-        Debug.Log(cellWidth + "_" + cellHieght);
-
         for (int iRow = 0; iRow < info.row; iRow++)
         {
             octiles.Add(new List<Octile>());

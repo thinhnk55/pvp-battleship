@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class ApplyGood : ButtonBase
 {
-    GoodCard good;
+    private GoodCard good;
     [SerializeField]GameObject content;
     protected override void Button_OnClicked()
     {

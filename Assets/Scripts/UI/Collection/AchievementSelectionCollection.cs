@@ -58,7 +58,7 @@ public class AchievementSelectionCollection : AchievementCollection
     public void Select(int slot)
     {
         AchievementSelectionCollection.slot = slot;
-        PopupHelper.Create(popup.gameObject);
+        PopupHelper.Create(PrefabFactory.PopupAchie);
     }
 
     public void ReceiveChangeAchievement(JSONNode json)

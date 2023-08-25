@@ -302,7 +302,9 @@ public class WSClientHandler : Singleton<WSClientHandler>
                         nextMilestone++;
                     }
                 }
-                if (GameData.Player.AchievementProgress[_i] >= GameData.AchievementConfig[type].AchivementUnits[nextMilestone].Task && oProgress < GameData.AchievementConfig[type].AchivementUnits[nextMilestone].Task )
+                if (nextMilestone < GameData.AchievementConfig[type].AchivementUnits.Length &&
+                GameData.Player.AchievementProgress[_i] >= GameData.AchievementConfig[type].AchivementUnits[nextMilestone].Task 
+                && oProgress < GameData.AchievementConfig[type].AchivementUnits[nextMilestone].Task )
                 {
                     PopupHelper.CreateMessage(PrefabFactory.PospupQuestCompleted, null ,AchievementInfo.GetDescription(type, GameData.AchievementConfig[type].AchivementUnits[nextMilestone].Task), null);
                 }
@@ -591,6 +593,7 @@ public class WSClientHandler : Singleton<WSClientHandler>
     static void GetConfigRoyalPass(JSONNode data)
     {
         RoyalPass.ConfigFromJson(GameData.RoyalPass, data["d"]);
+        GameData.RoyalPass.Version = data["v"].AsInt;
         GetDataRoyalPass();
     }
     public static void DailyQuestReward(int index)
