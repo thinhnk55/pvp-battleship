@@ -36,7 +36,7 @@ public partial class WSClientHandler : Singleton<WSClientHandler>
             ServerMessenger.AddListener<JSONNode>(ServerResponse._RP_SEASONQUEST_REWARD, SeasonQuestReward);
             ServerMessenger.AddListener<JSONNode>(ServerResponse._RP_REWARD, RoyalPassReward);
             ServerMessenger.AddListener<JSONNode>(ServerResponse._RP_CHANGE_QUEST, ReceiveChangeQuest);
-            ServerMessenger.AddListener<JSONNode>(ServerResponse._RP_ADD_QUEST, AddQuest);
+            ServerMessenger.AddListener<JSONNode>(ServerResponse._RP_DATA, GetDataRoyalPass);
             ServerMessenger.AddListener<JSONNode>(ServerResponse._REWARD_ADS, ReceiveRewardAds);
             //ServerMessenger.AddListener<JSONNode>(ServerResponse.RECIEVE_CLAIM_ALL_ROYALPASS, ReceiveClaimAllRoyalPass);
             ServerMessenger.AddListener<JSONNode>(ServerResponse._GAME_RECONNECT, RecieveReconnect);
@@ -62,7 +62,7 @@ public partial class WSClientHandler : Singleton<WSClientHandler>
             ServerMessenger.RemoveListener<JSONNode>(ServerResponse._RP_SEASONQUEST_REWARD, SeasonQuestReward);
             ServerMessenger.RemoveListener<JSONNode>(ServerResponse._RP_REWARD, RoyalPassReward);
             ServerMessenger.RemoveListener<JSONNode>(ServerResponse._RP_CHANGE_QUEST, ReceiveChangeQuest);
-            ServerMessenger.RemoveListener<JSONNode>(ServerResponse._RP_ADD_QUEST, AddQuest);
+            ServerMessenger.RemoveListener<JSONNode>(ServerResponse._RP_DATA, GetDataRoyalPass);
             ServerMessenger.RemoveListener<JSONNode>(ServerResponse._REWARD_ADS, ReceiveRewardAds);
             //ServerMessenger.RemoveListener<JSONNode>(ServerResponse.RECIEVE_CLAIM_ALL_ROYALPASS, ReceiveClaimAllRoyalPass);
             ServerMessenger.RemoveListener<JSONNode>(ServerResponse._GAME_RECONNECT, RecieveReconnect);
@@ -569,6 +569,17 @@ public partial class WSClientHandler : Singleton<WSClientHandler>
     }
     #endregion
     #region Royal Pass
+    static void GetDataRoyalPass()
+    {
+        new JSONClass()
+        {
+            { "id", ServerRequest._RP_DATA.ToJson() },
+        }.RequestServer();
+    }
+    static void GetDataRoyalPass(JSONNode data)
+    {
+        RoyalPass.DataFromJson(GameData.RoyalPass, data["d"]);
+    }
     static void GetConfigRoyalPass()
     {
         new JSONClass()
@@ -580,6 +591,7 @@ public partial class WSClientHandler : Singleton<WSClientHandler>
     static void GetConfigRoyalPass(JSONNode data)
     {
         RoyalPass.ConfigFromJson(GameData.RoyalPass, data["d"]);
+        GetDataRoyalPass();
     }
     public static void DailyQuestReward(int index)
     {

@@ -5,13 +5,14 @@ using UnityEngine.UI;
 
 namespace Framework
 {
-    public enum 
-    ESceneName
+    public enum ESceneName
     {
         PreHome,
         Home,
         Bet,
         MainGame,
+        PVEBet,
+        PVE,
         TreasureHunt,
     }
     public class SceneTransition : CacheMonoBehaviour
