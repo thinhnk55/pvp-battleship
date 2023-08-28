@@ -1,18 +1,24 @@
+using Framework;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+
+public struct WinCountInfo
+{
+    public int Order;
+    public Image Rank;
+    public string Name;
+    public Image Cup;
+    public int WinCount;
+    public Image Reward;
+    public Callback<WinCountInfo> Onchange;
+}
 
 public class WinCountCard : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+
+
+
 }
