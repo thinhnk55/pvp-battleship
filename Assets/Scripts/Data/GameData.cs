@@ -1,5 +1,6 @@
 using Framework;
 using SimpleJSON;
+using Sirenix.OdinInspector.Editor.Examples;
 using SRF;
 using System;
 using System.Collections;
@@ -44,6 +45,10 @@ public class GameData : PDataBlock<GameData>
     [SerializeField] private int giftCoolDown; public static int GiftCoolDown { get { return Instance.giftCoolDown; } set { Instance.giftCoolDown = value; } }
     [SerializeField] private int changeQuestCoolDown; public static int ChangeQuestCoolDown { get { return Instance.changeQuestCoolDown; } set { Instance.changeQuestCoolDown = value; } }
     [SerializeField] private RoyalPass royalPass; public static RoyalPass RoyalPass { get { return Instance.royalPass; } set { Instance.royalPass = value; } }
+    [SerializeField] private List<WinCountInfo> winCountInfoList; public static List<WinCountInfo> WinCountInfoList { get { return Instance.winCountInfoList; } set { Instance.winCountInfoList = value; } }
+    [SerializeField] private WinCountInfo myWinCountInfo; public static WinCountInfo MyWinCountInfo { get {  return Instance.myWinCountInfo; } set { Instance.myWinCountInfo = value; } }
+    [SerializeField] private List<SpendingCountInfo> spendingCountInfoList; public static List<SpendingCountInfo> SpendingCountInfoList { get { return Instance.spendingCountInfoList; } set { Instance.spendingCountInfoList = value; } }
+    [SerializeField] private SpendingCountInfo mySpendingCountInfo; public static SpendingCountInfo MySpendingCountInfo { get {  return Instance.mySpendingCountInfo; } set { Instance.mySpendingCountInfo = value; } }
     [SerializeField] private List<BoardInfo> listBoard; public static List<BoardInfo> ListBoard { get { return Instance.listBoard; } set { Instance.listBoard = value; } }
     [SerializeField] private bool[] acceptLoginTerm; public static bool[] AcceptLoginTerm { get { return Instance.acceptLoginTerm; } set { Instance.acceptLoginTerm = value; } }
     [SerializeField] private bool starter; public static bool Starter { get { return Instance.starter; } set { Instance.starter = value; } }
@@ -68,6 +73,10 @@ public class GameData : PDataBlock<GameData>
         Instance.royalPass = Instance.royalPass ?? new RoyalPass();
         Instance.listBoard = Instance.listBoard ?? new List<BoardInfo>() { new BoardInfo() { boardInfo = new List<ShipInfo>()}, new BoardInfo() { boardInfo = new List<ShipInfo>() }, new BoardInfo() { boardInfo = new List<ShipInfo>() },
             new BoardInfo(){ boardInfo = new List<ShipInfo>()} , new BoardInfo(){ boardInfo = new List<ShipInfo>()} , new BoardInfo(){ boardInfo = new List<ShipInfo>()} };
+        Instance.winCountInfoList = Instance.winCountInfoList ?? new List<WinCountInfo> ();
+        Instance.myWinCountInfo = new WinCountInfo();
+        Instance.spendingCountInfoList = Instance.spendingCountInfoList ?? new List<SpendingCountInfo> ();
+        Instance.mySpendingCountInfo = new SpendingCountInfo();
         Instance.acceptLoginTerm = Instance.acceptLoginTerm ?? new bool[2] { false, false };
         if (Instance.tutorial.IsNullOrEmpty() || Instance.tutorial.Contains(0))
         {
