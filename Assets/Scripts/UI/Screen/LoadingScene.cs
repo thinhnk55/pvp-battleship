@@ -8,7 +8,7 @@ public class LoadingScene : SingletonMono<LoadingScene>
     float currentLoadingTime = 0;
     [SerializeField] Slider loadingBar;
     AudioListener[] aL;
-    AsyncOperation asyn;
+    AsyncOperation asynScene;
     private void Start()
     {
         loadingBar.maxValue = 100;
@@ -25,10 +25,10 @@ public class LoadingScene : SingletonMono<LoadingScene>
 
     private void Update()
     {
-        if(asyn == null) { return; }
+        if(asynScene == null) { return; }
 
         currentLoadingTime += Time.deltaTime;
-        loadingBar.value = asyn.progress * 100 * Mathf.Clamp01(currentLoadingTime /loadingDuration);
+        loadingBar.value = asynScene.progress * 100 * Mathf.Clamp01(currentLoadingTime /loadingDuration);
     }
     void CheckMultipleAudioListener()
     {
@@ -41,8 +41,8 @@ public class LoadingScene : SingletonMono<LoadingScene>
 
     public void LoadScene(string sceneName)
     {
-        asyn = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
-        asyn.allowSceneActivation = true;
+        asynScene = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
+        asynScene.allowSceneActivation = true;
     }
 
 }
