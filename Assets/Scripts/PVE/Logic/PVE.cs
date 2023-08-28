@@ -40,34 +40,37 @@ public class PVE : SingletonMono<PVE>
         shipPVEs[selectedEnemy].point.Data = data;
         if (player.point.Data > data) // win
         {
-            player.point.Data += data;
-            currentStages.Data++;
-            StartCoroutine(Win());
+            StartCoroutine(Instance.Win(player.point.Data + data));
         }
         else //lose
         {
-            StartCoroutine(shipPVEs[selectedEnemy].BeingDestroyed());
+            StartCoroutine(Instance.shipPVEs[selectedEnemy].BeingDestroyed());
             StartCoroutine(Lose());
         }
     }
 
-    private IEnumerator Win()
+    private IEnumerator Win(int point)
     {
         for (int i = 0; i < 3; i++)
         {
-            shipPVEs[i].ShowPoint();
+            Instance.shipPVEs[i].ShowPoint();
         }
-        yield return StartCoroutine(shipPVEs[selectedEnemy].BeingDestroyed());
+        yield return new WaitForSeconds(1);
+        yield return StartCoroutine(Instance.shipPVEs[selectedEnemy].BeingDestroyed());
+        player.point.Data = point;
         yield return new WaitForSeconds(1);
         for (int i = 0; i < 3; i++)
         {
-            shipPVEs[i].transform.DOScale(0, 1f).OnComplete(() =>
+            int _i = i;
+            Instance.shipPVEs[_i].transform.DOScale(0, 1f).OnComplete(() =>
             {
-                Destroy(shipPVEs[i].gameObject);
+                DestroyImmediate(Instance.shipPVEs[_i].gameObject);
             });
         }
+        yield return new WaitForSeconds(1.5f);
         if (currentStages.Data < 9)
         {
+            currentStages.Data++;
             StartCoroutine(InitTurn());
         }
     }
@@ -97,7 +100,6 @@ public class PVE : SingletonMono<PVE>
 
     IEnumerator InitTurn()
     {
-
         int prefabIndex = 0;
         if (currentStages.Data < 4)
         {
@@ -115,16 +117,16 @@ public class PVE : SingletonMono<PVE>
         {
             prefabIndex = 3;
         }
-        float duration = 1;
+        float duration = 2;
         shipPVEs.Clear();
         for (int i = 0; i < 3; i++)
         {
             ShipPVE ship1 = Instantiate(PrefabFactory.ShipsPVE[prefabIndex], enemyRoot).GetComponent<ShipPVE>();
-            ship1.transform.localPosition = new Vector3(2, 2 - 2 * i, 0);
+            ship1.transform.localPosition = new Vector3(10, 2 - 2 * i, 0);
             ship1.HidePoint();
             ship1.index = i;
             ship1.leanSelectable.enabled = false;
-            ship1.transform.DOMove(new Vector3(2, 2 - 2 * i, 0), duration);
+            ship1.transform.DOLocalMove(new Vector3(2, 2 - 2 * i, 0), duration);
             shipPVEs.Add(ship1);
         }
         yield return new WaitForSeconds(duration);
