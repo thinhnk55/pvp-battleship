@@ -10,6 +10,6 @@ public class PVEData : PDataBlock<PVEData>
     {
         base.Init();
         Instance.bets = Instance.bets ?? new List<int>();
-        Instance.stageMulReward = Instance.stageMulReward ?? new List<int>() { 0,0,0,0,0,2,3,5,10,20,50 };
+        Instance.stageMulReward = Instance.stageMulReward ?? new List<int>() { 0,0,0,0,2,3,5,10,20,50 };
     }
 }

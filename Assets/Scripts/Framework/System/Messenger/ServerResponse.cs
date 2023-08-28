@@ -27,6 +27,7 @@
         _CONFIG_ADS = 4060,
         _GIFT_CONFIG = 4070,
         _GIFT = 4071,
+        _PVE_ATTACK = 4081,
 
         _FIND_MATCH = 4101,
         _SUBMIT_SHIP = 4110,
@@ -67,6 +68,7 @@
         _REWARD_ADS = 4061,
         _GIFT_CONFIG = 4070,
         _GIFT = 4071,
+        _PVE_ATTACK = 4081,
 
         _QUIT_SEARCH = 4103,
         _MATCH = 4104,
