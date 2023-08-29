@@ -14,7 +14,7 @@ using UnityEngine.UIElements;
 
 public class WSClientHandler : Singleton<WSClientHandler>
 {
-    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     public static void Init()
     {
         WSClient.Instance.OnConnect += () =>
@@ -94,7 +94,6 @@ public class WSClientHandler : Singleton<WSClientHandler>
         };
         WSClient.Instance.OnLostConnection += () =>
         {
-            WSClient.Instance.Disconnect();
             PopupHelper.CreateConfirm(PrefabFactory.PopupDisconnect, "Disconnect", "Please reconnect", null, (confirm) =>
             {
                 if (confirm)

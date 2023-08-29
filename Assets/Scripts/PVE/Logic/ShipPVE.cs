@@ -33,6 +33,7 @@ public class ShipPVE : MonoBehaviour
     }
     public void OnSelectShip()
     {
+        leanSelectable.enabled = false;
         PVE.Instance.selectedEnemy = index;
         PVE.Instance.Attack();
     }
@@ -41,5 +42,11 @@ public class ShipPVE : MonoBehaviour
         ObjectPoolManager.SpawnObject<Missle>(PrefabFactory.Missle).Init(transform.position);
         yield return new WaitForSeconds(1);
         destroyedVFX.Play();
+        destroyedVFX.transform.parent = null;
+    }
+
+    private void OnDestroy()
+    {
+        Destroy(destroyedVFX.gameObject);
     }
 }

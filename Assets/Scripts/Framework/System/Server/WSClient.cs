@@ -28,11 +28,12 @@ namespace Framework {
             ws.Connect();
             WSPingPong.Create();
         }
-        public void Disconnect()
+        public void Disconnect(bool unlistening)
         {
             ServerMessenger.RemoveListener<JSONNode>(ServerResponse.CheckLoginConnection, CheckLoginConnection);
             Messenger.RemoveListener(GameEvent.LostConnection, OnLostConnection);
-            if (ws.IsAlive)
+            Debug.Log("Disconnect");
+            if (unlistening)
             {
                 OnDisconnect?.Invoke();
             }
@@ -41,6 +42,10 @@ namespace Framework {
             ws.OnError -= OnError;
             ws.Close();
             WSPingPong.Destroy();
+        }
+        public void Unlisten()
+        {
+            OnDisconnect?.Invoke();
         }
         public void Ping()
         {
@@ -98,20 +103,20 @@ namespace Framework {
                     break;
                 case 1:
                     OnSystemError?.Invoke();
-                    Disconnect();
+                    Disconnect(true);
                     break;
                 case 2:
                     ws.Close();
                     OnTokenInvalid?.Invoke();
-                    Disconnect();
+                    Disconnect(false);
                     break;
                 case 3:
                     OnLoginInOtherDevice?.Invoke();
-                    Disconnect();
+                    Disconnect(true);
                     break;
                 case 4:
                     OnAdminKick?.Invoke();
-                    Disconnect();
+                    Disconnect(false);
                     break;
                 default:
                     break;
