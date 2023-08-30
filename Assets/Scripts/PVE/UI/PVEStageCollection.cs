@@ -13,12 +13,12 @@ public class PVEStageCollection : CardCollectionBase<StageInfo>
     public override void UpdateUIs()
     {
         List<StageInfo> list = new List<StageInfo>();
-        for (int i = 0; i < PVEData.StageMulReward.Count; i++)
+        for (int i = 0; i < PVEData.StageMulReward[PVEData.PlayerData.TypeBoard].Count; i++)
         {
             list.Add(new StageInfo()
             {
-                id = i,
-                rewardMul = PVEData.StageMulReward[i],
+                id = i+1,
+                rewardMul = PVEData.StageMulReward[PVEData.PlayerData.TypeBoard][i],
             });
         }
         BuildUIs(list);

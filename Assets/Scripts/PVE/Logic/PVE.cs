@@ -1,53 +1,116 @@
 using DG.Tweening;
 using Framework;
+using SimpleJSON;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Rendering.UI;
 
 public class PVE : SingletonMono<PVE>
 {
-    int stagesCount;
-    PDataUnit<int> currentStages;
-
-    [SerializeField]PVEStageCollection stagesView;
-
+    [SerializeField] PVEStageCollection stagesView;
     [SerializeField] ShipPVE player;
     List<ShipPVE> shipPVEs;
     [SerializeField] Transform enemyRoot;
     public int selectedEnemy;
-
-
     [SerializeField] TMP_InputField input;
+
     private void Start()
     {
+        NewGameTreasure();
         shipPVEs = new List<ShipPVE>();
-        ServerMessenger.AddListener<int>(ServerResponse._PVE_ATTACK, Attack);
-        currentStages = new PDataUnit<int>(-1);
-        currentStages.OnDataChanged += stagesView.OnStageChange;
-        currentStages.Data = 0;
-        player.point.Data = 10;
+        ServerMessenger.AddListener<JSONNode>(ServerResponse._FIRE_TREASURE, Attack);
+        ServerMessenger.AddListener<JSONNode>(ServerResponse._DATA_TREASURE, GetData);
+        ServerMessenger.AddListener<JSONNode>(ServerResponse._NEWGAME_TREASURE, NewGameTreasure);
+        PVEData.PlayerData.CurrentStep.OnDataChanged += stagesView.OnStageChange;
         StartCoroutine(InitTurn());
     }
     protected override void OnDestroy()
     {
-        ServerMessenger.RemoveListener<int>(ServerResponse._PVE_ATTACK, Attack);
-        base.OnDestroy();   
+        ServerMessenger.RemoveListener<JSONNode>(ServerResponse._FIRE_TREASURE, Attack);
+        ServerMessenger.RemoveListener<JSONNode>(ServerResponse._DATA_TREASURE, GetData);
+        ServerMessenger.RemoveListener<JSONNode>(ServerResponse._NEWGAME_TREASURE, NewGameTreasure);
+        PVEData.PlayerData.CurrentStep.OnDataChanged -= stagesView.OnStageChange;
+        base.OnDestroy();
     }
-    void Attack(int data)
+
+    #region Server_Request_Response
+    private void NewGameTreasure()
+    {
+        new JSONClass()
+        {
+            {"id", ServerRequest._NEWGAME_TREASURE.ToJson()},
+            {"t", PVEData.PlayerData.TypeBoard.ToJson()},
+        }.RequestServer();
+    }
+
+    private void NewGameTreasure(JSONNode data)
+    {
+        if(PVEData.PlayerData.TypeBoard != -1) // old game
+        {
+            GetData();
+            return;
+        }
+
+        // new game
+        if (int.Parse(data["d"]["e"]) == 0)
+        {
+            PVEData.PlayerData.TypeBoard = int.Parse(data["d"]["t"]);
+            PVEData.PlayerData.CurrentStep.Data = int.Parse(data["d"]["s"]);
+            player.point.Data = int.Parse(data["d"]["p"]);
+            PVEData.PlayerData.IsDead = int.Parse(data["d"]["d"]) == 1 ? true : false;
+            PVEData.PlayerData.IsRevived = int.Parse(data["d"]["r"]) == 1 ? true : false;
+        }
+    }
+
+    private void GetData()
+    {
+        new JSONClass()
+        {
+            { "id", ServerRequest._DATA_TREASURE.ToJson() }
+        }.RequestServer();
+    }
+
+    private void GetData(JSONNode data)
+    {
+        PVEData.PlayerData.TypeBoard = int.Parse(data["d"]["t"]);
+        PVEData.PlayerData.CurrentStep.Data = int.Parse(data["d"]["s"]);
+        player.point.Data = int.Parse(data["d"]["p"]);
+        PVEData.PlayerData.IsDead = int.Parse(data["d"]["d"]) == 1 ? true : false;
+        PVEData.PlayerData.IsRevived = int.Parse(data["d"]["r"]) == 1 ? true : false;
+    }
+
+    public void Attack()
+    {
+        new JSONClass()
+        {
+            {"id", ServerResponse._FIRE_TREASURE.ToJson()}
+        }.RequestServer();
+    }
+
+    void Attack(JSONNode data)
     {
         Debug.Log(player.point.Data);
-        shipPVEs[selectedEnemy].point.Data = data;
-        if (player.point.Data > data) // win
+        for (int i = 0; i < data["d"]["s"].Count; i++)
         {
-            StartCoroutine(Instance.Win(player.point.Data + data));
+            shipPVEs[i].point.Data = int.Parse(data["d"]["s"][i]);
         }
-        else //lose
+
+        if (int.Parse(data["d"]["w"]) == 1) // Win
         {
-            StartCoroutine(Instance.shipPVEs[selectedEnemy].BeingDestroyed());
+            Debug.Log("Win");
+            StartCoroutine(Instance.Win(int.Parse(data["d"]["d"]["p"])));
+        }
+        else // Lose
+        {
+            Debug.Log("Lose");
+            //StartCoroutine(Instance.shipPVEs[selectedEnemy].BeingDestroyed());
             StartCoroutine(Lose());
         }
     }
+    #endregion 
 
     private IEnumerator Win(int point)
     {
@@ -68,9 +131,9 @@ public class PVE : SingletonMono<PVE>
             });
         }
         yield return new WaitForSeconds(1.5f);
-        if (currentStages.Data < 9)
+        if (PVEData.PlayerData.CurrentStep.Data < 9)
         {
-            currentStages.Data++;
+            PVEData.PlayerData.CurrentStep.Data++;
             StartCoroutine(InitTurn());
         }
     }
@@ -79,41 +142,26 @@ public class PVE : SingletonMono<PVE>
     {
         yield return StartCoroutine(player.BeingDestroyed());
         yield return new WaitForSeconds(1);
-        SceneTransitionHelper.Load(ESceneName.PVE);
-    }
 
-    public void Attack()
-    {
-        //new JSONClass()
-        //{
-        //    { "id", ServerRequest._PVE_ATTACK.ToJson() } 
-        //}.RequestServer();
-        if (input.text == "")
-        {
-            ServerMessenger.Broadcast<int>(ServerResponse._PVE_ATTACK, player.point.Data + Random.Range(-3, 0));
-        }
-        else
-        {
-            ServerMessenger.Broadcast<int>(ServerResponse._PVE_ATTACK, int.Parse(input.text));
-        }
+        SceneTransitionHelper.Load(ESceneName.Home);
     }
 
     IEnumerator InitTurn()
     {
         int prefabIndex = 0;
-        if (currentStages.Data < 4)
+        if (PVEData.PlayerData.CurrentStep.Data < 4)
         {
             prefabIndex = 0;
         }
-        else if (currentStages.Data < 7)
+        else if (PVEData.PlayerData.CurrentStep.Data < 7)
         {
             prefabIndex = 1;
         }
-        else if (currentStages.Data < 9)
+        else if (PVEData.PlayerData.CurrentStep.Data < 9)
         {
             prefabIndex = 2;
         }
-        else if (currentStages.Data < 100)
+        else if (PVEData.PlayerData.CurrentStep.Data < 100)
         {
             prefabIndex = 3;
         }

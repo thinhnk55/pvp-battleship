@@ -47,6 +47,6 @@ public class ShipPVE : MonoBehaviour
 
     private void OnDestroy()
     {
-        Destroy(destroyedVFX.gameObject);
+        //Destroy(destroyedVFX.gameObject);
     }
 }
