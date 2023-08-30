@@ -11,5 +11,17 @@ namespace Framework
 
             spriteRenderer.color = newColor;
         }
+
+        public static void SetNativeRatioFixedWidth(this SpriteRenderer spriteRenderer)
+        {
+            float width = spriteRenderer.sprite.GetWidth();
+            spriteRenderer.transform.localScale = new Vector2(1, spriteRenderer.sprite.GetFixedHeight(width) / width);
+        }
+
+        public static void SetNativeRatioFixedHeight(this SpriteRenderer spriteRenderer)
+        {
+            float height = spriteRenderer.sprite.GetWidth();
+            spriteRenderer.transform.localScale = new Vector2(1, spriteRenderer.sprite.GetFixedWidth(height) / height);
+        }
     }
 }

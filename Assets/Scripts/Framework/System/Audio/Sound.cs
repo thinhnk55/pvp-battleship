@@ -14,6 +14,8 @@ namespace Framework
         AUDIO,
         COUNT,
         CLICK,
+        DOOR,
+        LUCKYSHOT_FALSE,
 
     }
     [Serializable]

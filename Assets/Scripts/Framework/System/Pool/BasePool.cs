@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace Framework
 {
@@ -10,7 +11,7 @@ namespace Framework
 
         protected GameObject _prefab;
         protected Transform _root;
-        public BasePool(GameObject prefab, int initAtStart, Transform root)
+        public BasePool(GameObject prefab, int initAtStart, Transform root, bool isUI = false)
         {
             if (prefab != null)
                 _prefab = prefab;
@@ -92,8 +93,7 @@ namespace Framework
             }
             else
             {
-                newItem = GameObject.Instantiate(_prefab);
-                newItem.transform.parent = root;
+                newItem = GameObject.Instantiate(_prefab, root);
             }
 
             return newItem;
@@ -101,9 +101,7 @@ namespace Framework
         protected virtual GameObject SpawnItem(Transform root = null)
         {
             // Create new item and set parent to root
-            GameObject newItem = null;
-            newItem = UnityEngine.Object.Instantiate(_prefab);
-            newItem.transform.parent = root;
+            GameObject newItem = GameObject.Instantiate(_prefab, root);
             return newItem;
         }
         protected virtual bool IsActive(GameObject item)
