@@ -41,6 +41,10 @@ public class BattleFieldCollection : TransactionCollection
                 transactionInfos.Add(transaction);
             }
         }
+        if (isUnlocked)
+        {
+            title.text = $"My Collection : {transactionInfos.Count}/{GameData.TransactionConfigs[transactionType].Count}";
+        }
         if (transactionInfos.Count == 0)
         {
             title.gameObject.SetActive(false);

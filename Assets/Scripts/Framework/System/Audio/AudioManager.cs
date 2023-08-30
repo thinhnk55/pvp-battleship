@@ -22,7 +22,7 @@ namespace Framework
         protected override void Awake()
         {
             base.Awake();
-            ObjectPoolManager.SpawnObject<AudioSource>(PrefabFactory.AudioSourcePrefab, Instance.transform, PoolConfig.DefaultInitPoolSound).gameObject.SetActive(false);
+            ObjectPoolManager.SpawnObject<AudioSource>(PrefabFactory.AudioSourcePrefab, Vector3.zero, Instance.transform, false, PoolConfig.DefaultInitPoolSound).gameObject.SetActive(false);
         }
         public void PlaySound(SoundType sound, ClipConfig clipConfig, Transform transform, bool isFollow)
         {
@@ -34,8 +34,7 @@ namespace Framework
             }
             else
             {
-                audioTracker = Instantiate(new GameObject(), this.transform).AddComponent<AudioTracker>();
-                audioTracker.name = "Tracker " + sound.ToString();
+                audioTracker = new GameObject("Tracker " + sound.ToString()).AddComponent<AudioTracker>();
                 audioTracker.type = sound;
                 if (!isFollow)
                 {
@@ -52,7 +51,7 @@ namespace Framework
                 return;
 
             // Set audio source
-            AudioSource audioSrc = ObjectPoolManager.SpawnObject<AudioSource>(PrefabFactory.AudioSourcePrefab, audioTracker.transform);
+            AudioSource audioSrc = ObjectPoolManager.SpawnObject<AudioSource>(PrefabFactory.AudioSourcePrefab, Vector3.zero, audioTracker.transform);
             audioSrc.transform.parent = audioTracker.transform;
             audioSrc.clip = clipConfig.clip;
             audioSrc.spatialBlend = AudioConfig.SoundConfigs[sound].spatial;

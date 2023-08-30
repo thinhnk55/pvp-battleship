@@ -54,7 +54,18 @@ namespace Framework {
        
         public void Send(JSONNode json)
         {
-            ws.Send(json.ToString());
+            try
+            {
+                ws.Send(json.ToString());
+            }
+            catch (Exception e)
+            {
+                if (e != null)
+                {
+                    Debug.LogError(e.ToString());
+                }
+                throw;
+            }
             Debug.Log($"<color=#FFA500>{json}</color>");
         }
         public void OnOpen(object sender, EventArgs e)

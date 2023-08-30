@@ -16,5 +16,16 @@ namespace Framework
         {
             image.sprite = sprite;
         }
+        public static void SetNativeRatioFixedWidth(this Image image)
+        {
+            float width = image.sprite.GetWidth();
+            image.transform.localScale = new Vector2(1, image.sprite.GetFixedHeight(width) / width);
+        }
+
+        public static void SetNativeRatioFixedHeight(this Image image)
+        {
+            float height = image.sprite.GetWidth();
+            image.transform.localScale = new Vector2(image.sprite.GetFixedWidth(height)/ height, 1);
+        }
     }
 }

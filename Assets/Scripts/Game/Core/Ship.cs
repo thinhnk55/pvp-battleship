@@ -232,9 +232,12 @@ public class Ship : CacheMonoBehaviour
         timeSelecting = 0;
         if (octilesOccupy.Count > 0)
             previousIndex = octilesOccupy[0].pos;
-        previousPos = Position;
-        onSelecting = true;
-        Position = leanFinger.GetLastWorldPosition(-CoreGame.Instance.cam.transform.position.z);
+        if (leanFinger != null)
+        {
+            previousPos = Position;
+            Position = leanFinger.GetLastWorldPosition(-CoreGame.Instance.cam.transform.position.z);
+            onSelecting = true;
+        }
         if (octilesOccupy.Count>0)
         {
             List<Vector2Int> curPoses = currentPoses;

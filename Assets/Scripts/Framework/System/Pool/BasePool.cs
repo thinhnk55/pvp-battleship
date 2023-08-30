@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace Framework
 {
@@ -10,15 +11,14 @@ namespace Framework
 
         protected GameObject _prefab;
         protected Transform _root;
-        public BasePool(GameObject prefab, int initAtStart, Transform root)
+        public BasePool(GameObject prefab, int initQuantity, Transform root, bool isUI = false)
         {
             if (prefab != null)
                 _prefab = prefab;
-
             // Init pool
-            for (int i = 0; i < initAtStart; i++)
+            for (int i = 0; i < initQuantity; i++)
             {
-                GameObject item = SpawnItem(root);
+                GameObject item = GameObject.Instantiate(_prefab, root);
                 SetActive(item, false);
                 _pool.Add(item);
             }
@@ -45,15 +45,8 @@ namespace Framework
                         _pool.Add(item);
 
                         SetActive(item, true);
-                        if (root!=null)
-                        {
-                            item.transform.parent = root;
-                        }
-                        else
-                        {
-                            item.transform.parent = _root;
-
-                        }
+                        if (root == null) root = _root;
+                        item.transform.parent = root;
                         return item.GetComponent<T>();
                     }
                 }
@@ -84,26 +77,13 @@ namespace Framework
 
             if (_prefab == null)
             {
-                newItem = new GameObject();
-                newItem.AddComponent<T>();
-#if UNITY_EDITOR
-                newItem.name = typeof(T).ToString();
-#endif
+                newItem = new GameObject(typeof(T).ToString(), typeof(T));
             }
             else
             {
-                newItem = GameObject.Instantiate(_prefab);
-                newItem.transform.parent = root;
+                newItem = GameObject.Instantiate(_prefab, root);
             }
 
-            return newItem;
-        }
-        protected virtual GameObject SpawnItem(Transform root = null)
-        {
-            // Create new item and set parent to root
-            GameObject newItem = null;
-            newItem = UnityEngine.Object.Instantiate(_prefab);
-            newItem.transform.parent = root;
             return newItem;
         }
         protected virtual bool IsActive(GameObject item)

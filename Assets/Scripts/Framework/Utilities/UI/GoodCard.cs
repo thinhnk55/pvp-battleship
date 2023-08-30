@@ -22,11 +22,7 @@ namespace Framework
             if (info.Type.GetPResourceType() == PResourceType.Nonconsumable)
             {
                 icon.sprite = SpriteFactory.ResourceIcons[info.Type].sprites.GetLoop((int)info.Value);
-                if (info.Type == (int)PNonConsumableType.AVATAR || info.Type == (int)PNonConsumableType.AVATAR_FRAME)
-                {
-                    var rect = icon.GetComponent<RectTransform>();
-                    rect.SetScaleX(0.84f);
-                }
+                icon.SetNativeRatioFixedHeight();
                 value.text = "+1";
                 BG?.SetSprite(SpriteFactory.RoyalPassOther);
             }

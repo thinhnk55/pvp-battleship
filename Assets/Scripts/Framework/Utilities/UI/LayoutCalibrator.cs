@@ -28,11 +28,14 @@ public class LayoutCalibrator : MonoBehaviour
 
     public void Calibrate()
     {
-        rects = new List<RectTransform>();
-        foreach (var image in GetComponentsInChildren<Image>())
+        if (rects == null)
         {
-            rects.Add(image.GetComponent<RectTransform>());
-        } ; 
+            rects = new List<RectTransform>();
+            foreach (var image in GetComponentsInChildren<Image>())
+            {
+                rects.Add(image.GetComponent<RectTransform>());
+            };
+        }
         float width = 0;
         for (int i = 0; i < rects.Count; i++)
         {

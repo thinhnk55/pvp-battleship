@@ -136,5 +136,6 @@ namespace Framework
         {
             return height / sprite.bounds.size.y * sprite.bounds.size.x;
         }
+
     }
 }

@@ -2,6 +2,7 @@ using Framework;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 //using Unity.Android.Types;
 using UnityEngine;
 using UnityEngine.UI;
@@ -134,6 +135,7 @@ public class BoardCard : CardBase<BoardInfo>
         CoreGame.Instance.player.ships.Clear();
         for (int i = 0; i < Info.boardInfo.Count; i++)
         {
+            CoreGame.Instance.shipsPlayer[i].OnSelected(null, null);
             CoreGame.Instance.player.AssignShip(CoreGame.Instance.shipsPlayer[i], Info.boardInfo[i].x, Info.boardInfo[i].y);
             CoreGame.Instance.player.ships[i].Dir = Ship.GetDir(Info.boardInfo[i].dir);
             Collection.GetComponent<PopupBehaviour>().ForceClose();     
@@ -160,6 +162,19 @@ public class BoardCard : CardBase<BoardInfo>
         {
             info.boardInfo.Add(ShipInfo.FromShip(CoreGame.Instance.player.ships[i]));
         }
+        info.boardInfo.Sort((ship1, ship2) =>
+        {
+            if (ship1.type > ship2.type)
+            {
+                return -1;
+            }
+            else if (ship1.type < ship2.type)
+            {
+                return 1;
+            }
+            else
+                return 0;
+        });
         List<BoardInfo> list = new List<BoardInfo>();
         for (int i = 0; i < GameData.ListBoard.Count; i++)
         {
@@ -198,4 +213,5 @@ public class BoardCard : CardBase<BoardInfo>
         GameData.ListBoard = list;
         Collection.ModifyUIAt(Info.Id, info);
     }
+
 }

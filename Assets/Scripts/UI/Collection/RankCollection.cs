@@ -14,6 +14,7 @@ public class RankCollection : CardCollectionBase<RankInfo>
     [SerializeField] float offsetIndicator;
     [SerializeField] TextMeshProUGUI countDown;
     [SerializeField] TextMeshProUGUI reward;
+    [SerializeField] TextMeshProUGUI rankRequired;
     [SerializeField] Transform resource;
     private void Start()
     {
@@ -52,13 +53,22 @@ public class RankCollection : CardCollectionBase<RankInfo>
             info.OnClick = null;
         }
         reward.text = GameData.RankConfigs[info.Id].Reward.ToString();
+        if (info.Id <= GameData.Player.Rank)
+        {
+            countDown.gameObject.SetActive(true);
+            rankRequired.transform.parent.gameObject.SetActive(false);
+        }
         if (info.Id < GameData.Player.Rank)
         {
             countDown.text = "Received";
+
         }
         else if (info.Id > GameData.Player.Rank)
         {
-            countDown.text = "Unlocked when reaching " + GameData.RankConfigs[info.Id].Point;
+            countDown.gameObject.SetActive(false);
+            rankRequired.transform.parent.gameObject.SetActive(true);
+            rankRequired.text = "Unlocked when reaching " + GameData.RankConfigs[info.Id].Point;
+            rankRequired.GetComponentInParent<LayoutCalibrator>().Calibrate();
         }
         previewCard.BuildUI(info);
     }

@@ -432,7 +432,7 @@ public class CoreGame : SingletonMono<CoreGame>
         int status = int.Parse(json["d"]["r"]);
         if (status != 5)
         {
-            var missle = ObjectPoolManager.SpawnObject<Missle>(PrefabFactory.Missle);
+            var missle = ObjectPoolManager.SpawnObject<Missle>(PrefabFactory.Missle, Vector3.zero);
             missle.Init(board.octiles[int.Parse(json["d"]["y"])][int.Parse(json["d"]["x"])].Position);
         }
         if (status == 1)

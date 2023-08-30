@@ -56,10 +56,8 @@ public class Octile : CacheMonoBehaviour
         ObjectPoolManager.SpawnObject<ParticleSystem>(VFXFactory.SplashWater, Position);
         if (hitShip)
         {
-            attackSpriteRenderer.sprite = SpriteFactory.Octile;
             attackedAnim = ObjectPoolManager.SpawnObject<Transform>(VFXFactory.AttackedAnim, Position, transform).gameObject;
             ObjectPoolManager.SpawnObject<ParticleSystem>(VFXFactory.Explosion, Position);
-            attackSpriteRenderer.sprite = SpriteFactory.Attacked;
             SoundType.SHIP_HIT.PlaySound();
             if(ship)
                 ship.BeingAttacked(this);

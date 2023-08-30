@@ -1,3 +1,4 @@
+using CartoonFX;
 using DG.Tweening;
 using Framework;
 using SimpleJSON;
@@ -32,6 +33,7 @@ public class LuckyShot : SingletonMono<LuckyShot>
     private void Start()
     {
         //ServerMessenger.AddListener<JSONNode>(ServerResponse.RECIEVE_REWARD_ROCKET, RewardAds);
+        AudioHelper.PauseMusic();
         ServerMessenger.AddListener<JSONNode>(ServerResponse._LUCKYSHOT_FIRE, Instance.LuckyShotFire);
         Timer<LuckyShot>.Instance.Init(Instance.OnTriggerTimer, Instance.OnElapseTimer);
         GameData.RocketCount.Data = Mathf.Clamp(GameData.RocketCount.Data, 0, 3);
@@ -45,11 +47,11 @@ public class LuckyShot : SingletonMono<LuckyShot>
         {
             if (i< GameData.RocketCount.Data)
             {
-                rockets[i].SetSprite(rocket);
+                Instance.rockets[i].SetSprite(rocket);
             }
             else
             {
-                rockets[i].SetSprite(emptyRocket);
+                Instance.rockets[i].SetSprite(emptyRocket);
             }
         }
         GameData.RocketCount.OnDataChanged += Instance.OnRocketChange;
@@ -71,6 +73,7 @@ public class LuckyShot : SingletonMono<LuckyShot>
         Timer<LuckyShot>.Instance.OnTrigger -= Instance.OnTriggerTimer;
         Timer<LuckyShot>.Instance.OnElapse -= Instance.OnElapseTimer;
         Timer<LuckyShot>.Instance.MarkedPoint = DateTime.UtcNow.Ticks;
+        AudioHelper.ResumeMusic();
         base.OnDestroy();
     }
     IEnumerator Init()
@@ -108,11 +111,36 @@ public class LuckyShot : SingletonMono<LuckyShot>
             if (amount == 0)
             {
                 Instance.shots[indexShot].GetComponent<Image>().sprite = SpriteFactory.X;
+                Instance.shots[indexShot].GetComponent<Image>().SetNativeRatioFixedWidth();
+                SoundType.LUCKYSHOT_FALSE.PlaySound();
             }
             else
             {
                 Instance.shots[indexShot].GetComponent<Image>().sprite = SpriteFactory.ShipLuckyShot;
-                CoinVFX.CoinVfx(Instance.resourceUI.transform, Instance.shots[indexShot].transform.position, Instance.shots[indexShot].transform.position);
+                Instance.shots[indexShot].GetComponent<Image>().SetNativeRatioFixedWidth();
+                {// explosion
+                    var vfx = ObjectPoolManager.SpawnObject<ParticleSystem>(VFXFactory.Explosion, Instance.shots[indexShot].transform.position);
+                    var mainVfx = vfx.main;
+                    var renVfx = vfx.GetComponent<ParticleSystemRenderer>();
+                    var cfrx = vfx.GetComponent<CFXR_Effect>().animatedLights;
+                    cfrx[0].colorGradient.colorKeys = new GradientColorKey[2] { new GradientColorKey(new Color(0, 1f, 0.9f), 0), new GradientColorKey(new Color(0, 0.9f, 0.8f), 1) };
+                    renVfx.sortingLayerName = "UI";
+                    mainVfx.startColor = Color.cyan;
+                    mainVfx.startSizeMultiplier = 0.5f;
+                    SoundType.SHIP_EXPLOSION.PlaySound();
+                }
+                {//text
+                    TextMeshProUGUI text = (TextMeshProUGUI)ObjectPoolManager.SpawnObject<TextBase>(PrefabFactory.TextPrefab, Instance.shots[indexShot].transform.position + Vector3.up/2, null, true).text;
+                    text.text = amount.ToString();
+                    text.fontSize = 36f;
+                    Debug.Log(Instance.shots[indexShot].transform.position);
+                    text.transform.DOMoveY(Instance.shots[indexShot].transform.position.y + 1.5f, 1f).OnComplete(() =>
+                    {
+                        text.gameObject.SetActive(false);
+                    });
+                }
+
+                DOVirtual.DelayedCall(0.5f, ()=> CoinVFX.CoinVfx(Instance.resourceUI.transform, Instance.shots[indexShot].transform.position, Instance.shots[indexShot].transform.position));
             }
             StartCoroutine(Instance.Door());
         }
@@ -132,7 +160,7 @@ public class LuckyShot : SingletonMono<LuckyShot>
             {
                 Debug.Log("New Rocket");
                 //
-                rockets[oldValue + i].SetSprite(rocket);
+                Instance.rockets[oldValue + i].SetSprite(rocket);
             }
         }
         else
@@ -145,7 +173,7 @@ public class LuckyShot : SingletonMono<LuckyShot>
             for (int i = 0; i < oldValue - newValue; i++)
             {
                 //
-                rockets[newValue + i].SetSprite(emptyRocket);
+                Instance.rockets[newValue + i].SetSprite(emptyRocket);
             }
         }
     }
@@ -158,23 +186,23 @@ public class LuckyShot : SingletonMono<LuckyShot>
         if (GameData.RocketCount.Data >= 3)
         {
             Instance.countDown.text = "Full";
-            countDownSlider.value = 0;
+            Instance.countDownSlider.value = 0;
         }
         else
         {
             if (Timer<LuckyShot>.Instance.TriggersFromBegin>=1)
             {
                 Instance.countDown.text = $"Collect";
-                countDownSlider.value = 0;
+                Instance.countDownSlider.value = 0;
             }
             else
             {
                 Instance.countDown.text = $"{Timer<LuckyShot>.Instance.RemainTime_Sec.Hour_Minute_Second_1()}";
-                countDownSlider.value = (float)Timer<LuckyShot>.Instance.RemainTime_Sec / Timer<LuckyShot>.Instance.TriggerInterval_Sec;
+                Instance.countDownSlider.value = (float)Timer<LuckyShot>.Instance.RemainTime_Sec / Timer<LuckyShot>.Instance.TriggerInterval_Sec;
             }
         }
     }
-    public IEnumerator Suffle()    // To do
+    public IEnumerator Suffle() 
     {
         yield return new WaitForSeconds(0.5f);
         Instance.shotRoot.GetComponent<GridLayoutGroup>().enabled = false;
@@ -208,13 +236,14 @@ public class LuckyShot : SingletonMono<LuckyShot>
             });
         }
     }
-    public IEnumerator Door()    // To do
+    public IEnumerator Door() 
     {
-        if (indexShot >0)
+        if (indexShot >=0)
         {
-            sequence = DOTween.Sequence();
-            sequence.Append(Instance.shots[indexShot].transform.DOScale(0.9f, 0.25f))
-                .Append(Instance.shots[indexShot].transform.DOScale(1.1f, 0.25f))
+            Vector3 initScale = Instance.shots[indexShot].transform.localScale;
+            Instance.sequence = DOTween.Sequence();
+            Instance.sequence.Append(Instance.shots[indexShot].transform.DOScale(initScale * 0.9f, 0.25f))
+                .Append(Instance.shots[indexShot].transform.DOScale(initScale * 1.1f, 0.25f))
                 .SetLoops(6);
             Instance.shots[indexShot].image.SetAlpha(1f);
         }
@@ -222,11 +251,12 @@ public class LuckyShot : SingletonMono<LuckyShot>
         {
             Instance.shots[i].enabled = false;
         }
-        yield return new WaitForSeconds(indexShot>0 ? 2 : 0.5f);
+        yield return new WaitForSeconds(indexShot>=0 ? 0.75f : 0.5f);
         Instance.anim.SetAnimation("animation", false);
         Instance.anim.Initialize(false);
+        SoundType.DOOR.PlaySound();
         yield return new WaitForSeconds(anim.GetDuration("animation") * 1 / 2);
-        if (indexShot > 0)
+        if (indexShot >= 0)
             Instance.shots[indexShot].image.SetAlpha(0);
         yield return new WaitForSeconds(anim.GetDuration("animation")* 1/ 2);
         for (int i = 0; i < Instance.shots.Count; i++)
