@@ -21,8 +21,8 @@ offsets:1,1,32,29
 bounds:2,2,141,52
 offsets:1,1,143,54
 15
-bounds:1394,23,103,80
-offsets:1,10,105,91
+bounds:1394,23,104,80
+offsets:0,10,104,90
 16
 bounds:1013,17,66,47
 offsets:1,1,68,49

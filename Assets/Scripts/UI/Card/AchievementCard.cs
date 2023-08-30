@@ -39,6 +39,7 @@ public struct AchievementInfo
     public int Id;
     public string Title;
     public int Obtained;
+    public bool Upgradable;
     public Callback onClick;
     [SerializeField] private int progress; public int Progress { get { return progress; } set { progress = value; } }
     public AchievementUnit[] AchivementUnits;
@@ -63,6 +64,7 @@ public struct AchievementInfo
             Id = id,
             Title = GameConfig.AchievementName.GetLoop(id),
             AchivementUnits = achievementUnits.ToArray(),
+            Upgradable = true,
         };
         return info;
     }
@@ -178,8 +180,10 @@ public class AchievementCard : CardBase<AchievementInfo>
 
         }
         OnClick = info.onClick;
+
         if (Button)
         {
+            Button.gameObject.SetActive(info.Upgradable);
             Button.onClick.RemoveAllListeners();
             Button.onClick.AddListener(() =>
             {

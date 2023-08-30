@@ -85,10 +85,16 @@ public class AchievementCollection : CardCollectionBase<AchievementInfo>
     public void SetCardPreview(AchievementInfo info)
     {
         AchievementInfo _info = info;
-        if (info.Obtained < 5 && info.AchivementUnits[info.Obtained].Task <= info.Progress)
+        if (info.Obtained < info.AchivementUnits.Length && info.AchivementUnits[info.Obtained].Task <= info.Progress)
         {
+            info.Upgradable = true;
             info.onClick = () => WSClientHandler.RequestObtainAchievemnt(_info.Id);
         }
+        else if (info.Obtained >= info.AchivementUnits.Length)
+        {
+            info.Upgradable = false;
+        }
+
         previewCard.BuildUI(info);
     }
 

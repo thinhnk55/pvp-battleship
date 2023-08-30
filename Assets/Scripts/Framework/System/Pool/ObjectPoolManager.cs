@@ -1,15 +1,13 @@
 using Framework;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static Codice.Client.Common.Connection.AskCredentialsToUser;
 /// <summary>
-/// Spawn object from a pool
-/// If root is specified, attach object to root else attach object to default pool-generated root
-/// If first time spawn object, create new pool
+/// Spawn an object from a pool
+/// If first time spawn object, create a new pool
 /// </summary>
 public class ObjectPoolManager : SingletonMono<ObjectPoolManager>
 {
+
     static Dictionary<GameObject, BasePool> objectPoolDict = new Dictionary<GameObject, BasePool>();
     [SerializeField] List<GameObject> beforeLoadObject;
     [SerializeField] Canvas canvasRoot;
@@ -21,10 +19,15 @@ public class ObjectPoolManager : SingletonMono<ObjectPoolManager>
             SpawnObject<Component>(beforeLoadObject[i], Vector3.zero).gameObject.SetActive(false);
         }
     }
+    /// <summary>
+    /// Spawn an object
+    /// </summary>
     /// <typeparam name="T"></typeparam>
-    /// <param name="prefab">Object need to generate</param> 
-    /// <param name="pos">Position</param>
-    /// <param name="root">Parent of pool</param>
+    /// <param name="prefab">Object need to spawn</param> 
+    /// <param name="pos">Position of object being spawned</param>
+    /// <param name="root">Parent of object being spawned</param>
+    /// <param name="isUI">Is object UI</param>
+    /// <param name="quantity">Init quantity of pool</param>
     public static T SpawnObject<T>(GameObject prefab, Vector3 pos,Transform root = null, bool isUI = false, int? quantity = null) where T : Component
     {
         if (isUI)
@@ -32,7 +35,8 @@ public class ObjectPoolManager : SingletonMono<ObjectPoolManager>
         BasePool pool;
         if (!objectPoolDict.ContainsKey(prefab))
         {
-            pool = RetrievePool<T>(prefab, root, isUI, quantity);
+            pool = CreatePool<T>(prefab, root, isUI, quantity);
+            objectPoolDict.Add(prefab, pool);
         }
         else
         {
@@ -49,11 +53,10 @@ public class ObjectPoolManager : SingletonMono<ObjectPoolManager>
         {
             Instance.canvasRoot.planeDistance = 10;
             Instance.canvasRoot.worldCamera = Camera.main;
-            //PCoroutine.PStartCoroutine(SetCanvas());
         }
     }
 
-    static BasePool RetrievePool<T>(GameObject prefab ,Transform root, bool isUI = false, int? quatity = null)
+    static BasePool CreatePool<T>(GameObject prefab ,Transform root = null, bool isUI = false, int? quatity = null)
     {
         BasePool pool;
         if (root == null)
@@ -73,6 +76,8 @@ public class ObjectPoolManager : SingletonMono<ObjectPoolManager>
             }
 
         }
+
+        // init quantity of pool object
         if (quatity != null)
         {
             pool = new BasePool(prefab, quatity.Value, root);
@@ -85,7 +90,6 @@ public class ObjectPoolManager : SingletonMono<ObjectPoolManager>
         {
             pool = new BasePool(prefab, PoolConfig.DefaultInitPoolGO, root);
         }
-        objectPoolDict.TryAdd(prefab, pool);
         return pool;
     }
 }

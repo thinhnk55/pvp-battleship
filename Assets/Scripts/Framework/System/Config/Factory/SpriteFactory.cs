@@ -51,7 +51,7 @@ namespace Framework
         [SerializeField] private Sprite royalPassBeri; public static Sprite RoyalPassBeri { get { return Instance.royalPassBeri; } }
         [SerializeField] private Sprite royalPassGem; public static Sprite RoyalPassGem { get { return Instance.royalPassGem; } }
         [SerializeField] private Sprite royalPassOther; public static Sprite RoyalPassOther { get { return Instance.royalPassOther; } }
-
+        [SerializeField] private Sprite trophy; public static Sprite Trophy { get { return Instance.trophy; } }
     }
 
     [System.Serializable]

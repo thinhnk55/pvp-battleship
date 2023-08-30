@@ -3,6 +3,7 @@ using SimpleJSON;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Transactions;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -44,7 +45,13 @@ public class AvatarCollection : TransactionCollection
             {
                 transactionInfos.Add(transaction);
             }
+
         }
+        if (isUnlocked)
+        {
+            title.text = $"My Collection : {transactionInfos.Count}/{GameData.TransactionConfigs[transactionType].Count}";
+        }
+
         if (transactionInfos.Count == 0)
         {
             title.gameObject.SetActive(false);
