@@ -12,4 +12,6 @@ public class PostUI : MonoBehaviour
     public GameObject avatar1;
     public GameObject avatar2;
     public GameObject treasure;
+    public ProfileCollection profile1;
+    public ProfileCollection profile2;
 }

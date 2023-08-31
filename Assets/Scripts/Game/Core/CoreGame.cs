@@ -529,6 +529,8 @@ public class CoreGame : SingletonMono<CoreGame>
             Instance.ingameUI.SetActive(false);
             Instance.postUI.gameObject.SetActive(true);
             Instance.postUI.amount.text = json["d"]["e"];
+            Instance.postUI.profile1.UpdateUIs();
+
             Messenger.Broadcast(GameEvent.GAME_END, int.Parse(json["d"]["w"]) == playerChair);
             if (int.Parse(json["d"]["w"]) == playerChair)
             {
