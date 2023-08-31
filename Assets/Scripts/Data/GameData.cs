@@ -1,6 +1,5 @@
 using Framework;
 using SimpleJSON;
-using Sirenix.OdinInspector.Editor.Examples;
 using SRF;
 using System;
 using System.Collections;
