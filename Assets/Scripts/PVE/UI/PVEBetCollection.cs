@@ -5,7 +5,7 @@ using Framework;
 public struct PVEBetInfo
 {
     public int cost;
-    public string name;
+    //public string name;
     public Callback onclick;
 }
 public class PVEBetCollection : CardCollectionBase<PVEBetInfo> 
@@ -23,16 +23,19 @@ public class PVEBetCollection : CardCollectionBase<PVEBetInfo>
             list.Add(new PVEBetInfo()
             {
                 cost = PVEData.Bets[_i],
-                name = GameConfig.BetPVENames[_i],
+                //name = GameConfig.BetPVENames[_i],
                 onclick = () =>
                 {
-                    if (PConsumableType.BERI.GetValue()>= PVEData.Bets[_i] || true )
+                    if (PConsumableType.BERI.GetValue()>= PVEData.Bets[_i])
                     {
+                        PVE.TypeBoard = _i;
                         SceneTransitionHelper.Load(ESceneName.PVE);
                     }  
                 }
             });
         }
+
+        BuildUIs(list);
     }
     
 }

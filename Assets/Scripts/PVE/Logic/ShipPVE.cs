@@ -33,7 +33,7 @@ public class ShipPVE : MonoBehaviour
     }
     public void OnSelectShip()
     {
-        leanSelectable.enabled = false;
+        PVE.Instance.DisableLeanSelectableShipEnemy();
         PVE.Instance.selectedEnemy = index;
         PVE.Instance.Attack();
     }
@@ -47,6 +47,6 @@ public class ShipPVE : MonoBehaviour
 
     private void OnDestroy()
     {
-        Destroy(destroyedVFX.gameObject);
+        //Destroy(destroyedVFX.gameObject);
     }
 }

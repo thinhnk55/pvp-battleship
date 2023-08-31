@@ -1,53 +1,122 @@
 using DG.Tweening;
 using Framework;
+using SimpleJSON;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Rendering.UI;
 
 public class PVE : SingletonMono<PVE>
 {
-    int stagesCount;
-    PDataUnit<int> currentStages;
-
-    [SerializeField]PVEStageCollection stagesView;
-
+    public static int TypeBoard;
+    public PDataUnit<int> CurrentStep;
+    public bool IsDead;
+    public bool IsRevived;
+    [SerializeField] PVEStageCollection stagesView;
     [SerializeField] ShipPVE player;
     List<ShipPVE> shipPVEs;
     [SerializeField] Transform enemyRoot;
     public int selectedEnemy;
-
-
     [SerializeField] TMP_InputField input;
+
+    protected override void Awake()
+    {
+        base.Awake();
+        CurrentStep.Data = -1;
+        CurrentStep.OnDataChanged += stagesView.OnStageChange;
+    }
+
     private void Start()
     {
+        GetData();
         shipPVEs = new List<ShipPVE>();
-        ServerMessenger.AddListener<int>(ServerResponse._PVE_ATTACK, Attack);
-        currentStages = new PDataUnit<int>(-1);
-        currentStages.OnDataChanged += stagesView.OnStageChange;
-        currentStages.Data = 0;
-        player.point.Data = 10;
+        ServerMessenger.AddListener<JSONNode>(ServerResponse._FIRE_TREASURE, Attack);
+        ServerMessenger.AddListener<JSONNode>(ServerResponse._DATA_TREASURE, GetData);
+        ServerMessenger.AddListener<JSONNode>(ServerResponse._NEWGAME_TREASURE, NewGameTreasure);
         StartCoroutine(InitTurn());
     }
     protected override void OnDestroy()
     {
-        ServerMessenger.RemoveListener<int>(ServerResponse._PVE_ATTACK, Attack);
-        base.OnDestroy();   
+        ServerMessenger.RemoveListener<JSONNode>(ServerResponse._FIRE_TREASURE, Attack);
+        ServerMessenger.RemoveListener<JSONNode>(ServerResponse._DATA_TREASURE, GetData);
+        ServerMessenger.RemoveListener<JSONNode>(ServerResponse._NEWGAME_TREASURE, NewGameTreasure);
+        CurrentStep.OnDataChanged -= stagesView.OnStageChange;
+        base.OnDestroy();
     }
-    void Attack(int data)
+
+    #region Server_Request_Response
+    private void GetData()
     {
-        Debug.Log(player.point.Data);
-        shipPVEs[selectedEnemy].point.Data = data;
-        if (player.point.Data > data) // win
+        new JSONClass()
         {
-            StartCoroutine(Instance.Win(player.point.Data + data));
+            { "id", ServerRequest._DATA_TREASURE.ToJson() }
+        }.RequestServer();
+    }
+
+    private void GetData(JSONNode data)
+    {
+        TypeBoard = int.Parse(data["d"]["t"]);
+        CurrentStep.Data = int.Parse(data["d"]["s"]);
+        player.point.Data = int.Parse(data["d"]["p"]);
+        IsDead = int.Parse(data["d"]["d"]) == 1 ? true : false;
+        IsRevived = int.Parse(data["d"]["r"]) == 1 ? true : false;
+        if (TypeBoard == -1 || IsDead)
+        {
+            NewGameTreasure();
+            return;
         }
-        else //lose
+    }
+
+
+    private void NewGameTreasure()
+    {
+        new JSONClass()
         {
-            StartCoroutine(Instance.shipPVEs[selectedEnemy].BeingDestroyed());
+            {"id", ServerRequest._NEWGAME_TREASURE.ToJson()},
+            {"t", TypeBoard.ToJson()},
+        }.RequestServer();
+    }
+
+    private void NewGameTreasure(JSONNode data)
+    {
+        // new game
+        TypeBoard = int.Parse(data["d"]["t"]);
+        CurrentStep.Data = int.Parse(data["d"]["s"]);
+        player.point.Data = int.Parse(data["d"]["p"]);
+        IsDead = int.Parse(data["d"]["d"]) == 1 ? true : false;
+        IsRevived = int.Parse(data["d"]["r"]) == 1 ? true : false;
+    }
+
+    public void Attack()
+    {
+        new JSONClass()
+        {
+            {"id", ServerResponse._FIRE_TREASURE.ToJson()}
+        }.RequestServer();
+    }
+
+    void Attack(JSONNode data)
+    {
+        for (int i = 0; i < data["d"]["s"].Count; i++)
+        {
+            shipPVEs[i].point.Data = int.Parse(data["d"]["s"][i]);
+        }
+
+        if (int.Parse(data["d"]["w"]) == 1) // Win
+        {
+            Debug.Log("Win");
+            StartCoroutine(Instance.Win(int.Parse(data["d"]["d"]["p"])));
+        }
+        else // Lose
+        {
+            Debug.Log("Lose");
+            //StartCoroutine(Instance.shipPVEs[selectedEnemy].BeingDestroyed());
             StartCoroutine(Lose());
         }
     }
+    #endregion 
 
     private IEnumerator Win(int point)
     {
@@ -68,9 +137,9 @@ public class PVE : SingletonMono<PVE>
             });
         }
         yield return new WaitForSeconds(1.5f);
-        if (currentStages.Data < 9)
+        if (CurrentStep.Data < 9)
         {
-            currentStages.Data++;
+            CurrentStep.Data++;
             StartCoroutine(InitTurn());
         }
     }
@@ -79,41 +148,57 @@ public class PVE : SingletonMono<PVE>
     {
         yield return StartCoroutine(player.BeingDestroyed());
         yield return new WaitForSeconds(1);
-        SceneTransitionHelper.Load(ESceneName.PVE);
-    }
+        SceneTransitionHelper.Load(ESceneName.Home);
 
-    public void Attack()
-    {
-        //new JSONClass()
+        //if(!IsRevived)
         //{
-        //    { "id", ServerRequest._PVE_ATTACK.ToJson() } 
-        //}.RequestServer();
-        if (input.text == "")
-        {
-            ServerMessenger.Broadcast<int>(ServerResponse._PVE_ATTACK, player.point.Data + Random.Range(-3, 0));
-        }
-        else
-        {
-            ServerMessenger.Broadcast<int>(ServerResponse._PVE_ATTACK, int.Parse(input.text));
-        }
+        //    PopupHelper.CreateConfirm(PrefabFactory.PopupRevivalOnlyPVE, null, "Unfortunately! You have not received any reward yet", null, (confirm) =>
+        //    {
+        //        // Player dong y xem quang cao de hoi sinh
+        //        if (confirm)
+        //        {
+        //            Debug.Log("You are revived");
+        //            SceneTransitionHelper.Load(ESceneName.Home);
+        //        }
+        //        else
+        //        {
+        //            SceneTransitionHelper.Load(ESceneName.Home);
+        //        }
+        //    });
+        //    yield break;
+        //}
+
+        //PopupHelper.CreateConfirm(PrefabFactory.PopupRevivalOnlyPVE, null, "Unfortunately! You have not received any reward yet", null, (confirm) =>
+        //{
+        //    // Player dong y xem quang cao de hoi sinh
+        //    if (confirm)
+        //    {
+        //        Debug.Log("You are revived");
+        //    }
+        //    else
+        //    {
+        //        SceneTransitionHelper.Load(ESceneName.Home);
+        //    }
+        //});
+
     }
 
     IEnumerator InitTurn()
     {
         int prefabIndex = 0;
-        if (currentStages.Data < 4)
+        if (CurrentStep.Data < 4)
         {
             prefabIndex = 0;
         }
-        else if (currentStages.Data < 7)
+        else if (CurrentStep.Data < 7)
         {
             prefabIndex = 1;
         }
-        else if (currentStages.Data < 9)
+        else if (CurrentStep.Data < 9)
         {
             prefabIndex = 2;
         }
-        else if (currentStages.Data < 100)
+        else if (CurrentStep.Data < 100)
         {
             prefabIndex = 3;
         }
@@ -133,6 +218,14 @@ public class PVE : SingletonMono<PVE>
         for (int i = 0; i < 3; i++)
         {
             shipPVEs[i].leanSelectable.enabled = true;
+        }
+    }
+
+    public void DisableLeanSelectableShipEnemy()
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            shipPVEs[i].leanSelectable.enabled = false;
         }
     }
 }

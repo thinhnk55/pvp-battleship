@@ -27,13 +27,16 @@
         _CONFIG_ADS = 4060,
         _GIFT_CONFIG = 4070,
         _GIFT = 4071,
-        _PVE_ATTACK = 4081,
+        //_PVE_ATTACK = 4081,
 
         _FIND_MATCH = 4101,
         _SUBMIT_SHIP = 4110,
         _REMATCH = 4114,
 
-
+        _CONFIG_TREASURE = 4201,
+        _DATA_TREASURE = 4202,
+        _NEWGAME_TREASURE = 4203,
+        _FIRE_TREASURE = 4204,
     }
     public enum ServerResponse
     {
@@ -81,6 +84,11 @@
         _GAME_DESTROY = 4116,
         _GAME_RECONNECT = 4117,
         _REMATCH_ACCEPT = 4118,
+
+        _CONFIG_TREASURE = 4201,
+        _DATA_TREASURE = 4202,
+        _NEWGAME_TREASURE = 4203,
+        _FIRE_TREASURE = 4204,
 
         REQUEST_TREASURE_CONFIG = 4101,
         REQUEST_JOIN_TREASURE_ROOM = 4102,
