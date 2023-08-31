@@ -13,7 +13,7 @@ namespace Framework
         [SerializeField] Button _btnYes;
         [SerializeField] Button _btnNo;
 
-        public event Callback<bool> OnConfirm;
+        public Callback<bool> OnConfirm;
 
         protected override void Awake()
         {

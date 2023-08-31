@@ -28,7 +28,7 @@ public class PVEBetCollection : CardCollectionBase<PVEBetInfo>
                 {
                     if (PConsumableType.BERI.GetValue()>= PVEData.Bets[_i])
                     {
-                        PVEData.PlayerData.TypeBoard = _i;
+                        PVE.TypeBoard = _i;
                         SceneTransitionHelper.Load(ESceneName.PVE);
                     }  
                 }
