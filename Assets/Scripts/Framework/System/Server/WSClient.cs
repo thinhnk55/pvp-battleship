@@ -64,6 +64,7 @@ namespace Framework {
                 {
                     Debug.LogError(e.ToString());
                 }
+                Messenger.Broadcast(GameEvent.LostConnection);
                 throw;
             }
             Debug.Log($"<color=#FFA500>{json}</color>");
