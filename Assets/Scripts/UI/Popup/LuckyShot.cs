@@ -34,6 +34,7 @@ public class LuckyShot : SingletonMono<LuckyShot>
     {
         //ServerMessenger.AddListener<JSONNode>(ServerResponse.RECIEVE_REWARD_ROCKET, RewardAds);
         AudioHelper.PauseMusic();
+        Instance.anim.timeScale = 0.9f;
         ServerMessenger.AddListener<JSONNode>(ServerResponse._LUCKYSHOT_FIRE, Instance.LuckyShotFire);
         Timer<LuckyShot>.Instance.Init(Instance.OnTriggerTimer, Instance.OnElapseTimer);
         GameData.RocketCount.Data = Mathf.Clamp(GameData.RocketCount.Data, 0, 3);
@@ -251,7 +252,7 @@ public class LuckyShot : SingletonMono<LuckyShot>
         {
             Instance.shots[i].enabled = false;
         }
-        yield return new WaitForSeconds(indexShot>=0 ? 0.75f : 0.5f);
+        yield return new WaitForSeconds(indexShot>=0 ? 1f : 0.5f);
         Instance.anim.SetAnimation("animation", false);
         Instance.anim.Initialize(false);
         SoundType.DOOR.PlaySound();

@@ -136,8 +136,8 @@ public class BoardCard : CardBase<BoardInfo>
         for (int i = 0; i < Info.boardInfo.Count; i++)
         {
             CoreGame.Instance.shipsPlayer[i].OnSelected(null, null);
+            CoreGame.Instance.shipsPlayer[i].Dir = Ship.GetDir(Info.boardInfo[i].dir);
             CoreGame.Instance.player.AssignShip(CoreGame.Instance.shipsPlayer[i], Info.boardInfo[i].x, Info.boardInfo[i].y);
-            CoreGame.Instance.player.ships[i].Dir = Ship.GetDir(Info.boardInfo[i].dir);
             Collection.GetComponent<PopupBehaviour>().ForceClose();     
         }
     }

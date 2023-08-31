@@ -80,7 +80,7 @@ public class GameData : PDataBlock<GameData>
         Instance.acceptLoginTerm = Instance.acceptLoginTerm ?? new bool[2] { false, false };
         if (Instance.tutorial.IsNullOrEmpty() || Instance.tutorial.Contains(0))
         {
-            Instance.tutorial = new int[4] { 1,1,1,1};
+            Instance.tutorial = new int[4] { 0,0,0,0};
         }
     }
 }

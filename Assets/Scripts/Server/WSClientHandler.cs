@@ -658,7 +658,7 @@ public class WSClientHandler : Singleton<WSClientHandler>
                 }
                 else
                 {
-                    PopupHelper.CreateGoods(PrefabFactory.PopupRPGood, "Unlock elite to receive", goods);
+                    PopupHelper.CreateGoods(PrefabFactory.PopupRPGood, "Unlock Elite now to receive", goods);
 
                 }
             }

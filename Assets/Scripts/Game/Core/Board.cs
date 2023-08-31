@@ -85,35 +85,39 @@ public class Board : CacheMonoBehaviour
         }
 
         //
-        int x = (int)((leanFinger.GetLastWorldPosition(0).x - transform.position.x + width / 2) / cellWidth);
-        int y = (int)((leanFinger.GetLastWorldPosition(0).y - transform.position.y + height / 2) / cellHieght);
-        if (Octile.Check(this, x, y , out int _x, out int _y) && !octiles[_y][_x].Attacked)
+        if (!leanFinger.IsOverGui)
         {
-            WSClientHandler.AttackOpponent(CoreGame.roomId, _x, _y);
-        }
-        horzLine.SetActive(false);
-        vertLine.SetActive(false);
-    }
-
-    public void SelectingTarget(LeanFinger leanFinger)
-    {
-
-
-        int x = (int)((leanFinger.GetLastWorldPosition(0).x - transform.position.x + width / 2) / cellWidth);
-        int y = (int)((leanFinger.GetLastWorldPosition(0).y - transform.position.y + height / 2) / cellHieght);
-        if (Octile.Check(this, x, y, out int _x, out int _y))
-        {
-            horzLine.SetActive(true);
-            vertLine.SetActive(true);
-            horzLine.transform.position = new Vector2(horzLine.transform.position.x, octiles[_y][_x].Position.y);
-            vertLine.transform.position = new Vector2(octiles[_y][_x].Position.x, vertLine.transform.position.y);
-        }
-        else
-        {
+            int x = (int)((leanFinger.GetLastWorldPosition(0).x - transform.position.x + width / 2) / cellWidth);
+            int y = (int)((leanFinger.GetLastWorldPosition(0).y - transform.position.y + height / 2) / cellHieght);
+            if (Octile.Check(this, x, y, out int _x, out int _y) && !octiles[_y][_x].Attacked)
+            {
+                WSClientHandler.AttackOpponent(CoreGame.roomId, _x, _y);
+            }
             horzLine.SetActive(false);
             vertLine.SetActive(false);
         }
 
+    }
+
+    public void SelectingTarget(LeanFinger leanFinger)
+    {
+        if (!leanFinger.IsOverGui)
+        {
+            int x = (int)((leanFinger.GetLastWorldPosition(0).x - transform.position.x + width / 2) / cellWidth);
+            int y = (int)((leanFinger.GetLastWorldPosition(0).y - transform.position.y + height / 2) / cellHieght);
+            if (Octile.Check(this, x, y, out int _x, out int _y))
+            {
+                horzLine.SetActive(true);
+                vertLine.SetActive(true);
+                horzLine.transform.position = new Vector2(horzLine.transform.position.x, octiles[_y][_x].Position.y);
+                vertLine.transform.position = new Vector2(octiles[_y][_x].Position.x, vertLine.transform.position.y);
+            }
+            else
+            {
+                horzLine.SetActive(false);
+                vertLine.SetActive(false);
+            }
+        }
 
     }
 

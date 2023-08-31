@@ -17,6 +17,7 @@ public struct WinCountInfo
 public class WinPlayerCount : CardBase<WinCountInfo>
 {
     [SerializeField] TextMeshProUGUI order;
+    [SerializeField] Image orderIcon;
     [SerializeField] Image rank;
     [SerializeField] TextMeshProUGUI userName;
     [SerializeField] TextMeshProUGUI winCount;
@@ -29,14 +30,23 @@ public class WinPlayerCount : CardBase<WinCountInfo>
     public override void BuildUI(WinCountInfo info)
     {
         base.BuildUI(info);
-
-        order.SetText(info.Order.ToString());
-        rank.sprite = SpriteFactory.Ranks[info.Rank];
-        userName.SetText(info.UserName);
+        if (orderIcon)
+        {
+            if (info.Order <3)
+            {
+                order?.SetText("");
+                orderIcon.sprite = SpriteFactory.OrderLeaderBoard[info.Order];
+            }
+            else
+            {
+                order?.SetText(info.Order.ToString());
+                orderIcon.SetAlpha(0);
+            }
+        }
+        rank?.SetSprite(SpriteFactory.Ranks[info.Rank]);
+        userName?.SetText(info.UserName);
         //cup =  info.Cup;
-        winCount.SetText(info.WinCount.ToString());
-        reward.sprite = SpriteFactory.RewardLeaderBoard[info.Reward];
-
-
+        winCount?.SetText(info.WinCount.ToString());
+        reward?.SetSprite(SpriteFactory.ResourceIcons[(int)PConsumableType.BERI].sprites.GetClamp(info.Order));
     }
 }

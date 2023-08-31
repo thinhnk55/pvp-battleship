@@ -9,8 +9,7 @@ public class WinPlayerCollection : CardCollectionBase<WinCountInfo>
     [SerializeField] WinPlayerCount myWinCount;
     private void Awake()
     {
-        UpdateUIs();
-        myWinCount.BuildUI(GameData.MyWinCountInfo);
+        // UpdateUIs();
     }
     public override void UpdateUIs()
     {
@@ -20,7 +19,7 @@ public class WinPlayerCollection : CardCollectionBase<WinCountInfo>
         {
             winCountInfosList.Add(new WinCountInfo
             {
-                Order = GameData.WinCountInfoList[i].Order,
+                Order = i,
                 Rank = GameData.WinCountInfoList[i].Rank,
                 UserName = GameData.WinCountInfoList[i].UserName,
                 WinCount = GameData.WinCountInfoList[i].WinCount,

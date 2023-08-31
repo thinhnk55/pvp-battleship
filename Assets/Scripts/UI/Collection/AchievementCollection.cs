@@ -16,6 +16,7 @@ public class AchievementCollection : CardCollectionBase<AchievementInfo>
     public int numberOfChild;
     protected List<AchievementInfo> infos;
     [SerializeField] AchievementCard previewCard;
+    [SerializeField] GameObject resource;
     private void Start()
     {
         if (!isSelection)
@@ -102,6 +103,7 @@ public class AchievementCollection : CardCollectionBase<AchievementInfo>
     {
         if (json["e"].AsInt ==0)
         {
+            CoinVFX.CoinVfx(resource.transform, previewCard.Button.transform.position, previewCard.Button.transform.position);
             AchievementInfo info = GameData.AchievementConfig[(AchievementType)int.Parse(json["d"]["a"])];
             GameData.Player.AchievementObtained[int.Parse(json["d"]["a"])] = int.Parse(json["d"]["l"]) + 1;
             info.Progress = GameData.Player.AchievementProgress[int.Parse(json["d"]["a"])];
