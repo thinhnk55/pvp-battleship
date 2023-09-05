@@ -11,7 +11,6 @@ namespace Framework
         [Header("Reference")]
         [SerializeField] TextMeshProUGUI _txtContent;
         public GoodCollection view;
-
         public virtual void Construct(string msg, List<GoodInfo> goodInfos)
         {
             if (_txtContent)

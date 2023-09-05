@@ -17,12 +17,11 @@ namespace Framework
             {
                 if (_instance == null)
                 {
-                    _instance = Resources.Load<T>(string.Format("{0}/{1}", SOSFolderName, typeof(T).Name));
-
+                    _instance = Resources.Load<T>(string.Format("{0}", typeof(T).Name));
 #if UNITY_EDITOR
                     if (_instance == null)
                     {
-                        string configPath = string.Format("{0}/{1}", GetScriptPathWithNamespace(typeof(T)), SOSFolderName);
+                        string configPath = string.Format("{0}/{1}", GetScriptPath(typeof(T)), SOSFolderName);
                         if (!System.IO.Directory.Exists(configPath))
                             System.IO.Directory.CreateDirectory(configPath);
 
@@ -39,7 +38,7 @@ namespace Framework
             }
         }
 #if UNITY_EDITOR
-        private static string GetScriptPathWithNamespace(Type classType)
+        private static string GetScriptPath(Type classType)
         {
             string classTypeName = classType.Name;
             string[] guids = AssetDatabase.FindAssets("t:script " + classTypeName);
@@ -47,12 +46,7 @@ namespace Framework
             foreach (string guid in guids)
             {
                 string scriptPath = AssetDatabase.GUIDToAssetPath(guid);
-                MonoScript script = AssetDatabase.LoadAssetAtPath<MonoScript>(scriptPath);
-                if (script != null && script.GetClass() != null &&
-                    script.GetClass() == classType && script.GetClass().Namespace == classType.Namespace)
-                {
-                    return System.IO.Path.GetDirectoryName(scriptPath);
-                }
+                return System.IO.Path.GetDirectoryName(scriptPath);
             }
 
             return "Script not found in namespace.";

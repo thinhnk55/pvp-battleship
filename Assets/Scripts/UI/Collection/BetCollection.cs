@@ -29,7 +29,14 @@ public class BetCollection : CardCollectionBase<BetInfo>
                     }
                     else
                     {
-                        PopupHelper.Create(PrefabFactory.PopupShop).GetComponentInChildren<Tabs>().Activate(1);
+                        PopupHelper.CreateConfirm(PrefabFactory.PopupOutOfResource, "Message", "Not enough money", null, (ok) =>
+                        {
+                            if (ok)
+                            {
+                                PopupBehaviour.CloseAll();
+                                PopupHelper.Create(PrefabFactory.PopupShop).GetComponentInChildren<Tabs>().Activate(1);
+                            }
+                        });
                     }
                 }
             });

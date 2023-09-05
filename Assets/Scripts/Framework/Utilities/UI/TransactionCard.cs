@@ -181,7 +181,7 @@ namespace Framework {
         [SerializeField] protected TextMeshProUGUI bonus;
         [SerializeField] protected TextMeshProUGUI status;
         [SerializeField] protected Image otherIcon;
-
+        [SerializeField] protected TextMeshProUGUI otherText;
         public override void BuildUI(TransactionInfo info)
         {
             base.BuildUI(info);
@@ -314,10 +314,10 @@ namespace Framework {
                 {
                     costAmount[i].text = "Royal Pass";
                     DestroyImmediate(costIcon[i].gameObject);
-                    otherIcon?.SetSprite(SpriteFactory.ResourceIcons[(int)PNonConsumableType.ELITE].sprites[0]);
-                    otherIcon.SetAlpha(1);
                     costAmount[i].GetComponentInParent<LayoutCalibrator>().Calibrate();
                 }
+                otherIcon?.SetSprite(SpriteFactory.ResourceIcons[(int)PNonConsumableType.ELITE].sprites[0]);
+                otherIcon.SetAlpha(1);
             }
         }
 
@@ -349,7 +349,23 @@ namespace Framework {
                     }
                     else
                     {
-                        Debug.Log("unaffordable");
+                        if (Info.Cost[0].Type == (int)PConsumableType.GEM)
+                        {
+                            PopupHelper.CreateConfirm(PrefabFactory.PopupOutOfResource, "Message", "Not enough money", null, (ok) =>
+                            {
+                                PopupBehaviour.CloseAll();
+                                PopupHelper.Create(PrefabFactory.PopupShop).GetComponentInChildren<Tabs>().Activate(2);
+                            });
+                        }
+                        else
+                        {
+                            PopupHelper.CreateConfirm(PrefabFactory.PopupOutOfResource, "Message", "Not enough money", null, (ok) =>
+                            {
+                                PopupBehaviour.CloseAll();
+                                PopupHelper.Create(PrefabFactory.PopupShop).GetComponentInChildren<Tabs>().Activate(1);
+                            });
+                        }
+
                     }
 
                 };
