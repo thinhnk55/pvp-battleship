@@ -167,6 +167,17 @@ public class PVE : SingletonMono<PVE>
             CurrentStep.Data++;
             StartCoroutine(InitTurn());
         }
+        else // pha dao
+        {
+            PopupHelper.CreateConfirm(PrefabFactory.PopupLossPVE, null,
+                "+" + (PVEData.Bets[PVEData.TypeBoard.Value] * PVEData.StageMulReward[PVEData.TypeBoard.Value][CurrentStep.Data]).ToString(), null, (confirm) =>
+            {
+                if (confirm)
+                {
+
+                }
+            });
+        }
     }
 
     private IEnumerator Lose()
@@ -175,39 +186,20 @@ public class PVE : SingletonMono<PVE>
         yield return new WaitForSeconds(1);
         //SceneTransitionHelper.Load(ESceneName.Home);
 
-        if (!IsRevived)
+        PopupHelper.CreateConfirm(PrefabFactory.PopupLossPVE, null, null, null, (confirm) =>
         {
-            PopupHelper.CreateConfirm(PrefabFactory.PopupReceiveRewardNotCompletePVE, null,
-                "+" + (PVEData.Bets[PVEData.TypeBoard.Value] * PVEData.StageMulReward[PVEData.TypeBoard.Value][CurrentStep.Data]).ToString(), null, (confirm) =>
+            if(confirm)
             {
-                // Player dong y xem quang cao de hoi sinh
-                if (confirm)
-                {
-                    PVEData.IsDeadPlayer.Data = false;
-                    //AdsManager.ShowRewardAds(null, AdsData.adsUnitIdMap[RewardType.Get_X2DailyGift]);
-                }
-                else
-                {
-                    SceneTransitionHelper.Load(ESceneName.Home);
-                }
-            });
-            yield break;
-        }
-
-        PopupHelper.CreateConfirm(PrefabFactory.PopupReceiveRewardNotCompletePVE, null,
-            "+" + (PVEData.Bets[PVEData.TypeBoard.Value] * PVEData.StageMulReward[PVEData.TypeBoard.Value][CurrentStep.Data]).ToString(), null, (confirm) =>
-        {
-            if (confirm)
-            {
-                Debug.Log("You are revived");
+                PVEData.IsDeadPlayer.Data = false;
+                //AdsManager.ShowRewardAds(null, AdsData.adsUnitIdMap[RewardType.Get_X2DailyGift]);
             }
             else
             {
-                
+
             }
         });
-
     }
+
 
     IEnumerator InitTurn()
     {
