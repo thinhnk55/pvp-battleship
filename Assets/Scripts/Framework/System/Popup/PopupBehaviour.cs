@@ -9,7 +9,7 @@ namespace Framework
     public class PopupBehaviour : CacheMonoBehaviour
     {
         // Global stack of popup
-        static Stack<PopupBehaviour> PopupStack = new Stack<PopupBehaviour>();
+        static List<PopupBehaviour> PopupStack = new ();
 
         [Header("Config")]
         [SerializeField] protected float _openDuration = 0.4f;
@@ -190,19 +190,19 @@ namespace Framework
             _inputEnabled = true;
 
             if (PopupStack.Count > 0)
-                PopupStack.Peek()._inputEnabled = false;
+                PopupStack.Last()._inputEnabled = false;
 
-            PopupStack.Push(this);
+            PopupStack.Add(this);
         }
 
         void DisableInput()
         {
             _inputEnabled = false;
 
-            PopupStack.Pop();
+            PopupStack.Remove(this);
 
             if (PopupStack.Count > 0)
-                PopupStack.Peek()._inputEnabled = true;
+                PopupStack.Last()._inputEnabled = true;
         }
 
         void HandleInput()
@@ -216,6 +216,16 @@ namespace Framework
 #endif
         }
 
+        #endregion
+
+        #region Static
+        public static void CloseAll()
+        {
+            for (int i = 0; i < PopupStack.Count; i++)
+            {
+                Destroy(PopupStack[i].gameObject);
+            } 
+        }
         #endregion
     }
 }

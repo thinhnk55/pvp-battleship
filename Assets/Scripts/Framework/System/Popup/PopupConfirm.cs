@@ -37,16 +37,14 @@ namespace Framework
 
         void ButtonClickNoCallback()
         {
-            OnConfirm?.Invoke(false);
-
             InternalClose();
+            OnConfirm?.Invoke(false);
         }
 
         void ButtonClickYesCallback()
         {
-            OnConfirm?.Invoke(true);
-
             InternalClose();
+            OnConfirm?.Invoke(true);
         }
 
         protected override void HandleClose()
