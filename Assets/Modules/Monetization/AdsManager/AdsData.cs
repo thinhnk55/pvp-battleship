@@ -19,6 +19,7 @@ public enum RewardType
     Get_Quest = 4,
     Change_Quest = 5,
     Get_X2DailyGift = 6,
+    Get_RevivalOnlyPVE = 7,
 }
 
 public class AdsData : PDataBlock<AdsData>

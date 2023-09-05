@@ -398,6 +398,10 @@ public class WSClientHandler : Singleton<WSClientHandler>
         {
             Gift.OnGetAdsGift(data);
         }
+        else if (String.Equals(ads_unit_id, AdsData.adsUnitIdMap[RewardType.Get_RevivalOnlyPVE]))
+        {
+            PVEData.IsDeadPlayer.Data = false;
+        }
     }
     #endregion
     #region Lucky Shot
