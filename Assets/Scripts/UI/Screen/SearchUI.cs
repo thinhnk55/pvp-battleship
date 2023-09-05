@@ -11,4 +11,5 @@ public class SearchUI : MonoBehaviour
     public ProfileCollection playerProfile;
     public ProfileCollection opponentProfile;
     public Image tresure;
+    public TextMeshProUGUI amount;
 }

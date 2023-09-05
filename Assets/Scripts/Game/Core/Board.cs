@@ -69,10 +69,16 @@ public class Board : CacheMonoBehaviour
         }
         else if (GameData.Tutorial[3] == 0 && this != CoreGame.Instance.player)
         {
-            tutorIngame = PopupHelper.Create(PrefabFactory.PopupTuTorPlay).gameObject;
-            int r = Random.Range(3, 7);
-            int c = Random.Range(3, 7);
-            tutorIngame.transform.position = octiles[r][c].transform.position;
+            DOVirtual.DelayedCall(5, () =>
+            {
+                if (GameData.Tutorial[3]==0)
+                {
+                    tutorIngame = PopupHelper.Create(PrefabFactory.PopupTuTorPlay).gameObject;
+                    int r = Random.Range(3, 7);
+                    int c = Random.Range(3, 7);
+                    tutorIngame.transform.position = octiles[r][c].transform.position;
+                }
+            });
         }
     }
     public void BeingAttacked(LeanFinger leanFinger)
@@ -80,7 +86,8 @@ public class Board : CacheMonoBehaviour
         // tutorial
         if (GameData.Tutorial[3] == 0 && this != CoreGame.Instance.player)
         {
-            Destroy(tutorIngame);
+            if(tutorIngame)
+                Destroy(tutorIngame);
             GameData.Tutorial = new int[4] { 1, 1, 1, 1 };
         }
 

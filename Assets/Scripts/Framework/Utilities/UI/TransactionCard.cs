@@ -181,7 +181,7 @@ namespace Framework {
         [SerializeField] protected TextMeshProUGUI bonus;
         [SerializeField] protected TextMeshProUGUI status;
         [SerializeField] protected Image otherIcon;
-
+        [SerializeField] protected TextMeshProUGUI otherText;
         public override void BuildUI(TransactionInfo info)
         {
             base.BuildUI(info);
@@ -314,10 +314,10 @@ namespace Framework {
                 {
                     costAmount[i].text = "Royal Pass";
                     DestroyImmediate(costIcon[i].gameObject);
-                    otherIcon?.SetSprite(SpriteFactory.ResourceIcons[(int)PNonConsumableType.ELITE].sprites[0]);
-                    otherIcon.SetAlpha(1);
                     costAmount[i].GetComponentInParent<LayoutCalibrator>().Calibrate();
                 }
+                otherIcon?.SetSprite(SpriteFactory.ResourceIcons[(int)PNonConsumableType.ELITE].sprites[0]);
+                otherIcon.SetAlpha(1);
             }
         }
 

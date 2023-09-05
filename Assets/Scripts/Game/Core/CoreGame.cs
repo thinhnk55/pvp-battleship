@@ -40,6 +40,7 @@ public class CoreGame : SingletonMono<CoreGame>
 
     [SerializeField] public Board player;
     [SerializeField] Board opponent;
+    [SerializeField] ProfileCollection opponentProfile;
     [SerializeField] GameObject lineRoot;
     public GameObject shipListPlayer;
     [SerializeField] GameObject shipListOpponent;
@@ -328,6 +329,7 @@ public class CoreGame : SingletonMono<CoreGame>
     {
         if (shipListPlayer.transform.childCount == 0)
         {
+            Instance.searchUI.amount.text = (GameData.Bets[bet].Bet * 1.95f).ToString();
             Instance.searchUI.gameObject.SetActive(true);
             Instance.stateMachine.CurrentState = GameState.Search;
         }
@@ -387,6 +389,7 @@ public class CoreGame : SingletonMono<CoreGame>
         if (shipListPlayer.transform.childCount == 0)
         {
             rematch = false;
+            Instance.searchUI.amount.text = (GameData.Bets[bet].Bet * 1.95f).ToString();
             CoinVFX.CoinVfx(Instance.searchUI.tresure.transform, Instance.searchUI.avatar1.transform.position, Instance.searchUI.avatar2.transform.position);
             WSClientHandler.SubmitShip(roomId, player.ships);
             btnReady.GetComponent<Button>().enabled = false;
@@ -408,6 +411,7 @@ public class CoreGame : SingletonMono<CoreGame>
         GameData.Opponent = int.Parse(json["d"]["p1"]["u"]) == DataAuth.AuthData.userId ? ProfileData.FromJsonOpponent(GameData.Opponent, json["d"]["p2"]["p"]) : ProfileData.FromJsonOpponent(GameData.Opponent, json["d"]["p1"]["p"]);
         Instance.searchUI.opponentProfile.UpdateUIs();
         Instance.opponent.battleFieldSprite.sprite = SpriteFactory.BattleFields[GameData.Opponent.BattleField.Data];
+        Instance.opponentProfile.UpdateUIs();
         CoinVFX.CoinVfx(Instance.searchUI.tresure.transform, Instance.searchUI.avatar1.transform.position, Instance.searchUI.avatar2.transform.position);
     }
     void GameStart(JSONNode json)
@@ -528,7 +532,7 @@ public class CoreGame : SingletonMono<CoreGame>
             Instance.stateMachine.CurrentState = GameState.Out;
             Instance.ingameUI.SetActive(false);
             Instance.postUI.gameObject.SetActive(true);
-            Instance.postUI.amount.text = json["d"]["e"];
+            Instance.postUI.amount.text = (json["d"]["e"].AsInt / 0.95f * 1.95f).ToString();
             Instance.postUI.profile1.UpdateUIs();
 
             Messenger.Broadcast(GameEvent.GAME_END, int.Parse(json["d"]["w"]) == playerChair);

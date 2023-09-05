@@ -37,13 +37,13 @@ namespace Framework
 
         void ButtonClickNoCallback()
         {
-            InternalClose();
+            Close();
             OnConfirm?.Invoke(false);
         }
 
         void ButtonClickYesCallback()
         {
-            InternalClose();
+            Close();
             OnConfirm?.Invoke(true);
         }
 

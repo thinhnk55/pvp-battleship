@@ -19,7 +19,10 @@ public class AvatarCard : TransactionCard
                 });
             }
         }
-
+        if (info.Cost[0].Value < 0)
+        {
+            otherText.text = "S" + GameData.RoyalPass.Season.ToString();
+        }
     }
     protected override string GetStatus(TransactionInfo info)
     {
