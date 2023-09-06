@@ -403,6 +403,14 @@ public class WSClientHandler : Singleton<WSClientHandler>
         {
             Gift.OnGetAdsGift(data);
         }
+        else if (String.Equals(ads_unit_id, AdsData.adsUnitIdMap[RewardType.Get_RevivalOnlyPVE]))
+        {
+            PVEData.TypeBoard = int.Parse(data["d"]["t"]["t"]);
+            PVE.Instance.CurrentStep.Data = int.Parse(data["d"]["t"]["s"]);
+            PVEData.IsDeadPlayer.Data = int.Parse(data["d"]["t"]["s"]) == 1 ? true : false;
+            PVE.Instance.IsRevived = int.Parse(data["d"]["t"]["s"]) == 1 ? true : false;
+
+        }
     }
     #endregion
     #region Lucky Shot

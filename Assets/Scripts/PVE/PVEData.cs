@@ -6,6 +6,8 @@ using System;
 
 public class PVEData : PDataBlock<PVEData>
 {
+    [SerializeField] private int? typeBoard; public static int? TypeBoard { get { return Instance.typeBoard; } set { Instance.typeBoard = value; } }
+    [SerializeField] private PDataUnit<bool> isDeadPlayer; public static PDataUnit<bool> IsDeadPlayer { get { return Instance.isDeadPlayer; } set { Instance.isDeadPlayer = value; } }
     [SerializeField] private int verisonPVEData; public static int VerisonPVEData { get { return Instance.verisonPVEData; } set { Instance.verisonPVEData = value; } }
     [SerializeField] private List<int> bets; public static List<int> Bets { get { return Instance.bets; } set { Instance.bets = value; } }
     [SerializeField] private List<List<int>> stageMulReward; public static List<List<int>> StageMulReward { get { return Instance.stageMulReward; } set { Instance.stageMulReward = value; } }
@@ -13,6 +15,8 @@ public class PVEData : PDataBlock<PVEData>
     protected override void Init()
     {
         base.Init();
+        Instance.typeBoard = Instance.typeBoard ?? new int?(-1);
+        Instance.isDeadPlayer = new PDataUnit<bool>(false);
         Instance.bets = Instance.bets ?? new List<int>();
         Instance.stageMulReward = Instance.stageMulReward ?? new List<List<int>>();
     }

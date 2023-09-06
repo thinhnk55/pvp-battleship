@@ -37,6 +37,7 @@
         _DATA_TREASURE = 4202,
         _NEWGAME_TREASURE = 4203,
         _FIRE_TREASURE = 4204,
+        _END_GAME_TREASURE = 4205,
     }
     public enum ServerResponse
     {
@@ -89,6 +90,7 @@
         _DATA_TREASURE = 4202,
         _NEWGAME_TREASURE = 4203,
         _FIRE_TREASURE = 4204,
+        _END_GAME_TREASURE = 4205,
 
         REQUEST_TREASURE_CONFIG = 4101,
         REQUEST_JOIN_TREASURE_ROOM = 4102,
