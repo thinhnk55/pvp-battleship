@@ -17,6 +17,7 @@ public class PVE : SingletonMono<PVE>
     [SerializeField] ShipPVE player;
     List<ShipPVE> shipPVEs;
     [SerializeField] Transform enemyRoot;
+    [SerializeField] GameObject Retreat;
     public int selectedEnemy;
     [SerializeField] TMP_InputField input;
 
@@ -30,7 +31,7 @@ public class PVE : SingletonMono<PVE>
 
     private void Start()
     {
-        GetData();
+        NewGameTreasure();
         player.leanSelectable.enabled = false;
         shipPVEs = new List<ShipPVE>();
         ServerMessenger.AddListener<JSONNode>(ServerResponse._FIRE_TREASURE, Attack);
@@ -64,11 +65,6 @@ public class PVE : SingletonMono<PVE>
         player.point.Data = int.Parse(data["d"]["p"]);
         PVEData.IsDeadPlayer.Data = int.Parse(data["d"]["d"]) == 1 ? true : false;
         IsRevived = int.Parse(data["d"]["r"]) == 1 ? true : false;
-        if (PVEData.TypeBoard.Value == -1 || PVEData.IsDeadPlayer.Data)
-        {
-            NewGameTreasure();
-            return;
-        }
     }
 
 
@@ -83,6 +79,11 @@ public class PVE : SingletonMono<PVE>
 
     private void NewGameTreasure(JSONNode data)
     {
+        if (int.Parse(data["e"]) != 0)
+        {
+            GetData();
+            return;
+        }
         // new game
         PVEData.TypeBoard = int.Parse(data["d"]["t"]);
         CurrentStep.Data = int.Parse(data["d"]["s"]);
@@ -101,6 +102,7 @@ public class PVE : SingletonMono<PVE>
 
     void Attack(JSONNode data)
     {
+        Retreat.SetActive(false);
         for (int i = 0; i < data["d"]["s"].Count; i++)
         {
             shipPVEs[i].point.Data = int.Parse(data["d"]["s"][i]);
@@ -190,12 +192,11 @@ public class PVE : SingletonMono<PVE>
         {
             if(confirm)
             {
-                PVEData.IsDeadPlayer.Data = false;
-                //AdsManager.ShowRewardAds(null, AdsData.adsUnitIdMap[RewardType.Get_X2DailyGift]);
+                AdsManager.ShowRewardAds(null, AdsData.adsUnitIdMap[RewardType.Get_X2DailyGift]);
             }
             else
             {
-
+                SceneTransitionHelper.Load(ESceneName.Home);
             }
         });
     }
@@ -203,6 +204,7 @@ public class PVE : SingletonMono<PVE>
 
     IEnumerator InitTurn()
     {
+        Retreat.SetActive(true);
         int prefabIndex = 0;
         if (CurrentStep.Data < 4)
         {
@@ -243,6 +245,7 @@ public class PVE : SingletonMono<PVE>
     {
         if(o == true)
         {
+            Retreat.SetActive(true);
             HideEnemyPoint();
             SetDisableLeanSelectableShipEnemy(true);
         }

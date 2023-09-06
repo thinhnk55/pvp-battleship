@@ -25,9 +25,10 @@ public class ButtonJoinTreasureHunt : ButtonBase
 
     private void ChangeStatusButton()
     {
-        Debug.Log(PVEData.TypeBoard + "---" + PVEData.IsDeadPlayer);
+        Debug.Log(PVEData.TypeBoard + "---" + PVEData.IsDeadPlayer.Data);
         if(PVEData.TypeBoard == -1 || PVEData.IsDeadPlayer.Data) // New Game
         {
+            Debug.LogError("New game");
             return;
         }
         eSceneValue = ESceneName.PVE;

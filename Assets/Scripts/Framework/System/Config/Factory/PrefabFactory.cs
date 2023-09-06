@@ -48,6 +48,7 @@ namespace Framework
         [SerializeField] private GameObject popupReceiveGift; public static GameObject PopupReceiveGift { get { return Instance.popupReceiveGift; } }
         [SerializeField] private GameObject popupLossPVE; public static GameObject PopupLossPVE { get { return Instance.popupLossPVE; } }
         [SerializeField] private GameObject popupRetreatPVE; public static GameObject PopupRetreatPVE { get { return Instance.popupRetreatPVE; } }
+        [SerializeField] private GameObject popupResourcePVE; public static GameObject PopupResourcePVE { get { return Instance.popupResourcePVE; } }
         [SerializeField] private GameObject popupReceiveRewardCompletePVE; public static GameObject PopupReceiveRewardCompletePVE { get { return Instance.popupReceiveRewardCompletePVE; } }
 
 

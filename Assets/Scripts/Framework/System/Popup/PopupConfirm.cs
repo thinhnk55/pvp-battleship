@@ -49,7 +49,7 @@ namespace Framework
 
         protected override void HandleClose()
         {
-            OnConfirm?.Invoke(false);
+            //OnConfirm?.Invoke(false);
         }
     }
 }
