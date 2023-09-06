@@ -293,7 +293,7 @@ public class WSClientHandler : Singleton<WSClientHandler>
         {
             GameData.AchievementConfig.Add((AchievementType)i, AchievementInfo.FromJson(data["d"]["achievements"][i], i));
             int _i = i;
-            ((QuestType)_i).AddListenerOnProgress((oValue, nValue) => {
+            ((StatisticType)_i).AddListenerOnProgress((oValue, nValue) => {
                 int oProgress = GameData.Player.AchievementProgress[_i];
                 GameData.Player.AchievementProgress[_i] += (nValue - oValue);
                 AchievementType type = (AchievementType)_i;
@@ -310,6 +310,11 @@ public class WSClientHandler : Singleton<WSClientHandler>
                 && oProgress < GameData.AchievementConfig[type].AchivementUnits[nextMilestone].Task )
                 {
                     PopupHelper.CreateMessage(PrefabFactory.PospupQuestCompleted, null ,AchievementInfo.GetDescription(type, GameData.AchievementConfig[type].AchivementUnits[nextMilestone].Task), null);
+                    ConditionalMono.conditionalEvents[typeof(AchievementReminder)].ForEach((con) =>
+                    {
+                        con.UpdateObject();
+                        Debug.Log("123");
+                    });
                 }
             });         
         }
@@ -413,6 +418,7 @@ public class WSClientHandler : Singleton<WSClientHandler>
     {
         GameData.RocketCount.Data = data["d"]["l"]["r"].AsInt;
         Timer<LuckyShot>.Instance.BeginPoint = data["d"]["l"]["t"].AsLong.NowFrom0001From1970();
+        ConditionalMono.conditionalEvents[typeof(LuckyShotReminder)].ForEach((con) => con.UpdateObject());
     }
     public static void LuckyShotEarn()
     {

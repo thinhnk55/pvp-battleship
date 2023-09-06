@@ -116,8 +116,9 @@ public class AchievementCollection : CardCollectionBase<AchievementInfo>
             cards.Find((card)=> card.Info.Id == info.Id).BuildUI(info);
             PConsumableType.BERI.SetValue(json["d"]["g"].AsInt);
             SetCardPreview(info);
+            ConditionalMono.conditionalEvents[typeof(AchievementReminder)].ForEach((con) => con.UpdateObject());
         }
-       
+
     }
     void Sort()
     {

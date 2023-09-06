@@ -140,7 +140,7 @@ public class LuckyShot : SingletonMono<LuckyShot>
                         text.gameObject.SetActive(false);
                     });
                 }
-
+                ConditionalMono.conditionalEvents[typeof(LuckyShotReminder)].ForEach((con) => con.UpdateObject());
                 DOVirtual.DelayedCall(0.5f, ()=> CoinVFX.CoinVfx(Instance.resourceUI.transform, Instance.shots[indexShot].transform.position, Instance.shots[indexShot].transform.position));
             }
             StartCoroutine(Instance.Door());
@@ -180,7 +180,7 @@ public class LuckyShot : SingletonMono<LuckyShot>
     }
     public void OnTriggerTimer()
     {
-
+        ConditionalMono.conditionalEvents[typeof(LuckyShotReminder)].ForEach((con) => con.UpdateObject());
     }
     public void OnElapseTimer()
     {
