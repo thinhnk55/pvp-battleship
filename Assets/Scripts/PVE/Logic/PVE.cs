@@ -2,6 +2,7 @@ using DG.Tweening;
 using Framework;
 using Monetization;
 using SimpleJSON;
+using Sirenix.OdinInspector.Editor;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -102,10 +103,31 @@ public class PVE : SingletonMono<PVE>
 
     void Attack(JSONNode data)
     {
+        int shipListCount = data["d"]["s"].Count;
         Retreat.SetActive(false);
-        for (int i = 0; i < data["d"]["s"].Count; i++)
+        for (int i = 0; i < shipListCount; i++)
         {
             shipPVEs[i].point.Data = int.Parse(data["d"]["s"][i]);
+        }
+
+        // Sap xep lai diem cua tau cho phu hop
+        for (int i=0; i < shipListCount; i++)
+        {
+            if(shipPVEs[i].point.Data == int.Parse(data["d"]["d"]["p"]) - player.point.Data)
+            {
+                Debug.LogError("Ok");
+                int tmp = shipPVEs[i].point.Data;
+                if (Random.Range(0, 1) > 0.5)
+                {
+                    shipPVEs[i].point.Data = shipPVEs[(i + 1) / shipListCount].point.Data;
+                    shipPVEs[(i + 1) / shipListCount].point.Data = tmp;
+                }
+                else
+                {
+                    shipPVEs[i].point.Data = shipPVEs[(i + 2) / shipListCount].point.Data;
+                    shipPVEs[(i + 2) / shipListCount].point.Data = tmp;
+                }
+            }
         }
 
         PVEData.IsDeadPlayer.Data = int.Parse(data["d"]["d"]["d"]) == 1 ? true : false;
@@ -129,10 +151,14 @@ public class PVE : SingletonMono<PVE>
         for (int i = 0; i < 3; i++)
         {
             int _i = i;
-            Instance.shipPVEs[_i].transform.DOScale(0, 1f).OnComplete(() =>
+            Instance.shipPVEs[_i].transform.DOScale(0, 0.8f).OnComplete(() =>
             {
                 DestroyImmediate(Instance.shipPVEs[_i].gameObject);
             });
+/*            Instance.shipPVEs[_i].transform(0, 0.8f).OnComplete(() =>
+            {
+                DestroyImmediate(Instance.shipPVEs[_i].gameObject);
+            });*/
         }
     }
 
@@ -155,14 +181,14 @@ public class PVE : SingletonMono<PVE>
     private IEnumerator Win(int point)
     {
         ShowEnemyPoint();
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(0.5f);
         yield return StartCoroutine(Instance.shipPVEs[selectedEnemy].BeingDestroyed());
         player.point.Data = point;
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(0.8f);
 
         DestroyEnemyShip();
 
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(1f);
 
         if (CurrentStep.Data < 9)
         {
@@ -222,7 +248,7 @@ public class PVE : SingletonMono<PVE>
         {
             prefabIndex = 3;
         }
-        float duration = 2;
+        float duration = 1f;
         shipPVEs.Clear();
         for (int i = 0; i < 3; i++)
         {

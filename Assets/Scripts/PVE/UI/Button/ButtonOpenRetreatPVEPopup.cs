@@ -18,7 +18,7 @@ public class ButtonOpenRetreatPVEPopup : ButtonBase
 
     private void OnDestroy()
     {
-        ServerMessenger.AddListener<JSONNode>(ServerResponse._END_GAME_TREASURE, EndGameTreasure);
+        ServerMessenger.RemoveListener<JSONNode>(ServerResponse._END_GAME_TREASURE, EndGameTreasure);
     }
 
     protected override void Button_OnClicked()
