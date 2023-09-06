@@ -317,7 +317,7 @@ namespace Framework {
                     costAmount[i].GetComponentInParent<LayoutCalibrator>().Calibrate();
                 }
                 otherIcon?.SetSprite(SpriteFactory.ResourceIcons[(int)PNonConsumableType.ELITE].sprites[0]);
-                otherIcon.SetAlpha(1);
+                otherIcon?.SetAlpha(1);
             }
         }
 

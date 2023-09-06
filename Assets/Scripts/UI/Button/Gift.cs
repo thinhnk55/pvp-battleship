@@ -17,6 +17,7 @@ public class Gift : CacheMonoBehaviour
     [SerializeField] Button obtain;
     [SerializeField] GameObject smallGiftBar;
     [SerializeField] GameObject bigGiftBar;
+    [SerializeField] GiftReminder reminder;
     void Start()
     {
         progress.text = $"{GameData.ProgressGift}/5";
@@ -107,6 +108,7 @@ public class Gift : CacheMonoBehaviour
             bigGiftBar.SetActive(false);
             progress.text = $"{GameData.ProgressGift}/5";
         }
+        reminder.UpdateObject();
     }
 
     void GetAdsGift(JSONNode data)

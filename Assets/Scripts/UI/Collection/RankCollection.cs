@@ -92,6 +92,7 @@ public class RankCollection : CardCollectionBase<RankInfo>
         CoinVFX.CoinVfx(resource, previewCard.Position, previewCard.Position);
         Timer<RankCollection>.Instance.BeginPoint = DateTime.UtcNow.Ticks;
         SetCardPreview(SelectedCard.Info);
+        ConditionalMono.conditionalEvents[typeof(RankReminder)].ForEach((con) => con.UpdateObject());
     }
     // Update is called once per frame
     void Update()
