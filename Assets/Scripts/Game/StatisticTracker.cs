@@ -11,7 +11,7 @@ public enum StatisticType
     AVATAR,// OnAvatarChange
     WIN_COUNT,// GameEnd
     WIN_STREAK, // GameEnd Todo
-    SHIP_DESTROY_CONSECUTIVE, // ShipDestroyed Todo
+    SHIP_DESTROY_CONSECUTIVE_MAX, // ShipDestroyed, Ship Hit, End Game
     SHIP_0_DESTROY,// ShipDestroyed
     SHIP_1_DESTROY,// ShipDestroyed
     SHIP_2_DESTROY,// ShipDestroyed
@@ -22,7 +22,8 @@ public enum StatisticType
     AVATAR_FRAME,// OnAvatarFrameChange
 
     LUCKY_SHOT_COUNT,// LuckyShotFire
-    DESTROY_SHIP_CONSECUTIVE_3 // ShipDestroyed Todo
+    SHIP_DESTROY_CONSECUTIVE, // ShipDestroyed, Ship Hit, End Game
+    DESTROY_SHIP_CONSECUTIVE_3 // ShipDestroyed, Ship Hit, End Game
 
 }
 public static class StatisticTracker
@@ -38,8 +39,10 @@ public static class StatisticTracker
         }
 
         Messenger.AddListener<Ship>(GameEvent.SHIP_DESTROY, ShipDestroyed);
+        Messenger.AddListener<Ship>(GameEvent.SHIP_HIT, ShipHit);
         Messenger.AddListener<bool>(GameEvent.GAME_END, GameEnd);
         ServerMessenger.AddListener<JSONNode>(ServerResponse._LUCKYSHOT_FIRE, LuckyShotFire);
+        quests[StatisticType.SHIP_DESTROY_CONSECUTIVE_MAX].OnDataChanged += OnConsecutiveKillShipChange;
         PConsumableType.GEM.GetData().OnDataChanged += OnGemChange;
         PNonConsumableType.AVATAR.GetData().OnDataChanged += OnAvatarChange;
         PNonConsumableType.AVATAR_FRAME.GetData().OnDataChanged += OnAvatarFrameChange;
@@ -88,13 +91,28 @@ public static class StatisticTracker
             StatisticType.GEM_USED.AddProgress(oValue - nValue);
         }
     }
-
+    private static void OnConsecutiveKillShipChange(int oValue, int nValue)
+    {
+        switch (nValue)
+        {
+            case 2:
+                StatisticType.SHIP_DESTROY_CONSECUTIVE.AddProgress(1);
+                break;
+            case 3:
+                StatisticType.DESTROY_SHIP_CONSECUTIVE_3.AddProgress(1);
+                break;
+            default:
+                break;
+        }
+        Debug.Log("Consecutive track:" + nValue);
+        StatisticType.SHIP_DESTROY_CONSECUTIVE_MAX.SetProgress(nValue);
+    }
     private static void GameEnd(bool win)
     {
         if (win)
         {
             StatisticType.WIN_COUNT.AddProgress(1);
-            int countDestroy = CoreGame.Instance.player.ships.FindAll((ship) => ship.isDestroyed).Count;
+            int countDestroy = CoreGame.Instance.player.ships.Count;
             if (countDestroy == 0)
             {
                 StatisticType.PERFECT_GAME.AddProgress(1);
@@ -109,13 +127,13 @@ public static class StatisticTracker
         {
             GameData.Player.WinStreak = 0;
         }
+
     }
 
     private static void ShipDestroyed(Ship ship)
     {
         if (ship.board != CoreGame.Instance.player)
         {
-
             StatisticType.SHIP_DESTROY.AddProgress(1);
             int length = ship.octilesComposition.Count - 1;
             switch (length)
@@ -135,7 +153,26 @@ public static class StatisticTracker
                 default:
                     break;
             }
+            CoreGame.Instance.consecutiveKill++;
+            StatisticType.SHIP_DESTROY_CONSECUTIVE_MAX.SetProgress(Math.Max(quests[StatisticType.SHIP_DESTROY_CONSECUTIVE_MAX].Data, CoreGame.Instance.consecutiveKill));
         }
+        else
+        {
+        }
+        Debug.Log("Current Consecutive " + CoreGame.Instance.consecutiveKill);
+
+    }
+    private static void ShipHit(Ship ship)
+    {
+        if (ship.board != CoreGame.Instance.player)
+        {
+
+        }
+        else
+        {
+            CoreGame.Instance.consecutiveKill = 0;
+        }
+        Debug.Log("Current Consecutive " + CoreGame.Instance.consecutiveKill);
     }
     private static void LuckyShotFire(JSONNode data)
     {

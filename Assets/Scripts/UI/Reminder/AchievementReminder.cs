@@ -15,11 +15,9 @@ public class AchievementReminder : ConditionalMono
                 if (GameData.Player.AchievementObtained[i] < GameData.AchievementConfig[type].AchivementUnits.Length &&
                 GameData.Player.AchievementProgress[i] >= GameData.AchievementConfig[type].AchivementUnits[GameData.Player.AchievementObtained[i]].Task)
                 {
-                    Debug.Log(true);
                     return true;
                 }
             }
-            Debug.Log(false);
             return false;
         };
     }

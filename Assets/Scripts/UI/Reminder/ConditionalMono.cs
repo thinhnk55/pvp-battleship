@@ -34,7 +34,7 @@ public abstract class ConditionalMono : MonoBehaviour
     public void UpdateObject()
     {
         bool isSastified = (condition?.Invoke(null)).Value;
-        Debug.Log(GetType() + isSastified.ToString());
+        //Debug.Log(GetType() + isSastified.ToString());
         if (isSastified)
         {
             conditionalEvent?.Invoke();

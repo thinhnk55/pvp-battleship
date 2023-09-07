@@ -6,6 +6,7 @@
         LUCKYSHOT_FIRE,
         SELECT_ACHIEVEMENT,
         SHIP_DESTROY,
+        SHIP_HIT,
         GAME_END,
         LOG_OUT,
     }

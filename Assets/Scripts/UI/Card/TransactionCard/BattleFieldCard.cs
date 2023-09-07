@@ -19,10 +19,6 @@ public class BattleFieldCard : TransactionCard
                 });
             }
         }
-        if (info.Cost[0].Value < 0)
-        {
-            otherText?.SetText("S" + GameData.RoyalPass.Season.ToString());
-        }
     }
     protected override string GetStatus(TransactionInfo info)
     {
