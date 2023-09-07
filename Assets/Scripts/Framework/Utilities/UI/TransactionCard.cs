@@ -47,10 +47,25 @@ namespace Framework {
                     }
                     break;
                 case TransactionType.usd:
-                    cost_type.Add(0);
-                    cost_value.Add(data["price"].AsFloat);
-                    product_type.Add((int)PConsumableType.GEM);
-                    product_value.Add(data["quantity"].AsInt);
+#if UNITY_ANDROID || UNITY_EDITOR
+                    if (data["platform"].AsInt == 0 || data["platform"].AsInt == 1)
+                    {                    
+                        Debug.Log(1);
+                        cost_type.Add(0);
+                        cost_value.Add(data["price"].AsFloat);
+                        product_type.Add((int)PConsumableType.GEM);
+                        product_value.Add(data["quantity"].AsInt);
+                    }
+#elif UNITY_IOS
+                    if (data["platform"].AsInt == 0 || data["platform"].AsInt == 2)
+                    {
+                        Debug.Log(2);
+                        cost_type.Add(0);
+                        cost_value.Add(data["price"].AsFloat);
+                        product_type.Add((int)PConsumableType.GEM);
+                        product_value.Add(data["quantity"].AsInt);
+                    }
+#endif
                     break;
                 case TransactionType.diamond:
                     cost_type.Add((int)PConsumableType.GEM);
@@ -112,7 +127,11 @@ namespace Framework {
             List<TransactionInfo> transactionInfos = new List<TransactionInfo>();
             for (int i = 0; i < data.Count; i++)
             {
-                transactionInfos.Add(TransactionInfo.FromJson(data[i], id, i));
+                var info = FromJson(data[i], id, transactionInfos.Count);
+                if (info.Cost.Length>0)
+                {
+                    transactionInfos.Add(info);
+                }
             }
             return transactionInfos;
         }
@@ -193,7 +212,7 @@ namespace Framework {
             }
             for (int i = 0; i < productAmount.Length; i++)
             {
-                productAmount[i].text = info.Product[i].Value.ToString();
+                productAmount[i].text = ((long)info.Product[i].Value).ToString();
             }
             if (status)
             {
@@ -316,9 +335,18 @@ namespace Framework {
                     DestroyImmediate(costIcon[i].gameObject);
                     costAmount[i].GetComponentInParent<LayoutCalibrator>().Calibrate();
                 }
-                otherIcon?.SetSprite(SpriteFactory.ResourceIcons[(int)PNonConsumableType.ELITE].sprites[0]);
                 otherIcon?.SetAlpha(1);
-                otherText?.SetText("RP");
+                if (info.Cost[0].Value == -1)
+                {
+                    otherIcon?.SetSprite(SpriteFactory.ResourceIcons[(int)PNonConsumableType.ELITE].sprites[0]);
+                    otherText?.SetText("RP");
+                }
+                else if (true)
+                {
+                    otherIcon?.SetSprite(SpriteFactory.ResourceIcons[(int)PNonConsumableType.ELITE].sprites[0]);
+                    otherText?.SetText("Starter");
+                }
+
             }
         }
 

@@ -264,7 +264,6 @@ public class WSClientHandler : Singleton<WSClientHandler>
                 };
                 GameData.TransactionConfigs.Add((TransactionType)i, infos);
             }
-
         }
     }
     public static void Transaction(JSONNode data)
@@ -273,7 +272,7 @@ public class WSClientHandler : Singleton<WSClientHandler>
         int index = data["d"]["p"].AsInt;
         GameData.TransactionConfigs[id][index].Transact();
     }
-    #endregion
+#endregion
     #region Achievement
     static void GetConfigAchievement()
     {
