@@ -29,5 +29,10 @@ public class PVEStageCollection : CardCollectionBase<StageInfo>
         Debug.Log("Move to card " + n);
         currentStageIndicator.transform.parent = cards[n].transform;
         currentStageIndicator.anchoredPosition3D = new Vector3(0,0,0);
+        if (o>=0)
+        {
+            ((PVEStageCard)cards[o]).id.color = Color.white;
+        }
+        ((PVEStageCard)cards[n]).id.color = Color.yellow;
     }
 }

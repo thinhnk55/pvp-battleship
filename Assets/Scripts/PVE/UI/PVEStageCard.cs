@@ -12,9 +12,9 @@ public struct StageInfo
 }
 public class PVEStageCard : CardBase<StageInfo>
 {
-    [SerializeField] TextMeshProUGUI id;
-    [SerializeField] TextMeshProUGUI mulReward;
-    [SerializeField] Image mulRewardImage;
+    public TextMeshProUGUI id;
+    public TextMeshProUGUI mulReward;
+    public Image mulRewardImage;
 
     public override void BuildUI(StageInfo info)
     {
