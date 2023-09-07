@@ -26,7 +26,6 @@ public class WSClientHandler : Singleton<WSClientHandler>
             ServerMessenger.AddListener<JSONNode>(ServerResponse._CONFIG_RP, GetConfigRoyalPass);
             ServerMessenger.AddListener<JSONNode>(ServerResponse._CONFIG_ADS, ReceiveAdsConfig);
             ServerMessenger.AddListener<JSONNode>(ServerResponse._GIFT_CONFIG, GetConfigGift);
-            ServerMessenger.AddListener<JSONNode>(ServerResponse._CONFIG_TREASURE, GetConfigTreasure);
 
 
             //not config
@@ -53,7 +52,6 @@ public class WSClientHandler : Singleton<WSClientHandler>
             ServerMessenger.RemoveListener<JSONNode>(ServerResponse._CONFIG_RP, GetConfigRoyalPass);
             ServerMessenger.RemoveListener<JSONNode>(ServerResponse._CONFIG_ADS, ReceiveAdsConfig);
             ServerMessenger.RemoveListener<JSONNode>(ServerResponse._GIFT_CONFIG, GetConfigGift);
-            ServerMessenger.RemoveListener<JSONNode>(ServerResponse._CONFIG_TREASURE, GetConfigTreasure);
 
 
             //not config
@@ -115,7 +113,6 @@ public class WSClientHandler : Singleton<WSClientHandler>
         GetConfigRoyalPass();
         RequestAdsConfig();
         GetConfigGift();
-        GetConfigTreasure();
 
         AdsManager.SetUserId(DataAuth.AuthData.userId.ToString());
         MusicType.MAINMENU.PlayMusic();
@@ -521,29 +518,7 @@ public class WSClientHandler : Singleton<WSClientHandler>
     }
     #endregion
     #region New
-    static void GetConfigTreasure()
-    {
-        new JSONClass()
-        {
-            {"id" , ServerRequest._CONFIG_TREASURE.ToJson() },
-            {"v", new JSONData(0)}
-        }.RequestServer();
-    }
-    static void GetConfigTreasure(JSONNode data)
-    {
-        Debug.Log(PVEData.VerisonPVEData.ToString());
-        if(PVEData.VerisonPVEData == int.Parse(data["d"]["version"]))
-        {
-            return;
-        }
 
-        PVEData.VerisonPVEData = int.Parse(data["d"]["version"]);
-        for (int i = 0; i < data["d"]["treasure"].Count; i++)
-        {
-            PVEData.Bets.Add(int.Parse(data["d"]["treasure"][i]["ticket"]));
-            PVEData.StageMulReward.Add(data["d"]["treasure"][i]["gift"].ToListInt());
-        }
-    }
     #endregion
 
     #endregion

@@ -18,7 +18,7 @@ public class ButtonOpenRetreatPVEPopup : ButtonBase
 
     private void OnDestroy()
     {
-        ServerMessenger.AddListener<JSONNode>(ServerResponse._END_GAME_TREASURE, EndGameTreasure);
+        ServerMessenger.RemoveListener<JSONNode>(ServerResponse._END_GAME_TREASURE, EndGameTreasure);
     }
 
     protected override void Button_OnClicked()
@@ -50,7 +50,10 @@ public class ButtonOpenRetreatPVEPopup : ButtonBase
 
     public void EndGameTreasure(JSONNode data)
     {
-        StartCoroutine(GetBeri(int.Parse(data["d"]["g"] + int.Parse(data["d"]["e"]))));
+        int currentBeri = int.Parse(data["d"]["g"]);
+        int rewardBeri = int.Parse(data["d"]["e"]);
+
+        StartCoroutine(GetBeri(currentBeri+rewardBeri));
         PVEData.TypeBoard = int.Parse(data["d"]["d"]["t"]);
     }
 
@@ -60,10 +63,9 @@ public class ButtonOpenRetreatPVEPopup : ButtonBase
         CoinVFX.CoinVfx(popupResource.transform.GetChild(0).transform, Position, Position);
         yield return new WaitForSeconds(1);
         PConsumableType.BERI.SetValue(beri);
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(1f);
         popupResource.ForceClose();
         popupRetreatPVE?.ForceClose();
-        yield return new WaitForSeconds(0.5f);
         SceneTransitionHelper.Load(ESceneName.Home);
     }
 }
