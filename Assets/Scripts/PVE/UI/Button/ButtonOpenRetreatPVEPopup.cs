@@ -50,7 +50,10 @@ public class ButtonOpenRetreatPVEPopup : ButtonBase
 
     public void EndGameTreasure(JSONNode data)
     {
-        StartCoroutine(GetBeri(int.Parse(data["d"]["g"] + int.Parse(data["d"]["e"]))));
+        int currentBeri = int.Parse(data["d"]["g"]);
+        int rewardBeri = int.Parse(data["d"]["e"]);
+
+        StartCoroutine(GetBeri(currentBeri+rewardBeri));
         PVEData.TypeBoard = int.Parse(data["d"]["d"]["t"]);
     }
 
