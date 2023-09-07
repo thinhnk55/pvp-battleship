@@ -20,7 +20,7 @@ public class PVEStageCard : CardBase<StageInfo>
     {
         base.BuildUI(info);
         id?.SetText(info.id.ToString());
-        if(int.Parse(id.text) < 5)
+        if (int.Parse(id.text) < 5)
         {
             mulRewardImage.gameObject.SetActive(false);
             return;

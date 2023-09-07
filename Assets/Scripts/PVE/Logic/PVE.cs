@@ -20,6 +20,7 @@ public class PVE : SingletonMono<PVE>
     [SerializeField] Transform enemyRoot;
     [SerializeField] GameObject Retreat;
     public int selectedEnemy;
+    [SerializeField] GameObject targetImage; // huong dan nguoi choi nhap vao tau dich de ban, chi xuat hien turn dau
     [SerializeField] TMP_InputField input;
 
     protected override void Awake()
@@ -110,24 +111,20 @@ public class PVE : SingletonMono<PVE>
             shipPVEs[i].point.Data = int.Parse(data["d"]["s"][i]);
         }
 
-        // Sap xep lai diem cua tau cho phu hop
-        for (int i=0; i < shipListCount; i++)
+        if (Instance.shipPVEs[selectedEnemy].point.Data != int.Parse(data["d"]["d"]["p"]) - player.point.Data) 
         {
-            if(shipPVEs[i].point.Data == int.Parse(data["d"]["d"]["p"]) - player.point.Data)
+            int tmp = Instance.shipPVEs[selectedEnemy].point.Data;
+            if(int.Parse(data["d"]["w"]) == 1) // Win
             {
-                Debug.LogError("Ok");
-                int tmp = shipPVEs[i].point.Data;
-                if (Random.Range(0, 1) > 0.5)
-                {
-                    shipPVEs[i].point.Data = shipPVEs[(i + 1) / shipListCount].point.Data;
-                    shipPVEs[(i + 1) / shipListCount].point.Data = tmp;
-                }
-                else
-                {
-                    shipPVEs[i].point.Data = shipPVEs[(i + 2) / shipListCount].point.Data;
-                    shipPVEs[(i + 2) / shipListCount].point.Data = tmp;
-                }
+                Instance.shipPVEs[selectedEnemy].point.Data = shipPVEs[0].point.Data;
+                shipPVEs[0].point.Data = tmp;
             }
+            else
+            {
+                Instance.shipPVEs[selectedEnemy].point.Data = shipPVEs[shipListCount-1].point.Data;
+                shipPVEs[shipListCount - 1].point.Data = tmp;
+            }
+            
         }
 
         PVEData.IsDeadPlayer.Data = int.Parse(data["d"]["d"]["d"]) == 1 ? true : false;
@@ -234,6 +231,10 @@ public class PVE : SingletonMono<PVE>
         int prefabIndex = 0;
         if (CurrentStep.Data < 4)
         {
+            if (CurrentStep.Data == 1)
+            {
+
+            }
             prefabIndex = 0;
         }
         else if (CurrentStep.Data < 7)
@@ -253,11 +254,11 @@ public class PVE : SingletonMono<PVE>
         for (int i = 0; i < 3; i++)
         {
             ShipPVE ship1 = Instantiate(PrefabFactory.ShipsPVE[prefabIndex], enemyRoot).GetComponent<ShipPVE>();
-            ship1.transform.localPosition = new Vector3(10, 2 - 2 * i, 0);
+            ship1.transform.localPosition = new Vector3(10, 1.9f - 2 * i, 0);
             ship1.HidePoint();
             ship1.index = i;
             ship1.leanSelectable.enabled = false;
-            ship1.transform.DOLocalMove(new Vector3(2, 2 - 2 * i, 0), duration);
+            ship1.transform.DOLocalMove(new Vector3(2, 1.9f - 2 * i, 0), duration);
             shipPVEs.Add(ship1);
         }
         yield return new WaitForSeconds(duration);
