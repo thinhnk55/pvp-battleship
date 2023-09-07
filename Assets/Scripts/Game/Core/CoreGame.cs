@@ -594,13 +594,43 @@ public class CoreGame : SingletonMono<CoreGame>
         {
             GameData.Opponent = ProfileData.FromJsonOpponent(GameData.Opponent, data["p2"]["p"]);
             consecutiveKill = data["p1"]["p"]["s"]["kn"].AsInt;
+            if (data["p1"]["p"]["a"]["r"]["d2"].AsInt == 0)
+            {
+                consecutiveKillMax = new(1);
+            }
+            else
+            {
+                if (data["p1"]["p"]["a"]["r"]["d3"].AsInt == 1)
+                {
+                    consecutiveKillMax = new(3);
+                }
+                else
+                {
+                    consecutiveKillMax = new(2);
+                }
+            }
         }
         else
         {
             GameData.Opponent = ProfileData.FromJsonOpponent(GameData.Opponent, data["p1"]["p"]);
             consecutiveKill = data["p2"]["p"]["s"]["kn"].AsInt;
+            if (data["p2"]["p"]["a"]["r"]["d2"].AsInt == 0)
+            {
+                consecutiveKillMax = new(1);
+            }
+            else
+            {
+                if (data["p2"]["p"]["a"]["r"]["d3"].AsInt == 1)
+                {
+                    consecutiveKillMax = new(3);
+                }
+                else
+                {
+                    consecutiveKillMax = new(2);
+                }
+            }
         }
-        Debug.Log("Consecutive :" + consecutiveKill);
+        Debug.Log("Consecutive :" + consecutiveKill + "Max " + consecutiveKillMax.Data);
 
         Instance.searchUI.opponentProfile.UpdateUIs();
         Instance.opponent.battleFieldSprite.sprite = SpriteFactory.BattleFields[GameData.Opponent.BattleField.Data];

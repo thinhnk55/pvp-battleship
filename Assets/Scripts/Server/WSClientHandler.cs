@@ -310,11 +310,7 @@ public class WSClientHandler : Singleton<WSClientHandler>
                 && oProgress < GameData.AchievementConfig[type].AchivementUnits[nextMilestone].Task )
                 {
                     PopupHelper.CreateMessage(PrefabFactory.PospupQuestCompleted, null ,AchievementInfo.GetDescription(type, GameData.AchievementConfig[type].AchivementUnits[nextMilestone].Task), null);
-                    ConditionalMono.conditionalEvents[typeof(AchievementReminder)].ForEach((con) =>
-                    {
-                        con.UpdateObject();
-                        Debug.Log("123");
-                    });
+                    ConditionalMono.UpdateObject(typeof(AchievementReminder));
                 }
             });         
         }
@@ -654,6 +650,7 @@ public class WSClientHandler : Singleton<WSClientHandler>
         receive[json["d"]["i"].AsInt] = -1;
         GameData.RoyalPass.CurrentQuests.Data = receive;
         GameData.RoyalPass.Point.Data += json["d"]["r"].AsInt;
+        ConditionalMono.UpdateObject(typeof(RoyalPassReminder));
     }
     public static void SeasonQuestReward(int index)
     {
@@ -670,6 +667,7 @@ public class WSClientHandler : Singleton<WSClientHandler>
         receive.AddRange(GameData.RoyalPass.SeasonQuestsObtained.Data);
         receive.Add(json["d"]["i"].AsInt);
         GameData.RoyalPass.SeasonQuestsObtained.Data = receive;
+        ConditionalMono.UpdateObject(typeof(RoyalPassReminder));
     }
     public static void RoyalPassReward(int index, int elite)
     {
@@ -725,6 +723,7 @@ public class WSClientHandler : Singleton<WSClientHandler>
             }
             GameData.RoyalPass.EliteObtains.Data = receive;
         }
+        ConditionalMono.UpdateObject(typeof(RoyalPassReminder));
     }
     public static void RequestClaimAllRoyalPass()
     {

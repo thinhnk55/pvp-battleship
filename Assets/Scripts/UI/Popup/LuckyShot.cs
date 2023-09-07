@@ -128,9 +128,10 @@ public class LuckyShot : SingletonMono<LuckyShot>
                     renVfx.sortingLayerName = "UI";
                     mainVfx.startColor = Color.cyan;
                     mainVfx.startSizeMultiplier = 0.5f;
+                    mainVfx.stopAction = ParticleSystemStopAction.Destroy;
                     SoundType.SHIP_EXPLOSION.PlaySound();
                 }
-                {//text
+                {// text
                     TextMeshProUGUI text = (TextMeshProUGUI)ObjectPoolManager.SpawnObject<TextBase>(PrefabFactory.TextPrefab, Instance.shots[indexShot].transform.position + Vector3.up/2, null, true).text;
                     text.text = amount.ToString();
                     text.fontSize = 36f;

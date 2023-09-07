@@ -18,7 +18,7 @@ public class PopupGoodRP : PopupGoods
         else
         {
             Dictionary<int, GoodInfo> goods = new Dictionary<int, GoodInfo>();
-            for (int i = 0; i < GameData.RoyalPass.Level; i++)
+            for (int i = 0; i <= GameData.RoyalPass.Level; i++)
             {
                 if (!GameData.RoyalPass.EliteObtains.Data.Contains(i))
                 {

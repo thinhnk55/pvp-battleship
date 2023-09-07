@@ -46,6 +46,7 @@ public abstract class ConditionalMono : MonoBehaviour
     }
     public static void UpdateObject(Type type)
     {
-        conditionalEvents[type].ForEach((con) => con.UpdateObject());
+        if(conditionalEvents.ContainsKey(type))
+            conditionalEvents[type].ForEach((con) => con.UpdateObject());
     }
 }

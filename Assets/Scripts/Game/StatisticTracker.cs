@@ -20,6 +20,7 @@ public enum StatisticType
     ALIVE_1_SHIP,// GameEnd
     GEM_USED,// OnGemChange
     AVATAR_FRAME,// OnAvatarFrameChange
+    BATTLEFIELD,// OnBattleFieldChange
 
     LUCKY_SHOT_COUNT,// LuckyShotFire
     SHIP_DESTROY_CONSECUTIVE, // ShipDestroyed, Ship Hit, End Game
@@ -46,6 +47,7 @@ public static class StatisticTracker
         PConsumableType.GEM.GetData().OnDataChanged += OnGemChange;
         PNonConsumableType.AVATAR.GetData().OnDataChanged += OnAvatarChange;
         PNonConsumableType.AVATAR_FRAME.GetData().OnDataChanged += OnAvatarFrameChange;
+        PNonConsumableType.BATTLE_FIELD.GetData().OnDataChanged += OnBattleFieldChange;
 
         Messenger.AddListener(GameEvent.LostConnection, LostConnection);
 
@@ -83,7 +85,10 @@ public static class StatisticTracker
     {
         StatisticType.AVATAR.SetProgress(nValue.Count);
     }
-
+    private static void OnBattleFieldChange(HashSet<int> oValue, HashSet<int> nValue)
+    {
+        StatisticType.BATTLEFIELD.SetProgress(nValue.Count);
+    }
     private static void OnGemChange(int oValue, int nValue)
     {
         if (nValue < oValue)
