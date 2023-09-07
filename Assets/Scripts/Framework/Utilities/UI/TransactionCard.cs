@@ -318,6 +318,7 @@ namespace Framework {
                 }
                 otherIcon?.SetSprite(SpriteFactory.ResourceIcons[(int)PNonConsumableType.ELITE].sprites[0]);
                 otherIcon?.SetAlpha(1);
+                otherText?.SetText("RP");
             }
         }
 

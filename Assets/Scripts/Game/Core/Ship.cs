@@ -188,6 +188,7 @@ public class Ship : CacheMonoBehaviour
     }
     public void BeingAttacked(Octile octile)
     {
+        Messenger.Broadcast(GameEvent.SHIP_HIT, this);
         for (int i = 0; i < octilesComposition.Count; i++)
         {
             if (!octilesComposition[i].Attacked)

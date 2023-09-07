@@ -610,7 +610,8 @@ public class WSClientHandler : Singleton<WSClientHandler>
     public static void RecieveReconnect(JSONNode data)
     {
         CoreGame.reconnect = data["d"];
-        SceneTransitionHelper.Load(ESceneName.MainGame);
+        LoadingScene.Instance.LoadScene("MainGame");
+        //SceneTransitionHelper.Load(ESceneName.MainGame);
     }
     #endregion
     #region Royal Pass

@@ -78,10 +78,10 @@ public class RoyalPass
                 s = $"Play {value} times Lucky Shot";
                 break;
             case RoyalPassQuestType.DESTROY_SHIP_CONSECUTIVE_2:
-                s = $"Destroy 2 ships consecutively in {value} different battles";
+                s = $"Destroy 2 ships consecutively in {value} battles";
                 break;
             case RoyalPassQuestType.DESTROY_SHIP_CONSECUTIVE_3:
-                s = $"Destroy 3 ships consecutively in {value} different battles";
+                s = $"Destroy 3 ships consecutively in {value} battles";
                 break;
             case RoyalPassQuestType.ALIVE_1_SHIP:
                 s = $"Win battle when you have only one ship left that hasn't been destroyed {value} time";

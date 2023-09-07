@@ -144,7 +144,7 @@ public class ProfileData
         PNonConsumableType.AVATAR.SetValue(data["d"]["a"]["al"].ToListInt());
         PNonConsumableType.AVATAR_FRAME.SetValue(data["d"]["a"]["fl"].ToListInt());
         PNonConsumableType.BATTLE_FIELD.SetValue(data["d"]["a"]["bl"].ToListInt());
-
+        StatisticTracker.quests[StatisticType.SHIP_DESTROY_CONSECUTIVE_MAX] = new(data["d"]["s"]["k"].AsInt);
         // statistic / achievement
         //profileData.Achievement = data["statistics"]["achie"].ToList();
         profileData.AchievementProgress = new List<int>() { data["d"]["s"]["t"].AsInt, 
@@ -160,6 +160,7 @@ public class ProfileData
             data["d"]["s"]["w1"].AsInt,
             data["d"]["s"]["d"].AsInt,
             data["d"]["s"]["f"].AsInt,
+            data["d"]["s"]["b"].AsInt,
         };
         profileData.Wins = data["d"]["s"]["w"].AsInt;
         profileData.Losts = data["d"]["s"]["l"].AsInt;
@@ -194,10 +195,11 @@ public class ProfileData
         profileData.BattleField = new PDataUnit<int>(data["a"]["b"].AsInt);
         profileData.SkinShip = new PDataUnit<int>(0);//= new PDataUnit<int>(int.Parse(data["sk"]));
         //
-        profileData.AchievementProgress = new List<int>() { data["s"]["t"].AsInt,
+        profileData.AchievementProgress = new List<int>() { 
+            data["s"]["t"].AsInt,
             data["s"]["a"].AsInt,
             data["s"]["w"].AsInt,
-            data["s"]["wm"].AsInt,
+            data["s"]["wm"].AsInt, 
             data["s"]["k"].AsInt,
             data["s"]["s"][0].AsInt,
             data["s"]["s"][1].AsInt,
@@ -207,6 +209,7 @@ public class ProfileData
             data["s"]["w1"].AsInt,
             data["s"]["d"].AsInt,
             data["s"]["f"].AsInt,
+            data["s"]["b"].AsInt,
         };
         profileData.Wins = data["s"]["w"].AsInt;
         profileData.Losts = data["s"]["l"].AsInt;

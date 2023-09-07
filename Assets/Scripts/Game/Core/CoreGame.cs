@@ -73,6 +73,10 @@ public class CoreGame : SingletonMono<CoreGame>
     [SerializeField] Button buttonAuto;
     [SerializeField] Button buttonRematch;
 
+    //
+    public int consecutiveKill;
+    static public PDataUnit<int> consecutiveKillMax = new(0);
+
     [OnValueChanged("OnRevealed")][SerializeField] private bool reveal;
     public bool Reveal
     {
@@ -108,6 +112,7 @@ public class CoreGame : SingletonMono<CoreGame>
     protected override void Awake()
     {
         AudioHelper.StopMusic();
+        consecutiveKill = 0;
         reveal = true;
         cam = Camera.main;
         lines = new List<List<GameObject>>();
@@ -156,6 +161,7 @@ public class CoreGame : SingletonMono<CoreGame>
     }
     protected override void OnDestroy()
     {
+        AudioHelper.StopMusic();
         LeanTouch.OnFingerUp -= Instance.opponent.BeingAttacked;
         LeanTouch.OnFingerUpdate -= Instance.opponent.SelectingTarget;
         Instance.opponent.horzLine.gameObject.SetActive(false);
@@ -183,7 +189,7 @@ public class CoreGame : SingletonMono<CoreGame>
         {
             btnBackPreGame.SetActive(false);
         }
-
+        AudioHelper.StopMusic();
         float sizeWidth = cam.orthographicSize * cam.aspect * 2;
         Instance.preUI.SetActive(true);
         Instance.postUI.gameObject.SetActive(false);
@@ -584,9 +590,18 @@ public class CoreGame : SingletonMono<CoreGame>
         int[,] arr = new int[Instance.player.octiles.Count, Instance.player.octiles.Count];
         Instance.opponent.gameObject.SetActive(true);
         Instance.opponent.InitBoard(10, 10);
-        GameData.Opponent = int.Parse(data["p1"]["u"]) == DataAuth.AuthData.userId ? 
-            ProfileData.FromJsonOpponent(GameData.Opponent, data["p2"]) : 
-            ProfileData.FromJsonOpponent(GameData.Opponent, data["p1"]);
+        if (data["p1"]["u"].AsInt == DataAuth.AuthData.userId)
+        {
+            GameData.Opponent = ProfileData.FromJsonOpponent(GameData.Opponent, data["p2"]["p"]);
+            consecutiveKill = data["p1"]["p"]["s"]["kn"].AsInt;
+        }
+        else
+        {
+            GameData.Opponent = ProfileData.FromJsonOpponent(GameData.Opponent, data["p1"]["p"]);
+            consecutiveKill = data["p2"]["p"]["s"]["kn"].AsInt;
+        }
+        Debug.Log("Consecutive :" + consecutiveKill);
+
         Instance.searchUI.opponentProfile.UpdateUIs();
         Instance.opponent.battleFieldSprite.sprite = SpriteFactory.BattleFields[GameData.Opponent.BattleField.Data];
         for (int i = 0; i < data["s"].Count; i++)
@@ -621,6 +636,7 @@ public class CoreGame : SingletonMono<CoreGame>
             boardOpponent = data["b1"];
             boardPlayer = data["b2"];
         }
+        //consecutiveKillMax = boardPlayer["b1"][""];
         for (int i = 0; i < boardPlayer.Count; i++)
         {
             for (int j = 0; j < boardPlayer[i].Count; j++)

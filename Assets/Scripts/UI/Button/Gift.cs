@@ -64,6 +64,7 @@ public class Gift : CacheMonoBehaviour
         {
             CreateConfirmReceiveGiftPopup();
         });
+        reminder.UpdateObject();
     }
 
     private void OnElapse()

@@ -24,6 +24,7 @@ public enum AchievementType
     WIN_WITH_1_SHIP,
     SPEND_GEM,
     FRAME_COLLECTOR,
+    BATTLEFIELD_COLLECTOR,
 }
 [Serializable]
 public struct AchievementUnit
@@ -88,7 +89,7 @@ public struct AchievementInfo
             case AchievementType.WIN_STREAK_MAX:
                 return $"{amount}-game winning streak";
             case AchievementType.DESTROY_ACCUMULATIVE:
-                return $"destroy {amount} ships consecutively in battle";
+                return $"Destroy {amount} ships consecutively in battle";
             case AchievementType.DESTROY_SHIP_1:
                 return $"Destroy {amount} single-deck ships";
             case AchievementType.DESTROY_SHIP_2:
@@ -105,6 +106,8 @@ public struct AchievementInfo
                 return $"Spend {amount} gem";
             case AchievementType.FRAME_COLLECTOR:
                 return $"Collect {amount} frames";
+            case AchievementType.BATTLEFIELD_COLLECTOR:
+                return $"Collect {amount} battle fields";
             default:
                 return "";
         }
