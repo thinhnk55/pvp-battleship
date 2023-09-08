@@ -1,10 +1,6 @@
 using Framework;
-using Lean.Common.Editor;
 using SimpleJSON;
 using System.Collections;
-using System.Collections.Generic;
-using Unity.Mathematics;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class ButtonOpenRetreatPVEPopup : ButtonBase
@@ -26,16 +22,17 @@ public class ButtonOpenRetreatPVEPopup : ButtonBase
         base.Button_OnClicked();
 
         popupRetreatPVE = PopupHelper.CreateConfirm(PrefabFactory.PopupRetreatPVE, null,
-            "+" + (PVEData.Bets[PVEData.TypeBoard.Value] * PVEData.StageMulReward[PVEData.TypeBoard.Value][PVE.Instance.CurrentStep.Data]).ToString(), null, (confirm) => {
-            if(confirm)
+            "+" + (PVEData.Bets[PVEData.TypeBoard.Value] * PVEData.StageMulReward[PVEData.TypeBoard.Value][PVE.Instance.CurrentStep.Data]).ToString(), null, (confirm) =>
             {
-                EndGameTreasure();
-            }
-            else
-            {
-                popupRetreatPVE.ForceClose();
-            }
-        });
+                if (confirm)
+                {
+                    EndGameTreasure();
+                }
+                else
+                {
+                    popupRetreatPVE.ForceClose();
+                }
+            });
     }
 
 
@@ -53,7 +50,7 @@ public class ButtonOpenRetreatPVEPopup : ButtonBase
         int currentBeri = int.Parse(data["d"]["g"]);
         int rewardBeri = int.Parse(data["d"]["e"]);
 
-        StartCoroutine(GetBeri(currentBeri+rewardBeri));
+        StartCoroutine(GetBeri(currentBeri + rewardBeri));
         PVEData.TypeBoard = int.Parse(data["d"]["d"]["t"]);
     }
 

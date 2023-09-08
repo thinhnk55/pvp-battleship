@@ -1,9 +1,5 @@
-using Authentication;
 using Framework;
 using SimpleJSON;
-using System.Collections;
-using System.Collections.Generic;
-using System.Net.Http;
 using UnityEngine;
 
 namespace Authentication

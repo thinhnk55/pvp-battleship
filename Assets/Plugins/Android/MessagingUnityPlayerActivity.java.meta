@@ -1,7 +1,7 @@
 fileFormatVersion: 2
-guid: d93057d12a9c4da49a9e937d76c26323
+guid: 2a520f2fb5633174b927018e7e8c9d5e
 labels:
-- gpsr
+- FirebaseMessagingActivityGenerated
 PluginImporter:
   externalObjects: {}
   serializedVersion: 2
