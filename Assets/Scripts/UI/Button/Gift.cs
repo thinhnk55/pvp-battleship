@@ -93,7 +93,7 @@ public class Gift : CacheMonoBehaviour
 
     void GetGift(JSONNode json)
     {
-        PConsumableType.BERI.SetValue(int.Parse(json["d"]["g"]));
+        PConsumableType.BERRY.SetValue(int.Parse(json["d"]["g"]));
         CoinVFX.CoinVfx(resource, Position, Position);
         obtain.onClick.RemoveAllListeners();
         Timer<Gift>.Instance.BeginPoint = DateTime.UtcNow.Ticks;

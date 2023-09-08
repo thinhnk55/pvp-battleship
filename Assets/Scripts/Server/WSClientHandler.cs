@@ -106,6 +106,9 @@ public class WSClientHandler : Singleton<WSClientHandler>
     }
     public static void GetData(JSONNode data)
     {
+        Firebase.Crashlytics.Crashlytics.SetUserId(DataAuth.AuthData.userId.ToString());
+        FirebaseIntegration.AnalyticsHelper.Login();
+        AdsManager.SetUserId(DataAuth.AuthData.userId.ToString());
         GetConfig();
         GetConfigShop();
         GetCheckRank();
@@ -114,10 +117,9 @@ public class WSClientHandler : Singleton<WSClientHandler>
         RequestAdsConfig();
         GetConfigGift();
 
-        AdsManager.SetUserId(DataAuth.AuthData.userId.ToString());
         MusicType.MAINMENU.PlayMusic();
         PConsumableType.GEM.SetValue(int.Parse(data["d"]["d"]));
-        PConsumableType.BERI.SetValue(int.Parse(data["d"]["g"]));
+        PConsumableType.BERRY.SetValue(int.Parse(data["d"]["g"]));
         PNonConsumableType.AVATAR.FromJson(data["d"]["a"]["k"]["al"]);
         PNonConsumableType.AVATAR_FRAME.FromJson(data["d"]["a"]["k"]["fl"]);
         PNonConsumableType.BATTLE_FIELD.FromJson(data["d"]["a"]["k"]["bl"]);
@@ -264,7 +266,6 @@ public class WSClientHandler : Singleton<WSClientHandler>
                 };
                 GameData.TransactionConfigs.Add((TransactionType)i, infos);
             }
-
         }
     }
     public static void Transaction(JSONNode data)
@@ -272,6 +273,7 @@ public class WSClientHandler : Singleton<WSClientHandler>
         TransactionType id = data["d"]["s"].ToEnum<TransactionType>();
         int index = data["d"]["p"].AsInt;
         GameData.TransactionConfigs[id][index].Transact();
+        FirebaseIntegration.AnalyticsHelper.Transaction(id.ToString() + index.ToString());
     }
     #endregion
     #region Achievement
@@ -376,7 +378,7 @@ public class WSClientHandler : Singleton<WSClientHandler>
         string ads_unit_id = data["d"]["a"];
         if (String.Equals(ads_unit_id, AdsData.adsUnitIdMap[RewardType.Get_Beri]))
         {
-            PConsumableType.BERI.AddValue(int.Parse(data["d"]["g"]));
+            PConsumableType.BERRY.AddValue(int.Parse(data["d"]["g"]));
         }
         else if (String.Equals(ads_unit_id, AdsData.adsUnitIdMap[RewardType.Get_Rocket]))
         {

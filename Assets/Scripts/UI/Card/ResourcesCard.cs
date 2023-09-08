@@ -15,10 +15,10 @@ public class ResourcesCard : MonoBehaviour
 
     void Start()
     {
-        beri.text = PConsumableType.BERI.GetValue().ToString();
+        beri.text = PConsumableType.BERRY.GetValue().ToString();
         gem.text = PConsumableType.GEM.GetValue().ToString();
         PConsumableType.GEM.GetData().OnDataChanged += OnChangeValueGem;
-        PConsumableType.BERI.GetData().OnDataChanged += OnChangeValueBeri;
+        PConsumableType.BERRY.GetData().OnDataChanged += OnChangeValueBeri;
     }
     void OnChangeValueBeri(int oldValue, int newValue)
     {
@@ -34,6 +34,6 @@ public class ResourcesCard : MonoBehaviour
     private void OnDestroy()
     {
         PConsumableType.GEM.GetData().OnDataChanged -= OnChangeValueGem;
-        PConsumableType.BERI.GetData().OnDataChanged -= OnChangeValueBeri;
+        PConsumableType.BERRY.GetData().OnDataChanged -= OnChangeValueBeri;
     }
 }

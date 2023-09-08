@@ -32,33 +32,14 @@ namespace Authentication
                     }
                 })
 
-            ); ;
+            );
         }
-        public static void LoginDeviceId()
-        {
-
-            string deviceId = SystemInfo.deviceUniqueIdentifier;
-            char salt = (char)(deviceId[deviceId.Length / 2] + 15);
-            string username = deviceId;
-            string password = SHA256Hash.GetSHA256Hash(deviceId + salt);
-            password = password.Substring(15, 12);
-            JSONNode json = new JSONClass()
-        {
-            {"password", password },
-            {"username", username },
-            {"device_id", deviceId},
-            {"session_info", new JSONClass()}
-        };
-
-            HTTPPostLogin(json, "login");
-        }
-
         public static void LoginByGuest(string token)
         {
             JSONNode json = new JSONClass()
-        {
-            {"token", token}
-        };
+            {
+                {"token", token}
+            };
             HTTPPostLogin(json, "/login/guest");
         }
 
@@ -67,9 +48,9 @@ namespace Authentication
             string deviceId = SystemInfo.deviceUniqueIdentifier;
 
             JSONNode json = new JSONClass()
-        {
-            {"token",  idToken},
-        };
+            {
+                {"token",  idToken},
+            };
             HTTPPostLogin(json, "/login/google");
         }
 
@@ -78,9 +59,9 @@ namespace Authentication
             string deviceId = SystemInfo.deviceUniqueIdentifier;
 
             JSONNode json = new JSONClass()
-        {
-            {"token",  authentication},
-        };
+            {
+                {"token",  authentication},
+            };
 
             HTTPPostLogin(json, "/login/apple");
         }

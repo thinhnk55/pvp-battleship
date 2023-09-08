@@ -108,7 +108,7 @@ public class LuckyShot : SingletonMono<LuckyShot>
         {
             GameData.RocketCount.Data = node["d"]["l"]["r"].AsInt;
             int amount = int.Parse(node["d"]["b"]);
-            PConsumableType.BERI.AddValue(amount);
+            PConsumableType.BERRY.AddValue(amount);
             if (amount == 0)
             {
                 Instance.shots[indexShot].GetComponent<Image>().sprite = SpriteFactory.X;

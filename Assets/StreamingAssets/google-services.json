@@ -7,7 +7,7 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:555442977696:android:7852005106d0726d0802c5",
+        "mobilesdk_app_id": "1:555442977696:android:b40cc728d5356eff0802c5",
         "android_client_info": {
           "package_name": "com.meepo.sea.battle.ship"
         }
@@ -19,6 +19,14 @@
           "android_info": {
             "package_name": "com.meepo.sea.battle.ship",
             "certificate_hash": "13a78f58707db9b301e6699b46f3eac09e410844"
+          }
+        },
+        {
+          "client_id": "555442977696-qabp9i03oel9k3jsnv5nhf6v6j8llu6a.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.meepo.sea.battle.ship",
+            "certificate_hash": "617cd8775926b31b89fd97b45e79164caa9186a9"
           }
         },
         {

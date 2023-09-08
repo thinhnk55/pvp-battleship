@@ -1,5 +1,6 @@
 using Authentication;
 using DG.Tweening;
+using FirebaseIntegration;
 using Framework;
 using Lean.Touch;
 using SimpleJSON;
@@ -419,6 +420,7 @@ public class CoreGame : SingletonMono<CoreGame>
         Instance.opponent.battleFieldSprite.sprite = SpriteFactory.BattleFields[GameData.Opponent.BattleField.Data];
         Instance.opponentProfile.UpdateUIs();
         CoinVFX.CoinVfx(Instance.searchUI.tresure.transform, Instance.searchUI.avatar1.transform.position, Instance.searchUI.avatar2.transform.position);
+        AnalyticsHelper.SpendVirtualCurrency(PConsumableType.BERRY.ToString().ToLower(),"classic" + bet.ToString());
     }
     void GameStart(JSONNode json)
     {
@@ -544,14 +546,15 @@ public class CoreGame : SingletonMono<CoreGame>
             Messenger.Broadcast(GameEvent.GAME_END, int.Parse(json["d"]["w"]) == playerChair);
             if (int.Parse(json["d"]["w"]) == playerChair)
             {
-                PConsumableType.BERI.SetValue(int.Parse(json["d"]["gw"]));
+                PConsumableType.BERRY.SetValue(int.Parse(json["d"]["gw"]));
                 Instance.postUI.ResultPlayer.sprite = SpriteFactory.Win;
                 Instance.postUI.ResultOpponent.sprite = SpriteFactory.Lose;
                 CoinVFX.CoinVfx(postUI.avatar1.transform, postUI.treasure.transform.position, postUI.treasure.transform.position);
+                AnalyticsHelper.EarnVirtualCurrency(PConsumableType.BERRY.ToString().ToLower(), "classic" + bet.ToString());
             }
             else
             {
-                PConsumableType.BERI.SetValue(int.Parse(json["d"]["gl"]));
+                PConsumableType.BERRY.SetValue(int.Parse(json["d"]["gl"]));
                 Instance.postUI.ResultPlayer.sprite = SpriteFactory.Lose;
                 Instance.postUI.ResultOpponent.sprite = SpriteFactory.Win;
                 CoinVFX.CoinVfx(postUI.avatar2.transform, postUI.treasure.transform.position, postUI.treasure.transform.position);
@@ -713,12 +716,14 @@ public class CoreGame : SingletonMono<CoreGame>
         Instance.rematchChatB.transform.parent.gameObject.SetActive(true);
         Instance.rematchChatB.text = "I WANT TO PLAY AGAINNN";
         Instance.buttonRematch.GetComponentInChildren<TextMeshProUGUI>().text = "Ready";
+        Analytics.Log("rematch", new List<KeyValuePair<string, object>>());
     }
     void AcceptRematch(JSONNode data)
     {
         rematch = true;
         counterRematch = data["d"]["c"].AsFloat;
         SceneTransitionHelper.Reload();
+        Analytics.Log("rematch", new List<KeyValuePair<string, object>>());
     }
     #endregion
 }

@@ -47,6 +47,6 @@ public class WinPlayerCount : CardBase<WinCountInfo>
         userName?.SetText(info.UserName);
         //cup =  info.Cup;
         winCount?.SetText(info.WinCount.ToString());
-        reward?.SetSprite(SpriteFactory.ResourceIcons[(int)PConsumableType.BERI].sprites.GetClamp(info.Order));
+        reward?.SetSprite(SpriteFactory.ResourceIcons[(int)PConsumableType.BERRY].sprites.GetClamp(info.Order));
     }
 }

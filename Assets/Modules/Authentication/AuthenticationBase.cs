@@ -21,30 +21,30 @@ namespace Authentication
                 Debug.LogException(e);
             }
             auths = new Dictionary<SocialAuthType, ISocialAuth>();
-            for (int i = 0; i <= (int)SocialAuthType.Anonymous; i++)
+            for (int i = 0; i <= (int)SocialAuthType.Guest; i++)
             {
                 ISocialAuth auth = null;
                 switch ((SocialAuthType)i)
                 {
+#if UNITY_ANDROID || UNITY_IOS
                     case SocialAuthType.Google:
-#if UNITY_ANDROID || UNITY_IOS
                         auth = new LoginGoogle();
-#endif                  
                         break;
-                    case SocialAuthType.GooglePlay:
+#endif
 #if UNITY_ANDROID
-#endif
+                    case SocialAuthType.GooglePlay:
                         break;
-                    case SocialAuthType.Facebook:
+#endif
 #if UNITY_ANDROID || UNITY_IOS
-#endif
+                    case SocialAuthType.Facebook:
                         break;
-                    case SocialAuthType.Apple:
+#endif
 #if UNITY_IOS
+                    case SocialAuthType.Apple:
                         auth = new LoginApple();
-#endif
                         break;
-                    case SocialAuthType.Anonymous:
+#endif
+                    case SocialAuthType.Guest:
                         auth = new LoginGuest();
                         break;
                     default:

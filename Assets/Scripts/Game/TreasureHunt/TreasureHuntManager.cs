@@ -162,11 +162,11 @@ public class TreasureHuntManager : SingletonMono<TreasureHuntManager>
         if (delayShootCell || isInResetAnim || !cells.ContainsKey(new Vector2(x, y)) || cells[new Vector2(x, y)].IsShot)
             return;
 
-        if (PConsumableType.BERI.GetValue() < GameData.JoinTreasureRoom.ShotCost)
+        if (PConsumableType.BERRY.GetValue() < GameData.JoinTreasureRoom.ShotCost)
         {
             return;
         }
-        PConsumableType.BERI.AddValue(-GameData.JoinTreasureRoom.ShotCost);
+        PConsumableType.BERRY.AddValue(-GameData.JoinTreasureRoom.ShotCost);
         delayShootCellCoroutine = StartCoroutine(DelayShootCell(1));
         Debug.Log($"shooting cell {x} {y}");
         WSClientHandler.RequestShootTreasure(x, y);
@@ -234,7 +234,7 @@ public class TreasureHuntManager : SingletonMono<TreasureHuntManager>
     IEnumerator DelayAddBeri(int prizeAmount)
     {
         yield return new WaitForSeconds(2f);
-        PConsumableType.BERI.AddValue(prizeAmount);
+        PConsumableType.BERRY.AddValue(prizeAmount);
     }
 
     public void TestFx()

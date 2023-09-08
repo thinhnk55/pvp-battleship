@@ -11,7 +11,7 @@ namespace Authentication
         GooglePlay,
         Facebook,
         Apple,
-        Anonymous,
+        Guest,
     }
 
     public interface ISocialAuth

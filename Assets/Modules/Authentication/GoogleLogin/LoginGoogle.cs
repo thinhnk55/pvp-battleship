@@ -68,7 +68,6 @@ namespace Authentication
                 Debug.Log("Login google Done");
                 Debug.Log(task.Result.IdToken);
                 HTTPClientAuth.LoginGoogle(task.Result.IdToken);
-
             }
         }
 
@@ -86,7 +85,6 @@ namespace Authentication
             GoogleSignIn.Configuration = configuration;
             GoogleSignIn.Configuration.UseGameSignIn = true;
             GoogleSignIn.Configuration.RequestIdToken = false;
-
 
             GoogleSignIn.DefaultInstance.SignIn().ContinueWith(OnAuthenticationFinished);
         }

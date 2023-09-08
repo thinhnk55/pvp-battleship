@@ -1,6 +1,4 @@
-using Framework;
 using SimpleJSON;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
@@ -8,7 +6,8 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Purchasing;
 using UnityEngine.UI;
-namespace Framework {
+namespace Framework
+{
 
     public struct TransactionInfo
     {
@@ -47,31 +46,44 @@ namespace Framework {
                     }
                     break;
                 case TransactionType.usd:
-                    cost_type.Add(0);
-                    cost_value.Add(data["price"].AsFloat);
-                    product_type.Add((int)PConsumableType.GEM);
-                    product_value.Add(data["quantity"].AsInt);
+#if UNITY_ANDROID
+                    if (data["platform"].AsInt == 0 || data["platform"].AsInt == 1)
+                    {                    
+                        cost_type.Add(0);
+                        cost_value.Add(data["price"].AsFloat);
+                        product_type.Add((int)PConsumableType.GEM);
+                        product_value.Add(data["quantity"].AsInt);
+                    }
+#elif UNITY_IOS
+                    if (data["platform"].AsInt == 0 || data["platform"].AsInt == 2)
+                    {
+                        cost_type.Add(0);
+                        cost_value.Add(data["price"].AsFloat);
+                        product_type.Add((int)PConsumableType.GEM);
+                        product_value.Add(data["quantity"].AsInt);
+                    }
+#endif
                     break;
                 case TransactionType.diamond:
                     cost_type.Add((int)PConsumableType.GEM);
                     cost_value.Add(data["price"].AsInt);
-                    product_type.Add((int)PConsumableType.BERI);
+                    product_type.Add((int)PConsumableType.BERRY);
                     product_value.Add(data["quantity"].AsInt);
                     break;
                 case TransactionType.gold_avatar:
-                    cost_type.Add((int)PConsumableType.BERI);
+                    cost_type.Add((int)PConsumableType.BERRY);
                     cost_value.Add(data["price"].AsInt);
                     product_type.Add((int)PNonConsumableType.AVATAR);
                     product_value.Add(data["avatar"].AsInt);
                     break;
                 case TransactionType.gold_frame:
-                    cost_type.Add((int)PConsumableType.BERI);
+                    cost_type.Add((int)PConsumableType.BERRY);
                     cost_value.Add(data["price"].AsInt);
                     product_type.Add((int)PNonConsumableType.AVATAR_FRAME);
                     product_value.Add(data["avatar_frame"].AsInt);
                     break;
                 case TransactionType.gold_battlefield:
-                    cost_type.Add((int)PConsumableType.BERI);
+                    cost_type.Add((int)PConsumableType.BERRY);
                     cost_value.Add(data["price"].AsInt);
                     product_type.Add((int)PNonConsumableType.BATTLE_FIELD);
                     product_value.Add(data["battlefield"].AsInt);
@@ -112,7 +124,11 @@ namespace Framework {
             List<TransactionInfo> transactionInfos = new List<TransactionInfo>();
             for (int i = 0; i < data.Count; i++)
             {
-                transactionInfos.Add(TransactionInfo.FromJson(data[i], id, i));
+                var info = FromJson(data[i], id, transactionInfos.Count);
+                if (info.Cost.Length > 0)
+                {
+                    transactionInfos.Add(info);
+                }
             }
             return transactionInfos;
         }
@@ -193,7 +209,7 @@ namespace Framework {
             }
             for (int i = 0; i < productAmount.Length; i++)
             {
-                productAmount[i].text = info.Product[i].Value.ToString();
+                productAmount[i].text = ((long)info.Product[i].Value).ToString();
             }
             if (status)
             {
@@ -201,7 +217,7 @@ namespace Framework {
             }
             if (info.Cost[0].Value >= 0)
             {
-                if (info.Cost[0].Type >0)
+                if (info.Cost[0].Type > 0)
                 {
                     for (int i = 0; i < costIcon.Length; i++)
                     {
@@ -230,7 +246,7 @@ namespace Framework {
                 {
                     for (int i = 0; i < costAmount.Length; i++)
                     {
-                        if (info.Product.Length==1)
+                        if (info.Product.Length == 1)
                         {
                             costAmount[i].text = IAP.GetProductPriceFromStore(ApplicationConfig.BundleId + "." + ((PConsumableType)info.Product[0].Type).ToString().ToLower() + "." + info.Index);
                         }
@@ -244,11 +260,11 @@ namespace Framework {
                         DestroyImmediate(costIcon[i].gameObject);
                     }
                 }
-                
+
 
                 if (bonus)
                 {
-                    if (info.Bonus>0)
+                    if (info.Bonus > 0)
                     {
                         bonus.text = "Bonus " + info.Bonus.ToString() + "%";
                     }
@@ -264,7 +280,8 @@ namespace Framework {
                     {
                         Button.onClick.AddListener(() =>
                         {
-                            PopupHelper.CreateConfirm(PrefabFactory.PopupConfirm, "CONFIRM", "Do you want to buy this item?", productIcon[0].sprite ,(confirm) => {
+                            PopupHelper.CreateConfirm(PrefabFactory.PopupConfirm, "CONFIRM", "Do you want to buy this item?", productIcon[0].sprite, (confirm) =>
+                            {
                                 if (confirm)
                                 {
                                     TransactionAction(info.TransactionType, info)?.Invoke();
@@ -276,7 +293,7 @@ namespace Framework {
                     }
                     else
                     {
-                        if (info.Product.Length == 1 && info.TransactionType!= TransactionType.elite)
+                        if (info.Product.Length == 1 && info.TransactionType != TransactionType.elite)
                         {
                             Button.onClick.AddListener(() =>
                             {
@@ -316,9 +333,18 @@ namespace Framework {
                     DestroyImmediate(costIcon[i].gameObject);
                     costAmount[i].GetComponentInParent<LayoutCalibrator>().Calibrate();
                 }
-                otherIcon?.SetSprite(SpriteFactory.ResourceIcons[(int)PNonConsumableType.ELITE].sprites[0]);
                 otherIcon?.SetAlpha(1);
-                otherText?.SetText("RP");
+                if (info.Cost[0].Value == -1)
+                {
+                    otherIcon?.SetSprite(SpriteFactory.ResourceIcons[(int)PNonConsumableType.ELITE].sprites[0]);
+                    otherText?.SetText("RP");
+                }
+                else if (true)
+                {
+                    otherIcon?.SetSprite(SpriteFactory.ResourceIcons[(int)PNonConsumableType.ELITE].sprites[0]);
+                    otherText?.SetText("Starter");
+                }
+
             }
         }
 
@@ -338,12 +364,13 @@ namespace Framework {
             {
                 action = () =>
                 {
-                    RequestTransaction((int)Info.TransactionType, Info.Index, product.receipt.Replace("\\","").Replace("\"{","{").Replace("}\"", "}"));
+                    RequestTransaction((int)Info.TransactionType, Info.Index, product.receipt.Replace("\\", "").Replace("\"{", "{").Replace("}\"", "}"));
                 };
             }
             else
             {
-                action = () => {
+                action = () =>
+                {
                     if (Info.IsAffordble())
                     {
                         RequestTransaction((int)Info.TransactionType, Info.Index);
@@ -381,7 +408,7 @@ namespace Framework {
                 { "s", id.ToJson() },
                 { "p", index.ToJson() },
             };
-            if (data!=null)
+            if (data != null)
             {
                 jsonNode.Add("r", JSON.Parse(data));
             }
@@ -410,5 +437,5 @@ namespace Framework {
             return s;
         }
     }
-    
+
 }
