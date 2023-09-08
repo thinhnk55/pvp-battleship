@@ -5,10 +5,13 @@ namespace FirebaseIntegration
     public class CloudMessage : MonoBehaviour
     {
         // Start is called before the first frame update
-        void Start()
+        void Awake()
         {
-            Firebase.Messaging.FirebaseMessaging.TokenReceived += OnTokenReceived;
-            Firebase.Messaging.FirebaseMessaging.MessageReceived += OnMessageReceived;
+            FirebaseInitialization.OnInitialized += () =>
+            {
+                Firebase.Messaging.FirebaseMessaging.TokenReceived += OnTokenReceived;
+                Firebase.Messaging.FirebaseMessaging.MessageReceived += OnMessageReceived;
+            };
         }
 
         public void OnTokenReceived(object sender, Firebase.Messaging.TokenReceivedEventArgs token)
@@ -18,7 +21,8 @@ namespace FirebaseIntegration
 
         public void OnMessageReceived(object sender, Firebase.Messaging.MessageReceivedEventArgs e)
         {
-            UnityEngine.Debug.Log("Received a new message from: " + e.Message.From);
+            UnityEngine.Debug.Log("From: " + e.Message.From);
+            UnityEngine.Debug.Log("Message ID: " + e.Message.MessageId);
         }
     }
 }
