@@ -1,5 +1,5 @@
 using Framework;
-using Lean.Common.Editor;
+//using Lean.Common.Editor;
 using SimpleJSON;
 using System.Collections;
 using System.Collections.Generic;
@@ -50,10 +50,7 @@ public class ButtonOpenRetreatPVEPopup : ButtonBase
 
     public void EndGameTreasure(JSONNode data)
     {
-        int currentBeri = int.Parse(data["d"]["g"]);
-        int rewardBeri = int.Parse(data["d"]["e"]);
-
-        StartCoroutine(GetBeri(currentBeri+rewardBeri));
+        StartCoroutine(GetBeri(int.Parse(data["d"]["g"])));
         PVEData.TypeBoard = int.Parse(data["d"]["d"]["t"]);
     }
 

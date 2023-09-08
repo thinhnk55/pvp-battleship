@@ -4,8 +4,9 @@ using UnityEngine;
 using Framework;
 public struct PVEBetInfo
 {
+    public bool IsQualified;
+    public int id;
     public int cost;
-    //public string name;
     public Callback onclick;
 }
 public class PVEBetCollection : CardCollectionBase<PVEBetInfo> 
@@ -20,19 +21,33 @@ public class PVEBetCollection : CardCollectionBase<PVEBetInfo>
         for (int i = 0; i < PVEData.Bets.Count; i++)
         {
             int _i = i;
+            bool isQualified = PConsumableType.BERI.GetValue() < PVEData.Bets[i] ? false : true;
             list.Add(new PVEBetInfo()
             {
-                cost = PVEData.Bets[_i],
-                //name = GameConfig.BetPVENames[_i],
+                id = _i,
+                IsQualified = isQualified,
+                cost = PVEData.Bets[i],
                 onclick = () =>
                 {
-                    if (PConsumableType.BERI.GetValue()>= PVEData.Bets[_i])
+                    if (isQualified)
                     {
                         PVEData.TypeBoard = _i;
                         SceneTransitionHelper.Load(ESceneName.PVE);
-                    }  
+                        PConsumableType.BERI.AddValue(-PVEData.Bets[_i]);
+                    }
+                    else
+                    {
+                        PopupHelper.CreateConfirm(PrefabFactory.PopupOutOfResource, "Message", "Not enough money", null, (ok) =>
+                        {
+                            if (ok)
+                            {
+                                PopupBehaviour.CloseAll();
+                                PopupHelper.Create(PrefabFactory.PopupShop).GetComponentInChildren<Tabs>().Activate(1);
+                            }
+                        });
+                    }
                 }
-            });
+            });; 
         }
 
         BuildUIs(list);

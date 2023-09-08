@@ -3,11 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PVEBetCard : CardBase<PVEBetInfo>
 {
     RectTransform rectTransform;
     RectTransform contentTransform;
+    [SerializeField] Image BG;
+    [SerializeField] Image lockImgae;
     [SerializeField] TextMeshProUGUI nameCard;
     [SerializeField] TextMeshProUGUI cost;
     protected override void OnClicked(PVEBetInfo info)
@@ -23,7 +26,18 @@ public class PVEBetCard : CardBase<PVEBetInfo>
             Debug.Log("Onclick");
             info.onclick?.Invoke();
         });
-        //nameCard.SetText(info.name);
+
+        if (info.IsQualified)
+        {
+            lockImgae.SetAlpha(0);
+        }
+        else
+        {
+            lockImgae.SetAlpha(1);  
+        }
+
+        BG.sprite = SpriteFactory.BetsPVE.GetLoop(info.id);
+        nameCard.SetText(GameConfig.BetPVENames[info.id]);
         cost?.SetText(info.cost.ToString());
     }
 

@@ -2,7 +2,7 @@ using DG.Tweening;
 using Framework;
 using Monetization;
 using SimpleJSON;
-using Sirenix.OdinInspector.Editor;
+//using Sirenix.OdinInspector.Editor;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -20,7 +20,6 @@ public class PVE : SingletonMono<PVE>
     [SerializeField] Transform enemyRoot;
     [SerializeField] GameObject Retreat;
     public int selectedEnemy;
-    [SerializeField] GameObject targetImage; // huong dan nguoi choi nhap vao tau dich de ban, chi xuat hien turn dau
     [SerializeField] TMP_InputField input;
 
     protected override void Awake()
@@ -39,7 +38,6 @@ public class PVE : SingletonMono<PVE>
         ServerMessenger.AddListener<JSONNode>(ServerResponse._FIRE_TREASURE, Attack);
         ServerMessenger.AddListener<JSONNode>(ServerResponse._DATA_TREASURE, GetData);
         ServerMessenger.AddListener<JSONNode>(ServerResponse._NEWGAME_TREASURE, NewGameTreasure);
-        StartCoroutine(InitTurn());
     }
     protected override void OnDestroy()
     {
@@ -67,6 +65,7 @@ public class PVE : SingletonMono<PVE>
         player.point.Data = int.Parse(data["d"]["p"]);
         PVEData.IsDeadPlayer.Data = int.Parse(data["d"]["d"]) == 1 ? true : false;
         IsRevived = int.Parse(data["d"]["r"]) == 1 ? true : false;
+        StartCoroutine(InitTurn());
     }
 
 
@@ -81,7 +80,7 @@ public class PVE : SingletonMono<PVE>
 
     private void NewGameTreasure(JSONNode data)
     {
-        if (int.Parse(data["e"]) != 0)
+        if (int.Parse(data["e"]) != 0) // old game
         {
             GetData();
             return;
@@ -92,6 +91,7 @@ public class PVE : SingletonMono<PVE>
         player.point.Data = int.Parse(data["d"]["p"]);
         PVEData.IsDeadPlayer.Data = int.Parse(data["d"]["d"]) == 1 ? true : false;
         IsRevived = int.Parse(data["d"]["r"]) == 1 ? true : false;
+                StartCoroutine(InitTurn());
     }
 
     public void Attack()
@@ -106,6 +106,8 @@ public class PVE : SingletonMono<PVE>
     {
         int shipListCount = data["d"]["s"].Count;
         Retreat.SetActive(false);
+
+
         for (int i = 0; i < shipListCount; i++)
         {
             shipPVEs[i].point.Data = int.Parse(data["d"]["s"][i]);
@@ -124,7 +126,6 @@ public class PVE : SingletonMono<PVE>
                 Instance.shipPVEs[selectedEnemy].point.Data = shipPVEs[shipListCount-1].point.Data;
                 shipPVEs[shipListCount - 1].point.Data = tmp;
             }
-            
         }
 
         PVEData.IsDeadPlayer.Data = int.Parse(data["d"]["d"]["d"]) == 1 ? true : false;
@@ -148,14 +149,10 @@ public class PVE : SingletonMono<PVE>
         for (int i = 0; i < 3; i++)
         {
             int _i = i;
-            Instance.shipPVEs[_i].transform.DOScale(0, 0.8f).OnComplete(() =>
+            Instance.shipPVEs[_i].transform.DOScale(0, 0.5f).OnComplete(() =>
             {
                 DestroyImmediate(Instance.shipPVEs[_i].gameObject);
             });
-/*            Instance.shipPVEs[_i].transform(0, 0.8f).OnComplete(() =>
-            {
-                DestroyImmediate(Instance.shipPVEs[_i].gameObject);
-            });*/
         }
     }
 
@@ -181,7 +178,6 @@ public class PVE : SingletonMono<PVE>
         yield return new WaitForSeconds(0.5f);
         yield return StartCoroutine(Instance.shipPVEs[selectedEnemy].BeingDestroyed());
         player.point.Data = point;
-        yield return new WaitForSeconds(0.8f);
 
         DestroyEnemyShip();
 
@@ -215,7 +211,14 @@ public class PVE : SingletonMono<PVE>
         {
             if(confirm)
             {
-                AdsManager.ShowRewardAds(null, AdsData.adsUnitIdMap[RewardType.Get_X2DailyGift]);
+                if(IsRevived)
+                {
+                    SceneTransitionHelper.Load(ESceneName.Home);
+                }
+                else
+                {
+                    AdsManager.ShowRewardAds(null, AdsData.adsUnitIdMap[RewardType.Get_X2DailyGift]);
+                }
             }
             else
             {
@@ -224,17 +227,16 @@ public class PVE : SingletonMono<PVE>
         });
     }
 
-
     IEnumerator InitTurn()
     {
-        Retreat.SetActive(true);
+        if(CurrentStep.Data > 3)
+        {
+            Retreat.SetActive(true);
+        }
+
         int prefabIndex = 0;
         if (CurrentStep.Data < 4)
         {
-            if (CurrentStep.Data == 1)
-            {
-
-            }
             prefabIndex = 0;
         }
         else if (CurrentStep.Data < 7)
@@ -258,7 +260,13 @@ public class PVE : SingletonMono<PVE>
             ship1.HidePoint();
             ship1.index = i;
             ship1.leanSelectable.enabled = false;
-            ship1.transform.DOLocalMove(new Vector3(2, 1.9f - 2 * i, 0), duration);
+            ship1.transform.DOLocalMove(new Vector3(2, 1.9f - 2 * i, 0), duration).OnComplete(() =>
+            {
+                if(CurrentStep.Data == 0)
+                {
+                    ship1.ScaleTargetImage();
+                }   
+            });
             shipPVEs.Add(ship1);
         }
         yield return new WaitForSeconds(duration);
@@ -272,7 +280,10 @@ public class PVE : SingletonMono<PVE>
     {
         if(o == true)
         {
-            Retreat.SetActive(true);
+            if(CurrentStep.Data > 3) 
+            {
+                Retreat.SetActive(true);
+            }
             HideEnemyPoint();
             SetDisableLeanSelectableShipEnemy(true);
         }
