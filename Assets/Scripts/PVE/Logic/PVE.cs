@@ -25,7 +25,6 @@ public class PVE : SingletonMono<PVE>
         base.Awake();
         CurrentStep.Data = -1;
         CurrentStep.OnDataChanged += stagesView.OnStageChange;
-        PVEData.IsDeadPlayer.OnDataChanged += PlayerRevival;
     }
 
     private void Start()
@@ -64,6 +63,7 @@ public class PVE : SingletonMono<PVE>
         PVEData.IsDeadPlayer.Data = int.Parse(data["d"]["d"]) == 1 ? true : false;
         IsRevived = int.Parse(data["d"]["r"]) == 1 ? true : false;
         StartCoroutine(InitTurn());
+        PVEData.IsDeadPlayer.OnDataChanged += PlayerRevival;
     }
 
 
@@ -89,7 +89,8 @@ public class PVE : SingletonMono<PVE>
         player.point.Data = int.Parse(data["d"]["p"]);
         PVEData.IsDeadPlayer.Data = int.Parse(data["d"]["d"]) == 1 ? true : false;
         IsRevived = int.Parse(data["d"]["r"]) == 1 ? true : false;
-                StartCoroutine(InitTurn());
+        StartCoroutine(InitTurn());
+        PVEData.IsDeadPlayer.OnDataChanged += PlayerRevival;
     }
 
     public void Attack()

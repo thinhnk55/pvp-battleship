@@ -64,7 +64,7 @@ public class ShipPVE : MonoBehaviour
         yield return new WaitForSeconds(1);
         destroyedVFX.Play();
         yield return new WaitForSeconds(2f);
-        if(index != -1)  // Khong phai tau player
+        if (index != -1)  // Khong phai tau player
         {
             Destroy(destroyedVFX.gameObject);
         }

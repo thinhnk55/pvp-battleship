@@ -116,7 +116,7 @@ public class Gift : CacheMonoBehaviour
     {
         int giftAmount = int.Parse(data["d"]["x"]["g"]);
         int mulGif = int.Parse(data["d"]["x"]["i"]);
-        PConsumableType.BERI.SetValue(giftAmount * mulGif);
+        PConsumableType.BERRY.SetValue(giftAmount * mulGif);
         CoinVFX.CoinVfx(resource, Position, Position);
         obtain.onClick.RemoveAllListeners();
         Timer<Gift>.Instance.BeginPoint = DateTime.UtcNow.Ticks;

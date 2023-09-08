@@ -21,7 +21,7 @@ public class PVEBetCollection : CardCollectionBase<PVEBetInfo>
         for (int i = 0; i < PVEData.Bets.Count; i++)
         {
             int _i = i;
-            bool isQualified = PConsumableType.BERI.GetValue() < PVEData.Bets[i] ? false : true;
+            bool isQualified = PConsumableType.BERRY.GetValue() < PVEData.Bets[i] ? false : true;
             list.Add(new PVEBetInfo()
             {
                 id = _i,
@@ -33,7 +33,7 @@ public class PVEBetCollection : CardCollectionBase<PVEBetInfo>
                     {
                         PVEData.TypeBoard = _i;
                         SceneTransitionHelper.Load(ESceneName.PVE);
-                        PConsumableType.BERI.AddValue(-PVEData.Bets[_i]);
+                        PConsumableType.BERRY.AddValue(-PVEData.Bets[_i]);
                     }
                     else
                     {
