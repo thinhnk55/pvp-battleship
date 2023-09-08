@@ -34,7 +34,7 @@ namespace Framework
                 {
                     BG?.SetSprite(SpriteFactory.RoyalPassGem);
                 }
-                else if (info.Type == (int)PConsumableType.BERI)
+                else if (info.Type == (int)PConsumableType.BERRY)
                 {
                     BG?.SetSprite(SpriteFactory.RoyalPassBeri);
                 }

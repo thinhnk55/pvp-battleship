@@ -2,13 +2,10 @@ using DG.Tweening;
 using Framework;
 using Monetization;
 using SimpleJSON;
-using Sirenix.OdinInspector.Editor;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Rendering.UI;
 
 public class PVE : SingletonMono<PVE>
 {
@@ -111,20 +108,20 @@ public class PVE : SingletonMono<PVE>
             shipPVEs[i].point.Data = int.Parse(data["d"]["s"][i]);
         }
 
-        if (Instance.shipPVEs[selectedEnemy].point.Data != int.Parse(data["d"]["d"]["p"]) - player.point.Data) 
+        if (Instance.shipPVEs[selectedEnemy].point.Data != int.Parse(data["d"]["d"]["p"]) - player.point.Data)
         {
             int tmp = Instance.shipPVEs[selectedEnemy].point.Data;
-            if(int.Parse(data["d"]["w"]) == 1) // Win
+            if (int.Parse(data["d"]["w"]) == 1) // Win
             {
                 Instance.shipPVEs[selectedEnemy].point.Data = shipPVEs[0].point.Data;
                 shipPVEs[0].point.Data = tmp;
             }
             else
             {
-                Instance.shipPVEs[selectedEnemy].point.Data = shipPVEs[shipListCount-1].point.Data;
+                Instance.shipPVEs[selectedEnemy].point.Data = shipPVEs[shipListCount - 1].point.Data;
                 shipPVEs[shipListCount - 1].point.Data = tmp;
             }
-            
+
         }
 
         PVEData.IsDeadPlayer.Data = int.Parse(data["d"]["d"]["d"]) == 1 ? true : false;
@@ -152,10 +149,10 @@ public class PVE : SingletonMono<PVE>
             {
                 DestroyImmediate(Instance.shipPVEs[_i].gameObject);
             });
-/*            Instance.shipPVEs[_i].transform(0, 0.8f).OnComplete(() =>
-            {
-                DestroyImmediate(Instance.shipPVEs[_i].gameObject);
-            });*/
+            /*            Instance.shipPVEs[_i].transform(0, 0.8f).OnComplete(() =>
+                        {
+                            DestroyImmediate(Instance.shipPVEs[_i].gameObject);
+                        });*/
         }
     }
 
@@ -213,7 +210,7 @@ public class PVE : SingletonMono<PVE>
 
         PopupHelper.CreateConfirm(PrefabFactory.PopupLossPVE, null, null, null, (confirm) =>
         {
-            if(confirm)
+            if (confirm)
             {
                 AdsManager.ShowRewardAds(null, AdsData.adsUnitIdMap[RewardType.Get_X2DailyGift]);
             }
@@ -270,7 +267,7 @@ public class PVE : SingletonMono<PVE>
 
     private void PlayerRevival(bool o, bool n)
     {
-        if(o == true)
+        if (o == true)
         {
             Retreat.SetActive(true);
             HideEnemyPoint();

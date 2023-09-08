@@ -10,7 +10,7 @@
     public enum PConsumableType
     {
         GEM = 1,
-        BERI = 2,
+        BERRY = 2,
     }
     [System.Serializable]
     public enum PNonConsumableType

@@ -10,7 +10,7 @@ namespace Authentication
     {
         public const long TOKEN_EXPIRED_TIME = 1 * 24 * 60 * 60 * 1000;
         public const string SECRET_KEY = "WeDonate10000$HzieKL";
-        public string GenerateToken(string deviceId)
+        private string GenerateTokenDeviceId(string deviceId)
         {
             long expiredTime = (DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() + TOKEN_EXPIRED_TIME) / 1000;
             JSONNode data = new JSONClass()
@@ -49,7 +49,7 @@ namespace Authentication
         public void SignIn()
         {
             Debug.Log("Login By Guest");
-            HTTPClientAuth.LoginByGuest(GenerateToken(SystemInfo.deviceUniqueIdentifier));
+            HTTPClientAuth.LoginByGuest(GenerateTokenDeviceId(SystemInfo.deviceUniqueIdentifier));
         }
 
         public void SignOut()

@@ -26,7 +26,7 @@ public class PVEBetCollection : CardCollectionBase<PVEBetInfo>
                 //name = GameConfig.BetPVENames[_i],
                 onclick = () =>
                 {
-                    if (PConsumableType.BERI.GetValue()>= PVEData.Bets[_i])
+                    if (PConsumableType.BERRY.GetValue()>= PVEData.Bets[_i])
                     {
                         PVEData.TypeBoard = _i;
                         SceneTransitionHelper.Load(ESceneName.PVE);

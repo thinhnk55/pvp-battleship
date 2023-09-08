@@ -74,7 +74,7 @@ public class RoyalPassCard : CardBase<RoyalPassInfo>
                         Icon.sprite = SpriteFactory.ResourceIcons[info.Reward[0].Type].sprites[Mathf.Clamp(((int)info.Reward[0].Value) / 200, 1, SpriteFactory.ResourceIcons[info.Reward[0].Type].sprites.Length - 2)];
                         Container?.SetSprite(SpriteFactory.RoyalPassGem);
                     }
-                    else if (info.Reward[0].Type == (int)PConsumableType.BERI)
+                    else if (info.Reward[0].Type == (int)PConsumableType.BERRY)
                     {
                         Icon.sprite = SpriteFactory.ResourceIcons[info.Reward[0].Type].sprites[Mathf.Clamp(((int)info.Reward[0].Value) / 200, 1, SpriteFactory.ResourceIcons[info.Reward[0].Type].sprites.Length - 2)];
                         Container?.SetSprite(SpriteFactory.RoyalPassBeri);

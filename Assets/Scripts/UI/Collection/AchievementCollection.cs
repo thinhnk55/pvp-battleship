@@ -1,11 +1,8 @@
 using Framework;
 using SimpleJSON;
-using Sirenix.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
-using UnityEditor;
 using UnityEngine;
 
 public class AchievementCollection : CardCollectionBase<AchievementInfo>
@@ -22,7 +19,7 @@ public class AchievementCollection : CardCollectionBase<AchievementInfo>
         if (!isSelection)
             OnSelectedCard += (oldCard, newCard) =>
             {
-                if(oldCard && ((AchievementCard)oldCard).BG)
+                if (oldCard && ((AchievementCard)oldCard).BG)
                     ((AchievementCard)oldCard).BG.sprite = SpriteFactory.UnselectedAchievementBG;
                 if (((AchievementCard)newCard).BG)
                     ((AchievementCard)newCard).BG.sprite = SpriteFactory.SelectedAchievementBG;
@@ -37,7 +34,7 @@ public class AchievementCollection : CardCollectionBase<AchievementInfo>
             AchievementInfo info = list[i];
             if (isSelection)
             {
-                if (!GameData.Player.AchievementSelected.Any((select) => select!=-1 && select == info.Id))
+                if (!GameData.Player.AchievementSelected.Any((select) => select != -1 && select == info.Id))
                 {
                     info.onClick = () =>
                     {
@@ -101,7 +98,7 @@ public class AchievementCollection : CardCollectionBase<AchievementInfo>
 
     void RecieveObtainAchievemnt(JSONNode json)
     {
-        if (json["e"].AsInt ==0)
+        if (json["e"].AsInt == 0)
         {
             CoinVFX.CoinVfx(resource.transform, previewCard.Button.transform.position, previewCard.Button.transform.position);
             AchievementInfo info = GameData.AchievementConfig[(AchievementType)int.Parse(json["d"]["a"])];
@@ -113,10 +110,11 @@ public class AchievementCollection : CardCollectionBase<AchievementInfo>
                 {
                     SetCardPreview(info);
                 };
-            cards.Find((card)=> card.Info.Id == info.Id).BuildUI(info);
-            PConsumableType.BERI.SetValue(json["d"]["g"].AsInt);
+            cards.Find((card) => card.Info.Id == info.Id).BuildUI(info);
+            PConsumableType.BERRY.SetValue(json["d"]["g"].AsInt);
             SetCardPreview(info);
             ConditionalMono.conditionalEvents[typeof(AchievementReminder)].ForEach((con) => con.UpdateObject());
+            FirebaseIntegration.AnalyticsHelper.UnlockAchievement(info.Id, info.Obtained);
         }
 
     }
