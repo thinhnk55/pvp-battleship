@@ -518,10 +518,6 @@ public class WSClientHandler : Singleton<WSClientHandler>
         }.RequestServer();
     }
     #endregion
-    #region New
-
-    #endregion
-
     #endregion
     #region CoreGame
     public static void SearchOpponent(int bet, List<Ship> ships)

@@ -2,9 +2,6 @@ using Framework;
 using Monetization;
 using SimpleJSON;
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Threading;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -74,7 +71,7 @@ public class Gift : CacheMonoBehaviour
 
     private void CreateConfirmReceiveGiftPopup()
     {
-        PopupHelper.CreateConfirm(PrefabFactory.PopupReceiveGift, null, "+" +GameData.GiftConfig[GameData.ProgressGift].ToString(), null, (confirm) =>
+        PopupHelper.CreateConfirm(PrefabFactory.PopupReceiveGift, null, "+" + GameData.GiftConfig[GameData.ProgressGift].ToString(), null, (confirm) =>
         {
             if (confirm)
             {
@@ -98,7 +95,7 @@ public class Gift : CacheMonoBehaviour
         obtain.onClick.RemoveAllListeners();
         Timer<Gift>.Instance.BeginPoint = DateTime.UtcNow.Ticks;
         GameData.ProgressGift++;
-        if (GameData.ProgressGift==5)
+        if (GameData.ProgressGift == 5)
         {
             smallGiftBar.SetActive(false);
             bigGiftBar.SetActive(true);
@@ -114,9 +111,7 @@ public class Gift : CacheMonoBehaviour
 
     void GetAdsGift(JSONNode data)
     {
-        int giftAmount = int.Parse(data["d"]["x"]["g"]);
-        int mulGif = int.Parse(data["d"]["x"]["i"]);
-        PConsumableType.BERRY.SetValue(giftAmount * mulGif);
+        PConsumableType.BERRY.SetValue(int.Parse(data["d"]["x"]["g"]));
         CoinVFX.CoinVfx(resource, Position, Position);
         obtain.onClick.RemoveAllListeners();
         Timer<Gift>.Instance.BeginPoint = DateTime.UtcNow.Ticks;

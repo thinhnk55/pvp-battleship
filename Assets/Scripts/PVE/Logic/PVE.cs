@@ -133,12 +133,10 @@ public class PVE : SingletonMono<PVE>
 
         if (int.Parse(data["d"]["w"]) == 1) // Win
         {
-            Debug.Log("Win");
             StartCoroutine(Instance.Win(int.Parse(data["d"]["d"]["p"])));
         }
         else // Lose
         {
-            Debug.Log("Lose");
             StartCoroutine(Lose());
         }
     }
@@ -153,10 +151,6 @@ public class PVE : SingletonMono<PVE>
             {
                 DestroyImmediate(Instance.shipPVEs[_i].gameObject);
             });
-            /*            Instance.shipPVEs[_i].transform(0, 0.8f).OnComplete(() =>
-                        {
-                            DestroyImmediate(Instance.shipPVEs[_i].gameObject);
-                        });*/
         }
     }
 
@@ -215,7 +209,7 @@ public class PVE : SingletonMono<PVE>
         {
             if (confirm)
             {
-                if(IsRevived)
+                if (IsRevived)
                 {
                     SceneTransitionHelper.Load(ESceneName.Home);
                 }
@@ -233,28 +227,13 @@ public class PVE : SingletonMono<PVE>
 
     IEnumerator InitTurn()
     {
-        if(CurrentStep.Data > 3)
+        if (CurrentStep.Data > 3)
         {
             Retreat.SetActive(true);
         }
 
-        int prefabIndex = 0;
-        if (CurrentStep.Data < 4)
-        {
-            prefabIndex = 0;
-        }
-        else if (CurrentStep.Data < 7)
-        {
-            prefabIndex = 1;
-        }
-        else if (CurrentStep.Data < 9)
-        {
-            prefabIndex = 2;
-        }
-        else if (CurrentStep.Data < 100)
-        {
-            prefabIndex = 3;
-        }
+        int prefabIndex = GetIndexShipEnemyCurrentTurn();
+
         float duration = 1f;
         shipPVEs.Clear();
         for (int i = 0; i < 3; i++)
@@ -266,10 +245,10 @@ public class PVE : SingletonMono<PVE>
             ship1.leanSelectable.enabled = false;
             ship1.transform.DOLocalMove(new Vector3(2, 1.9f - 2 * i, 0), duration).OnComplete(() =>
             {
-                if(CurrentStep.Data == 0)
+                if (CurrentStep.Data == 0)
                 {
                     ship1.ScaleTargetImage();
-                }   
+                }
             });
             shipPVEs.Add(ship1);
         }
@@ -284,13 +263,31 @@ public class PVE : SingletonMono<PVE>
     {
         if (o == true)
         {
-            if(CurrentStep.Data > 3) 
+            if (CurrentStep.Data > 3)
             {
                 Retreat.SetActive(true);
             }
             HideEnemyPoint();
             SetDisableLeanSelectableShipEnemy(true);
         }
+    }
+
+    public int GetIndexShipEnemyCurrentTurn()
+    {
+        if (CurrentStep.Data < 4)
+        {
+            return 0;
+        }
+        if (CurrentStep.Data < 7)
+        {
+            return 1;
+        }
+        if (CurrentStep.Data < 9)
+        {
+            return 2;
+        }
+
+        return 3;
     }
 
     public void SetDisableLeanSelectableShipEnemy(bool disable)
