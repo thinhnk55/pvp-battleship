@@ -1,7 +1,5 @@
 using Framework;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using Server;
 
 public class ButtonLogout : ButtonBase
 {

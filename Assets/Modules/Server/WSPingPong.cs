@@ -1,9 +1,10 @@
+using Framework;
 using UnityEngine;
 
 /// <summary>
 /// This class maintain websocket connection and keep track lost internet connection status
 /// </summary>
-namespace Framework
+namespace Server
 {
     public class WSPingPong : SingletonMono<WSPingPong>
     {

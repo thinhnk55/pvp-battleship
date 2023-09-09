@@ -1,10 +1,8 @@
 using Framework;
 using Monetization;
+using Server;
 using SimpleJSON;
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 public class QuestCollection : CardCollectionBase<QuestInfo>
 {
@@ -30,7 +28,7 @@ public class QuestCollection : CardCollectionBase<QuestInfo>
         for (int i = 0; i < GameData.RoyalPass.CurrentQuests.Data.Length; i++)
         {
             int _i = i;
-            if (GameData.RoyalPass.CurrentQuests.Data[i]>-1)
+            if (GameData.RoyalPass.CurrentQuests.Data[i] > -1)
             {
                 infos.Add(new QuestInfo()
                 {
@@ -54,7 +52,7 @@ public class QuestCollection : CardCollectionBase<QuestInfo>
                 });
             }
         }
-        if (infos.Count<3)
+        if (infos.Count < 3)
         {
             infos.Add(new QuestInfo()
             {
