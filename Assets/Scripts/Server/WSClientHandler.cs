@@ -103,8 +103,8 @@ public class WSClientHandler : Singleton<WSClientHandler>
     }
     public static void GetData(JSONNode data)
     {
-        Firebase.Crashlytics.Crashlytics.SetUserId(DataAuth.AuthData.userId.ToString());
-        FirebaseIntegration.AnalyticsHelper.Login();
+        //Firebase.Crashlytics.Crashlytics.SetUserId(DataAuth.AuthData.userId.ToString());
+        //FirebaseIntegration.AnalyticsHelper.Login();
         AdsManager.SetUserId(DataAuth.AuthData.userId.ToString());
         GetConfig();
         GetConfigShop();
@@ -377,7 +377,7 @@ public class WSClientHandler : Singleton<WSClientHandler>
         string ads_unit_id = data["d"]["a"];
         if (String.Equals(ads_unit_id, AdsData.adsUnitIdMap[RewardType.Get_Beri]))
         {
-            PConsumableType.BERRY.AddValue(int.Parse(data["d"]["g"]));
+            PConsumableType.BERRY.SetValue(int.Parse(data["d"]["g"]));
         }
         else if (String.Equals(ads_unit_id, AdsData.adsUnitIdMap[RewardType.Get_Rocket]))
         {
