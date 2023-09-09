@@ -1,16 +1,13 @@
 using Authentication;
 using Framework;
 using Monetization;
+using Server;
 using SimpleJSON;
 using Sirenix.Utilities;
 using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
-using UnityEngine.UIElements;
 
 public class WSClientHandler : Singleton<WSClientHandler>
 {
@@ -131,7 +128,7 @@ public class WSClientHandler : Singleton<WSClientHandler>
         GameData.RocketCount.Data = data["d"]["a"]["l"]["r"].AsInt;
         GameData.Player = ProfileData.FromJson(GameData.Player, data);
         RoyalPass.DataFromJson(GameData.RoyalPass, data["d"]["a"]["r"]);
-        
+
         Timer<LuckyShot>.Instance.BeginPoint = data["d"]["a"]["l"]["t"].AsLong.NowFrom0001From1970();
         Timer<LuckyShot>.Instance.TriggerInterval_Sec = GameData.LuckyShotCoolDown;
         Timer<Gift>.Instance.TriggerInterval_Sec = GameData.GiftCoolDown;
@@ -219,7 +216,8 @@ public class WSClientHandler : Singleton<WSClientHandler>
         try
         {
             GameData.Bets = BetData.ListFromJson(data["d"]["match"]["classic"]);
-        }catch(Exception e)
+        }
+        catch (Exception e)
         {
             Debug.Log(e.ToString());
         }
@@ -292,7 +290,8 @@ public class WSClientHandler : Singleton<WSClientHandler>
         {
             GameData.AchievementConfig.Add((AchievementType)i, AchievementInfo.FromJson(data["d"]["achievements"][i], i));
             int _i = i;
-            ((StatisticType)_i).AddListenerOnProgress((oValue, nValue) => {
+            ((StatisticType)_i).AddListenerOnProgress((oValue, nValue) =>
+            {
                 int oProgress = GameData.Player.AchievementProgress[_i];
                 GameData.Player.AchievementProgress[_i] += (nValue - oValue);
                 AchievementType type = (AchievementType)_i;
@@ -305,13 +304,13 @@ public class WSClientHandler : Singleton<WSClientHandler>
                     }
                 }
                 if (nextMilestone < GameData.AchievementConfig[type].AchivementUnits.Length &&
-                GameData.Player.AchievementProgress[_i] >= GameData.AchievementConfig[type].AchivementUnits[nextMilestone].Task 
-                && oProgress < GameData.AchievementConfig[type].AchivementUnits[nextMilestone].Task )
+                GameData.Player.AchievementProgress[_i] >= GameData.AchievementConfig[type].AchivementUnits[nextMilestone].Task
+                && oProgress < GameData.AchievementConfig[type].AchivementUnits[nextMilestone].Task)
                 {
-                    PopupHelper.CreateMessage(PrefabFactory.PospupQuestCompleted, null ,AchievementInfo.GetDescription(type, GameData.AchievementConfig[type].AchivementUnits[nextMilestone].Task), null);
+                    PopupHelper.CreateMessage(PrefabFactory.PospupQuestCompleted, null, AchievementInfo.GetDescription(type, GameData.AchievementConfig[type].AchivementUnits[nextMilestone].Task), null);
                     ConditionalMono.UpdateObject(typeof(AchievementReminder));
                 }
-            });         
+            });
         }
     }
     public static void RequestObtainAchievemnt(int id)
@@ -445,7 +444,7 @@ public class WSClientHandler : Singleton<WSClientHandler>
     public static void ReceiveTreasureConfig(JSONNode data)
     {
         GameData.TreasureConfigs.Clear();
-        for(int i=0; i<data["list"].Count; i++)
+        for (int i = 0; i < data["list"].Count; i++)
         {
             TreasureConfig treasureConfig = new TreasureConfig()
             {
@@ -669,7 +668,7 @@ public class WSClientHandler : Singleton<WSClientHandler>
             {
                 goods[i].Type.Transact((int)goods[i].Value);
             }
-            if (goods.Count>0)
+            if (goods.Count > 0)
             {
                 if (PNonConsumableType.ELITE.GetValue().Contains(0))
                 {

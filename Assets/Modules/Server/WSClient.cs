@@ -1,11 +1,11 @@
 using Framework;
 using SimpleJSON;
 using System;
-using UnityEditor.Rendering;
 using UnityEngine;
 using WebSocketSharp;
 
-namespace Framework {
+namespace Server
+{
     public class WSClient : Singleton<WSClient>
     {
         public event Callback OnConnect;
@@ -20,7 +20,7 @@ namespace Framework {
         {
             ServerMessenger.AddListener<JSONNode>(ServerResponse.CheckLoginConnection, CheckLoginConnection);
             Messenger.AddListener(GameEvent.LostConnection, OnLostConnection);
-            ws = new WebSocket(ServerConfig.WebSocketURL + "?id="+ userId + "&token=" + token);
+            ws = new WebSocket(ServerConfig.WebSocketURL + "?id=" + userId + "&token=" + token);
             //ws = new WebSocket(ServerConfig.WebSocketURL + "?id="+ 12 + "&token=" + "7lnyeclvtjlk49en9b63dsx8e6q5tqyi");
             ws.OnOpen += OnOpen;
             ws.OnMessage += OnMessage;
@@ -51,7 +51,7 @@ namespace Framework {
         {
             ws.Send("{\"id\":2}");
         }
-       
+
         public void Send(JSONNode json)
         {
             try

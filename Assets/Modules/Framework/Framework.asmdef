@@ -1,6 +1,6 @@
 {
     "name": "Framework",
-    "rootNamespace": "",
+    "rootNamespace": "Framework",
     "references": [
         "GUID:6055be8ebefd69e48b49212b09b47b2f",
         "GUID:72d1fea872bd7a449bf3818f2b0a6708",

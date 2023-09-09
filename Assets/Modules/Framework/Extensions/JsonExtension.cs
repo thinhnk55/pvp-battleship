@@ -1,9 +1,7 @@
 using Framework;
 using SimpleJSON;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public static class JsonExtension
@@ -51,11 +49,6 @@ public static class JsonExtension
         return arr;
     }
 
-
-    public static void RequestServer(this JSONNode json)
-    {
-        WSClient.Instance.Send(json);
-    }
     public static T ToEnum<T>(this JSONNode json) where T : Enum
     {
         return (T)Enum.ToObject(typeof(T), json.AsInt);
