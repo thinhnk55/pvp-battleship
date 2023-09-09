@@ -1,7 +1,5 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-//using UnityEditor.Build.Player;
 using UnityEngine;
 
 public abstract class ConditionalMono : MonoBehaviour
@@ -30,7 +28,7 @@ public abstract class ConditionalMono : MonoBehaviour
     {
         UpdateObject();
     }
-    protected abstract Predicate<object> SetCondition(); 
+    protected abstract Predicate<object> SetCondition();
     public void UpdateObject()
     {
         bool isSastified = (condition?.Invoke(null)).Value;
@@ -46,7 +44,7 @@ public abstract class ConditionalMono : MonoBehaviour
     }
     public static void UpdateObject(Type type)
     {
-        if(conditionalEvents.ContainsKey(type))
+        if (conditionalEvents.ContainsKey(type))
             conditionalEvents[type].ForEach((con) => con.UpdateObject());
     }
 }

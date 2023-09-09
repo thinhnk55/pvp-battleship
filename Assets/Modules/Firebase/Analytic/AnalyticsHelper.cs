@@ -1,7 +1,4 @@
-using log4net.Core;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace FirebaseIntegration
 {
@@ -11,12 +8,12 @@ namespace FirebaseIntegration
         {
             Analytics.Log(Firebase.Analytics.FirebaseAnalytics.EventLogin,
                 new List<KeyValuePair<string, object>>()
-            {
-            });
+                {
+                });
         }
         public static void UnlockAchievement(int id, int level)
         {
-            Analytics.Log(Firebase.Analytics.FirebaseAnalytics.EventUnlockAchievement, 
+            Analytics.Log(Firebase.Analytics.FirebaseAnalytics.EventUnlockAchievement,
                 new List<KeyValuePair<string, object>>()
             {
                     new KeyValuePair<string, object>(Firebase.Analytics.FirebaseAnalytics.ParameterAchievementId, id),
@@ -27,7 +24,7 @@ namespace FirebaseIntegration
         {
             Analytics.Log(Firebase.Analytics.FirebaseAnalytics.EventAdImpression,
                 new List<KeyValuePair<string, object>>()
-            {                    
+            {
                     new KeyValuePair<string, object>(Firebase.Analytics.FirebaseAnalytics.ParameterAdSource, format),
                     new KeyValuePair<string, object>(Firebase.Analytics.FirebaseAnalytics.ParameterAdUnitName, type),
                     new KeyValuePair<string, object>(Firebase.Analytics.FirebaseAnalytics.ParameterAdSource, source),

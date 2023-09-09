@@ -8,7 +8,6 @@ using UnityEngine.Purchasing;
 using UnityEngine.UI;
 namespace Framework
 {
-
     public struct TransactionInfo
     {
         public int Index;

@@ -20,15 +20,21 @@ public class LoadingScene : SingletonMono<LoadingScene>
             }
         });
         InvokeRepeating("CheckMultipleAudioListener", 0, 0.1f);
-        WSClient.Instance.Connect(Authentication.DataAuth.AuthData.userId, Authentication.DataAuth.AuthData.token);
+        FirebaseIntegration.FirebaseInitialization.OnInitialized += AutoLogin;
     }
 
     private void Update()
     {
-        if(asynScene == null) { return; }
+        if (asynScene == null) { return; }
 
         currentLoadingTime += Time.deltaTime;
-        loadingBar.value = asynScene.progress * 100 * Mathf.Clamp01(currentLoadingTime /loadingDuration);
+        loadingBar.value = asynScene.progress * 100 * Mathf.Clamp01(currentLoadingTime / loadingDuration);
+    }
+
+    protected override void OnDestroy()
+    {
+        base.OnDestroy();
+        FirebaseIntegration.FirebaseInitialization.OnInitialized -= AutoLogin;
     }
     void CheckMultipleAudioListener()
     {
@@ -49,4 +55,11 @@ public class LoadingScene : SingletonMono<LoadingScene>
         asynScene.allowSceneActivation = true;
     }
 
+    public void AutoLogin()
+    {
+        MainThreadDispatcher.ExecuteOnMainThread(() =>
+        {
+            WSClient.Instance.Connect(Authentication.DataAuth.AuthData.userId, Authentication.DataAuth.AuthData.token);
+        });
+    }
 }
