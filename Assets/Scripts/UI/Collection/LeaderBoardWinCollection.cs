@@ -46,7 +46,7 @@ public class LeaderBoardWinCollection : CardCollectionBase<LeaderBoardWinInfo>
             Rank = playerOrder,
             UserName = GameData.Player.Username.Data,
             WinCount = GameData.LeaderBoard.win,
-            Reward = GameData.LeaderBoard.winInfos[playerOrder].Reward
+            Reward = GameData.LeaderBoard.winInfos.GetClamp(playerOrder).Reward
         });
         BuildUIs(winCountInfosList);
 

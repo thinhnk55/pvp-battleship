@@ -26,25 +26,28 @@ public class LeaderBoardGoldCollection : CardCollectionBase<LeaderBoardGoldInfo>
     {
         List<LeaderBoardGoldInfo> winCountInfosList = new List<LeaderBoardGoldInfo>();
         int playerOrder = 51;
-        for (int i = 0; i < GameData.LeaderBoard.goldInfos.Count; i++)
+        if (GameData.LeaderBoard.goldInfos.Count > 0)
         {
-            winCountInfosList.Add(new LeaderBoardGoldInfo
+            for (int i = 0; i < GameData.LeaderBoard.goldInfos.Count; i++)
             {
-                Order = GameData.LeaderBoard.goldInfos[i].Order,
-                Rank = GameData.LeaderBoard.goldInfos[i].Rank,
-                UserName = GameData.LeaderBoard.goldInfos[i].UserName,
-                SpendingCount = GameData.LeaderBoard.goldInfos[i].SpendingCount,
-                Reward = GameData.LeaderBoard.goldInfos[i].Reward
+                winCountInfosList.Add(new LeaderBoardGoldInfo
+                {
+                    Order = GameData.LeaderBoard.goldInfos[i].Order,
+                    Rank = GameData.LeaderBoard.goldInfos[i].Rank,
+                    UserName = GameData.LeaderBoard.goldInfos[i].UserName,
+                    SpendingCount = GameData.LeaderBoard.goldInfos[i].SpendingCount,
+                    Reward = GameData.LeaderBoard.goldInfos[i].Reward
+                });
+            }
+            mySpendingCount.BuildUI(new LeaderBoardGoldInfo()
+            {
+                Order = playerOrder,
+                Rank = playerOrder,
+                UserName = GameData.Player.Username.Data,
+                SpendingCount = GameData.LeaderBoard.win,
+                Reward = GameData.LeaderBoard.goldInfos.GetClamp(playerOrder).Reward
             });
         }
-        mySpendingCount.BuildUI(new LeaderBoardGoldInfo()
-        {
-            Order = playerOrder,
-            Rank = playerOrder,
-            UserName = GameData.Player.Username.Data,
-            SpendingCount = GameData.LeaderBoard.win,
-            Reward = GameData.LeaderBoard.winReward[playerOrder]
-        });
         BuildUIs(winCountInfosList);
     }
 
