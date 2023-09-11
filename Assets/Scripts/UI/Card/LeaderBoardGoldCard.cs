@@ -1,11 +1,9 @@
 using Framework;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public struct SpendingCountInfo
+public struct LeaderBoardGoldInfo
 {
     public int Order;
     public int Rank;
@@ -14,19 +12,19 @@ public struct SpendingCountInfo
     public int Reward;
 }
 
-public class SpendingPlayerCount : CardBase<SpendingCountInfo>
+public class LeaderBoardGoldCard : CardBase<LeaderBoardGoldInfo>
 {
     [SerializeField] TextMeshProUGUI order;
     [SerializeField] Image rank;
     [SerializeField] TextMeshProUGUI userName;
     [SerializeField] TextMeshProUGUI spendingCount;
     [SerializeField] Image reward;
-    protected override void OnClicked(SpendingCountInfo info)
+    protected override void OnClicked(LeaderBoardGoldInfo info)
     {
 
     }
 
-    public override void BuildUI(SpendingCountInfo info)
+    public override void BuildUI(LeaderBoardGoldInfo info)
     {
         base.BuildUI(info);
 

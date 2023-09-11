@@ -2,7 +2,6 @@
     "name": "Authentication",
     "rootNamespace": "",
     "references": [
-        "GUID:5540e30183c82e84b954c033c388e06c",
         "GUID:1c91b2bcb0fb84a7097f5062974c1431",
         "GUID:fe25561d224ed4743af4c60938a59d0b",
         "GUID:18299ae3367e54facaf234d6fdef478c",

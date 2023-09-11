@@ -28,6 +28,11 @@
         _GIFT_CONFIG = 4070,
         _GIFT = 4071,
         //_PVE_ATTACK = 4081,
+        _LEADERBOARD_CONFIG = 4090,
+        _LEADER_DATA = 4091,
+        _LEADER_BOARD_DATA = 4092,
+        _LEADER_REWARD_CHECK = 4093,
+        _LEADER_REWARD_RECEIVE = 4094,
 
         _FIND_MATCH = 4101,
         _SUBMIT_SHIP = 4110,
@@ -73,6 +78,11 @@
         _GIFT_CONFIG = 4070,
         _GIFT = 4071,
         _PVE_ATTACK = 4081,
+        _LEADERBOARD_CONFIG = 4090,
+        _LEADER_DATA = 4091,
+        _LEADER_BOARD_DATA = 4092,
+        _LEADER_REWARD_CHECK = 4093,
+        _LEADER_REWARD_RECEIVE = 4094,
 
         _QUIT_SEARCH = 4103,
         _MATCH = 4104,
