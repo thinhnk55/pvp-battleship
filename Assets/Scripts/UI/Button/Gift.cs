@@ -82,7 +82,7 @@ public class Gift : CacheMonoBehaviour
             else
             {
                 //Watch ads done => Get x3beri
-                Debug.LogWarning("X3");
+                Debug.LogWarning("X2");
                 AdsManager.ShowRewardAds(null, AdsData.adsUnitIdMap[RewardType.Get_X2DailyGift]);
             }
         });
@@ -111,7 +111,7 @@ public class Gift : CacheMonoBehaviour
 
     void GetAdsGift(JSONNode data)
     {
-        PConsumableType.BERRY.SetValue(int.Parse(data["d"]["x"]["g"]));
+        PConsumableType.BERRY.AddValue(int.Parse(data["d"]["x"]["g"]));
         CoinVFX.CoinVfx(resource, Position, Position);
         obtain.onClick.RemoveAllListeners();
         Timer<Gift>.Instance.BeginPoint = DateTime.UtcNow.Ticks;

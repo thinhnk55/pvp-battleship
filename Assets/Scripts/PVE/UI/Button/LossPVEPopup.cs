@@ -1,10 +1,8 @@
 using Framework;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ButtonConfirmPopup : MonoBehaviour
+public class LossPVEPopup : MonoBehaviour
 {
     [SerializeField] Button _btnM_Yes; // Khi khong xem duoc ads thi chi hien moi button nay
     [SerializeField] Button _btnR_Yes;
@@ -14,7 +12,7 @@ public class ButtonConfirmPopup : MonoBehaviour
     private void Start()
     {
         _btnM_Yes.onClick.AddListener(OnMidButtonYesClick);
-        if(PVE.Instance.IsRevived)
+        if (PVE.Instance.IsRevived || PVE.Instance.CurrentStep.Data == 9)
         {
             _btnM_Yes.gameObject.SetActive(true);
             _btnR_Yes.gameObject.SetActive(false);

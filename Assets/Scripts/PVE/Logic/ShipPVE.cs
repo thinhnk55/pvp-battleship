@@ -1,13 +1,8 @@
 using DG.Tweening;
 using Framework;
-using Lean.Common;
 using Lean.Touch;
 using System.Collections;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Security.Cryptography;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class ShipPVE : MonoBehaviour
@@ -18,15 +13,15 @@ public class ShipPVE : MonoBehaviour
     public PDataUnit<int> point;
     public int index;
     Tween tweenPoint;
-    [SerializeField] ParticleSystem destroyedVFX;
+    public ParticleSystem destroyedVFX;
 
     private void Awake()
     {
         leanSelectable = GetComponent<LeanSelectableByFinger>();
         point = new PDataUnit<int>(0);
-        point.OnDataChanged += (o,n) => 
+        point.OnDataChanged += (o, n) =>
         {
-            if(index == -1) // Tau player
+            if (index == -1) // Tau player
             {
                 tweenPoint = DOTween.To(() => int.Parse(pointTxt.text),
                                         (value) => pointTxt.text = value.ToString(), n, 1)
@@ -50,6 +45,7 @@ public class ShipPVE : MonoBehaviour
     {
         PVE.Instance.SetDisableLeanSelectableShipEnemy(false);
         PVE.Instance.selectedEnemy = index;
+        SoundType.CLICK.PlaySound();
         PVE.Instance.Attack();
 
         if (PVE.Instance.CurrentStep.Data == 0)
@@ -63,6 +59,7 @@ public class ShipPVE : MonoBehaviour
         ObjectPoolManager.SpawnObject<Missle>(PrefabFactory.Missle, Vector3.zero).Init(transform.position);
         yield return new WaitForSeconds(1);
         destroyedVFX.Play();
+        SoundType.SHIP_EXPLOSION.PlaySound();
         yield return new WaitForSeconds(2f);
         if (index != -1)  // Khong phai tau player
         {
