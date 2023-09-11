@@ -1,11 +1,9 @@
 using Framework;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public struct WinCountInfo
+public struct LeaderBoardWinInfo
 {
     public int Order;
     public int Rank;
@@ -14,7 +12,7 @@ public struct WinCountInfo
     public int Reward;
 }
 
-public class WinPlayerCount : CardBase<WinCountInfo>
+public class LeaderBoardWinCard : CardBase<LeaderBoardWinInfo>
 {
     [SerializeField] TextMeshProUGUI order;
     [SerializeField] Image orderIcon;
@@ -22,17 +20,17 @@ public class WinPlayerCount : CardBase<WinCountInfo>
     [SerializeField] TextMeshProUGUI userName;
     [SerializeField] TextMeshProUGUI winCount;
     [SerializeField] Image reward;
-    protected override void OnClicked(WinCountInfo info)
+    protected override void OnClicked(LeaderBoardWinInfo info)
     {
-        
+
     }
 
-    public override void BuildUI(WinCountInfo info)
+    public override void BuildUI(LeaderBoardWinInfo info)
     {
         base.BuildUI(info);
         if (orderIcon)
         {
-            if (info.Order <3)
+            if (info.Order < 3)
             {
                 order?.SetText("");
                 orderIcon.sprite = SpriteFactory.OrderLeaderBoard[info.Order];

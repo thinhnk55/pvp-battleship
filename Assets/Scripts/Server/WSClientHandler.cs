@@ -23,10 +23,10 @@ public class WSClientHandler : Singleton<WSClientHandler>
             ServerMessenger.AddListener<JSONNode>(ServerResponse._CONFIG_RP, GetConfigRoyalPass);
             ServerMessenger.AddListener<JSONNode>(ServerResponse._CONFIG_ADS, ReceiveAdsConfig);
             ServerMessenger.AddListener<JSONNode>(ServerResponse._GIFT_CONFIG, GetConfigGift);
-
-
+            ServerMessenger.AddListener<JSONNode>(ServerResponse._LEADERBOARD_CONFIG, LeaderBoardConfig);
             //not config
             ServerMessenger.AddListener<JSONNode>(ServerResponse._PROFILE, GetData);
+
             ServerMessenger.AddListener<JSONNode>(ServerResponse._CHECK_RANK, GetCheckRank);
             ServerMessenger.AddListener<JSONNode>(ServerResponse._TRANSACTION, Transaction);
             ServerMessenger.AddListener<JSONNode>(ServerResponse._LUCKYSHOT_EARN, LuckyShotEarn);
@@ -48,11 +48,12 @@ public class WSClientHandler : Singleton<WSClientHandler>
             ServerMessenger.RemoveListener<JSONNode>(ServerResponse._CONFIG_ACHIEVEMENT, GetConfigAchievement);
             ServerMessenger.RemoveListener<JSONNode>(ServerResponse._CONFIG_RP, GetConfigRoyalPass);
             ServerMessenger.RemoveListener<JSONNode>(ServerResponse._CONFIG_ADS, ReceiveAdsConfig);
-            ServerMessenger.RemoveListener<JSONNode>(ServerResponse._GIFT_CONFIG, GetConfigGift);
+            ServerMessenger.RemoveListener<JSONNode>(ServerResponse._LEADERBOARD_CONFIG, LeaderBoardConfig);
 
 
             //not config
             ServerMessenger.RemoveListener<JSONNode>(ServerResponse._PROFILE, GetData);
+
             ServerMessenger.RemoveListener<JSONNode>(ServerResponse._CHECK_RANK, GetCheckRank);
             ServerMessenger.RemoveListener<JSONNode>(ServerResponse._TRANSACTION, Transaction);
             ServerMessenger.RemoveListener<JSONNode>(ServerResponse._LUCKYSHOT_EARN, LuckyShotEarn);
@@ -113,7 +114,7 @@ public class WSClientHandler : Singleton<WSClientHandler>
         GetConfigRoyalPass();
         RequestAdsConfig();
         GetConfigGift();
-
+        LeaderBoardConfig();
         MusicType.MAINMENU.PlayMusic();
         PConsumableType.GEM.SetValue(int.Parse(data["d"]["d"]));
         PConsumableType.BERRY.SetValue(int.Parse(data["d"]["g"]));
@@ -828,5 +829,83 @@ public class WSClientHandler : Singleton<WSClientHandler>
         }.RequestServer();
     }
     #endregion
+    #region LeaderBoard
+    public static void LeaderBoardConfig()
+    {
+        new JSONClass
+        {
+            { "id", ServerRequest._LEADERBOARD_CONFIG.ToJson() },
+            { "v", new JSONData(0) },
+        }.RequestServer();
+    }
+    public static void LeaderBoardConfig(JSONNode data)
+    {
+        if (data["v"] != GameData.LeaderBoard.Version)
+        {
+            GameData.LeaderBoard.Period = data["d"]["leader_period"].AsInt / 1000;
+            GameData.LeaderBoard.goldReward = new List<int>();
+            GameData.LeaderBoard.winReward = new List<int>();
+            for (int i = 0; i < data["d"]["reward_gold"].Count; i++)
+            {
+                GameData.LeaderBoard.goldReward.Add(data["d"]["reward_gold"][i].AsInt);
+            }
+            for (int i = 0; i < data["d"]["reward_win"].Count; i++)
+            {
+                GameData.LeaderBoard.winReward.Add(data["d"]["reward_win"][i].AsInt);
+            }
+        }
+    }
+    public static void LeaderBoardData()
+    {
+        new JSONClass
+        {
+            { "id", ServerRequest._LEADER_BOARD_DATA.ToJson() },
+        }.RequestServer();
+    }
+    public static void LeaderData()
+    {
+        new JSONClass
+        {
+            { "id", ServerRequest._LEADER_DATA.ToJson() },
+        }.RequestServer();
+    }
+    public static void LeaderBoardData(JSONNode data)
+    {
+        Timer<LeaderBoard>.Instance.TriggerInterval_Sec = GameData.LeaderBoard.Period;
+        Timer<LeaderBoard>.Instance.BeginPoint = data["d"]["s"].AsLong.NowFrom0001From1970();
+        GameData.LeaderBoard.goldInfos = new List<LeaderBoardGoldInfo>();
+        GameData.LeaderBoard.winInfos = new List<LeaderBoardWinInfo>();
+        for (int i = 0; i < data["d"]["g"].Count; i++)
+        {
+            GameData.LeaderBoard.goldInfos.Add(new LeaderBoardGoldInfo()
+            {
+                Order = i,
+                Rank = i,
+                Reward = GameData.LeaderBoard.goldReward[i],
+                SpendingCount = data["d"]["g"][i]["g"].AsInt,
+                UserName = data["d"]["g"][i]["n"],
 
+            });
+        }
+        for (int i = 0; i < data["d"]["w"].Count; i++)
+        {
+            GameData.LeaderBoard.winInfos.Add(new LeaderBoardWinInfo()
+            {
+                Order = i,
+                Rank = i,
+                Reward = GameData.LeaderBoard.goldReward[i],
+                WinCount = data["d"]["g"][i]["g"].AsInt,
+                UserName = data["d"]["g"][i]["n"],
+
+            });
+        }
+    }
+
+    public static void LeaderData(JSONNode data)
+    {
+        GameData.LeaderBoard.win = data["d"]["w"].AsInt;
+        GameData.LeaderBoard.goldSpend = data["d"]["g"].AsInt;
+        GameData.Player.Point = data["d"]["e"].AsInt;
+    }
+    #endregion
 }

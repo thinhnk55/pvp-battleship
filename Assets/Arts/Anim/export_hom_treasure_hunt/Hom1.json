@@ -1,6 +1,6 @@
 {
 "skeleton": {
-	"hash": "/9C/szyGLKk",
+	"hash": "1Ik1dZmmxWI",
 	"spine": "4.1.23",
 	"x": -104,
 	"y": -5,
@@ -14,13 +14,9 @@
 	{ "name": "Layer 14172", "parent": "root", "x": -5.92, "y": 64.76 },
 	{ "name": "Layer 14174", "parent": "Layer 14172", "length": 63.24, "rotation": 55.36, "x": -29.8, "y": 60.07 },
 	{ "name": "gc1", "parent": "Layer 14172", "x": 6.15, "y": 49.19 },
-	{ "name": "sang2", "parent": "gc1", "length": 50.82, "rotation": 14.55, "x": 18.92, "y": -1.89 },
-	{ "name": "sang3", "parent": "gc1", "length": 40.14, "rotation": 68.57, "x": 2.84, "y": 11.35 },
-	{ "name": "sang1", "parent": "gc1", "length": 48.11, "rotation": 149.91, "x": -11.35, "y": 3.31 },
 	{ "name": "gem1", "parent": "Layer 14172", "x": 4.73, "y": -40.2 },
 	{ "name": "coin1", "parent": "Layer 14172", "x": 73.31, "y": -25.07 },
 	{ "name": "star", "parent": "Layer 14172", "x": -0.1, "y": 45.37 },
-	{ "name": "sangg4", "parent": "Layer 14172", "x": -32.16, "y": 27.91 },
 	{ "name": "star2", "parent": "Layer 14172", "x": 58.2, "y": -14.34 },
 	{ "name": "star3", "parent": "Layer 14172", "x": 8.41, "y": -14 },
 	{ "name": "star4", "parent": "Layer 14172", "x": 64, "y": 48.74 },
@@ -30,17 +26,14 @@
 "slots": [
 	{ "name": "Layer 14172", "bone": "Layer 14172", "attachment": "Layer 14172" },
 	{ "name": "Layer 14173", "bone": "Layer 14174", "attachment": "Layer 14173" },
-	{ "name": "sang3", "bone": "sang3", "attachment": "sang3" },
-	{ "name": "sang2", "bone": "sang2", "attachment": "sang2" },
-	{ "name": "sang1", "bone": "sang1", "attachment": "sang1" },
 	{ "name": "gc1", "bone": "gc1", "attachment": "gc1" },
-	{ "name": "mash_gc", "bone": "gc1", "attachment": "mash_gc" },
+	{ "name": "mash_gc", "bone": "gc1" },
 	{ "name": "gc2", "bone": "gc1", "attachment": "gc1", "blend": "additive" },
 	{ "name": "coin1", "bone": "coin1", "attachment": "coin1" },
-	{ "name": "mash_coin", "bone": "coin1", "attachment": "mash_coin" },
+	{ "name": "mash_coin", "bone": "coin1" },
 	{ "name": "coin2", "bone": "coin1", "attachment": "coin1", "blend": "additive" },
 	{ "name": "gem1", "bone": "gem1", "attachment": "gem1" },
-	{ "name": "mash_gem", "bone": "gem1", "attachment": "mash_gem" },
+	{ "name": "mash_gem", "bone": "gem1" },
 	{ "name": "gem2", "bone": "gem1", "attachment": "gem1", "blend": "additive" },
 	{ "name": "star", "bone": "star", "attachment": "star" },
 	{ "name": "star2", "bone": "star2", "attachment": "star" },
@@ -48,8 +41,7 @@
 	{ "name": "star4", "bone": "star4", "attachment": "star" },
 	{ "name": "star5", "bone": "star5", "attachment": "star" },
 	{ "name": "star6", "bone": "star6", "attachment": "star" },
-	{ "name": "mash1", "bone": "root", "attachment": "mash1" },
-	{ "name": "sangg4", "bone": "sangg4", "attachment": "sangg4" }
+	{ "name": "mash1", "bone": "root" }
 ],
 "skins": [
 	{
@@ -78,54 +70,6 @@
 			},
 			"Layer 14173": {
 				"Layer 14173": { "x": 40.01, "y": 3.07, "rotation": -55.36, "width": 177, "height": 85 }
-			},
-			"mash1": {
-				"mash1": {
-					"type": "clipping",
-					"end": "mash1",
-					"vertexCount": 44,
-					"vertices": [ -11.88, 197.4, -17.16, 202.67, -41.21, 203.1, -45.85, 196.13, -55.35, 196.34, -105.36, 127.98, -96.28, 116.26, -95.86, 77.44, -102.4, 75.54, -101.98, 53.6, -73.49, 33.97, -66.32, 33.55, -61.05, 29.33, -60.62, 23.85, -43.32, 11.19, -43.53, 3.17, -17.16, -5.27, -5.97, 1.9, 6.47, -6.75, 31.37, 2.53, 32.64, 8.86, 40.66, 6.54, 52.26, 8.23, 59.01, 15.62, 65.97, 14.98, 67.02, 6.75, 88.12, -1.69, 116.09, 2.32, 123.9, 7.39, 123.68, 12.45, 122.63, 25.32, 105.54, 33.34, 109.76, 38.4, 108.28, 49.59, 90.14, 63.93, 91.19, 98.96, 90.77, 104.24, 31.69, 135.74, 73.91, 185.48, 60.62, 198.98, 51.13, 198.77, 45.22, 202.99, 28.13, 202.99, 23.49, 198.14 ],
-					"color": "ce3a3aff"
-				}
-			},
-			"mash_coin": {
-				"mash_coin": {
-					"type": "clipping",
-					"end": "coin2",
-					"vertexCount": 4,
-					"vertices": [ -7.71, 43.41, -26.7, -46.92, -8.64, -48.77, 8.5, 42.48 ],
-					"color": "ce3a3aff"
-				}
-			},
-			"mash_gc": {
-				"mash_gc": {
-					"type": "clipping",
-					"end": "gc2",
-					"vertexCount": 4,
-					"vertices": [ -31.14, 53.12, -50.38, -39.21, -34.99, -44.16, -16.85, 50.93 ],
-					"color": "ce3a3aff"
-				}
-			},
-			"mash_gem": {
-				"mash_gem": {
-					"type": "clipping",
-					"end": "gem2",
-					"vertexCount": 4,
-					"vertices": [ -17.52, 38.38, -35.15, -42.45, -20.53, -44.6, -3.77, 37.09 ],
-					"color": "ce3a3aff"
-				}
-			},
-			"sang1": {
-				"sang1": { "x": 36.79, "y": -0.91, "rotation": -149.91, "width": 115, "height": 67 }
-			},
-			"sang2": {
-				"sang2": { "x": 43.08, "y": 7.35, "rotation": -14.55, "width": 118, "height": 54 }
-			},
-			"sang3": {
-				"sang3": { "x": 24.46, "y": -16.65, "rotation": -68.57, "width": 79, "height": 96 }
-			},
-			"sangg4": {
-				"sangg4": { "x": 3.58, "y": 5.83, "width": 113, "height": 207 }
 			},
 			"star": {
 				"star": { "x": -0.69, "y": 1.1, "width": 20, "height": 19 }
@@ -232,48 +176,6 @@
 						"curve": [ 3.596, 0.53, 3.829, 3.75, 3.596, 0, 3.829, 0 ]
 					},
 					{ "time": 4, "x": 5.04 }
-				]
-			},
-			"sang2": {
-				"rotate": [
-					{ "value": 1.9 },
-					{ "time": 0.2, "value": 3.65 },
-					{ "time": 0.8667, "value": -2.18 },
-					{ "time": 1.3333, "value": 1.9 },
-					{ "time": 1.5333, "value": 3.65 },
-					{ "time": 2.2, "value": -2.18 },
-					{ "time": 2.6667, "value": 1.9 },
-					{ "time": 2.8667, "value": 3.65 },
-					{ "time": 3.5333, "value": -2.18 },
-					{ "time": 4, "value": 1.9 }
-				]
-			},
-			"sang3": {
-				"rotate": [
-					{ "value": 3.59 },
-					{ "time": 0.1333, "value": 4.73 },
-					{ "time": 0.8, "value": -0.94 },
-					{ "time": 1.3333, "value": 3.59 },
-					{ "time": 1.4667, "value": 4.73 },
-					{ "time": 2.1333, "value": -0.94 },
-					{ "time": 2.6667, "value": 3.59 },
-					{ "time": 2.8, "value": 4.73 },
-					{ "time": 3.4667, "value": -0.94 },
-					{ "time": 4, "value": 3.59 }
-				]
-			},
-			"sang1": {
-				"rotate": [
-					{ "value": 5.63 },
-					{ "time": 0.0667, "value": 6.32 },
-					{ "time": 0.7333, "value": -0.59 },
-					{ "time": 1.3333, "value": 5.63 },
-					{ "time": 1.4, "value": 6.32 },
-					{ "time": 2.0667, "value": -0.59 },
-					{ "time": 2.6667, "value": 5.63 },
-					{ "time": 2.7333, "value": 6.32 },
-					{ "time": 3.4, "value": -0.59 },
-					{ "time": 4, "value": 5.63 }
 				]
 			},
 			"star": {
@@ -468,41 +370,6 @@
 					{ "time": 3.6667, "x": 0.5, "y": 0.5 },
 					{ "time": 4, "x": 0.25, "y": 0.25 }
 				]
-			}
-		},
-		"attachments": {
-			"default": {
-				"mash_coin": {
-					"mash_coin": {
-						"deform": [
-							{
-								"vertices": [ -52.37905, 0, -52.37905, 0, -52.37905, 0, -52.37905 ]
-							}
-						]
-					}
-				},
-				"mash_gc": {
-					"mash_gc": {
-						"deform": [
-							{
-								"vertices": [ -56.3554, 0, -56.3554, 0, -56.3554, 0, -56.3554 ]
-							},
-							{
-								"time": 0.6667,
-								"vertices": [ 109.96695, -2.7E-4, 109.96695, -2.7E-4, 109.96695, -2.7E-4, 109.96695 ]
-							}
-						]
-					}
-				},
-				"mash_gem": {
-					"mash_gem": {
-						"deform": [
-							{
-								"vertices": [ -56.93837, -4.0E-5, -56.93837, -4.0E-5, -56.93837, -4.0E-5, -56.93837 ]
-							}
-						]
-					}
-				}
 			}
 		}
 	}
