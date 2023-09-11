@@ -22,9 +22,10 @@ public class ButtonOpenRetreatPVEPopup : ButtonBase
     protected override void Button_OnClicked()
     {
         base.Button_OnClicked();
-
+        int currentReward = PVEData.Bets[PVEData.TypeBoard.Value] *
+            PVEData.StageMulReward[PVEData.TypeBoard.Value][PVE.Instance.CurrentStep.Data - 1];
         popupRetreatPVE = PopupHelper.CreateConfirm(PrefabFactory.PopupRetreatPVE, null,
-            "+" + (PVEData.Bets[PVEData.TypeBoard.Value] * PVEData.StageMulReward[PVEData.TypeBoard.Value][PVE.Instance.CurrentStep.Data]).ToString(), null, (confirm) =>
+            "+" + currentReward.ToString(), null, (confirm) =>
             {
                 if (confirm)
                 {

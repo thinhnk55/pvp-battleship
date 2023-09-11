@@ -70,8 +70,8 @@ public class GameData : PDataBlock<GameData>
         Instance.royalPass = Instance.royalPass ?? new RoyalPass();
         Instance.listBoard = Instance.listBoard ?? new List<BoardInfo>() { new BoardInfo() { boardInfo = new List<ShipInfo>()}, new BoardInfo() { boardInfo = new List<ShipInfo>() }, new BoardInfo() { boardInfo = new List<ShipInfo>() },
             new BoardInfo(){ boardInfo = new List<ShipInfo>()} , new BoardInfo(){ boardInfo = new List<ShipInfo>()} , new BoardInfo(){ boardInfo = new List<ShipInfo>()} };
-        Instance.acceptLoginTerm = Instance.acceptLoginTerm ?? new bool[2] { false, false };
         Instance.leaderBoard = Instance.leaderBoard ?? new LeaderBoard();
+        Instance.acceptLoginTerm = Instance.acceptLoginTerm ?? new bool[2] { true, true };
         if (Instance.tutorial.IsNullOrEmpty() || Instance.tutorial.Contains(0))
         {
             Instance.tutorial = new int[4] { 0, 0, 0, 0 };

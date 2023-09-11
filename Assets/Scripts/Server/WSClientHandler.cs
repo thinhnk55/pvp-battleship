@@ -104,8 +104,8 @@ public class WSClientHandler : Singleton<WSClientHandler>
     }
     public static void GetData(JSONNode data)
     {
-        Firebase.Crashlytics.Crashlytics.SetUserId(DataAuth.AuthData.userId.ToString());
-        FirebaseIntegration.AnalyticsHelper.Login();
+        //Firebase.Crashlytics.Crashlytics.SetUserId(DataAuth.AuthData.userId.ToString());
+        //FirebaseIntegration.AnalyticsHelper.Login();
         AdsManager.SetUserId(DataAuth.AuthData.userId.ToString());
         GetConfig();
         GetConfigShop();
@@ -378,7 +378,7 @@ public class WSClientHandler : Singleton<WSClientHandler>
         string ads_unit_id = data["d"]["a"];
         if (String.Equals(ads_unit_id, AdsData.adsUnitIdMap[RewardType.Get_Beri]))
         {
-            PConsumableType.BERRY.AddValue(int.Parse(data["d"]["g"]));
+            PConsumableType.BERRY.SetValue(int.Parse(data["d"]["g"]));
         }
         else if (String.Equals(ads_unit_id, AdsData.adsUnitIdMap[RewardType.Get_Rocket]))
         {
@@ -386,13 +386,24 @@ public class WSClientHandler : Singleton<WSClientHandler>
         }
         else if (String.Equals(ads_unit_id, AdsData.adsUnitIdMap[RewardType.Get_Quest]))
         {
-            GameData.RoyalPass.CurrentQuests.Data = data["d"]["q"]["q"].ToArrayInt(true);
+            Debug.Log("AddQuest");
             GameData.RoyalPass.CurrentQuestsProgress = data["d"]["q"]["p"].ToArrayInt(true);
+            GameData.RoyalPass.CurrentQuests.Data = data["d"]["q"]["q"].ToArrayInt(true);
         }
         else if (String.Equals(ads_unit_id, AdsData.adsUnitIdMap[RewardType.Change_Quest]))
         {
-            GameData.RoyalPass.CurrentQuests.Data[int.Parse(data["d"]["i"])] = int.Parse(data["d"]["n"]);
+            int[] arr = new int[3];
+            for (int i = 0; i < arr.Length; i++)
+            {
+                if (i == int.Parse(data["d"]["i"]))
+                {
+                    arr[i] = int.Parse(data["d"]["n"]);
+                    continue;
+                }
+                arr[i] = GameData.RoyalPass.CurrentQuests.Data[i];
+            }
             GameData.RoyalPass.CurrentQuestsProgress[int.Parse(data["d"]["i"])] = int.Parse(data["d"]["q"]["p"][int.Parse(data["d"]["i"])]);
+            GameData.RoyalPass.CurrentQuests.Data = arr;
         }
         else if (String.Equals(ads_unit_id, AdsData.adsUnitIdMap[RewardType.Get_X2DailyGift]))
         {
@@ -407,6 +418,17 @@ public class WSClientHandler : Singleton<WSClientHandler>
 
         }
     }
+
+    public static void TestOnChange()
+    {
+        Debug.Log("ChangeQuest");
+        int[] arr = GameData.RoyalPass.CurrentQuests.Data;
+        arr[1] = 0;
+        GameData.RoyalPass.CurrentQuestsProgress[1] = 2;
+        GameData.RoyalPass.CurrentQuests.Data = arr;
+    }
+
+
     #endregion
     #region Lucky Shot
     public static void LuckyShotEarn(JSONNode data)

@@ -170,10 +170,11 @@ public class PVE : SingletonMono<PVE>
         }
     }
 
+    PopupConfirm popupComplete;
     private IEnumerator Win(int point)
     {
         ShowEnemyPoint();
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(1.5f);
         yield return StartCoroutine(Instance.shipPVEs[selectedEnemy].BeingDestroyed());
         player.point.Data = point;
 
@@ -188,15 +189,29 @@ public class PVE : SingletonMono<PVE>
         }
         else // pha dao
         {
-            PopupHelper.CreateConfirm(PrefabFactory.PopupLossPVE, null,
+            popupComplete = PopupHelper.CreateConfirm(PrefabFactory.PopupReceiveRewardCompletePVE, null,
                 "+" + (PVEData.Bets[PVEData.TypeBoard.Value] * PVEData.StageMulReward[PVEData.TypeBoard.Value][CurrentStep.Data]).ToString(), null, (confirm) =>
             {
                 if (confirm)
                 {
-
+                    StartCoroutine(OnPressConfirmInCompletePopup());
                 }
             });
         }
+    }
+
+    private IEnumerator OnPressConfirmInCompletePopup()
+    {
+        PopupBehaviour popupResource = PopupHelper.Create(PrefabFactory.PopupResourcePVE);
+        CoinVFX.CoinVfx(popupResource.transform.GetChild(0).transform, Position, Position);
+        yield return new WaitForSeconds(1);
+        PConsumableType.BERRY.AddValue((PVEData.Bets[PVEData.TypeBoard.Value] *
+            PVEData.StageMulReward[PVEData.TypeBoard.Value][PVE.Instance.CurrentStep.Data]));
+        yield return new WaitForSeconds(1f);
+        PVEData.TypeBoard = -1;
+        popupResource.ForceClose();
+        popupComplete.ForceClose();
+        SceneTransitionHelper.Load(ESceneName.Home);
     }
 
     private IEnumerator Lose()
@@ -215,7 +230,7 @@ public class PVE : SingletonMono<PVE>
                 }
                 else
                 {
-                    AdsManager.ShowRewardAds(null, AdsData.adsUnitIdMap[RewardType.Get_X2DailyGift]);
+                    AdsManager.ShowRewardAds(null, AdsData.adsUnitIdMap[RewardType.Get_RevivalOnlyPVE]);
                 }
             }
             else
@@ -227,7 +242,7 @@ public class PVE : SingletonMono<PVE>
 
     IEnumerator InitTurn()
     {
-        if (CurrentStep.Data > 3)
+        if (CurrentStep.Data > 4)
         {
             Retreat.SetActive(true);
         }
@@ -263,12 +278,14 @@ public class PVE : SingletonMono<PVE>
     {
         if (o == true)
         {
-            if (CurrentStep.Data > 3)
+            Debug.Log("Revival");
+            if (CurrentStep.Data > 4)
             {
                 Retreat.SetActive(true);
             }
             HideEnemyPoint();
             SetDisableLeanSelectableShipEnemy(true);
+            Debug.Log("Revival Done");
         }
     }
 
