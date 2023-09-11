@@ -103,8 +103,8 @@ public class WSClientHandler : Singleton<WSClientHandler>
     }
     public static void GetData(JSONNode data)
     {
-        //Firebase.Crashlytics.Crashlytics.SetUserId(DataAuth.AuthData.userId.ToString());
-        //FirebaseIntegration.AnalyticsHelper.Login();
+        Firebase.Crashlytics.Crashlytics.SetUserId(DataAuth.AuthData.userId.ToString());
+        FirebaseIntegration.AnalyticsHelper.Login();
         AdsManager.SetUserId(DataAuth.AuthData.userId.ToString());
         GetConfig();
         GetConfigShop();
