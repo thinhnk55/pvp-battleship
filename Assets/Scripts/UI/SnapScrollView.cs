@@ -1,6 +1,4 @@
-using Lean.Common;
 using Lean.Touch;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,7 +6,6 @@ public class SnapScrollView : MonoBehaviour
 {
     public float snapSpeed = 10f;  // The speed at which the scrolling snaps to a position
     public float snapThreshold = 100f;  // The distance threshold for snapping to a position
-
 
     private ScrollRect scrollRect;
     private RectTransform contentRect;
@@ -23,7 +20,7 @@ public class SnapScrollView : MonoBehaviour
 
     public static float SnapPointXPos { get => snapPointXPos; set => snapPointXPos = value; }
 
-    private void Start()
+    public void Init()
     {
         if (scrollViewMiddle != null)
         {
@@ -38,18 +35,16 @@ public class SnapScrollView : MonoBehaviour
         scrollRect = GetComponent<ScrollRect>();
         contentRect = scrollRect.content;
         childRects = new RectTransform[contentRect.childCount];
-        closestPosition = float.MaxValue;
         for (int i = 0; i < contentRect.childCount; i++)
         {
             childRects[i] = contentRect.GetChild(i).GetComponent<RectTransform>();
         }
         contentRect.anchoredPosition = childRects[0].anchoredPosition * Vector2.right;
-        //layoutGroup.padding.left = Screen.width / 2;
-        //layoutGroup.padding.right = Screen.width / 2;
-        layoutGroup.padding.left = (int) SnapPointXPos;
-        layoutGroup.padding.right = (int) SnapPointXPos;
+        layoutGroup.padding.left = (int)SnapPointXPos;
+        layoutGroup.padding.right = (int)SnapPointXPos;
         LeanTouch.OnFingerDown += OnSelected;
         LeanTouch.OnFingerUp += OnUnselected;
+        closestPosition = float.MaxValue;
     }
     private void OnDestroy()
     {
@@ -59,8 +54,7 @@ public class SnapScrollView : MonoBehaviour
     private void Update()
     {
         // Check if scrolling is in progress
-        isScrolling = Mathf.Abs(scrollRect.velocity.x) > Mathf.Abs(snapSpeed * closestPosition/ 8);
-
+        isScrolling = Mathf.Abs(scrollRect.velocity.x) > Mathf.Abs(snapSpeed * closestPosition / 8);
         // Check if scrolling has ended or user interaction stopped
         if (!isDragging)
         {
@@ -69,14 +63,10 @@ public class SnapScrollView : MonoBehaviour
             foreach (RectTransform childRect in childRects)
             {
                 float childPos = childRect.anchoredPosition.x;
-                //float distance = Mathf.Abs(childPos + currentScrollPos - Screen.width / 2 );
                 float distance = Mathf.Abs(childPos + currentScrollPos - SnapPointXPos);
-
                 if (distance < Mathf.Abs(closestPosition))
-                    //closestPosition = childPos + currentScrollPos - Screen.width / 2;
                     closestPosition = childPos + currentScrollPos - SnapPointXPos;
             }
-
             if (isSnapping)
             {
                 if (Mathf.Abs(closestPosition) < 25f)
@@ -86,25 +76,17 @@ public class SnapScrollView : MonoBehaviour
                     scrollRect.StopMovement();
                 }
             }
-
         }
-        if (!isScrolling)
+        if (!isScrolling && !isDragging)
         {
-            if (!isDragging)
+            // Find the closest snap position when not scrolling and dragging
+            // Snap to the closest position if it's within the snap threshold
+            if (Mathf.Abs(closestPosition) < snapThreshold && Mathf.Abs(closestPosition) > 10f)
             {
-                // Find the closest snap position when not scrolling and dragging
-                // Snap to the closest position if it's within the snap threshold
-                if (Mathf.Abs(closestPosition) < snapThreshold && Mathf.Abs(closestPosition) > 10f)
-                {
-                    isSnapping = true;
-                    scrollRect.velocity = new Vector2(-closestPosition * snapSpeed, 0f);
-                }
-
+                isSnapping = true;
+                scrollRect.velocity = new Vector2(-closestPosition * snapSpeed, 0f);
             }
-            /**/
         }
-
-
     }
 
     public void OnSelected(LeanFinger leanFinger)
@@ -115,5 +97,20 @@ public class SnapScrollView : MonoBehaviour
     public void OnUnselected(LeanFinger leanFinger)
     {
         isDragging = false;
+    }
+
+    public void SetToChildPosition(int childIndex)
+    {
+        if (childIndex < 0 || childIndex >= childRects.Length)
+        {
+            Debug.LogWarning("Invalid child index.");
+            return;
+        }
+
+        // Calculate the target normalized position based on the child's position
+        float targetNormalizedPos = (childIndex / (float)(childRects.Length - 1));
+
+        // Set the scroll position to the target normalized position
+        scrollRect.normalizedPosition = new Vector2(targetNormalizedPos, 0f);
     }
 }

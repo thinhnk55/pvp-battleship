@@ -46,7 +46,7 @@ public class LuckyShot : SingletonMono<LuckyShot>
         }
         for (int i = 0; i < rockets.Count; i++)
         {
-            if (i< GameData.RocketCount.Data)
+            if (i < GameData.RocketCount.Data)
             {
                 Instance.rockets[i].SetSprite(rocket);
             }
@@ -132,7 +132,7 @@ public class LuckyShot : SingletonMono<LuckyShot>
                     SoundType.SHIP_EXPLOSION.PlaySound();
                 }
                 {// text
-                    TextMeshProUGUI text = (TextMeshProUGUI)ObjectPoolManager.SpawnObject<TextBase>(PrefabFactory.TextPrefab, Instance.shots[indexShot].transform.position + Vector3.up/2, null, true).text;
+                    TextMeshProUGUI text = (TextMeshProUGUI)ObjectPoolManager.SpawnObject<TextBase>(PrefabFactory.TextPrefab, Instance.shots[indexShot].transform.position + Vector3.up / 2, null, true).text;
                     text.text = amount.ToString();
                     text.fontSize = 36f;
                     Debug.Log(Instance.shots[indexShot].transform.position);
@@ -141,7 +141,7 @@ public class LuckyShot : SingletonMono<LuckyShot>
                         text.gameObject.SetActive(false);
                     });
                 }
-                DOVirtual.DelayedCall(0.5f, ()=> CoinVFX.CoinVfx(Instance.resourceUI.transform, Instance.shots[indexShot].transform.position, Instance.shots[indexShot].transform.position));
+                DOVirtual.DelayedCall(0.5f, () => CoinVFX.CoinVfx(Instance.resourceUI.transform, Instance.shots[indexShot].transform.position, Instance.shots[indexShot].transform.position));
             }
             ConditionalMono.conditionalEvents[typeof(LuckyShotReminder)].ForEach((con) => con.UpdateObject());
             StartCoroutine(Instance.Door());
@@ -192,7 +192,7 @@ public class LuckyShot : SingletonMono<LuckyShot>
         }
         else
         {
-            if (Timer<LuckyShot>.Instance.TriggersFromBegin>=1)
+            if (Timer<LuckyShot>.Instance.TriggersFromBegin >= 1)
             {
                 Instance.countDown.text = $"Collect";
                 Instance.countDownSlider.value = 0;
@@ -204,7 +204,7 @@ public class LuckyShot : SingletonMono<LuckyShot>
             }
         }
     }
-    public IEnumerator Suffle() 
+    public IEnumerator Suffle()
     {
         yield return new WaitForSeconds(0.5f);
         Instance.shotRoot.GetComponent<GridLayoutGroup>().enabled = false;
@@ -213,7 +213,7 @@ public class LuckyShot : SingletonMono<LuckyShot>
         {
             Instance.shots[i].onClick.RemoveAllListeners();
             poses[i] = Instance.shots[i].transform.position;
-            Instance.shots[i].transform.DOMove(Instance.shots[4].transform.position,1).SetEase(Ease.InCirc);
+            Instance.shots[i].transform.DOMove(Instance.shots[4].transform.position, 1).SetEase(Ease.InCirc);
         }
 
         yield return new WaitForSeconds(1);
@@ -238,9 +238,9 @@ public class LuckyShot : SingletonMono<LuckyShot>
             });
         }
     }
-    public IEnumerator Door() 
+    public IEnumerator Door()
     {
-        if (indexShot >=0)
+        if (indexShot >= 0)
         {
             Vector3 initScale = Instance.shots[indexShot].transform.localScale;
             Instance.sequence = DOTween.Sequence();
@@ -253,14 +253,14 @@ public class LuckyShot : SingletonMono<LuckyShot>
         {
             Instance.shots[i].enabled = false;
         }
-        yield return new WaitForSeconds(indexShot>=0 ? 1f : 0.5f);
+        yield return new WaitForSeconds(indexShot >= 0 ? 1f : 0.5f);
         Instance.anim.SetAnimation("animation", false);
         Instance.anim.Initialize(false);
         SoundType.DOOR.PlaySound();
         yield return new WaitForSeconds(anim.GetDuration("animation") * 1 / 2);
         if (indexShot >= 0)
             Instance.shots[indexShot].image.SetAlpha(0);
-        yield return new WaitForSeconds(anim.GetDuration("animation")* 1/ 2);
+        yield return new WaitForSeconds(anim.GetDuration("animation") * 1 / 2);
         for (int i = 0; i < Instance.shots.Count; i++)
         {
             Instance.shots[i].GetComponent<Image>().sprite = SpriteFactory.Unknown;

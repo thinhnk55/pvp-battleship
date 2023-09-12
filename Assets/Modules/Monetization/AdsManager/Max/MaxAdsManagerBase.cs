@@ -1,7 +1,5 @@
 using DG.Tweening;
 using Monetization;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class MaxAdsManagerBase : IAdsManager
@@ -81,7 +79,7 @@ public abstract class MaxAdsManagerBase : IAdsManager
 
         retryAttemptReward++;
         double retryDelay = Mathf.Pow(2, Mathf.Min(6, retryAttemptReward));
-        DOVirtual.DelayedCall((float)retryDelay, ()=> LoadRewardedAd(adUnitId));
+        DOVirtual.DelayedCall((float)retryDelay, () => LoadRewardedAd(adUnitId));
     }
 
     protected void OnRewardedAdDisplayedEvent(string adUnitId, MaxSdkBase.AdInfo adInfo) { }
@@ -174,7 +172,7 @@ public abstract class MaxAdsManagerBase : IAdsManager
     {
 
     }
- 
+
     public void SetUserId(string id)
     {
         MaxSdk.SetUserId(id);

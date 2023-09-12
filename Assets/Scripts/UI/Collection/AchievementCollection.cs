@@ -92,7 +92,7 @@ public class AchievementCollection : CardCollectionBase<AchievementInfo>
         {
             info.Upgradable = false;
         }
-
+        info.IsPreview = true;
         previewCard.BuildUI(info);
     }
 

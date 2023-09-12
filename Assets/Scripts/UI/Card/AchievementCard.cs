@@ -1,10 +1,8 @@
 using Framework;
 using SimpleJSON;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using UnityEditor;
 //using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.UI;
@@ -41,6 +39,7 @@ public struct AchievementInfo
     public string Title;
     public int Obtained;
     public bool Upgradable;
+    public bool IsPreview;
     public Callback onClick;
     [SerializeField] private int progress; public int Progress { get { return progress; } set { progress = value; } }
     public AchievementUnit[] AchivementUnits;
@@ -66,13 +65,14 @@ public struct AchievementInfo
             Title = GameConfig.AchievementName.GetLoop(id),
             AchivementUnits = achievementUnits.ToArray(),
             Upgradable = true,
+            IsPreview = false,
         };
         return info;
     }
 
     public override string ToString()
     {
-        string s = Id +"_" + Title + "_" + Progress;
+        string s = Id + "_" + Title + "_" + Progress;
         return s;
     }
 
@@ -119,7 +119,7 @@ public class AchievementCard : CardBase<AchievementInfo>
 {
     [HideInInspector] public int Id;
     public Image BG;
-    [SerializeField] protected Image Icon ;
+    [SerializeField] protected Image Icon;
     [SerializeField] protected TextMeshProUGUI Title;
     [SerializeField] protected TextMeshProUGUI Description;
     [SerializeField] protected TextMeshProUGUI RewardAmount;
@@ -135,7 +135,7 @@ public class AchievementCard : CardBase<AchievementInfo>
             return;
         for (int i = 0; i < info.AchivementUnits.Length; i++)
         {
-            if (info.Progress >=info.AchivementUnits[i].Task)
+            if (info.Progress >= info.AchivementUnits[i].Task)
             {
                 completed = i + 1;
             }
@@ -175,7 +175,8 @@ public class AchievementCard : CardBase<AchievementInfo>
                     TextObtain.text = "";
                     Progress.gameObject.SetActive(true);
                 }
-                else{
+                else
+                {
                     TextObtain.text = "Obtain";
                     Progress.gameObject.SetActive(false);
                 }
@@ -187,6 +188,10 @@ public class AchievementCard : CardBase<AchievementInfo>
         if (Button)
         {
             Button.gameObject.SetActive(info.Upgradable);
+            if (info.Upgradable && info.Progress < info.AchivementUnits.GetClamp(info.Obtained).Task && info.IsPreview)
+            {
+                Button.interactable = false;
+            }
             Button.onClick.RemoveAllListeners();
             Button.onClick.AddListener(() =>
             {
@@ -201,7 +206,7 @@ public class AchievementCard : CardBase<AchievementInfo>
             {
                 img.color = Color.gray;
             });
-        }    
+        }
     }
 
     protected override void OnClicked(AchievementInfo info)

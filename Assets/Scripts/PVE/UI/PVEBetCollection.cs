@@ -1,7 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using Framework;
+using System.Collections.Generic;
 public struct PVEBetInfo
 {
     public bool IsQualified;
@@ -9,7 +7,7 @@ public struct PVEBetInfo
     public int cost;
     public Callback onclick;
 }
-public class PVEBetCollection : CardCollectionBase<PVEBetInfo> 
+public class PVEBetCollection : CardCollectionBase<PVEBetInfo>
 {
     private void Awake()
     {
@@ -47,10 +45,10 @@ public class PVEBetCollection : CardCollectionBase<PVEBetInfo>
                         });
                     }
                 }
-            });; 
+            }); ;
         }
 
         BuildUIs(list);
     }
-    
+
 }

@@ -1,8 +1,4 @@
-using DG.Tweening;
-using Framework;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace Monetization
 {
@@ -22,14 +18,14 @@ namespace Monetization
             };
 
             // Load reward Ads
-            foreach(KeyValuePair<RewardType, string> kvp in AdsData.adsUnitIdMap)
+            foreach (KeyValuePair<RewardType, string> kvp in AdsData.adsUnitIdMap)
             {
                 LoadAds(kvp.Value, AdsType.Reward);
             }
         }
 
         public override void ShowBannerAds()
-        { 
+        {
             MaxSdk.ShowBanner(AdsManager.BannerAdUnitId);
         }
 
@@ -52,5 +48,6 @@ namespace Monetization
                 MaxSdk.ShowRewardedAd(rewardAdUnitId, null, customdata);
             }
         }
+
     }
 }

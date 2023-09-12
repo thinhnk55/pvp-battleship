@@ -44,9 +44,8 @@ public class LeaderBoardWinCard : CardBase<LeaderBoardWinInfo>
                 else
                 {
                     order?.SetText(info.Order.ToString());
-                    orderIcon.SetAlpha(0);
                 }
-
+                orderIcon.SetAlpha(0);
             }
         }
         rank?.SetSprite(SpriteFactory.Ranks[info.Rank]);

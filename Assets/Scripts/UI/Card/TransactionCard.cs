@@ -46,9 +46,9 @@ namespace Framework
                     }
                     break;
                 case TransactionType.usd:
-#if UNITY_ANDROID
+#if UNITY_ANDROID || UNITY_STANDALONE
                     if (data["platform"].AsInt == 0 || data["platform"].AsInt == 1)
-                    {                    
+                    {
                         cost_type.Add(0);
                         cost_value.Add(data["price"].AsFloat);
                         product_type.Add((int)PConsumableType.GEM);

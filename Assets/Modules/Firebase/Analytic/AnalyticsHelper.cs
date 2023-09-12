@@ -17,7 +17,7 @@ namespace FirebaseIntegration
                 new List<KeyValuePair<string, object>>()
             {
                     new KeyValuePair<string, object>(Firebase.Analytics.FirebaseAnalytics.ParameterAchievementId, id),
-                    new KeyValuePair<string, object>("level", level),
+                    new KeyValuePair<string, object>(Firebase.Analytics.FirebaseAnalytics.ParameterLevel, level),
             });
         }
         public static void WatchAds(string format, string type, string source)
