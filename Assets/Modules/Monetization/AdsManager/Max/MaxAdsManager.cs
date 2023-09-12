@@ -1,8 +1,5 @@
-using DG.Tweening;
 using Framework;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace Monetization
 {
@@ -22,35 +19,17 @@ namespace Monetization
             };
 
             // Load reward Ads
-            foreach(KeyValuePair<RewardType, string> kvp in AdsData.adsUnitIdMap)
+            foreach (KeyValuePair<RewardType, string> kvp in AdsData.adsUnitIdMap)
             {
                 LoadAds(kvp.Value, AdsType.Reward);
             }
         }
 
-        public override void ShowBannerAds()
-        { 
-            MaxSdk.ShowBanner(AdsManager.BannerAdUnitId);
-        }
 
-        public override void HideBannerAds()
+        protected override void OnRewardedAdRevenuePaidEvent(string adUnitId, MaxSdkBase.AdInfo adInfo)
         {
-            MaxSdk.HideBanner(AdsManager.BannerAdUnitId);
-        }
-        public override void ShowInterstialAds()
-        {
-            if (MaxSdk.IsInterstitialReady(AdsManager.InterAdUnitId))
-            {
-                MaxSdk.ShowInterstitial(AdsManager.InterAdUnitId);
-            }
-        }
-        public override void ShowRewardAds(Callback onRewardShowed, string rewardAdUnitId, string customdata = null)
-        {
-            OnRewardShowed = onRewardShowed;
-            if (MaxSdk.IsRewardedAdReady(rewardAdUnitId))
-            {
-                MaxSdk.ShowRewardedAd(rewardAdUnitId, null, customdata);
-            }
+            base.OnRewardedAdRevenuePaidEvent(adUnitId, adInfo);
+            Messenger.Broadcast<MaxSdkBase.AdInfo>(GameEvent.REWARD_ADS_INFO, adInfo);
         }
     }
 }

@@ -1,9 +1,16 @@
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace FirebaseIntegration
 {
     public class AnalyticsHelper
     {
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
+        public static void Init()
+        {
+
+        }
+
         public static void Login()
         {
             Analytics.Log(Firebase.Analytics.FirebaseAnalytics.EventLogin,

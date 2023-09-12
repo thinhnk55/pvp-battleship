@@ -1,7 +1,5 @@
 using DG.Tweening;
 using Monetization;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class MaxAdsManagerBase : IAdsManager
@@ -81,7 +79,7 @@ public abstract class MaxAdsManagerBase : IAdsManager
 
         retryAttemptReward++;
         double retryDelay = Mathf.Pow(2, Mathf.Min(6, retryAttemptReward));
-        DOVirtual.DelayedCall((float)retryDelay, ()=> LoadRewardedAd(adUnitId));
+        DOVirtual.DelayedCall((float)retryDelay, () => LoadRewardedAd(adUnitId));
     }
 
     protected void OnRewardedAdDisplayedEvent(string adUnitId, MaxSdkBase.AdInfo adInfo) { }
@@ -105,7 +103,7 @@ public abstract class MaxAdsManagerBase : IAdsManager
         OnRewardShowed?.Invoke();
     }
 
-    protected void OnRewardedAdRevenuePaidEvent(string adUnitId, MaxSdkBase.AdInfo adInfo)
+    protected virtual void OnRewardedAdRevenuePaidEvent(string adUnitId, MaxSdkBase.AdInfo adInfo)
     {
         // Ad revenue paid. Use this callback to track user revenue.
     }
@@ -159,22 +157,32 @@ public abstract class MaxAdsManagerBase : IAdsManager
     {
     }
 
-    public virtual void ShowBannerAds()
+    public void ShowBannerAds()
     {
+        MaxSdk.ShowBanner(AdsManager.BannerAdUnitId);
     }
 
-    public virtual void HideBannerAds()
+    public void HideBannerAds()
     {
+        MaxSdk.HideBanner(AdsManager.BannerAdUnitId);
     }
 
-    public virtual void ShowInterstialAds()
+    public void ShowInterstialAds()
     {
+        if (MaxSdk.IsInterstitialReady(AdsManager.InterAdUnitId))
+        {
+            MaxSdk.ShowInterstitial(AdsManager.InterAdUnitId);
+        }
     }
-    public virtual void ShowRewardAds(Callback onRewardShowed, string id, string customdata = null)
+    public void ShowRewardAds(Callback onRewardShowed, string id, string customdata = null)
     {
+        OnRewardShowed = onRewardShowed;
+        if (MaxSdk.IsRewardedAdReady(id))
+        {
+            MaxSdk.ShowRewardedAd(id, null, customdata);
+        }
+    }
 
-    }
- 
     public void SetUserId(string id)
     {
         MaxSdk.SetUserId(id);
