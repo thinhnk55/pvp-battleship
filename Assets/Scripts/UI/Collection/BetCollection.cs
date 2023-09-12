@@ -1,12 +1,12 @@
 using DG.Tweening;
 using Framework;
-using SimpleJSON;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class BetCollection : CardCollectionBase<BetInfo>
 {
+    [SerializeField] SnapScrollView SnapScrollView;
+    [SerializeField] int highestAvalableBet;
     public override void UpdateUIs()
     {
         List<BetInfo> infos = new List<BetInfo>();
@@ -25,6 +25,7 @@ public class BetCollection : CardCollectionBase<BetInfo>
                     if (GameData.Bets[_i].Bet <= PConsumableType.BERRY.GetValue())
                     {
                         CoreGame.bet = _i;
+                        CoreGame.rematch = false;
                         SceneTransitionHelper.Load(ESceneName.MainGame);
                     }
                     else
@@ -40,15 +41,22 @@ public class BetCollection : CardCollectionBase<BetInfo>
                     }
                 }
             });
+            if (isQualified && GameData.Bets[_i].Bet <= PConsumableType.BERRY.GetValue() && _i > highestAvalableBet)
+            {
+                highestAvalableBet = _i;
+            }
         }
         BuildUIs(infos);
     }
 
-    private void Awake()
+    private void Start()
     {
         UpdateUIs();
+        SnapScrollView.Init();
+        SnapScrollView.SetToChildPosition(highestAvalableBet);
         if (GameData.Tutorial[1] == 0)
         {
+            SnapScrollView.SetToChildPosition(0);
             DOVirtual.DelayedCall(1f, () =>
             {
                 PopupHelper.Create(PrefabFactory.PopupTuTorBet);

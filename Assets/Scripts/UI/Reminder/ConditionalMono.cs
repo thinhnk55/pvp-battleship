@@ -22,7 +22,8 @@ public abstract class ConditionalMono : MonoBehaviour
     }
     protected virtual void OnDestroy()
     {
-        conditionalEvents[GetType()].Remove(this);
+        if (conditionalEvents.ContainsKey(GetType()))
+            conditionalEvents[GetType()].Remove(this);
     }
     protected virtual void Start()
     {
