@@ -2,7 +2,8 @@
     "name": "FirebaseIntegration",
     "rootNamespace": "FirebaseIntegration",
     "references": [
-        "GUID:6793dbd94a12ed146965411768bc4acd"
+        "GUID:6793dbd94a12ed146965411768bc4acd",
+        "GUID:a4cfc1a18fa3a469b96d885db522f42e"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

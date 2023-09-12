@@ -11,6 +11,7 @@ namespace FirebaseIntegration
             {
                 Firebase.Messaging.FirebaseMessaging.TokenReceived += OnTokenReceived;
                 Firebase.Messaging.FirebaseMessaging.MessageReceived += OnMessageReceived;
+                Debug.Log("Firebase Token :" + Firebase.Messaging.FirebaseMessaging.GetTokenAsync());
             };
         }
 
