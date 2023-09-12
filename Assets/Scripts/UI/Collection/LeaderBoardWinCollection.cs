@@ -25,28 +25,32 @@ public class LeaderBoardWinCollection : CardCollectionBase<LeaderBoardWinInfo>
     {
         List<LeaderBoardWinInfo> winCountInfosList = new List<LeaderBoardWinInfo>();
         int playerOrder = 51;
-        for (int i = 0; i < GameData.LeaderBoard.winInfos.Count; i++)
+        if (GameData.LeaderBoard.winInfos.Count > 0)
         {
-            winCountInfosList.Add(new LeaderBoardWinInfo
+            for (int i = 0; i < GameData.LeaderBoard.winInfos.Count; i++)
             {
-                Order = i,
-                Rank = GameData.LeaderBoard.winInfos[i].Rank,
-                UserName = GameData.LeaderBoard.winInfos[i].UserName,
-                WinCount = GameData.LeaderBoard.winInfos[i].WinCount,
-                Reward = GameData.LeaderBoard.winInfos[i].Reward
-            });
-            if (GameData.LeaderBoard.winInfos[i].UserName == GameData.Player.Username.Data)
-            {
-                playerOrder = i;
+                winCountInfosList.Add(new LeaderBoardWinInfo
+                {
+                    Order = i,
+                    Rank = GameData.RankMilestone.GetMileStone(GameData.LeaderBoard.winInfos[i].Rank),
+                    UserName = GameData.LeaderBoard.winInfos[i].UserName,
+                    WinCount = GameData.LeaderBoard.winInfos[i].WinCount,
+                    Reward = GameData.LeaderBoard.winInfos[i].Reward
+                });
+                if (GameData.LeaderBoard.winInfos[i].UserName == GameData.Player.Username.Data)
+                {
+                    playerOrder = i;
+                }
             }
+
         }
         myWinCount.BuildUI(new LeaderBoardWinInfo()
         {
             Order = playerOrder,
-            Rank = playerOrder,
+            Rank = GameData.Player.Rank,
             UserName = GameData.Player.Username.Data,
             WinCount = GameData.LeaderBoard.win,
-            Reward = GameData.LeaderBoard.winInfos.GetClamp(playerOrder).Reward
+            Reward = GameData.LeaderBoard.winReward.GetClamp(playerOrder)
         });
         BuildUIs(winCountInfosList);
 

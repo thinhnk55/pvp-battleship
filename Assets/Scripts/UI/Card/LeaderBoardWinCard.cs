@@ -37,8 +37,16 @@ public class LeaderBoardWinCard : CardBase<LeaderBoardWinInfo>
             }
             else
             {
-                order?.SetText(info.Order.ToString());
-                orderIcon.SetAlpha(0);
+                if (info.Order > 50)
+                {
+                    order?.SetText("51+");
+                }
+                else
+                {
+                    order?.SetText(info.Order.ToString());
+                    orderIcon.SetAlpha(0);
+                }
+
             }
         }
         rank?.SetSprite(SpriteFactory.Ranks[info.Rank]);

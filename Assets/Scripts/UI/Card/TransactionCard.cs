@@ -381,16 +381,22 @@ namespace Framework
                         {
                             PopupHelper.CreateConfirm(PrefabFactory.PopupOutOfResource, "Message", "Not enough money", null, (ok) =>
                             {
-                                PopupBehaviour.CloseAll();
-                                PopupHelper.Create(PrefabFactory.PopupShop).GetComponentInChildren<Tabs>().Activate(2);
+                                if (ok)
+                                {
+                                    PopupBehaviour.CloseAll();
+                                    PopupHelper.Create(PrefabFactory.PopupShop).GetComponentInChildren<Tabs>().Activate(2);
+                                }
                             });
                         }
                         else
                         {
                             PopupHelper.CreateConfirm(PrefabFactory.PopupOutOfResource, "Message", "Not enough money", null, (ok) =>
                             {
-                                PopupBehaviour.CloseAll();
-                                PopupHelper.Create(PrefabFactory.PopupShop).GetComponentInChildren<Tabs>().Activate(1);
+                                if (ok)
+                                {
+                                    PopupBehaviour.CloseAll();
+                                    PopupHelper.Create(PrefabFactory.PopupShop).GetComponentInChildren<Tabs>().Activate(1);
+                                }
                             });
                         }
 

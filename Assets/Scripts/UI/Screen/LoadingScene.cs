@@ -47,6 +47,7 @@ public class LoadingScene : SingletonMono<LoadingScene>
 
     public void LoadScene(string sceneName)
     {
+        Debug.Log("Load " + sceneName);
         if (SceneManager.sceneCount >= 2)
         {
             SceneManager.UnloadSceneAsync("Home");

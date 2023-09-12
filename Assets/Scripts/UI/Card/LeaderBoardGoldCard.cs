@@ -15,6 +15,7 @@ public struct LeaderBoardGoldInfo
 public class LeaderBoardGoldCard : CardBase<LeaderBoardGoldInfo>
 {
     [SerializeField] TextMeshProUGUI order;
+    [SerializeField] Image orderIcon;
     [SerializeField] Image rank;
     [SerializeField] TextMeshProUGUI userName;
     [SerializeField] TextMeshProUGUI spendingCount;
@@ -27,13 +28,31 @@ public class LeaderBoardGoldCard : CardBase<LeaderBoardGoldInfo>
     public override void BuildUI(LeaderBoardGoldInfo info)
     {
         base.BuildUI(info);
-
-        order.SetText(info.Order.ToString());
-        rank.sprite = SpriteFactory.Ranks[info.Rank];
-        userName.SetText(info.UserName);
+        if (orderIcon)
+        {
+            if (info.Order < 3)
+            {
+                order?.SetText("");
+                orderIcon.sprite = SpriteFactory.OrderLeaderBoard[info.Order];
+            }
+            else
+            {
+                if (info.Order > 50)
+                {
+                    order?.SetText("51+");
+                }
+                else
+                {
+                    order?.SetText(info.Order.ToString());
+                    orderIcon.SetAlpha(0);
+                }
+            }
+        }
+        rank?.SetSprite(SpriteFactory.Ranks[info.Rank]);
+        userName?.SetText(info.UserName);
         //cup =  info.Cup;
-        spendingCount.SetText(info.SpendingCount.ToString());
-        reward.sprite = SpriteFactory.RewardLeaderBoard[info.Reward];
+        spendingCount?.SetText(info.SpendingCount.ToString());
+        reward?.SetSprite(SpriteFactory.ResourceIcons[(int)PConsumableType.BERRY].sprites.GetClamp(info.Order));
 
 
     }

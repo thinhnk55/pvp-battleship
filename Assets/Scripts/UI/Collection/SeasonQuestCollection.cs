@@ -1,14 +1,11 @@
 using Framework;
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 public class SeasonQuestCollection : CardCollectionBase<QuestInfo>
 {
     private void Awake()
     {
-        UpdateUIs(); 
+        UpdateUIs();
         GameData.RoyalPass.SeasonQuestsObtained.OnDataChanged += OnChange;
 
     }
@@ -28,6 +25,7 @@ public class SeasonQuestCollection : CardCollectionBase<QuestInfo>
         List<QuestInfo> infos = new List<QuestInfo>();
         for (int i = 0; i < GameData.RoyalPass.SeasonQuests.Length; i++)
         {
+            int _i = i;
             infos.Add(new QuestInfo()
             {
                 Id = i,
@@ -38,7 +36,10 @@ public class SeasonQuestCollection : CardCollectionBase<QuestInfo>
                 Obtained = GameData.RoyalPass.SeasonQuestsObtained.Data.Contains(i),
                 OnCollect = (info) =>
                 {
-                    WSClientHandler.SeasonQuestReward(info.Id);
+                    if (GameData.RoyalPass.SeasonQuestsProgress[_i] > GameData.RoyalPass.SeasonQuests[_i].Require)
+                    {
+                        WSClientHandler.SeasonQuestReward(info.Id);
+                    }
                 },
 
             });

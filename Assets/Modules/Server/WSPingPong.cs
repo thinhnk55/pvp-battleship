@@ -8,7 +8,7 @@ namespace Server
 {
     public class WSPingPong : SingletonMono<WSPingPong>
     {
-        [SerializeField] float interval = 30;
+        [SerializeField] float interval = 15;
         void Start()
         {
             InvokeRepeating("Ping", interval, interval);

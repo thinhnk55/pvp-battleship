@@ -32,22 +32,23 @@ public class LeaderBoardGoldCollection : CardCollectionBase<LeaderBoardGoldInfo>
             {
                 winCountInfosList.Add(new LeaderBoardGoldInfo
                 {
-                    Order = GameData.LeaderBoard.goldInfos[i].Order,
-                    Rank = GameData.LeaderBoard.goldInfos[i].Rank,
+                    Order = i,
+                    Rank = GameData.RankMilestone.GetMileStone(GameData.LeaderBoard.goldInfos[i].Rank),
                     UserName = GameData.LeaderBoard.goldInfos[i].UserName,
                     SpendingCount = GameData.LeaderBoard.goldInfos[i].SpendingCount,
                     Reward = GameData.LeaderBoard.goldInfos[i].Reward
                 });
             }
-            mySpendingCount.BuildUI(new LeaderBoardGoldInfo()
-            {
-                Order = playerOrder,
-                Rank = playerOrder,
-                UserName = GameData.Player.Username.Data,
-                SpendingCount = GameData.LeaderBoard.win,
-                Reward = GameData.LeaderBoard.goldInfos.GetClamp(playerOrder).Reward
-            });
+
         }
+        mySpendingCount.BuildUI(new LeaderBoardGoldInfo()
+        {
+            Order = playerOrder,
+            Rank = GameData.Player.Rank,
+            UserName = GameData.Player.Username.Data,
+            SpendingCount = GameData.LeaderBoard.win,
+            Reward = GameData.LeaderBoard.goldReward.GetClamp(playerOrder)
+        });
         BuildUIs(winCountInfosList);
     }
 
