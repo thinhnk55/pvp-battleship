@@ -93,14 +93,27 @@ public class WSClientHandler : Singleton<WSClientHandler>
         };
         WSClient.Instance.OnLostConnection += () =>
         {
-            PopupHelper.CreateConfirm(PrefabFactory.PopupDisconnect, "Disconnect", "Please reconnect", null, (confirm) =>
+            PopupReconnect();
+        };
+    }
+
+    public static void PopupReconnect()
+    {
+        PopupHelper.CreateConfirm(PrefabFactory.PopupDisconnect, "Disconnect", "Please reconnect", null, (confirm) =>
+        {
+            if (confirm)
             {
-                if (confirm)
+                if ((!WSClient.Instance.ws.IsAlive) || Application.internetReachability == NetworkReachability.NotReachable)
+                {
+                    SceneManager.LoadScene("PreHome");
+                    PopupReconnect();
+                }
+                else
                 {
                     SceneManager.LoadScene("Reconnect");
                 }
-            });
-        };
+            }
+        });
     }
     public static void GetData(JSONNode data)
     {
@@ -902,7 +915,7 @@ public class WSClientHandler : Singleton<WSClientHandler>
             GameData.LeaderBoard.goldInfos.Add(new LeaderBoardGoldInfo()
             {
                 Order = i,
-                Rank = i,
+                Rank = data["d"]["g"][i]["e"].AsInt,
                 Reward = GameData.LeaderBoard.goldReward[i],
                 SpendingCount = data["d"]["g"][i]["g"].AsInt,
                 UserName = data["d"]["g"][i]["n"],
@@ -914,7 +927,7 @@ public class WSClientHandler : Singleton<WSClientHandler>
             GameData.LeaderBoard.winInfos.Add(new LeaderBoardWinInfo()
             {
                 Order = i,
-                Rank = i,
+                Rank = data["d"]["g"][i]["e"].AsInt,
                 Reward = GameData.LeaderBoard.goldReward[i],
                 WinCount = data["d"]["g"][i]["g"].AsInt,
                 UserName = data["d"]["g"][i]["n"],
