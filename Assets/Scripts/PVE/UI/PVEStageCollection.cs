@@ -1,5 +1,4 @@
 using Framework;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -17,7 +16,7 @@ public class PVEStageCollection : CardCollectionBase<StageInfo>
         {
             list.Add(new StageInfo()
             {
-                id = i+1,
+                id = i + 1,
                 rewardMul = PVEData.StageMulReward[PVEData.TypeBoard.Value][i],
             });
         }
@@ -28,8 +27,8 @@ public class PVEStageCollection : CardCollectionBase<StageInfo>
     {
         Debug.Log("Move to card " + n);
         currentStageIndicator.transform.parent = cards[n].transform;
-        currentStageIndicator.anchoredPosition3D = new Vector3(0,0,0);
-        if (o>=0)
+        currentStageIndicator.anchoredPosition3D = new Vector3(0, 0, 0);
+        if (o >= 0)
         {
             ((PVEStageCard)cards[o]).id.color = Color.white;
         }
