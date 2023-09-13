@@ -1,4 +1,5 @@
 using Framework;
+using SimpleJSON;
 using TMPro;
 using UnityEngine;
 
@@ -7,7 +8,12 @@ public class LeaderBoardPopup : MonoBehaviour
     [SerializeField] TextMeshProUGUI timer;
     void Start()
     {
+        ServerMessenger.AddListener<JSONNode>(ServerResponse._LEADER_REWARD_RECEIVE, LeaderBoardReceive);
         Timer<LeaderBoard>.Instance.Init(OnTrigger, OnElapsed);
+    }
+    private void OnDestroy()
+    {
+        ServerMessenger.RemoveListener<JSONNode>(ServerResponse._LEADER_REWARD_RECEIVE, LeaderBoardReceive);
     }
     public void OnTrigger()
     {
@@ -20,5 +26,13 @@ public class LeaderBoardPopup : MonoBehaviour
     void Update()
     {
         Timer<LeaderBoard>.Instance.Elasping();
+    }
+    public void LeaderBoardReceive()
+    {
+
+    }
+    public void LeaderBoardReceive(JSONNode data)
+    {
+
     }
 }

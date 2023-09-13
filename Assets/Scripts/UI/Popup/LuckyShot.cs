@@ -189,6 +189,7 @@ public class LuckyShot : SingletonMono<LuckyShot>
         {
             Instance.countDown.text = "Full";
             Instance.countDownSlider.value = 0;
+            earnButton.GetComponent<Button>().enabled = false;
         }
         else
         {
@@ -196,9 +197,11 @@ public class LuckyShot : SingletonMono<LuckyShot>
             {
                 Instance.countDown.text = $"Collect";
                 Instance.countDownSlider.value = 0;
+                earnButton.GetComponent<Button>().enabled = true;
             }
             else
             {
+                earnButton.GetComponent<Button>().enabled = false;
                 Instance.countDown.text = $"{Timer<LuckyShot>.Instance.RemainTime_Sec.Hour_Minute_Second_1()}";
                 Instance.countDownSlider.value = (float)Timer<LuckyShot>.Instance.RemainTime_Sec / Timer<LuckyShot>.Instance.TriggerInterval_Sec;
             }

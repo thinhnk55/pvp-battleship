@@ -103,9 +103,9 @@ public class WSClientHandler : Singleton<WSClientHandler>
         {
             if (confirm)
             {
-                if ((!WSClient.Instance.ws.IsAlive) || Application.internetReachability == NetworkReachability.NotReachable)
+                if (Application.internetReachability == NetworkReachability.NotReachable)
                 {
-                    SceneManager.LoadScene("PreHome");
+                    SceneTransitionHelper.Load(ESceneName.PreHome);
                     PopupReconnect();
                 }
                 else
@@ -447,7 +447,7 @@ public class WSClientHandler : Singleton<WSClientHandler>
     public static void LuckyShotEarn(JSONNode data)
     {
         GameData.RocketCount.Data = data["d"]["l"]["r"].AsInt;
-        Timer<LuckyShot>.Instance.BeginPoint = data["d"]["l"]["t"].AsLong.NowFrom0001From1970();
+        Timer<LuckyShot>.Instance.Begin(); //= data["d"]["l"]["t"].AsLong.NowFrom0001From1970();
         ConditionalMono.conditionalEvents[typeof(LuckyShotReminder)].ForEach((con) => con.UpdateObject());
     }
     public static void LuckyShotEarn()
@@ -941,6 +941,17 @@ public class WSClientHandler : Singleton<WSClientHandler>
         GameData.LeaderBoard.win = data["d"]["w"].AsInt;
         GameData.LeaderBoard.goldSpend = data["d"]["g"].AsInt;
         GameData.Player.Point = data["d"]["e"].AsInt;
+        if (data["d"]["t"]["g"].AsObject != null)
+        {
+            GameData.LeaderBoard.rankGoldSpendPrevious = data["d"]["t"]["g"]["r"].AsInt;
+            GameData.LeaderBoard.rankGoldSpendPreviousAvailable = data["d"]["t"]["g"]["t"].AsInt == 1;
+        }
+        if (data["d"]["t"]["w"].AsObject != null)
+        {
+            GameData.LeaderBoard.rankWinPrevious = data["d"]["t"]["w"]["r"].AsInt;
+            GameData.LeaderBoard.rankWinPreviousAvailable = data["d"]["t"]["w"]["t"].AsInt == 1;
+        }
+
     }
     #endregion
 }

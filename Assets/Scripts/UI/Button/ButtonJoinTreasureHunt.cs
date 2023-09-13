@@ -1,10 +1,6 @@
 using Framework;
-using SimpleJSON;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class ButtonJoinTreasureHunt : ButtonBase
 {
@@ -26,9 +22,8 @@ public class ButtonJoinTreasureHunt : ButtonBase
     private void ChangeStatusButton()
     {
         Debug.Log(PVEData.TypeBoard + "---" + PVEData.IsDeadPlayer.Data);
-        if(PVEData.TypeBoard == -1 || PVEData.IsDeadPlayer.Data) // New Game
+        if (PVEData.TypeBoard == -1 || PVEData.IsDeadPlayer.Data) // New Game
         {
-            Debug.LogError("New game");
             return;
         }
         eSceneValue = ESceneName.PVE;

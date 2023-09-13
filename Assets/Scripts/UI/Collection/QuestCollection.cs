@@ -36,11 +36,11 @@ public class QuestCollection : CardCollectionBase<QuestInfo>
                     Require = GameData.RoyalPass.Quests[GameData.RoyalPass.CurrentQuests.Data[i]].Require,
                     Progress = GameData.RoyalPass.CurrentQuestsProgress[i],
                     Reward = GameData.RoyalPass.Quests[GameData.RoyalPass.CurrentQuests.Data[i]].Reward,
-                    Description = RoyalPass.GetDescription(GameData.RoyalPass.Quests[GameData.RoyalPass.CurrentQuests.Data[i]].Type, GameData.RoyalPass.Quests[GameData.RoyalPass.CurrentQuests.Data[i]].Require),
+                    Description = RoyalPass.GetDescription((StatisticType)GameData.RoyalPass.Quests[GameData.RoyalPass.CurrentQuests.Data[i]].Type, GameData.RoyalPass.Quests[GameData.RoyalPass.CurrentQuests.Data[i]].Require),
                     Obtained = false,
                     OnCollect = (info) =>
                     {
-                        if (GameData.RoyalPass.CurrentQuestsProgress[_i] > GameData.RoyalPass.Quests[GameData.RoyalPass.CurrentQuests.Data[_i]].Require)
+                        if (GameData.RoyalPass.CurrentQuestsProgress[_i] >= GameData.RoyalPass.Quests[GameData.RoyalPass.CurrentQuests.Data[_i]].Require)
                         {
                             WSClientHandler.DailyQuestReward(_i);
                         }

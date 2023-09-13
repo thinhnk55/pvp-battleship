@@ -1,6 +1,4 @@
 using Framework;
-using SimpleJSON;
-using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -123,7 +121,7 @@ public class ProfileCollection : CardCollectionBase<ProfileInfo>
         }
         if (rankProgress)
         {
-            rankProgress.maxValue = GameData.RankConfigs.GetClamp(infos.Rank+1).Point;
+            rankProgress.maxValue = GameData.RankConfigs.GetClamp(infos.Rank + 1).Point;
             rankProgress.value = infos.Point;
             pointRank?.SetText(rankProgress.value + "/" + rankProgress.maxValue);
         }
@@ -171,6 +169,18 @@ public class ProfileCollection : CardCollectionBase<ProfileInfo>
         }
         if (profile != null)
         {
+            if (profile.Avatar == null)
+            {
+                profile.Avatar = new PDataUnit<int>(-1);
+            }
+            if (profile.FrameAvatar == null)
+            {
+                profile.FrameAvatar = new PDataUnit<int>(-1);
+            }
+            if (profile.Username == null)
+            {
+                profile.Username = new PDataUnit<string>("");
+            }
             ProfileInfo info = new ProfileInfo()
             {
                 Avatar = profile.Avatar.Data,
