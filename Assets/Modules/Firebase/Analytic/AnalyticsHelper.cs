@@ -1,3 +1,4 @@
+using Firebase.Analytics;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -5,62 +6,86 @@ namespace FirebaseIntegration
 {
     public class AnalyticsHelper
     {
+        public static void TutorialBegin()
+        {
+            Analytics.Log(FirebaseAnalytics.EventTutorialBegin,
+            new List<KeyValuePair<string, object>>()
+            {
+            });
+        }
+
+        public static void TutorialComplete()
+        {
+            Analytics.Log(FirebaseAnalytics.EventTutorialComplete,
+            new List<KeyValuePair<string, object>>()
+            {
+            });
+        }
+
+        public static void SelectContent(string content)
+        {
+            Analytics.Log(FirebaseAnalytics.EventSelectContent,
+            new List<KeyValuePair<string, object>>()
+            {
+
+            });
+        }
+
         public static void Login()
         {
-            Analytics.Log(Firebase.Analytics.FirebaseAnalytics.EventLogin,
+            Analytics.Log(FirebaseAnalytics.EventLogin,
                 new List<KeyValuePair<string, object>>()
                 {
                 });
         }
         public static void UnlockAchievement(int id, int level)
         {
-            Analytics.Log(Firebase.Analytics.FirebaseAnalytics.EventUnlockAchievement,
+            Analytics.Log(FirebaseAnalytics.EventUnlockAchievement,
                 new List<KeyValuePair<string, object>>()
             {
-                    new KeyValuePair<string, object>(Firebase.Analytics.FirebaseAnalytics.ParameterAchievementId, id),
-                    new KeyValuePair<string, object>(Firebase.Analytics.FirebaseAnalytics.ParameterLevel, level),
+                    new KeyValuePair<string, object>(FirebaseAnalytics.ParameterAchievementId, id),
+                    new KeyValuePair<string, object>(FirebaseAnalytics.ParameterLevel, level),
             });
         }
         public static void WatchAds(MaxSdkBase.AdInfo adInfo)
         {
-            Analytics.Log(Firebase.Analytics.FirebaseAnalytics.EventAdImpression,
+            Analytics.Log(FirebaseAnalytics.EventAdImpression,
                 new List<KeyValuePair<string, object>>()
             {
-                    //FirebaseAnalytics.id
-                    //adInfo.
-                    new KeyValuePair<string, object>(Firebase.Analytics.FirebaseAnalytics.ParameterAdPlatform, "AppLovin"),
-                    new KeyValuePair<string, object>(Firebase.Analytics.FirebaseAnalytics.ParameterAdSource, adInfo.NetworkName),
-                    new KeyValuePair<string, object>(Firebase.Analytics.FirebaseAnalytics.ParameterAdUnitName, adInfo.AdUnitIdentifier),
-                    new KeyValuePair<string, object>(Firebase.Analytics.FirebaseAnalytics.ParameterAdFormat, adInfo.AdFormat),
-                    new KeyValuePair<string, object>(Firebase.Analytics.FirebaseAnalytics.ParameterValue, adInfo.Revenue),
-                    new KeyValuePair<string, object>(Firebase.Analytics.FirebaseAnalytics.ParameterCurrency, "USD"),
+                    new KeyValuePair<string, object>(FirebaseAnalytics.ParameterAdPlatform, "AppLovin"),
+                    new KeyValuePair<string, object>(FirebaseAnalytics.ParameterAdSource, adInfo.NetworkName),
+                    new KeyValuePair<string, object>(FirebaseAnalytics.ParameterAdUnitName, adInfo.AdUnitIdentifier),
+                    new KeyValuePair<string, object>(FirebaseAnalytics.ParameterAdFormat, adInfo.AdFormat),
+                    new KeyValuePair<string, object>(FirebaseAnalytics.ParameterValue, adInfo.Revenue),
+                    new KeyValuePair<string, object>(FirebaseAnalytics.ParameterCurrency, "USD"),
+
             });
             Debug.LogWarning("EventAds");
         }
         public static void Transaction(string transaction)
         {
-            Analytics.Log(Firebase.Analytics.FirebaseAnalytics.EventSpendVirtualCurrency,
+            Analytics.Log(FirebaseAnalytics.EventSpendVirtualCurrency,
                 new List<KeyValuePair<string, object>>()
             {
-                    new KeyValuePair<string, object>(Firebase.Analytics.FirebaseAnalytics.ParameterTransactionId, transaction),
+                    new KeyValuePair<string, object>(FirebaseAnalytics.ParameterTransactionId, transaction),
             });
         }
         public static void SpendVirtualCurrency(string virtualCurrencyName, string source)
         {
-            Analytics.Log(Firebase.Analytics.FirebaseAnalytics.EventSpendVirtualCurrency,
+            Analytics.Log(FirebaseAnalytics.EventSpendVirtualCurrency,
                 new List<KeyValuePair<string, object>>()
             {
-                    new KeyValuePair<string, object>(Firebase.Analytics.FirebaseAnalytics.ParameterVirtualCurrencyName, virtualCurrencyName),
-                    new KeyValuePair<string, object>(Firebase.Analytics.FirebaseAnalytics.ParameterSource, source),
+                    new KeyValuePair<string, object>(FirebaseAnalytics.ParameterVirtualCurrencyName, virtualCurrencyName),
+                    new KeyValuePair<string, object>(FirebaseAnalytics.ParameterSource, source),
             });
         }
         public static void EarnVirtualCurrency(string virtualCurrencyName, string source)
         {
-            Analytics.Log(Firebase.Analytics.FirebaseAnalytics.EventEarnVirtualCurrency,
+            Analytics.Log(FirebaseAnalytics.EventEarnVirtualCurrency,
                 new List<KeyValuePair<string, object>>()
             {
-                    new KeyValuePair<string, object>(Firebase.Analytics.FirebaseAnalytics.ParameterVirtualCurrencyName, virtualCurrencyName),
-                    new KeyValuePair<string, object>(Firebase.Analytics.FirebaseAnalytics.ParameterSource, source),
+                    new KeyValuePair<string, object>(FirebaseAnalytics.ParameterVirtualCurrencyName, virtualCurrencyName),
+                    new KeyValuePair<string, object>(FirebaseAnalytics.ParameterSource, source),
             });
         }
     }
