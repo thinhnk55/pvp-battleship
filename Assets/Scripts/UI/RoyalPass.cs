@@ -241,7 +241,10 @@ public class RoyalPass
                     Debug.Log(Enum.GetValues(typeof(RoyalPassQuestType)).GetValue(royalPass.CurrentQuests.Data[_i]));
                     Debug.Log(royalPass.CurrentQuests.Data[_i]);
                     StatisticTracker.AddListenerOnProgress((StatisticType)Enum.GetValues(typeof(RoyalPassQuestType)).GetValue(royalPass.CurrentQuests.Data[_i]), (o, n) =>
-                        GameData.RoyalPass.CurrentQuestsProgress[_i] += (n - o));
+                    {
+                        GameData.RoyalPass.CurrentQuestsProgress[_i] += (n - o);
+                        ConditionalMono.UpdateObject(typeof(RoyalPassReminder));
+                    });
                 }
 
                 royalPass.Point.Data = int.Parse(json["p"]);
@@ -261,5 +264,6 @@ public class RoyalPass
     private static void OnChangeQuestProgress(int o, int n)
     {
         GameData.RoyalPass.CurrentQuestsProgress[currentIndexQuestChange] += (n - o);
+        ConditionalMono.UpdateObject(typeof(RoyalPassReminder));
     }
 }

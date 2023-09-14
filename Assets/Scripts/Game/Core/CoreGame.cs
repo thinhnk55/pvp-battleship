@@ -162,6 +162,7 @@ public class CoreGame : SingletonMono<CoreGame>
     }
     protected override void OnDestroy()
     {
+        rematch = false;
         AudioHelper.StopMusic();
         LeanTouch.OnFingerUp -= Instance.opponent.BeingAttacked;
         LeanTouch.OnFingerUpdate -= Instance.opponent.SelectingTarget;
@@ -339,6 +340,10 @@ public class CoreGame : SingletonMono<CoreGame>
             Instance.searchUI.amount.text = (GameData.Bets[bet].Bet * 1.95f).ToString();
             Instance.searchUI.gameObject.SetActive(true);
             Instance.stateMachine.CurrentState = GameState.Search;
+        }
+        else
+        {
+            PopupHelper.CreateMessage(PrefabFactory.PopupInvalidFormation, "Invalid Formation", "Please get all your ship in position", null);
         }
     }
     public void RandomShip()
@@ -583,7 +588,8 @@ public class CoreGame : SingletonMono<CoreGame>
         }
         else
         {
-
+            rematchChatB.transform.parent.gameObject.SetActive(true);
+            rematchChatB.text = "SORRY I HAVE TO GO!";
         }
 
     }

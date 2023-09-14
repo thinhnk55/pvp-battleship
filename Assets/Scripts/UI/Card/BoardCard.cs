@@ -1,8 +1,5 @@
 using Framework;
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Security.Cryptography;
 //using Unity.Android.Types;
 using UnityEngine;
 using UnityEngine.UI;
@@ -81,7 +78,7 @@ public class BoardCard : CardBase<BoardInfo>
             for (int iCol = 0; iCol < info.column; iCol++)
             {
                 Octile octile = Instantiate(PrefabFactory.OctileUI, rootOctiles).GetComponent<Octile>();
-                octile.GetComponent<RectTransform>().anchoredPosition3D = new Vector3( - rect.sizeDelta.x / 2 + cellWidth * (iCol + 0.5f), - rect.sizeDelta.y / 2 + cellHieght * (iRow + 0.5f));
+                octile.GetComponent<RectTransform>().anchoredPosition3D = new Vector3(-rect.sizeDelta.x / 2 + cellWidth * (iCol + 0.5f), -rect.sizeDelta.y / 2 + cellHieght * (iRow + 0.5f));
                 octile.name = iRow.ToString() + "_" + iCol.ToString();
                 octile.pos = new Vector2Int(iCol, iRow);
                 octiles[iRow].Add(octile);
@@ -97,14 +94,14 @@ public class BoardCard : CardBase<BoardInfo>
             RenderShip(info.boardInfo[i]);
         }
         // O nay chua luu doi hinh
-        if (info.boardInfo.Count==0)
+        if (info.boardInfo.Count == 0)
         {
             Board.SetActive(false);
             //DeleteBtn.gameObject.SetActive(false);
             Button.onClick.RemoveAllListeners();
-            if (CoreGame.Instance.player.ships.Count==10)
+            if (CoreGame.Instance.player.ships.Count == 10)
             {
-                Button.onClick.AddListener(()=>
+                Button.onClick.AddListener(() =>
                 {
                     Save();
                 });
@@ -113,7 +110,7 @@ public class BoardCard : CardBase<BoardInfo>
             {
                 Button.onClick.AddListener(() =>
                 {
-                    PopupHelper.CreateMessage(PrefabFactory.PopupMessage, "Message", "Not Valid", null);
+                    PopupHelper.CreateMessage(PrefabFactory.PopupInvalidFormation, "Invalid Formation", "Please get all your ship in position", null);
 
                 });
 
@@ -138,7 +135,7 @@ public class BoardCard : CardBase<BoardInfo>
             CoreGame.Instance.shipsPlayer[i].OnSelected(null, null);
             CoreGame.Instance.shipsPlayer[i].Dir = Ship.GetDir(Info.boardInfo[i].dir);
             CoreGame.Instance.player.AssignShip(CoreGame.Instance.shipsPlayer[i], Info.boardInfo[i].x, Info.boardInfo[i].y);
-            Collection.GetComponent<PopupBehaviour>().ForceClose();     
+            Collection.GetComponent<PopupBehaviour>().ForceClose();
         }
     }
 
@@ -146,7 +143,7 @@ public class BoardCard : CardBase<BoardInfo>
     {
         var s = Instantiate(PrefabFactory.ShipsUI[ship.type], rootShips).GetComponent<RectTransform>();
         s.anchoredPosition3D = octiles[ship.y][ship.x].GetComponent<RectTransform>().anchoredPosition3D;
-        s.transform.eulerAngles = new Vector3(0,0,- ship.dir * 90);
+        s.transform.eulerAngles = new Vector3(0, 0, -ship.dir * 90);
     }
 
     // Luu bang luu doi hinh vao game data

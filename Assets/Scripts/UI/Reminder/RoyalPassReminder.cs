@@ -1,7 +1,5 @@
 ﻿using Framework;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class RoyalPassReminder : ConditionalMono
@@ -16,12 +14,12 @@ public class RoyalPassReminder : ConditionalMono
             bool hasReward = false;
             for (int i = 0; i <= GameData.RoyalPass.Level; i++)
             {
-                if (!GameData.RoyalPass.NormalObtains.Data.Contains(i) && i!=0)
+                if (!GameData.RoyalPass.NormalObtains.Data.Contains(i) && i != 0)
                 {
                     hasReward = true;
                     break;
                 }
-                if (PNonConsumableType.ELITE.GetValue().Contains(0)&& !GameData.RoyalPass.EliteObtains.Data.Contains(i))
+                if (PNonConsumableType.ELITE.GetValue().Contains(0) && !GameData.RoyalPass.EliteObtains.Data.Contains(i))
                 {
                     hasReward = true;
                     break;
@@ -30,7 +28,7 @@ public class RoyalPassReminder : ConditionalMono
             bool hasQuest = false;
             for (int i = 0; i < GameData.RoyalPass.SeasonQuests.Length; i++)
             {
-                if (GameData.RoyalPass.SeasonQuestsProgress[i] > GameData.RoyalPass.SeasonQuests[i].Require && !GameData.RoyalPass.SeasonQuestsObtained.Data.Contains(i))
+                if (GameData.RoyalPass.SeasonQuestsProgress[i] >= GameData.RoyalPass.SeasonQuests[i].Require && !GameData.RoyalPass.SeasonQuestsObtained.Data.Contains(i))
                 {
                     hasQuest = true;
                     break;
@@ -38,8 +36,8 @@ public class RoyalPassReminder : ConditionalMono
             }
             for (int i = 0; i < GameData.RoyalPass.CurrentQuestsProgress.Length; i++)
             {
-                if (GameData.RoyalPass.CurrentQuests.Data[i] >= 0 
-                    && GameData.RoyalPass.CurrentQuestsProgress[i] > GameData.RoyalPass.Quests[GameData.RoyalPass.CurrentQuests.Data[i]].Require )
+                if (GameData.RoyalPass.CurrentQuests.Data[i] >= 0
+                    && GameData.RoyalPass.CurrentQuestsProgress[i] >= GameData.RoyalPass.Quests[GameData.RoyalPass.CurrentQuests.Data[i]].Require)
                 {
                     hasQuest = true;
                     break;

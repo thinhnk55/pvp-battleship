@@ -37,6 +37,7 @@ MonoBehaviour:
   popupConfirm: {fileID: 1263694249909426757, guid: 037e100d5ef88104895e907dad0fa137, type: 3}
   popupOutOfResource: {fileID: 721933510132650832, guid: eae43ef42fb253e4eb67c922ad60de6f, type: 3}
   popupMessage: {fileID: 2654862994088543119, guid: df0ec6ec913783f4b9b9fcd4d3e02297, type: 3}
+  popupInvalidFormation: {fileID: 721933510132650832, guid: 8fb175e81da54f74ba5c034b063f23a6, type: 3}
   popupGood: {fileID: 1246542714237734646, guid: 4418c8112dcaf8f4494c804105ab0248, type: 3}
   popupGoodApply: {fileID: 8832357801222620734, guid: 232b11ebc2c641247bb1e67bf100362f, type: 3}
   popupUserTerms: {fileID: 2654862994088543119, guid: c3c085afb4b6cea429255322cdc06f26, type: 3}

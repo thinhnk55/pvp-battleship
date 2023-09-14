@@ -911,7 +911,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aaf372802082afd459e93d7db45ecd34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _popup: {fileID: 7779147393912553157, guid: 0660f0785c8fedf4dac3e3326d731133, type: 3}
+  _popup: {fileID: 8576714802656929068, guid: 0660f0785c8fedf4dac3e3326d731133, type: 3}
   OnSpawnPopup:
     m_PersistentCalls:
       m_Calls: []
@@ -2160,7 +2160,7 @@ GameObject:
   - component: {fileID: 723726456}
   - component: {fileID: 723726455}
   m_Layer: 5
-  m_Name: Image (1)
+  m_Name: Reminder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

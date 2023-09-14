@@ -13,19 +13,21 @@ public class LeaderBoardGoldCollection : CardCollectionBase<LeaderBoardGoldInfo>
     {
         ServerMessenger.AddListener<JSONNode>(ServerResponse._LEADER_BOARD_DATA, WSClientHandler.LeaderBoardData);
         ServerMessenger.AddListener<JSONNode>(ServerResponse._LEADER_DATA, WSClientHandler.LeaderData);
-        WSClientHandler.LeaderBoardData();
-        WSClientHandler.LeaderData();
+        ServerMessenger.AddListener<JSONNode>(ServerResponse._LEADER_DATA, OnUpdate);
         receiveReward.gameObject.SetActive(GameData.LeaderBoard.rankWinPreviousAvailable);
         receiveReward.sprite = SpriteFactory.ResourceIcons[(int)PConsumableType.BERRY].sprites[LeaderBoard.GetIconReward(GameData.LeaderBoard.rankWinPrevious)];
     }
     private void OnEnable()
     {
-        UpdateUIs();
+        WSClientHandler.LeaderBoardData();
+        WSClientHandler.LeaderData();
     }
     private void OnDestroy()
     {
         ServerMessenger.RemoveListener<JSONNode>(ServerResponse._LEADER_BOARD_DATA, WSClientHandler.LeaderBoardData);
         ServerMessenger.RemoveListener<JSONNode>(ServerResponse._LEADER_DATA, WSClientHandler.LeaderData);
+        ServerMessenger.RemoveListener<JSONNode>(ServerResponse._LEADER_DATA, OnUpdate);
+
     }
     public override void UpdateUIs()
     {
@@ -56,5 +58,8 @@ public class LeaderBoardGoldCollection : CardCollectionBase<LeaderBoardGoldInfo>
         });
         BuildUIs(winCountInfosList);
     }
-
+    public void OnUpdate(JSONNode data)
+    {
+        UpdateUIs();
+    }
 }
