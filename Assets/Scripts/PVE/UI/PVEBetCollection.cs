@@ -1,5 +1,7 @@
 using Framework;
 using System.Collections.Generic;
+using UnityEngine;
+
 public struct PVEBetInfo
 {
     public bool IsQualified;
@@ -9,10 +11,14 @@ public struct PVEBetInfo
 }
 public class PVEBetCollection : CardCollectionBase<PVEBetInfo>
 {
+    [SerializeField] SnapScrollView SnapScrollView;
+    [SerializeField] int highestAvalableBet;
+
     private void Awake()
     {
         UpdateUIs();
     }
+
     public override void UpdateUIs()
     {
         List<PVEBetInfo> list = new List<PVEBetInfo>();
@@ -49,6 +55,13 @@ public class PVEBetCollection : CardCollectionBase<PVEBetInfo>
         }
 
         BuildUIs(list);
+    }
+
+    private void Start()
+    {
+        UpdateUIs();
+        SnapScrollView.Init();
+        SnapScrollView.SetToChildPosition(highestAvalableBet);
     }
 
 }

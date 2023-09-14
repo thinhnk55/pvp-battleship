@@ -1,4 +1,3 @@
-using Framework;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,12 +5,6 @@ namespace FirebaseIntegration
 {
     public class AnalyticsHelper
     {
-        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
-        public static void Init()
-        {
-            Messenger.AddListener<MaxSdkBase.AdInfo>(GameEvent.REWARD_ADS_INFO, WatchAds);
-        }
-
         public static void Login()
         {
             Analytics.Log(Firebase.Analytics.FirebaseAnalytics.EventLogin,
@@ -33,10 +26,12 @@ namespace FirebaseIntegration
             Analytics.Log(Firebase.Analytics.FirebaseAnalytics.EventAdImpression,
                 new List<KeyValuePair<string, object>>()
             {
+                    //FirebaseAnalytics.id
+                    //adInfo.
                     new KeyValuePair<string, object>(Firebase.Analytics.FirebaseAnalytics.ParameterAdPlatform, "AppLovin"),
                     new KeyValuePair<string, object>(Firebase.Analytics.FirebaseAnalytics.ParameterAdNetworkClickID, adInfo.NetworkName),
                     new KeyValuePair<string, object>(Firebase.Analytics.FirebaseAnalytics.ParameterAdUnitName, adInfo.AdUnitIdentifier),
-                    new KeyValuePair<string, object>(Firebase.Analytics.FirebaseAnalytics.ParameterAdSource, adInfo.AdFormat),
+                    new KeyValuePair<string, object>(Firebase.Analytics.FirebaseAnalytics.ParameterAdFormat, adInfo.AdFormat),
                     new KeyValuePair<string, object>(Firebase.Analytics.FirebaseAnalytics.ParameterValue, adInfo.Revenue),
                     new KeyValuePair<string, object>(Firebase.Analytics.FirebaseAnalytics.ParameterCurrency, "USD"),
             });
