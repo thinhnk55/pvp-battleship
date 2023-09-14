@@ -42,7 +42,7 @@ MonoBehaviour:
   popupGoodApply: {fileID: 8832357801222620734, guid: 232b11ebc2c641247bb1e67bf100362f, type: 3}
   popupUserTerms: {fileID: 2654862994088543119, guid: c3c085afb4b6cea429255322cdc06f26, type: 3}
   popupRPGood: {fileID: 2833365651636579034, guid: ac5e813c47fb6de40a9911e794f23464, type: 3}
-  popupStarter: {fileID: 2103894969078696100, guid: ced61fdbeed4a254c88e019cb179beaa, type: 3}
+  popupStarter: {fileID: 6687567787653309815, guid: ced61fdbeed4a254c88e019cb179beaa, type: 3}
   popupQuestCompleted: {fileID: 2654862994088543119, guid: b6badf35326b8084c90955ed93f6110f, type: 3}
   popupShop: {fileID: 8576714802656929068, guid: 0660f0785c8fedf4dac3e3326d731133, type: 3}
   popupDisconnect: {fileID: 721933510132650832, guid: c0e0e9673ba52e84eaf727d14677f758, type: 3}

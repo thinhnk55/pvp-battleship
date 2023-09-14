@@ -83,6 +83,7 @@ public class GameData : PDataBlock<GameData>
 [Serializable]
 public class ProfileData
 {
+    public int UserId;
     public PDataUnit<string> Username;
     public PDataUnit<int> Avatar;
     public PDataUnit<int> FrameAvatar;
@@ -138,6 +139,7 @@ public class ProfileData
 
     public static ProfileData FromJson(ProfileData profileData, JSONNode data)
     {
+        profileData.UserId = data["d"]["u"].AsInt;
         profileData.Username = new PDataUnit<string>(data["d"]["n"]);
         profileData.Point = data["d"]["e"].AsInt;
         profileData.Avatar = new PDataUnit<int>(data["d"]["a"]["a"].AsInt);

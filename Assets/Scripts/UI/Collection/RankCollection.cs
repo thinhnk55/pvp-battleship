@@ -67,7 +67,7 @@ public class RankCollection : CardCollectionBase<RankInfo>
         {
             countDown.gameObject.SetActive(false);
             rankRequired.transform.parent.gameObject.SetActive(true);
-            rankRequired.text = "Unlocked when reaching " + GameData.RankConfigs[info.Id].Point;
+            rankRequired.text = "" + GameData.RankConfigs[info.Id].Point;
             rankRequired.GetComponentInParent<LayoutCalibrator>().Calibrate();
         }
         previewCard.BuildUI(info);
