@@ -1,12 +1,8 @@
 using DG.Tweening;
 using Framework;
-using Lean.Common;
 using Lean.Touch;
-using SimpleJSON;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class Board : CacheMonoBehaviour
 {
@@ -34,13 +30,13 @@ public class Board : CacheMonoBehaviour
     {
         if (octiles.IsNullOrEmpty())
         {
-           // InitBoard(10, 10);
+            // InitBoard(10, 10);
         }
     }
     public void InitBoard(int row, int column)
     {
 
-        destroyedShips = new List<Ship> ();
+        destroyedShips = new List<Ship>();
         octileRoot.DestroyChildrenImmediate();
         octiles = new List<List<Octile>>();
         cam = Camera.main;
@@ -56,7 +52,7 @@ public class Board : CacheMonoBehaviour
             octiles.Add(new List<Octile>());
             for (int iCol = 0; iCol < column; iCol++)
             {
-                Octile octile = Instantiate(PrefabFactory.Octile, new Vector3(Position.x - width/2 + cellWidth * (iCol + 0.5f) , Position.y - height / 2 + cellHieght * (iRow + 0.5f)), Quaternion.identity, octileRoot.transform).GetComponent<Octile>();
+                Octile octile = Instantiate(PrefabFactory.Octile, new Vector3(Position.x - width / 2 + cellWidth * (iCol + 0.5f), Position.y - height / 2 + cellHieght * (iRow + 0.5f)), Quaternion.identity, octileRoot.transform).GetComponent<Octile>();
                 octile.name = iRow.ToString() + "_" + iCol.ToString();
                 octile.pos = new Vector2Int(iCol, iRow);
                 octiles[iRow].Add(octile);
@@ -71,7 +67,7 @@ public class Board : CacheMonoBehaviour
         {
             DOVirtual.DelayedCall(5, () =>
             {
-                if (GameData.Tutorial[3]==0)
+                if (GameData.Tutorial[3] == 0)
                 {
                     tutorIngame = PopupHelper.Create(PrefabFactory.PopupTuTorPlay).gameObject;
                     int r = Random.Range(3, 7);
@@ -86,8 +82,7 @@ public class Board : CacheMonoBehaviour
         // tutorial
         if (GameData.Tutorial[3] == 0 && this != CoreGame.Instance.player)
         {
-            if(tutorIngame)
-                Destroy(tutorIngame);
+            DestroyTutorIngame();
             GameData.Tutorial = new int[4] { 1, 1, 1, 1 };
         }
 
@@ -128,7 +123,7 @@ public class Board : CacheMonoBehaviour
 
     }
 
-    public void AssignShip(Ship ship,int x,int y)
+    public void AssignShip(Ship ship, int x, int y)
     {
         if (GameData.Tutorial[2] == 0 && this == CoreGame.Instance.player)
         {
@@ -140,7 +135,7 @@ public class Board : CacheMonoBehaviour
         ship.octilesComposition.Clear();
         ship.board = this;
         // assign new pos
-        ship.Move(x,y);
+        ship.Move(x, y);
         ship.octilesOccupy.Add(octiles[y][x]);
         ship.octilesComposition.Add(octiles[y][x]);
         ship.transform.parent = this.shipRoot.transform;
@@ -273,5 +268,11 @@ public class Board : CacheMonoBehaviour
             }
         }
         return true;
+    }
+
+    public void DestroyTutorIngame()
+    {
+        if (tutorIngame)
+            Destroy(tutorIngame);
     }
 }

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-
 public struct ProfileInfo
 {
     public int UserId;
@@ -205,6 +204,6 @@ public class ProfileCollection : CardCollectionBase<ProfileInfo>
             };
             BuildUI(info);
         }
-
     }
+
 }

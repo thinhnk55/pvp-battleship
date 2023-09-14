@@ -525,6 +525,7 @@ public class CoreGame : SingletonMono<CoreGame>
     }
     void EndGame(JSONNode json)
     {
+        Instance.opponent.DestroyTutorIngame();
         Instance.rematchChatB.transform.parent.gameObject.SetActive(false);
         Instance.rematchChatA.transform.parent.gameObject.SetActive(false);
         for (int i = 0; i < json["d"]["s"].Count; i++)
