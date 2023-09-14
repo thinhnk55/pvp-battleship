@@ -60,9 +60,10 @@ namespace FirebaseIntegration
                 Debug.Log(task.Result);
                 if (string.Equals(FirebaseData.TokenCloudMessage, task.Result))
                 {
+                    Debug.Log("Don't Update");
                     return;
                 }
-
+                FirebaseData.TokenCloudMessage = task.Result;
                 FirebaseUpdateToken(task.Result);
             }
         }
