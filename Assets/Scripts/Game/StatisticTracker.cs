@@ -1,30 +1,30 @@
 using Framework;
 using SimpleJSON;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public enum StatisticType
 {
-    SHIP_DESTROY,//ShipDestroyed
-    AVATAR,// OnAvatarChange
-    WIN_COUNT,// GameEnd
-    WIN_STREAK, // GameEnd Todo
-    SHIP_DESTROY_CONSECUTIVE_MAX, // ShipDestroyed, Ship Hit, End Game
-    SHIP_0_DESTROY,// ShipDestroyed
-    SHIP_1_DESTROY,// ShipDestroyed
-    SHIP_2_DESTROY,// ShipDestroyed
-    SHIP_3_DESTROY,// ShipDestroyed
-    PERFECT_GAME,// GameEnd
-    ALIVE_1_SHIP,// GameEnd
-    GEM_USED,// OnGemChange
-    AVATAR_FRAME,// OnAvatarFrameChange
-    BATTLEFIELD,// OnBattleFieldChange
+    SHIP_DESTROY = 0,//ShipDestroyed
+    AVATAR = 1,// OnAvatarChange
+    WIN_COUNT = 2,// GameEnd
+    WIN_STREAK = 3, // GameEnd Todo
+    SHIP_DESTROY_CONSECUTIVE_MAX = 4, // ShipDestroyed, Ship Hit, End Game
+    SHIP_0_DESTROY = 5,// ShipDestroyed
+    SHIP_1_DESTROY = 6,// ShipDestroyed
+    SHIP_2_DESTROY = 7,// ShipDestroyed
+    SHIP_3_DESTROY = 8,// ShipDestroyed
+    PERFECT_GAME = 9,// GameEnd
+    ALIVE_1_SHIP = 10,// GameEnd
+    GEM_USED = 11,// OnGemChange
+    AVATAR_FRAME = 12,// OnAvatarFrameChange
+    BATTLEFIELD = 13,// OnBattleFieldChange
 
-    LUCKY_SHOT_COUNT,// LuckyShotFire
-    SHIP_DESTROY_CONSECUTIVE, // ShipDestroyed, Ship Hit, End Game
-    DESTROY_SHIP_CONSECUTIVE_3 // ShipDestroyed, Ship Hit, End Game
+    PLAY_COUNT = 14,// GameEnd
+    LUCKY_SHOT_COUNT = 15,// LuckyShotFire
+    SHIP_DESTROY_CONSECUTIVE_2 = 16, // ShipDestroyed, Ship Hit, End Game
+    DESTROY_SHIP_CONSECUTIVE_3 = 17 // ShipDestroyed, Ship Hit, End Game
 
 }
 public static class StatisticTracker
@@ -74,6 +74,7 @@ public static class StatisticTracker
     }
     public static void AddProgress(this StatisticType requireTypes, int progress)
     {
+        Debug.Log(requireTypes.ToString() + " progress changed " + progress);
         quests[requireTypes].Data = quests[requireTypes].Data + progress;
     }
 
@@ -101,7 +102,7 @@ public static class StatisticTracker
         switch (nValue)
         {
             case 2:
-                StatisticType.SHIP_DESTROY_CONSECUTIVE.AddProgress(1);
+                StatisticType.SHIP_DESTROY_CONSECUTIVE_2.AddProgress(1);
                 break;
             case 3:
                 StatisticType.DESTROY_SHIP_CONSECUTIVE_3.AddProgress(1);
@@ -132,7 +133,7 @@ public static class StatisticTracker
         {
             GameData.Player.WinStreak = 0;
         }
-
+        StatisticType.PLAY_COUNT.AddProgress(1);
     }
 
     private static void ShipDestroyed(Ship ship)
@@ -163,6 +164,7 @@ public static class StatisticTracker
         }
         else
         {
+            CoreGame.Instance.consecutiveKill = 0;
         }
         Debug.Log("Current Consecutive " + CoreGame.Instance.consecutiveKill);
 

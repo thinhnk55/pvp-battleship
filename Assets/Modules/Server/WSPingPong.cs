@@ -17,8 +17,8 @@ namespace Server
         {
             if ((!WSClient.Instance.ws.IsAlive) || Application.internetReachability == NetworkReachability.NotReachable)
             {
-                Messenger.Broadcast(GameEvent.LostConnection);
                 WSClient.Instance.Disconnect(true);
+                Messenger.Broadcast(GameEvent.LostConnection);
                 return;
             }
             WSClient.Instance.Ping();

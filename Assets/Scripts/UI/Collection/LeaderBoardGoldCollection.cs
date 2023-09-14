@@ -2,16 +2,21 @@ using Framework;
 using SimpleJSON;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class LeaderBoardGoldCollection : CardCollectionBase<LeaderBoardGoldInfo>
 {
     [SerializeField] LeaderBoardGoldCard mySpendingCount;
+    [SerializeField] Image receiveReward;
+
     private void Start()
     {
         ServerMessenger.AddListener<JSONNode>(ServerResponse._LEADER_BOARD_DATA, WSClientHandler.LeaderBoardData);
         ServerMessenger.AddListener<JSONNode>(ServerResponse._LEADER_DATA, WSClientHandler.LeaderData);
         WSClientHandler.LeaderBoardData();
         WSClientHandler.LeaderData();
+        receiveReward.gameObject.SetActive(GameData.LeaderBoard.rankWinPreviousAvailable);
+        receiveReward.sprite = SpriteFactory.ResourceIcons[(int)PConsumableType.BERRY].sprites[LeaderBoard.GetIconReward(GameData.LeaderBoard.rankWinPrevious)];
     }
     private void OnEnable()
     {

@@ -738,7 +738,7 @@ RectTransform:
   - {fileID: 5646464878989577358}
   - {fileID: 2974001583709495244}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -2181,7 +2181,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aaf372802082afd459e93d7db45ecd34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _popup: {fileID: 1200921060663208558, guid: eb23f3d74068f8644bb22c7a8168eb94, type: 3}
+  _popup: {fileID: 4731667006093798826, guid: eb23f3d74068f8644bb22c7a8168eb94, type: 3}
   OnSpawnPopup:
     m_PersistentCalls:
       m_Calls: []
@@ -5650,7 +5650,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aaf372802082afd459e93d7db45ecd34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _popup: {fileID: 1200921060663208558, guid: eb23f3d74068f8644bb22c7a8168eb94, type: 3}
+  _popup: {fileID: 4731667006093798826, guid: eb23f3d74068f8644bb22c7a8168eb94, type: 3}
   OnSpawnPopup:
     m_PersistentCalls:
       m_Calls: []

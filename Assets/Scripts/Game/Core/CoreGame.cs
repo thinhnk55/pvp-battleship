@@ -7,7 +7,6 @@ using SimpleJSON;
 using Sirenix.OdinInspector;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -94,7 +93,8 @@ public class CoreGame : SingletonMono<CoreGame>
         {
             shipsOpponent[i].renderer.enabled = reveal;
         }
-        foreach (var os in player.octiles) {
+        foreach (var os in player.octiles)
+        {
             foreach (var octile in os)
             {
                 octile.textOccupied.enabled = reveal;
@@ -147,7 +147,7 @@ public class CoreGame : SingletonMono<CoreGame>
         ServerMessenger.AddListener<JSONNode>(ServerResponse._REMATCH, Instance.Rematch);
         ServerMessenger.AddListener<JSONNode>(ServerResponse._REMATCH_ACCEPT, Instance.AcceptRematch);
         ServerMessenger.AddListener<JSONNode>(ServerResponse._QUIT_SEARCH, Instance.QuitSearch);
-        if (reconnect!=null)
+        if (reconnect != null)
         {
             Instance.Reconnect(reconnect);
         }
@@ -186,7 +186,7 @@ public class CoreGame : SingletonMono<CoreGame>
     #region StateMachine
     void StartPregame()
     {
-        if (GameData.Tutorial[2]==0)
+        if (GameData.Tutorial[2] == 0)
         {
             btnBackPreGame.SetActive(false);
         }
@@ -412,7 +412,7 @@ public class CoreGame : SingletonMono<CoreGame>
     {
         roomId = int.Parse(json["d"]["r"]);
         playerChair = int.Parse(json["d"]["p1"]["u"]) == DataAuth.AuthData.userId ? int.Parse(json["d"]["p1"]["c"]) : int.Parse(json["d"]["p2"]["c"]);
-        Debug.Log(DataAuth.AuthData.userId + "_"+ int.Parse(json["d"]["p1"]["u"]) + "_" + int.Parse(json["d"]["p2"]["u"]));
+        Debug.Log(DataAuth.AuthData.userId + "_" + int.Parse(json["d"]["p1"]["u"]) + "_" + int.Parse(json["d"]["p2"]["u"]));
         bet = int.Parse(json["d"]["t"]);
         WSClientHandler.SubmitShip(roomId, player.ships);
         GameData.Opponent = int.Parse(json["d"]["p1"]["u"]) == DataAuth.AuthData.userId ? ProfileData.FromJsonOpponent(GameData.Opponent, json["d"]["p2"]["p"]) : ProfileData.FromJsonOpponent(GameData.Opponent, json["d"]["p1"]["p"]);
@@ -420,7 +420,7 @@ public class CoreGame : SingletonMono<CoreGame>
         Instance.opponent.battleFieldSprite.sprite = SpriteFactory.BattleFields[GameData.Opponent.BattleField.Data];
         Instance.opponentProfile.UpdateUIs();
         CoinVFX.CoinVfx(Instance.searchUI.tresure.transform, Instance.searchUI.avatar1.transform.position, Instance.searchUI.avatar2.transform.position);
-        AnalyticsHelper.SpendVirtualCurrency(PConsumableType.BERRY.ToString().ToLower(),"classic" + bet.ToString());
+        AnalyticsHelper.SpendVirtualCurrency(PConsumableType.BERRY.ToString().ToLower(), "classic" + bet.ToString());
     }
     void GameStart(JSONNode json)
     {
@@ -639,9 +639,10 @@ public class CoreGame : SingletonMono<CoreGame>
         Instance.opponent.battleFieldSprite.sprite = SpriteFactory.BattleFields[GameData.Opponent.BattleField.Data];
         for (int i = 0; i < data["s"].Count; i++)
         {
-            Ship ship = Instance.shipsPlayer.Find((ship) => { 
+            Ship ship = Instance.shipsPlayer.Find((ship) =>
+            {
                 return ship.poses.Count == int.Parse(data["s"][i][0]) + 1
-                && !Instance.player.ships.Contains(ship); 
+                && !Instance.player.ships.Contains(ship);
             });
             ship.board = Instance.player;
             ship.FromJson(data["s"][i]);
@@ -657,7 +658,7 @@ public class CoreGame : SingletonMono<CoreGame>
             ship.FromJson(data["d"][i]);
             ship.BeingDestroyed();
         }
-        JSONNode boardPlayer; 
+        JSONNode boardPlayer;
         JSONNode boardOpponent;
         if (int.Parse(data["p1"]["u"]) == DataAuth.AuthData.userId)
         {
@@ -698,7 +699,7 @@ public class CoreGame : SingletonMono<CoreGame>
                 }
             }
         }
-        
+
         bet = int.Parse(data["t"]);
         roomId = int.Parse(data["r"]);
         playerChair = int.Parse(data["p1"]["u"]) == DataAuth.AuthData.userId ? int.Parse(data["p1"]["c"]) : int.Parse(data["p2"]["c"]);
@@ -716,7 +717,6 @@ public class CoreGame : SingletonMono<CoreGame>
         Instance.rematchChatB.transform.parent.gameObject.SetActive(true);
         Instance.rematchChatB.text = "I WANT TO PLAY AGAINNN";
         Instance.buttonRematch.GetComponentInChildren<TextMeshProUGUI>().text = "Ready";
-        Analytics.Log("rematch", new List<KeyValuePair<string, object>>());
     }
     void AcceptRematch(JSONNode data)
     {

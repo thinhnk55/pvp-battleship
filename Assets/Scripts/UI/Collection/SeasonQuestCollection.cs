@@ -32,11 +32,11 @@ public class SeasonQuestCollection : CardCollectionBase<QuestInfo>
                 Require = GameData.RoyalPass.SeasonQuests[i].Require,
                 Progress = GameData.RoyalPass.SeasonQuestsProgress[i],
                 Reward = GameData.RoyalPass.SeasonQuests[i].Reward,
-                Description = RoyalPass.GetDescription(GameData.RoyalPass.SeasonQuests[i].Type, GameData.RoyalPass.SeasonQuests[i].Require),
+                Description = RoyalPass.GetDescription((StatisticType)GameData.RoyalPass.SeasonQuests[i].Type, GameData.RoyalPass.SeasonQuests[i].Require),
                 Obtained = GameData.RoyalPass.SeasonQuestsObtained.Data.Contains(i),
                 OnCollect = (info) =>
                 {
-                    if (GameData.RoyalPass.SeasonQuestsProgress[_i] > GameData.RoyalPass.SeasonQuests[_i].Require)
+                    if (GameData.RoyalPass.SeasonQuestsProgress[_i] >= GameData.RoyalPass.SeasonQuests[_i].Require)
                     {
                         WSClientHandler.SeasonQuestReward(info.Id);
                     }
