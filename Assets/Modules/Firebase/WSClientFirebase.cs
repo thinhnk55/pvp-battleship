@@ -15,6 +15,7 @@ namespace FirebaseIntegration
             {
                 Messenger.AddListener<MaxSdkBase.AdInfo>(GameEvent.REWARD_ADS_INFO, AnalyticsHelper.WatchAds);
                 ServerMessenger.AddListener<JSONNode>(ServerResponse._FIREBASE_ASK_UPDATE_TOKEN, FirebaseAskForUpdateToken);
+                GetTokenCloudMessage();
             };
 
             WSClient.Instance.OnDisconnect += () =>
@@ -38,13 +39,32 @@ namespace FirebaseIntegration
             }
         }
 
-        public static void FirebaseUpdateToken(string token)
+        public static void FirebaseUpdateToken(string tokenCloudMessage)
         {
+            Debug.Log("UpdateToken");
             new JSONClass()
+            {
+                { "id", ServerRequest._FIREBASE_UPDATE_TOKEN.ToJson() },
+                { "token", tokenCloudMessage}
+            }.RequestServer();
+        }
+
+        public static async void GetTokenCloudMessage()
         {
-            { "id", ServerRequest._FIREBASE_UPDATE_TOKEN.ToJson() },
-            { "token", token}
-        }.RequestServer();
+            var task = FirebaseMessaging.GetTokenAsync();
+
+            await task;
+
+            if (task.IsCompleted)
+            {
+                Debug.Log(task.Result);
+                if (string.Equals(FirebaseData.TokenCloudMessage, task.Result))
+                {
+                    return;
+                }
+
+                FirebaseUpdateToken(task.Result);
+            }
         }
         #endregion
     }

@@ -29,7 +29,7 @@ namespace FirebaseIntegration
                     //FirebaseAnalytics.id
                     //adInfo.
                     new KeyValuePair<string, object>(Firebase.Analytics.FirebaseAnalytics.ParameterAdPlatform, "AppLovin"),
-                    new KeyValuePair<string, object>(Firebase.Analytics.FirebaseAnalytics.ParameterAdNetworkClickID, adInfo.NetworkName),
+                    new KeyValuePair<string, object>(Firebase.Analytics.FirebaseAnalytics.ParameterAdSource, adInfo.NetworkName),
                     new KeyValuePair<string, object>(Firebase.Analytics.FirebaseAnalytics.ParameterAdUnitName, adInfo.AdUnitIdentifier),
                     new KeyValuePair<string, object>(Firebase.Analytics.FirebaseAnalytics.ParameterAdFormat, adInfo.AdFormat),
                     new KeyValuePair<string, object>(Firebase.Analytics.FirebaseAnalytics.ParameterValue, adInfo.Revenue),
