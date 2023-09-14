@@ -5,18 +5,6 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum RoyalPassNormalQuestType
-{
-    SHIP_DESTROY = 0,
-    PLAY_COUNT = 14,
-    SHIP_1_DESTROY = 5,
-    SHIP_2_DESTROY = 6,
-    SHIP_3_DESTROY = 7,
-    SHIP_4_DESTROY = 8,
-    WIN_COUNT = 2,
-    LUCKY_SHOT_COUNT = 15,
-    DESTROY_SHIP_CONSECUTIVE_2 = 16,
-}
 public enum RoyalPassSeasonQuestType
 {
     WIN_COUNT = 2,
@@ -237,9 +225,9 @@ public class RoyalPass
                         {
                             currentIndexQuestChange = i;
                             if (o[currentIndexQuestChange] > 0)
-                                StatisticTracker.RemoveListenerOnProgress((StatisticType)Enum.GetValues(typeof(RoyalPassNormalQuestType)).GetValue(o[currentIndexQuestChange]), OnChangeQuestProgress);
+                                StatisticTracker.RemoveListenerOnProgress((StatisticType)Enum.GetValues(typeof(RoyalPassQuestType)).GetValue(o[currentIndexQuestChange]), OnChangeQuestProgress);
                             if (n[currentIndexQuestChange] > 0)
-                                StatisticTracker.AddListenerOnProgress((StatisticType)Enum.GetValues(typeof(RoyalPassNormalQuestType)).GetValue(n[currentIndexQuestChange]), OnChangeQuestProgress);
+                                StatisticTracker.AddListenerOnProgress((StatisticType)Enum.GetValues(typeof(RoyalPassQuestType)).GetValue(n[currentIndexQuestChange]), OnChangeQuestProgress);
                         }
                     }
                 };
@@ -248,10 +236,11 @@ public class RoyalPass
                     int _i = i;
                     royalPass.CurrentQuests.Data[i] = json["d"]["q"][i].AsInt;
                     royalPass.CurrentQuestsProgress[i] = json["d"]["p"][i].AsInt;
-                    StatisticTracker.RemoveAllListenerOnProgress((StatisticType)Enum.GetValues(typeof(RoyalPassNormalQuestType)).GetValue(royalPass.CurrentQuests.Data[_i]));
-                    Debug.Log((StatisticType)Enum.GetValues(typeof(RoyalPassNormalQuestType)).GetValue(royalPass.CurrentQuests.Data[_i]));
-                    Debug.Log(Enum.GetValues(typeof(RoyalPassNormalQuestType)).GetValue(royalPass.CurrentQuests.Data[_i]));
-                    StatisticTracker.AddListenerOnProgress((StatisticType)Enum.GetValues(typeof(RoyalPassNormalQuestType)).GetValue(royalPass.CurrentQuests.Data[_i]), (o, n) =>
+                    StatisticTracker.RemoveAllListenerOnProgress((StatisticType)Enum.GetValues(typeof(RoyalPassQuestType)).GetValue(royalPass.CurrentQuests.Data[_i]));
+                    Debug.Log((StatisticType)Enum.GetValues(typeof(RoyalPassQuestType)).GetValue(royalPass.CurrentQuests.Data[_i]));
+                    Debug.Log(Enum.GetValues(typeof(RoyalPassQuestType)).GetValue(royalPass.CurrentQuests.Data[_i]));
+                    Debug.Log(royalPass.CurrentQuests.Data[_i]);
+                    StatisticTracker.AddListenerOnProgress((StatisticType)Enum.GetValues(typeof(RoyalPassQuestType)).GetValue(royalPass.CurrentQuests.Data[_i]), (o, n) =>
                         GameData.RoyalPass.CurrentQuestsProgress[_i] += (n - o));
                 }
 

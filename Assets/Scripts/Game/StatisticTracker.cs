@@ -164,6 +164,7 @@ public static class StatisticTracker
         }
         else
         {
+            CoreGame.Instance.consecutiveKill = 0;
         }
         Debug.Log("Current Consecutive " + CoreGame.Instance.consecutiveKill);
 
