@@ -162,7 +162,6 @@ public class CoreGame : SingletonMono<CoreGame>
     }
     protected override void OnDestroy()
     {
-        rematch = false;
         AudioHelper.StopMusic();
         LeanTouch.OnFingerUp -= Instance.opponent.BeingAttacked;
         LeanTouch.OnFingerUpdate -= Instance.opponent.SelectingTarget;
@@ -571,7 +570,7 @@ public class CoreGame : SingletonMono<CoreGame>
     }
     void EnemyOutGame(JSONNode json)
     {
-        Instance.buttonRematch.GetComponent<Image>().color = Color.gray;
+        Instance.buttonRematch.GetComponent<Image>().sprite = SpriteFactory.DisableButton;
         Instance.buttonRematch.enabled = false;
         if (rematch)
         {

@@ -200,7 +200,7 @@ public class AchievementCard : CardBase<AchievementInfo>
                     Collection.SelectedCard = this;
             });
         }
-        if (OnClick == null || Button.onClick == null)
+        if (OnClick == null || (Button != null && Button.onClick == null))
         {
             gameObject.SetChildrenRecursively<Image>((img) =>
             {

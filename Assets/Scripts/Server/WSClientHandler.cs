@@ -150,6 +150,7 @@ public class WSClientHandler : Singleton<WSClientHandler>
         Timer<Gift>.Instance.BeginPoint = data["d"]["a"]["d"]["t"].AsLong.NowFrom0001From1970();
         Timer<RankCollection>.Instance.TriggerInterval_Sec = GameData.RankReceiveCoolDown;
         GameData.Starter = data["d"]["a"]["s"].AsInt == 1;
+        GameData.StarterShow = false;
         GameData.ProgressGift = data["d"]["a"]["d"]["i"].AsInt;
 
     }

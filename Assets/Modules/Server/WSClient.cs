@@ -60,6 +60,7 @@ namespace Server
                 {
                     Debug.LogError(e.ToString());
                 }
+                Instance.Disconnect(true);
                 Messenger.Broadcast(GameEvent.LostConnection);
                 throw;
             }
