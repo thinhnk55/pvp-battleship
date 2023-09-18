@@ -67,6 +67,7 @@ public class CoreGame : SingletonMono<CoreGame>
     static float counterRematch;
     float currentCounterRematch;
     [SerializeField] GameObject btnBackPreGame;
+    [SerializeField] GameObject btnBackSearchGame;
     [SerializeField] GameObject btnBattle;
     [SerializeField] GameObject btnReady;
     [SerializeField] TextMeshProUGUI rematchChatA;
@@ -262,6 +263,10 @@ public class CoreGame : SingletonMono<CoreGame>
     Tween searchTween;
     void StartSearch()
     {
+        if (GameData.Tutorial[2] == 0)
+        {
+            btnBackSearchGame.SetActive(false);
+        }
         Instance.opponent.gameObject.SetActive(true);
         Instance.preUI.SetActive(false);
         Instance.searchUI.gameObject.SetActive(true);

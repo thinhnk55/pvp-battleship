@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44402242, g: 0.49316543, b: 0.5722324, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -7603,6 +7603,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Resource
       objectReference: {fileID: 0}
+    - target: {fileID: 3635361877240167242, guid: ea55ad9ee7673b74a9c9adf0daf1236f, type: 3}
+      propertyPath: tab
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7997910730092576821, guid: ea55ad9ee7673b74a9c9adf0daf1236f, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -7694,6 +7698,10 @@ PrefabInstance:
     - target: {fileID: 7997910730092576821, guid: ea55ad9ee7673b74a9c9adf0daf1236f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8081428407456267645, guid: ea55ad9ee7673b74a9c9adf0daf1236f, type: 3}
+      propertyPath: tab
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

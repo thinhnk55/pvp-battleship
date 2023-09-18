@@ -27565,9 +27565,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1704242413}
     m_Modifications:
+    - target: {fileID: 2048415563504812584, guid: 33c887efe9e2d4f4792183fce278ad1a, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 2028
+      objectReference: {fileID: 0}
     - target: {fileID: 2260847644794012546, guid: 33c887efe9e2d4f4792183fce278ad1a, type: 3}
       propertyPath: m_Name
       value: Head
+      objectReference: {fileID: 0}
+    - target: {fileID: 3444452445807705047, guid: 33c887efe9e2d4f4792183fce278ad1a, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6399308537757886332, guid: 33c887efe9e2d4f4792183fce278ad1a, type: 3}
       propertyPath: m_Sprite
@@ -80946,9 +80954,25 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 85143335185214239}
     m_Modifications:
+    - target: {fileID: 2048415563504812584, guid: 33c887efe9e2d4f4792183fce278ad1a, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2048415563504812584, guid: 33c887efe9e2d4f4792183fce278ad1a, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2048415563504812584, guid: 33c887efe9e2d4f4792183fce278ad1a, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -131
+      objectReference: {fileID: 0}
     - target: {fileID: 2260847644794012546, guid: 33c887efe9e2d4f4792183fce278ad1a, type: 3}
       propertyPath: m_Name
       value: Head
+      objectReference: {fileID: 0}
+    - target: {fileID: 3444452445807705047, guid: 33c887efe9e2d4f4792183fce278ad1a, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6775675615939780166, guid: 33c887efe9e2d4f4792183fce278ad1a, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -81060,6 +81084,11 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 7521171110508875904, guid: 33c887efe9e2d4f4792183fce278ad1a, type: 3}
   m_PrefabInstance: {fileID: 1703799315}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1703799317 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8681244261241774032, guid: 33c887efe9e2d4f4792183fce278ad1a, type: 3}
+  m_PrefabInstance: {fileID: 1703799315}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1704242412
 GameObject:
   m_ObjectHideFlags: 0
@@ -81078,7 +81107,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1704242413
 RectTransform:
   m_ObjectHideFlags: 0
@@ -105555,6 +105584,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dontDestroyOnLoad: 0
+  missturn: 0
   player: {fileID: 9189260556183900041}
   opponent: {fileID: 9189260556100836970}
   opponentProfile: {fileID: 2032677512}
@@ -105573,6 +105603,7 @@ MonoBehaviour:
   turnImage: {fileID: 85143336208364161}
   counterRematchObj: {fileID: 38294325}
   btnBackPreGame: {fileID: 85143336264282274}
+  btnBackSearchGame: {fileID: 1703799317}
   btnBattle: {fileID: 85143335780750008}
   btnReady: {fileID: 1675036708}
   rematchChatA: {fileID: 1369121953}

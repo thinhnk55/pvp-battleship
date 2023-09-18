@@ -52,7 +52,23 @@ namespace Framework
         }
         public void Activate(int i)
         {
-            activeIndex.Data = i;
+            if (tabs[i].gameObject.activeSelf)
+            {
+                activeIndex.Data = i;
+            }
+            else
+            {
+                Activate(activeIndex.Data = (i + 1) % tabs.Count);
+            }
+        }
+        public virtual void DeleteTab(int i)
+        {
+            if (activeIndex.Data == i)
+            {
+                activeIndex.Data = (i + 1) % tabs.Count;
+                activeContent.SetActive(true);
+            }
+            tabs[i].gameObject.SetActive(false);
         }
     }
 }
