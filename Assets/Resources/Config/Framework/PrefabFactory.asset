@@ -50,7 +50,7 @@ MonoBehaviour:
   popupTuTorBet: {fileID: 1987224560040909618, guid: 0f5cd3cf69a6fd6428e27dd908150313, type: 3}
   popupTuTorFormation: {fileID: 1987224560040909618, guid: d0f149aa7dfd4a14bb97e29ecbae12c5, type: 3}
   popupTuTorPlay: {fileID: 1987224560040909618, guid: 8b09a3619a568f647b11c936b18d59eb, type: 3}
-  popupReceiveGift: {fileID: 2833365651636579034, guid: 38f6ee7fb566d35458223018b8f8e077, type: 3}
+  popupReceiveGift: {fileID: 928266696004652152, guid: a564745a4a9a9b44d9da3171e312988c, type: 3}
   popupLossPVE: {fileID: 1263694249909426757, guid: 9071365902ece6049a08bb8582d34287, type: 3}
   popupRetreatPVE: {fileID: 1263694249909426757, guid: 795bb932f44b65e4c8804e670559839f, type: 3}
   popupResourcePVE: {fileID: 1263694249909426757, guid: 4af637b9acc40ef478a748c0aa3f35ce, type: 3}
