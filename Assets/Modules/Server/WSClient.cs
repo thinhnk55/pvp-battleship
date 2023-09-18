@@ -16,6 +16,8 @@ namespace Server
         public event Callback OnLoginInOtherDevice;
         public event Callback OnAdminKick;
         public WebSocket ws;
+
+
         public void Connect(int userId, string token)
         {
             ServerMessenger.AddListener<JSONNode>(ServerResponse.CheckLoginConnection, CheckLoginConnection);
@@ -64,9 +66,9 @@ namespace Server
         }
         public void OnMessage(object sender, MessageEventArgs e)
         {
-            Debug.Log($"<color=yellow>{e.Data}</color>");
             MainThreadDispatcher.ExecuteOnMainThread(() =>
             {
+                Debug.Log($"<color=yellow>{e.Data}</color>");
                 JSONNode idJson = JSON.Parse(e.Data)["id"];
                 if (idJson != null)
                 {
