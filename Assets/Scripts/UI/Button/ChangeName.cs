@@ -1,10 +1,7 @@
 using Framework;
 using SimpleJSON;
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
-     using UnityEngine;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class ChangeName : MonoBehaviour
@@ -15,6 +12,7 @@ public class ChangeName : MonoBehaviour
     [SerializeField] PopupBehaviour popup;
     void Start()
     {
+        inputField.ActivateInputField();
         button.onClick.AddListener(() =>
         {
             if (IsValid(inputField.text, out string message))
@@ -54,7 +52,7 @@ public class ChangeName : MonoBehaviour
             message = "Please fill your name";
             return false;
         }
-        else if (text.Length > 16 || text.Length <=3)
+        else if (text.Length > 16 || text.Length <= 3)
         {
             message = "Name too short or too long";
             return false;
@@ -67,5 +65,5 @@ public class ChangeName : MonoBehaviour
         message = "";
         return true;
     }
-  
+
 }

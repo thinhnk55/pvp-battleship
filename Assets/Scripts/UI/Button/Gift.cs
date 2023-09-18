@@ -17,34 +17,46 @@ public class Gift : CacheMonoBehaviour
     [SerializeField] GiftReminder reminder;
     void Start()
     {
-        progress.text = $"{GameData.ProgressGift}/5";
+        progress?.SetText($"{GameData.ProgressGift}/5");
         OnGetAdsGift += GetAdsGift;
         Timer<Gift>.Instance.OnTrigger += OnTrigger;
         Timer<Gift>.Instance.OnElapse += OnElapse;
         ServerMessenger.AddListener<JSONNode>(ServerResponse._GIFT, GetGift);
         if (GameData.ProgressGift == 5)
         {
-            smallGiftBar.SetActive(false);
-            bigGiftBar.SetActive(true);
+            if (smallGiftBar)
+            {
+                smallGiftBar.SetActive(false);
+            }
+            if (bigGiftBar)
+            {
+                bigGiftBar.SetActive(true);
+            }
         }
         else
         {
-            smallGiftBar.SetActive(true);
-            bigGiftBar.SetActive(false);
-            progress.text = $"{GameData.ProgressGift}/5";
+            if (smallGiftBar)
+            {
+                smallGiftBar.SetActive(true);
+            }
+            if (bigGiftBar)
+            {
+                bigGiftBar.SetActive(false);
+            }
+            progress?.SetText($"{GameData.ProgressGift}/5");
         }
         if (Timer<Gift>.Instance.TriggersFromBegin >= 1)
         {
             countDown.text = "Collect";
-            obtain.onClick.AddListener(() =>
-            {
-                CreateConfirmReceiveGiftPopup();
-            });
         }
         else
         {
             countDown.text = Timer<Gift>.Instance.RemainTime_Sec.Hour_Minute_Second_1();
         }
+        obtain.onClick.AddListener(() =>
+        {
+            CreateConfirmReceiveGiftPopup();
+        });
     }
     private void OnDestroy()
     {
@@ -56,11 +68,6 @@ public class Gift : CacheMonoBehaviour
     private void OnTrigger()
     {
         countDown.text = Timer<Gift>.Instance.TriggersFromBegin >= 1 ? "Collect" : Timer<Gift>.Instance.RemainTime_Sec.Hour_Minute_Second_1();
-        obtain.onClick.RemoveAllListeners();
-        obtain.onClick.AddListener(() =>
-        {
-            CreateConfirmReceiveGiftPopup();
-        });
         reminder.UpdateObject();
     }
 
@@ -92,7 +99,6 @@ public class Gift : CacheMonoBehaviour
     {
         PConsumableType.BERRY.SetValue(int.Parse(json["d"]["g"]));
         CoinVFX.CoinVfx(resource, Position, Position);
-        obtain.onClick.RemoveAllListeners();
         Timer<Gift>.Instance.BeginPoint = DateTime.UtcNow.Ticks;
         GameData.ProgressGift++;
         if (GameData.ProgressGift == 5)
@@ -113,7 +119,6 @@ public class Gift : CacheMonoBehaviour
     {
         PConsumableType.BERRY.AddValue(int.Parse(data["d"]["x"]["g"]));
         CoinVFX.CoinVfx(resource, Position, Position);
-        obtain.onClick.RemoveAllListeners();
         Timer<Gift>.Instance.BeginPoint = DateTime.UtcNow.Ticks;
         GameData.ProgressGift += int.Parse(data["d"]["x"]["i"]) + 1;
     }

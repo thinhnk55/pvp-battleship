@@ -29,6 +29,7 @@ public class CoreGame : SingletonMono<CoreGame>
     public static bool rematch = false;
     public static int roomId;
     public static int playerChair;
+    public int missturn;
 
     public static List<List<Vector2Int>> shipConfigs = new List<List<Vector2Int>>()
     {
@@ -162,7 +163,6 @@ public class CoreGame : SingletonMono<CoreGame>
     }
     protected override void OnDestroy()
     {
-        rematch = false;
         AudioHelper.StopMusic();
         LeanTouch.OnFingerUp -= Instance.opponent.BeingAttacked;
         LeanTouch.OnFingerUpdate -= Instance.opponent.SelectingTarget;
@@ -522,6 +522,11 @@ public class CoreGame : SingletonMono<CoreGame>
     {
         Instance.playerTurn = !Instance.playerTurn;
         Instance.stateMachine.CurrentState = GameState.Turn;
+        missturn++;
+        if (missturn == 2)
+        {
+            PopupHelper.Create(PrefabFactory.PopupMissTurn);
+        }
     }
     void EndGame(JSONNode json)
     {
@@ -571,7 +576,7 @@ public class CoreGame : SingletonMono<CoreGame>
     }
     void EnemyOutGame(JSONNode json)
     {
-        Instance.buttonRematch.GetComponent<Image>().color = Color.gray;
+        Instance.buttonRematch.GetComponent<Image>().sprite = SpriteFactory.DisableButton;
         Instance.buttonRematch.enabled = false;
         if (rematch)
         {

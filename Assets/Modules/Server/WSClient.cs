@@ -16,6 +16,8 @@ namespace Server
         public event Callback OnLoginInOtherDevice;
         public event Callback OnAdminKick;
         public WebSocket ws;
+
+
         public void Connect(int userId, string token)
         {
             ServerMessenger.AddListener<JSONNode>(ServerResponse.CheckLoginConnection, CheckLoginConnection);
@@ -43,27 +45,20 @@ namespace Server
             ws.Close();
             WSPingPong.Destroy();
         }
-        public void Ping()
-        {
-            ws.Send("{\"id\":2}");
-        }
 
         public void Send(JSONNode json)
         {
             try
             {
                 ws.Send(json.ToString());
+                Debug.Log($"<color=#FFA500>{json}</color>");
             }
             catch (Exception e)
             {
-                if (e != null)
-                {
-                    Debug.LogError(e.ToString());
-                }
                 Messenger.Broadcast(GameEvent.LostConnection);
-                throw;
+                Instance.Disconnect(true);
+                throw e;
             }
-            Debug.Log($"<color=#FFA500>{json}</color>");
         }
         public void OnOpen(object sender, EventArgs e)
         {
@@ -71,9 +66,9 @@ namespace Server
         }
         public void OnMessage(object sender, MessageEventArgs e)
         {
-            Debug.Log($"<color=yellow>{e.Data}</color>");
             MainThreadDispatcher.ExecuteOnMainThread(() =>
             {
+                Debug.Log($"<color=yellow>{e.Data}</color>");
                 JSONNode idJson = JSON.Parse(e.Data)["id"];
                 if (idJson != null)
                 {

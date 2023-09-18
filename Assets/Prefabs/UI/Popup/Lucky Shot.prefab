@@ -3889,7 +3889,7 @@ MonoBehaviour:
   rocketRoot: {fileID: 4556426315817154568}
   rocketPrefab: {fileID: 2203868203271391617, guid: a6b203f875bffe849be0a90d55f561b1, type: 3}
   shotRoot: {fileID: 1579315796305608966}
-  resourceUI: {fileID: 8502610901330842300}
+  resourceUI: {fileID: 6266355991497853207}
   countDown: {fileID: 4273856656153017910}
   countDownSlider: {fileID: 4816795581315383745}
   emptyRocket: {fileID: 21300000, guid: 1213f6b7d32123448850083ee415415d, type: 3}
@@ -4405,11 +4405,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   i: 1
---- !u!1 &8502610901330842300 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2041263245140987187, guid: 33c887efe9e2d4f4792183fce278ad1a, type: 3}
-  m_PrefabInstance: {fileID: 7614269256175247247}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8682915560419165756
 PrefabInstance:
   m_ObjectHideFlags: 0
