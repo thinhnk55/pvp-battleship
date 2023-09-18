@@ -43,28 +43,20 @@ namespace Server
             ws.Close();
             WSPingPong.Destroy();
         }
-        public void Ping()
-        {
-            ws.Send("{\"id\":2}");
-        }
 
         public void Send(JSONNode json)
         {
             try
             {
                 ws.Send(json.ToString());
+                Debug.Log($"<color=#FFA500>{json}</color>");
             }
             catch (Exception e)
             {
-                if (e != null)
-                {
-                    Debug.LogError(e.ToString());
-                }
-                Instance.Disconnect(true);
                 Messenger.Broadcast(GameEvent.LostConnection);
-                throw;
+                Instance.Disconnect(true);
+                throw e;
             }
-            Debug.Log($"<color=#FFA500>{json}</color>");
         }
         public void OnOpen(object sender, EventArgs e)
         {

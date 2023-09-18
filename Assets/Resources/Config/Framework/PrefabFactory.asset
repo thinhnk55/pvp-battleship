@@ -33,7 +33,7 @@ MonoBehaviour:
   - {fileID: 382335289173443890, guid: 50467e36a705d02449ff78aaa71d3330, type: 3}
   plane: {fileID: 6600590414406574911, guid: 40ce0eee36307e346b29abaa9a7d766d, type: 3}
   missle: {fileID: 7686018857752636236, guid: 11f31e1d1a80eb44faa46b7919c00416, type: 3}
-  popupAchie: {fileID: 1323272560515455195, guid: a7eaf7b6752518c4b87a948e65dcff28, type: 3}
+  popupAchie: {fileID: 511421639699701364, guid: 645d239a64a3ab645979da31ec4451d6, type: 3}
   popupConfirm: {fileID: 1263694249909426757, guid: 037e100d5ef88104895e907dad0fa137, type: 3}
   popupOutOfResource: {fileID: 721933510132650832, guid: eae43ef42fb253e4eb67c922ad60de6f, type: 3}
   popupMessage: {fileID: 2654862994088543119, guid: df0ec6ec913783f4b9b9fcd4d3e02297, type: 3}
@@ -55,3 +55,4 @@ MonoBehaviour:
   popupRetreatPVE: {fileID: 1263694249909426757, guid: 795bb932f44b65e4c8804e670559839f, type: 3}
   popupResourcePVE: {fileID: 1263694249909426757, guid: 4af637b9acc40ef478a748c0aa3f35ce, type: 3}
   popupReceiveRewardCompletePVE: {fileID: 1263694249909426757, guid: 1903c63b61d0aad49902c3d11d88a822, type: 3}
+  popupMissTurn: {fileID: 3400952333942322712, guid: e90c1ccc4afd0784f8f5a1b6c6033feb, type: 3}

@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -17,6 +16,16 @@ namespace Framework
         {
             contents = new List<GameObject>();
             tabs = GetComponentsInChildren<Button>().ToList();
+            for (int i = 0; i < tabs.Count; i++)
+            {
+                int _i = i;
+                tabs[i].onClick.AddListener(() =>
+                {
+                    activeIndex.Data = _i;
+                });
+                InactiveTab(_i);
+            }
+
             for (int i = 0; i < rootContent.transform.childCount; i++)
             {
                 contents.Add(rootContent.transform.GetChild(i).gameObject);
@@ -28,14 +37,6 @@ namespace Framework
                 InactiveTab(oldIndex);
                 ActiveTab(newIndex);
             };
-            for (int i = 0; i < tabs.Count; i++)
-            {
-                int _i = i;
-                tabs[i].onClick.AddListener(() =>
-                {
-                    activeIndex.Data = _i;
-                });
-            }
 
             Activate(0);
         }

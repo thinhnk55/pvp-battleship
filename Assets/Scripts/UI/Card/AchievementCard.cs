@@ -191,6 +191,7 @@ public class AchievementCard : CardBase<AchievementInfo>
             if (info.Upgradable && info.Progress < info.AchivementUnits.GetClamp(info.Obtained).Task && info.IsPreview)
             {
                 Button.interactable = false;
+                Button.GetComponent<Image>().sprite = SpriteFactory.DisableButton;
             }
             Button.onClick.RemoveAllListeners();
             Button.onClick.AddListener(() =>
@@ -200,12 +201,13 @@ public class AchievementCard : CardBase<AchievementInfo>
                     Collection.SelectedCard = this;
             });
         }
-        if (OnClick == null || (Button != null && Button.onClick == null))
+        if (OnClick == null || Button.onClick == null)
         {
-            gameObject.SetChildrenRecursively<Image>((img) =>
-            {
-                img.color = Color.gray;
-            });
+            if (Button != null)
+                gameObject.SetChildrenRecursively<Image>((img) =>
+                {
+                    img.color = Color.gray;
+                });
         }
     }
 

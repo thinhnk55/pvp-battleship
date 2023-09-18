@@ -2,6 +2,8 @@
 {
     public enum ServerRequest
     {
+        Ping = 2,
+
         _CONFIG = 4002,
         _CHECK_RANK = 4003,
         _RANK_REWARD = 4004,
@@ -49,6 +51,7 @@
     {
         // Default
         CheckLoginConnection = 1,
+        Pong = 2,
         //---------
 
 
