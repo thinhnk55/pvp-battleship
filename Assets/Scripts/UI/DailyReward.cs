@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Reward : MonoBehaviour
+public class DailyReward : MonoBehaviour
 {
-    Color darkColor = Color.Lerp(Color.white, Color.black, 0.5f);
-    Color whiteColor = Color.white;
+    
 
     [SerializeField] Image imageBoard;
     [SerializeField] Image rewardCoin;
@@ -35,13 +34,13 @@ public class Reward : MonoBehaviour
     {
         if (received)
         {
-            imageBoard.color = darkColor;
-            rewardCoin.color = darkColor;
+            imageBoard.color = Color.Lerp(Color.white, Color.black, 0.5f); ;
+            rewardCoin.color = Color.Lerp(Color.white, Color.black, 0.5f); ;
         }
         else
         {
-            imageBoard.color = whiteColor;
-            rewardCoin.color = whiteColor;
+            imageBoard.color = Color.white;
+            rewardCoin.color = Color.white;
         }    
     }    
 }
