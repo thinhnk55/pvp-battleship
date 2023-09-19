@@ -97,7 +97,13 @@ public class Gift : CacheMonoBehaviour
 
     void GetGift(JSONNode json)
     {
-        if (json["e"].AsInt == 0)
+        if (json["e"].AsInt != 0)
+            return;
+        PConsumableType.BERRY.SetValue(int.Parse(json["d"]["g"]));
+        //CoinVFX.CoinVfx(resource, Position, Position);
+        Timer<Gift>.Instance.BeginPoint = DateTime.UtcNow.Ticks;
+        GameData.ProgressGift++;
+        if (GameData.ProgressGift == 5)
         {
             PConsumableType.BERRY.SetValue(int.Parse(json["d"]["g"]));
             if (resource)
