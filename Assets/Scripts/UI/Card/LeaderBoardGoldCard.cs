@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public struct LeaderBoardGoldInfo
 {
+    public int UserId;
     public int Order;
     public int Rank;
     public string UserName;
@@ -52,7 +53,7 @@ public class LeaderBoardGoldCard : CardBase<LeaderBoardGoldInfo>
         userName?.SetText(info.UserName);
         //cup =  info.Cup;
         spendingCount?.SetText(info.SpendingCount.ToString());
-        reward?.SetSprite(SpriteFactory.ResourceIcons[(int)PConsumableType.BERRY].sprites.GetClamp(info.Order));
+        reward?.SetSprite(SpriteFactory.ResourceIcons[(int)PConsumableType.BERRY].sprites[LeaderBoard.GetIconReward(info.Order)]);
 
 
     }

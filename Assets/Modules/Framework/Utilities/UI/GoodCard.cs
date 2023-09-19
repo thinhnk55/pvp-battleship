@@ -22,7 +22,7 @@ namespace Framework
             {
                 icon.sprite = SpriteFactory.ResourceIcons[info.Type].sprites.GetLoop((int)info.Value);
                 icon.SetNativeRatioFixedHeight();
-                value.text = "+1";
+                value?.SetText("+1");
                 BG?.SetSprite(SpriteFactory.RoyalPassOther);
             }
             else

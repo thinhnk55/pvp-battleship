@@ -82,6 +82,7 @@ public class AchievementCollection : CardCollectionBase<AchievementInfo>
 
     public void SetCardPreview(AchievementInfo info)
     {
+        SoundType.CLICK.PlaySound();
         AchievementInfo _info = info;
         if (info.Obtained < info.AchivementUnits.Length && info.AchivementUnits[info.Obtained].Task <= info.Progress)
         {

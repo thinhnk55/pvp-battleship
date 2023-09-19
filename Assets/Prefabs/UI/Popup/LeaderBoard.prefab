@@ -124,7 +124,7 @@ GameObject:
   - component: {fileID: 7042588968046907419}
   - component: {fileID: 8202206594517481685}
   m_Layer: 5
-  m_Name: Time (1)
+  m_Name: Reward
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1147,7 +1147,7 @@ GameObject:
   - component: {fileID: 3448941122667163099}
   - component: {fileID: 2068717704107993132}
   m_Layer: 5
-  m_Name: Time (2)
+  m_Name: Reward
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1330,7 +1330,7 @@ GameObject:
   - component: {fileID: 6090016273275015768}
   - component: {fileID: 3594392043269485885}
   m_Layer: 5
-  m_Name: Clock
+  m_Name: Reward
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1544,7 +1544,7 @@ GameObject:
   - component: {fileID: 8369971882277271137}
   - component: {fileID: 8573705939561643805}
   m_Layer: 5
-  m_Name: Clock
+  m_Name: Reward
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

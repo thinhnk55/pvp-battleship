@@ -108,7 +108,7 @@ public class WSClientHandler : Singleton<WSClientHandler>
                 if (Application.internetReachability == NetworkReachability.NotReachable)
                 {
                     SceneTransitionHelper.Load(ESceneName.PreHome);
-                    DOVirtual.DelayedCall(2, () => PopupReconnect());
+                    DOVirtual.DelayedCall(1.5f, () => PopupReconnect());
                 }
                 else
                 {
@@ -917,6 +917,7 @@ public class WSClientHandler : Singleton<WSClientHandler>
         {
             GameData.LeaderBoard.goldInfos.Add(new LeaderBoardGoldInfo()
             {
+                UserId = data["d"]["g"][i]["u"].AsInt,
                 Order = i,
                 Rank = data["d"]["g"][i]["e"].AsInt,
                 Reward = GameData.LeaderBoard.goldReward[i],
@@ -929,6 +930,7 @@ public class WSClientHandler : Singleton<WSClientHandler>
         {
             GameData.LeaderBoard.winInfos.Add(new LeaderBoardWinInfo()
             {
+                UserId = data["d"]["g"][i]["u"].AsInt,
                 Order = i,
                 Rank = data["d"]["g"][i]["e"].AsInt,
                 Reward = GameData.LeaderBoard.goldReward[i],

@@ -12,19 +12,21 @@ public class LeaderBoardWinCollection : CardCollectionBase<LeaderBoardWinInfo>
     {
         ServerMessenger.AddListener<JSONNode>(ServerResponse._LEADER_BOARD_DATA, WSClientHandler.LeaderBoardData);
         ServerMessenger.AddListener<JSONNode>(ServerResponse._LEADER_DATA, WSClientHandler.LeaderData);
-        WSClientHandler.LeaderBoardData();
-        WSClientHandler.LeaderData();
+        ServerMessenger.AddListener<JSONNode>(ServerResponse._LEADER_DATA, OnUpdate);
         receiveReward.gameObject.SetActive(GameData.LeaderBoard.rankWinPreviousAvailable);
         receiveReward.sprite = SpriteFactory.ResourceIcons[(int)PConsumableType.BERRY].sprites[LeaderBoard.GetIconReward(GameData.LeaderBoard.rankWinPrevious)];
     }
     private void OnEnable()
     {
-        UpdateUIs();
+        WSClientHandler.LeaderBoardData();
+        WSClientHandler.LeaderData();
     }
     private void OnDestroy()
     {
         ServerMessenger.RemoveListener<JSONNode>(ServerResponse._LEADER_BOARD_DATA, WSClientHandler.LeaderBoardData);
         ServerMessenger.RemoveListener<JSONNode>(ServerResponse._LEADER_DATA, WSClientHandler.LeaderData);
+        ServerMessenger.RemoveListener<JSONNode>(ServerResponse._LEADER_DATA, OnUpdate);
+
     }
     public override void UpdateUIs()
     {
@@ -34,18 +36,19 @@ public class LeaderBoardWinCollection : CardCollectionBase<LeaderBoardWinInfo>
         {
             for (int i = 0; i < GameData.LeaderBoard.winInfos.Count; i++)
             {
+                if (GameData.LeaderBoard.winInfos[i].UserId == GameData.Player.UserId)
+                {
+                    playerOrder = i;
+                }
                 winCountInfosList.Add(new LeaderBoardWinInfo
                 {
                     Order = i,
                     Rank = GameData.RankMilestone.GetMileStone(GameData.LeaderBoard.winInfos[i].Rank),
-                    UserName = GameData.LeaderBoard.winInfos[i].UserName,
+                    UserName = GameData.LeaderBoard.winInfos[i].UserId == GameData.Player.UserId ? GameData.Player.Username.Data : GameData.LeaderBoard.winInfos[i].UserName,
                     WinCount = GameData.LeaderBoard.winInfos[i].WinCount,
                     Reward = GameData.LeaderBoard.winInfos[i].Reward
                 });
-                if (GameData.LeaderBoard.winInfos[i].UserName == GameData.Player.Username.Data)
-                {
-                    playerOrder = i;
-                }
+
             }
 
         }
@@ -60,5 +63,8 @@ public class LeaderBoardWinCollection : CardCollectionBase<LeaderBoardWinInfo>
         BuildUIs(winCountInfosList);
 
     }
-
+    public void OnUpdate(JSONNode data)
+    {
+        UpdateUIs();
+    }
 }

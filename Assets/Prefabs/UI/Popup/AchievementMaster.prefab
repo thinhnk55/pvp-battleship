@@ -452,6 +452,7 @@ GameObject:
   - component: {fileID: 4027332502292344448}
   - component: {fileID: 3915242893269392805}
   - component: {fileID: 412077607154763240}
+  - component: {fileID: 1734845467530657821}
   m_Layer: 5
   m_Name: Achievements
   m_TagString: Untagged
@@ -562,6 +563,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1734845467530657821
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1771919674288149461}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c844f41006a8e5847be97a9b8fb3ae12, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1843143317825282801
 GameObject:
   m_ObjectHideFlags: 0
@@ -1820,6 +1833,7 @@ GameObject:
   - component: {fileID: 6509283350670933679}
   - component: {fileID: 1949436446307967023}
   - component: {fileID: 5209839399449209258}
+  - component: {fileID: 8667024916241930577}
   m_Layer: 5
   m_Name: MyAchievements
   m_TagString: Untagged
@@ -1930,6 +1944,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &8667024916241930577
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5680986933496983024}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c844f41006a8e5847be97a9b8fb3ae12, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5691496971151792485
 GameObject:
   m_ObjectHideFlags: 0

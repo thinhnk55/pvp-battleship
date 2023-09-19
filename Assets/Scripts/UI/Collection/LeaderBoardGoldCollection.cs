@@ -37,11 +37,15 @@ public class LeaderBoardGoldCollection : CardCollectionBase<LeaderBoardGoldInfo>
         {
             for (int i = 0; i < GameData.LeaderBoard.goldInfos.Count; i++)
             {
+                if (GameData.LeaderBoard.goldInfos[i].UserId == GameData.Player.UserId)
+                {
+                    playerOrder = i;
+                }
                 winCountInfosList.Add(new LeaderBoardGoldInfo
                 {
                     Order = i,
                     Rank = GameData.RankMilestone.GetMileStone(GameData.LeaderBoard.goldInfos[i].Rank),
-                    UserName = GameData.LeaderBoard.goldInfos[i].UserName,
+                    UserName = GameData.LeaderBoard.goldInfos[i].UserId == GameData.Player.UserId ? GameData.Player.Username.Data : GameData.LeaderBoard.goldInfos[i].UserName,
                     SpendingCount = GameData.LeaderBoard.goldInfos[i].SpendingCount,
                     Reward = GameData.LeaderBoard.goldInfos[i].Reward
                 });
@@ -53,8 +57,8 @@ public class LeaderBoardGoldCollection : CardCollectionBase<LeaderBoardGoldInfo>
             Order = playerOrder,
             Rank = GameData.Player.Rank,
             UserName = GameData.Player.Username.Data,
-            SpendingCount = GameData.LeaderBoard.win,
-            Reward = GameData.LeaderBoard.goldReward.GetClamp(playerOrder)
+            SpendingCount = GameData.LeaderBoard.goldSpend,
+            Reward = GameData.LeaderBoard.goldReward.GetClamp(playerOrder),
         });
         BuildUIs(winCountInfosList);
     }
