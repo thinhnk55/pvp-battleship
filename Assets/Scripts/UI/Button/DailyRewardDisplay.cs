@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static MaxSdkBase;
 
 
 public class DailyRewardDisplay : MonoBehaviour
@@ -21,6 +22,7 @@ public class DailyRewardDisplay : MonoBehaviour
         Timer<Gift>.Instance.OnTrigger += OnTrigger;
         Timer<Gift>.Instance.OnElapse += OnElapse;
 
+        SetAmount();
         SetStatusRewards(0);
         StartCoroutine(DisplayRewards(0f));
         claim.onClick.AddListener(OnClickClaimBt);
@@ -94,6 +96,16 @@ public class DailyRewardDisplay : MonoBehaviour
         resource.SetActive(false);
 
     }
+
+    public void SetAmount()
+    {
+
+        foreach (var reward in rewards)
+        {
+            reward.amount.text = "x" + GameData.GiftConfig[reward.id].ToString();
+            //Debug.Log($"GameData.GiftConfig[{reward.id}] = {GameData.GiftConfig[reward.id]} ");
+        }
+    }    
 
     private void OnTrigger()
     {

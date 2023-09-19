@@ -455,6 +455,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f182a881e5c6b642ac0b433ec33d076, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  amount: {fileID: 6359965742555224443}
   imageBoard: {fileID: 5021665505662452125}
   rewardCoin: {fileID: 1306077047117041466}
   id: 0
@@ -1910,6 +1911,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f182a881e5c6b642ac0b433ec33d076, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  amount: {fileID: 3668449453937587933}
   imageBoard: {fileID: 577465557508148999}
   rewardCoin: {fileID: 6040769369231140750}
   id: 4
@@ -2339,6 +2341,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f182a881e5c6b642ac0b433ec33d076, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  amount: {fileID: 2634313236163692284}
   imageBoard: {fileID: 5754983579757427057}
   rewardCoin: {fileID: 1508984871004693757}
   id: 1
@@ -3035,6 +3038,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f182a881e5c6b642ac0b433ec33d076, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  amount: {fileID: 1116580193255561961}
   imageBoard: {fileID: 2769551536429302809}
   rewardCoin: {fileID: 8793434739730952387}
   id: 5
@@ -3668,7 +3672,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: x100
+  m_text: x10
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 67daf692a0720484389a461dd818fd69, type: 2}
   m_sharedMaterial: {fileID: -6081805586234899183, guid: 67daf692a0720484389a461dd818fd69, type: 2}
@@ -4231,6 +4235,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f182a881e5c6b642ac0b433ec33d076, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  amount: {fileID: 5979291424887963360}
   imageBoard: {fileID: 4097761467948348783}
   rewardCoin: {fileID: 958717831299440534}
   id: 3
@@ -4797,6 +4802,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f182a881e5c6b642ac0b433ec33d076, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  amount: {fileID: 7332164963215377887}
   imageBoard: {fileID: 6277934073124936315}
   rewardCoin: {fileID: 3517678225022054271}
   id: 2
