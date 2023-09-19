@@ -1,6 +1,7 @@
 using Framework;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,18 +11,30 @@ public class DailyRewardDisplay : MonoBehaviour
     [SerializeField] List<DailyReward> rewards = new();
 
     [SerializeField] GameObject resource;
-
+    [SerializeField] TextMeshProUGUI countDown;
     [SerializeField] Button claim;
 
-    [SerializeField] int preValue;
+    
 
     private void Start()
     {
-        preValue = GameData.ProgressGift;
+        Timer<Gift>.Instance.OnTrigger += OnTrigger;
+        Timer<Gift>.Instance.OnElapse += OnElapse;
+
         SetStatusRewards(0);
         StartCoroutine(DisplayRewards(0f));
         claim.onClick.AddListener(OnClickClaimBt);
         Debug.Log("Start" + GameData.ProgressGift);
+
+
+        if (Timer<Gift>.Instance.TriggersFromBegin >= 1)
+        {
+            countDown.text = "Collect";
+        }
+        else
+        {
+            countDown.text = Timer<Gift>.Instance.RemainTime_Sec.Hour_Minute_Second_1();
+        }
     }
 
     public void OnClickClaimBt()
@@ -80,5 +93,16 @@ public class DailyRewardDisplay : MonoBehaviour
         yield return new WaitForSeconds(1.5f);
         resource.SetActive(false);
 
+    }
+
+    private void OnTrigger()
+    {
+        countDown.text = Timer<Gift>.Instance.TriggersFromBegin >= 1 ? "Collect" :"next reward: " +Timer<Gift>.Instance.RemainTime_Sec.Hour_Minute_Second_1();
+        //reminder.UpdateObject();
+    }
+
+    private void OnElapse()
+    {
+        countDown.text = Timer<Gift>.Instance.TriggersFromBegin >= 1 ? "Collect" : "next reward: " + Timer<Gift>.Instance.RemainTime_Sec.Hour_Minute_Second_1();
     }
 }
