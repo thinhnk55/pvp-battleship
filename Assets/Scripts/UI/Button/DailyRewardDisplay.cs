@@ -24,7 +24,7 @@ public class DailyRewardDisplay : MonoBehaviour
         SetStatusRewards(0);
         StartCoroutine(DisplayRewards(0f));
         claim.onClick.AddListener(OnClickClaimBt);
-        Debug.Log("Start" + GameData.ProgressGift);
+        
 
 
         if (Timer<Gift>.Instance.TriggersFromBegin >= 1)
@@ -41,7 +41,7 @@ public class DailyRewardDisplay : MonoBehaviour
     {
         if (Timer<Gift>.Instance.TriggersFromBegin >= 1)
         {
-            Debug.Log("Onclick" + GameData.ProgressGift);
+            
             SetStatusRewards(1);
             StartCoroutine(DisplayRewards(1f));
             StartCoroutine(ActiveResource());
