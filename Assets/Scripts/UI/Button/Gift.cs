@@ -84,7 +84,8 @@ public class Gift : CacheMonoBehaviour
             {
                 //Get beri
                 Debug.LogWarning("GetX1");
-                WSClientHandler.GetGift();
+                if (Timer<Gift>.Instance.TriggersFromBegin >= 1)
+                    WSClientHandler.GetGift();
             }
             else
             {
@@ -100,29 +101,24 @@ public class Gift : CacheMonoBehaviour
         if (json["e"].AsInt != 0)
             return;
         PConsumableType.BERRY.SetValue(int.Parse(json["d"]["g"]));
-        //CoinVFX.CoinVfx(resource, Position, Position);
         Timer<Gift>.Instance.BeginPoint = DateTime.UtcNow.Ticks;
         GameData.ProgressGift++;
+
+        //if (resource)
+        //   CoinVFX.CoinVfx(resource, Position, Position);
+
         if (GameData.ProgressGift == 5)
         {
-            PConsumableType.BERRY.SetValue(int.Parse(json["d"]["g"]));
-            if (resource)
-                CoinVFX.CoinVfx(resource, Position, Position);
-            Timer<Gift>.Instance.BeginPoint = DateTime.UtcNow.Ticks;
-            GameData.ProgressGift++;
-            if (GameData.ProgressGift == 5)
-            {
-                smallGiftBar.SetActive(false);
-                bigGiftBar.SetActive(true);
-            }
-            else
-            {
-                smallGiftBar.SetActive(true);
-                bigGiftBar.SetActive(false);
-                progress.text = $"{GameData.ProgressGift}/5";
-            }
-            reminder.UpdateObject();
+            smallGiftBar.SetActive(false);
+            bigGiftBar.SetActive(true);
         }
+        else
+        {
+            smallGiftBar.SetActive(true);
+            bigGiftBar.SetActive(false);
+            progress.text = $"{GameData.ProgressGift}/5";
+        }
+        reminder.UpdateObject();
     }
 
     void GetAdsGift(JSONNode data)
