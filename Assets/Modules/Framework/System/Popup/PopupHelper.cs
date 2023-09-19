@@ -13,6 +13,7 @@ namespace Framework
                 PopupRoot = GameObject.FindObjectOfType<PopupRootSetter>().transform;
 
             T popup = prefab.Create(PopupRoot, false).GetComponent<T>();
+            Debug.Log(123);
             popup.transform.SetAsLastSibling();
 
             return popup;
@@ -31,7 +32,7 @@ namespace Framework
             return popup;
         }
 
-        public static PopupMessage CreateMessage(GameObject prefab, string header , string msg, Sprite icon)
+        public static PopupMessage CreateMessage(GameObject prefab, string header, string msg, Sprite icon)
         {
             PopupMessage popup = Create<PopupMessage>(prefab);
             popup.Construct(header, msg, icon);

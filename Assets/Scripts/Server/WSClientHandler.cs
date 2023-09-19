@@ -119,6 +119,7 @@ public class WSClientHandler : Singleton<WSClientHandler>
     }
     public static void GetData(JSONNode data)
     {
+        MusicType.MAINMENU.PlayMusic();
         Firebase.Crashlytics.Crashlytics.SetUserId(DataAuth.AuthData.userId.ToString());
         FirebaseIntegration.AnalyticsHelper.Login();
         AdsManager.SetUserId(DataAuth.AuthData.userId.ToString());
@@ -130,7 +131,6 @@ public class WSClientHandler : Singleton<WSClientHandler>
         RequestAdsConfig();
         GetConfigGift();
         LeaderBoardConfig();
-        MusicType.MAINMENU.PlayMusic();
         PConsumableType.GEM.SetValue(int.Parse(data["d"]["d"]));
         PConsumableType.BERRY.SetValue(int.Parse(data["d"]["g"]));
         PNonConsumableType.AVATAR.FromJson(data["d"]["a"]["k"]["al"]);
