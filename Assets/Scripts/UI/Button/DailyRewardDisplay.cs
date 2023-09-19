@@ -43,7 +43,7 @@ public class DailyRewardDisplay : MonoBehaviour
         {
             
             SetStatusRewards(1);
-            StartCoroutine(DisplayRewards(1f));
+            StartCoroutine(DisplayRewards(0f));
             StartCoroutine(ActiveResource());
             CoinVFX.CoinVfx(resource.transform, rewards[GameData.ProgressGift].transform.position, rewards[GameData.ProgressGift].transform.position);
 
@@ -90,7 +90,7 @@ public class DailyRewardDisplay : MonoBehaviour
     public IEnumerator ActiveResource()
     {
         resource.SetActive(true);
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(2.5f);
         resource.SetActive(false);
 
     }
