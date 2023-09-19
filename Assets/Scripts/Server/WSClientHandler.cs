@@ -1,4 +1,5 @@
 using Authentication;
+using DG.Tweening;
 using Framework;
 using Monetization;
 using Server;
@@ -107,7 +108,7 @@ public class WSClientHandler : Singleton<WSClientHandler>
                 if (Application.internetReachability == NetworkReachability.NotReachable)
                 {
                     SceneTransitionHelper.Load(ESceneName.PreHome);
-                    PopupReconnect();
+                    DOVirtual.DelayedCall(2, () => PopupReconnect());
                 }
                 else
                 {

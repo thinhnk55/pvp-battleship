@@ -214,10 +214,7 @@ public class CoreGame : SingletonMono<CoreGame>
     }
     void EndPregame()
     {
-        if (GameData.Tutorial[2] == 0)
-        {
-            GameData.Tutorial[2] = 1;
-        }
+
     }
     void StartPregameReMatch()
     {
@@ -266,6 +263,7 @@ public class CoreGame : SingletonMono<CoreGame>
         if (GameData.Tutorial[2] == 0)
         {
             btnBackSearchGame.SetActive(false);
+            GameData.Tutorial[2] = 1;
         }
         Instance.opponent.gameObject.SetActive(true);
         Instance.preUI.SetActive(false);
