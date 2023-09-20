@@ -109,13 +109,17 @@ public class Gift : CacheMonoBehaviour
 
         if (GameData.ProgressGift == 5)
         {
-            smallGiftBar.SetActive(false);
-            bigGiftBar.SetActive(true);
+            if (smallGiftBar)
+                smallGiftBar.SetActive(false);
+            if (bigGiftBar)
+                bigGiftBar?.SetActive(true);
         }
         else
         {
-            smallGiftBar.SetActive(true);
-            bigGiftBar.SetActive(false);
+            if (smallGiftBar)
+                smallGiftBar.SetActive(true);
+            if (bigGiftBar)
+                bigGiftBar.SetActive(false);
             progress.text = $"{GameData.ProgressGift}/5";
         }
         reminder.UpdateObject();
