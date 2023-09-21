@@ -101,14 +101,20 @@ public class DailyRewardDisplay : MonoBehaviour
     {
         if(Timer<Gift>.Instance.TriggersFromBegin >= 1)
         {
-            claim.interactable = true;
-            watchAds.interactable = true;
+            if(claim != null && watchAds != null)
+            {
+                claim.interactable = true;
+                watchAds.interactable = true;
+            }    
+            
         }
         else
         {
-            claim.interactable = false;
-            watchAds.interactable = false;
-            
+            if(claim != null && watchAds != null)
+            {
+                claim.interactable = false;
+                watchAds.interactable = false;
+            }              
         }
     }    
 
