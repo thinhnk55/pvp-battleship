@@ -96,7 +96,7 @@ public class RoyalPass
                 s = $"Destroy 3 ships consecutively in {value} battles";
                 break;
             case StatisticType.ALIVE_1_SHIP:
-                s = $"Win battle when you have only one ship left that hasn't been destroyed {value} time";
+                s = $"Win {value} battle when you have only one ship left alive";
                 break;
             default:
                 break;

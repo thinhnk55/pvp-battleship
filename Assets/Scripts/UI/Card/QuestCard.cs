@@ -1,7 +1,5 @@
 using Framework;
 using Monetization;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -36,7 +34,8 @@ public class QuestCard : CardBase<QuestInfo>
     public override void BuildUI(QuestInfo info)
     {
         base.BuildUI(info);
-        if (info.Id != -1) {
+        if (info.Id != -1)
+        {
             add?.gameObject.SetActive(false);
             reward?.SetText(info.Reward.ToString());
             des?.SetText(info.Description);
@@ -51,6 +50,10 @@ public class QuestCard : CardBase<QuestInfo>
                         info.OnCollect?.Invoke(info);
                     }
                 });
+                if (collect && info.Progress < info.Require)
+                {
+                    collect.GetComponentInChildren<TextMeshProUGUI>().text = "Play";
+                }
                 change?.onClick.AddListener(() =>
                 {
                     if (info.OnChange != null)

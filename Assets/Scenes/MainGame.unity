@@ -66155,8 +66155,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: I WANT TO PLAY AGAIN
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 110e822b03eb1f342b43c4a830176ce1, type: 2}
+  m_sharedMaterial: {fileID: -7692542234931680130, guid: 110e822b03eb1f342b43c4a830176ce1, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -66186,7 +66186,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 17
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -69570,6 +69570,7 @@ GameObject:
   - component: {fileID: 1452784941}
   - component: {fileID: 1452784943}
   - component: {fileID: 1452784942}
+  - component: {fileID: 1452784944}
   m_Layer: 5
   m_Name: Title
   m_TagString: Untagged
@@ -69694,6 +69695,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1452784940}
   m_CullTransparentMesh: 1
+--- !u!114 &1452784944
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1452784940}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32cf267847db5bd43abe3bdac600f050, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1454567357
 GameObject:
   m_ObjectHideFlags: 0
@@ -91049,8 +91062,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: SORRY I HAVE TO GO !
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 110e822b03eb1f342b43c4a830176ce1, type: 2}
+  m_sharedMaterial: {fileID: -7692542234931680130, guid: 110e822b03eb1f342b43c4a830176ce1, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -91080,7 +91093,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 17
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -92065,7 +92078,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 197, y: 71.99997}
+  m_AnchoredPosition: {x: 197, y: 72}
   m_SizeDelta: {x: 351, y: 121}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1938529102
@@ -104794,6 +104807,7 @@ GameObject:
   - component: {fileID: 85143336675425271}
   - component: {fileID: 85143336675425269}
   - component: {fileID: 85143336675425270}
+  - component: {fileID: 85143336675425272}
   m_Layer: 5
   m_Name: Title
   m_TagString: Untagged
@@ -104831,8 +104845,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: SEA BATTLE
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 0d99a727e5897024db38de93d86c8249, type: 2}
-  m_sharedMaterial: {fileID: 5486463737565831122, guid: 0d99a727e5897024db38de93d86c8249, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 67daf692a0720484389a461dd818fd69, type: 2}
+  m_sharedMaterial: {fileID: -6081805586234899183, guid: 67daf692a0720484389a461dd818fd69, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -104856,7 +104870,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 57.9
+  m_fontSize: 55.2
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -104892,7 +104906,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: -10.666992, z: 0, w: 10.667053}
+  m_margin: {x: 0, y: 1.9496268, z: 0, w: 10.667053}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -104918,6 +104932,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: -600, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &85143336675425272
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 85143336675425256}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32cf267847db5bd43abe3bdac600f050, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!222 &85143336692072035
 CanvasRenderer:
   m_ObjectHideFlags: 0

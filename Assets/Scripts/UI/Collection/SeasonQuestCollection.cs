@@ -40,6 +40,18 @@ public class SeasonQuestCollection : CardCollectionBase<QuestInfo>
                     {
                         WSClientHandler.SeasonQuestReward(info.Id);
                     }
+                    else
+                    {
+                        if (GameData.RoyalPass.SeasonQuests[_i].Type == StatisticType.LUCKY_SHOT_COUNT)
+                        {
+                            PopupHelper.Create(PrefabFactory.PopupLuckyshot);
+                        }
+                        else
+                        {
+                            SceneTransitionHelper.Load(ESceneName.Bet);
+                        }
+                    }
+
                 },
 
             });
