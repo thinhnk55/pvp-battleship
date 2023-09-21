@@ -22,23 +22,23 @@ public class LeaderBoard
     {
         if (rank < 1)
         {
-            return 0;
+            return 9;
         }
         else if (rank < 2)
         {
-            return 1;
+            return 7;
         }
         else if (rank < 3)
         {
-            return 2;
+            return 5;
         }
         else if (rank < 10)
         {
-            return 3;
+            return 4;
         }
         else
         {
-            return 4;
+            return 3;
         }
     }
 }

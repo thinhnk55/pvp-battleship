@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Framework
@@ -18,6 +16,13 @@ namespace Framework
             audio.audioSource = obj.AddComponent<AudioSource>();
             audio.audioSource.loop = true;
             DontDestroyOnLoad(Instance);
+            PDataSettings.MusicEnabledData.OnDataChanged += (o, n) =>
+            {
+                if (!n)
+                {
+                    AudioHelper.StopMusic();
+                }
+            };
         }
         protected override void Awake()
         {

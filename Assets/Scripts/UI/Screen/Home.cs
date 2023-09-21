@@ -15,5 +15,4 @@ public class Home : MonoBehaviour
             PopupHelper.Create(PrefabFactory.PopupTuTorHome);
         }
     }
-
 }

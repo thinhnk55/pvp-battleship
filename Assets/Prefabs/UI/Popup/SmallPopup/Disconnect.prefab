@@ -361,8 +361,8 @@ MonoBehaviour:
   _eventOnClosed:
     m_PersistentCalls:
       m_Calls: []
-  _txtHeader: {fileID: 2244812907619953754}
-  _txtContent: {fileID: 352228473848890518}
+  _txtHeader: {fileID: 0}
+  _txtContent: {fileID: 0}
   _icon: {fileID: 0}
   _btnYes: {fileID: 5825111266165349371}
   _btnNo: {fileID: 0}

@@ -1,4 +1,5 @@
 using Authentication;
+using DG.Tweening;
 using Framework;
 using Monetization;
 using Server;
@@ -107,7 +108,7 @@ public class WSClientHandler : Singleton<WSClientHandler>
                 if (Application.internetReachability == NetworkReachability.NotReachable)
                 {
                     SceneTransitionHelper.Load(ESceneName.PreHome);
-                    PopupReconnect();
+                    DOVirtual.DelayedCall(1.5f, () => PopupReconnect());
                 }
                 else
                 {
@@ -118,6 +119,7 @@ public class WSClientHandler : Singleton<WSClientHandler>
     }
     public static void GetData(JSONNode data)
     {
+        MusicType.MAINMENU.PlayMusic();
         Firebase.Crashlytics.Crashlytics.SetUserId(DataAuth.AuthData.userId.ToString());
         FirebaseIntegration.AnalyticsHelper.Login();
         AdsManager.SetUserId(DataAuth.AuthData.userId.ToString());
@@ -129,7 +131,6 @@ public class WSClientHandler : Singleton<WSClientHandler>
         RequestAdsConfig();
         GetConfigGift();
         LeaderBoardConfig();
-        MusicType.MAINMENU.PlayMusic();
         PConsumableType.GEM.SetValue(int.Parse(data["d"]["d"]));
         PConsumableType.BERRY.SetValue(int.Parse(data["d"]["g"]));
         PNonConsumableType.AVATAR.FromJson(data["d"]["a"]["k"]["al"]);
@@ -916,6 +917,7 @@ public class WSClientHandler : Singleton<WSClientHandler>
         {
             GameData.LeaderBoard.goldInfos.Add(new LeaderBoardGoldInfo()
             {
+                UserId = data["d"]["g"][i]["u"].AsInt,
                 Order = i,
                 Rank = data["d"]["g"][i]["e"].AsInt,
                 Reward = GameData.LeaderBoard.goldReward[i],
@@ -928,6 +930,7 @@ public class WSClientHandler : Singleton<WSClientHandler>
         {
             GameData.LeaderBoard.winInfos.Add(new LeaderBoardWinInfo()
             {
+                UserId = data["d"]["g"][i]["u"].AsInt,
                 Order = i,
                 Rank = data["d"]["g"][i]["e"].AsInt,
                 Reward = GameData.LeaderBoard.goldReward[i],

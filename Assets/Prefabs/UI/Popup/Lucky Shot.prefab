@@ -4246,7 +4246,7 @@ PrefabInstance:
     - target: {fileID: 1793247160581069838, guid: 33c887efe9e2d4f4792183fce278ad1a, type: 3}
       propertyPath: _popup
       value: 
-      objectReference: {fileID: 304417783529928262, guid: 0660f0785c8fedf4dac3e3326d731133, type: 3}
+      objectReference: {fileID: 8576714802656929068, guid: 0660f0785c8fedf4dac3e3326d731133, type: 3}
     - target: {fileID: 2260847644794012546, guid: 33c887efe9e2d4f4792183fce278ad1a, type: 3}
       propertyPath: m_Name
       value: Head
@@ -4254,7 +4254,7 @@ PrefabInstance:
     - target: {fileID: 2788109869845940657, guid: 33c887efe9e2d4f4792183fce278ad1a, type: 3}
       propertyPath: _popup
       value: 
-      objectReference: {fileID: 304417783529928262, guid: 0660f0785c8fedf4dac3e3326d731133, type: 3}
+      objectReference: {fileID: 8576714802656929068, guid: 0660f0785c8fedf4dac3e3326d731133, type: 3}
     - target: {fileID: 6775675615939780166, guid: 33c887efe9e2d4f4792183fce278ad1a, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -64
@@ -4386,7 +4386,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e116603e471294148a9645f071a14fd6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  i: 2
+  tab: 1
+  popup: {fileID: 0}
 --- !u!1 &6266355991916040767 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4566016811514662320, guid: 33c887efe9e2d4f4792183fce278ad1a, type: 3}
@@ -4404,7 +4405,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e116603e471294148a9645f071a14fd6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  i: 1
+  tab: 2
+  popup: {fileID: 0}
 --- !u!1001 &8682915560419165756
 PrefabInstance:
   m_ObjectHideFlags: 0

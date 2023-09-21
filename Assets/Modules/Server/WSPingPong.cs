@@ -34,7 +34,6 @@ namespace Server
             }
             currentPingPongTime = Time.time;
             WSClient.Instance.Send(new JSONClass() { { "id", ServerRequest.Ping.ToJson() } });
-            Debug.Log($"<color=#FFA500>ping</color>");
         }
         void Pong(JSONNode data)
         {

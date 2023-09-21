@@ -233,18 +233,25 @@ public class RoyalPass
                 };
                 for (int i = 0; i < json["d"]["q"].Count; i++)
                 {
-                    int _i = i;
-                    royalPass.CurrentQuests.Data[i] = json["d"]["q"][i].AsInt;
-                    royalPass.CurrentQuestsProgress[i] = json["d"]["p"][i].AsInt;
-                    StatisticTracker.RemoveAllListenerOnProgress((StatisticType)Enum.GetValues(typeof(RoyalPassQuestType)).GetValue(royalPass.CurrentQuests.Data[_i]));
-                    Debug.Log((StatisticType)Enum.GetValues(typeof(RoyalPassQuestType)).GetValue(royalPass.CurrentQuests.Data[_i]));
-                    Debug.Log(Enum.GetValues(typeof(RoyalPassQuestType)).GetValue(royalPass.CurrentQuests.Data[_i]));
-                    Debug.Log(royalPass.CurrentQuests.Data[_i]);
-                    StatisticTracker.AddListenerOnProgress((StatisticType)Enum.GetValues(typeof(RoyalPassQuestType)).GetValue(royalPass.CurrentQuests.Data[_i]), (o, n) =>
+                    if (json["d"]["q"][i].AsInt > 0)
                     {
-                        GameData.RoyalPass.CurrentQuestsProgress[_i] += (n - o);
-                        ConditionalMono.UpdateObject(typeof(RoyalPassReminder));
-                    });
+                        int _i = i;
+                        royalPass.CurrentQuests.Data[i] = json["d"]["q"][i].AsInt;
+                        royalPass.CurrentQuestsProgress[i] = json["d"]["p"][i].AsInt;
+                        StatisticType statistic = (StatisticType)Enum.GetValues(typeof(RoyalPassQuestType)).GetValue(royalPass.CurrentQuests.Data[_i]);
+                        StatisticTracker.RemoveAllListenerOnProgress(statistic);
+                        Debug.Log(statistic);
+                        StatisticTracker.AddListenerOnProgress(statistic, (o, n) =>
+                        {
+                            GameData.RoyalPass.CurrentQuestsProgress[_i] += (n - o);
+                            ConditionalMono.UpdateObject(typeof(RoyalPassReminder));
+                        });
+                    }
+                    else
+                    {
+                        continue;
+                    }
+
                 }
 
                 royalPass.Point.Data = int.Parse(json["p"]);
