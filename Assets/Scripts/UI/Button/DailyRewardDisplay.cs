@@ -24,20 +24,8 @@ public class DailyRewardDisplay : MonoBehaviour
         Timer<Gift>.Instance.OnElapse += OnElapse;
         SetAmount();          
         claim.onClick.AddListener(OnClickClaimBt);
-        DisplayRewards();
-        /*if (Timer<Gift>.Instance.TriggersFromBegin >= 1)
-        {
-            //countDown.text = "Collect";
-            claim.interactable = true;
-            watchAds.interactable = true;
-            
-        }
-        else
-        {
-            claim.interactable = false;
-            watchAds.interactable = false;
-            //countDown.text = Timer<Gift>.Instance.RemainTime_Sec.Hour_Minute_Second_1();
-        }*/
+        HighLightRewards();
+        
     }
 
     public void OnClickClaimBt()
@@ -50,7 +38,7 @@ public class DailyRewardDisplay : MonoBehaviour
         }
     }
 
-    public void DisplayRewards()
+    public void HighLightRewards()
     {  
         if (Timer<Gift>.Instance.TriggersFromBegin >= 1)
         {
@@ -72,9 +60,22 @@ public class DailyRewardDisplay : MonoBehaviour
             {               
                 reward.ChangeSprite(reward.defaultBroard);             
             }
-        }
-        
+        }     
+    }
 
+    public void DisplayReward()
+    {
+        foreach(var reward in rewards)
+        {
+            if(reward.id < GameData.ProgressGift)
+            {
+                reward.Received();
+            }
+            else
+            {
+                reward.NotReceived();
+            }    
+        }
     }
 
     public IEnumerator ActiveResource()
@@ -115,14 +116,16 @@ public class DailyRewardDisplay : MonoBehaviour
     {
         countDown.text = Timer<Gift>.Instance.TriggersFromBegin >= 1 ? "Collect" : Timer<Gift>.Instance.RemainTime_Sec.Hour_Minute_Second_1() + "s";
         //reminder.UpdateObject();        
-        DisplayRewards();
+        HighLightRewards();
         ToggleButton();
+        DisplayReward();
     }
 
     private void OnElapse()
     {
-        countDown.text = Timer<Gift>.Instance.TriggersFromBegin >= 1 ? "Collect" :  Timer<Gift>.Instance.RemainTime_Sec.Hour_Minute_Second_1() + "s";      
-        DisplayRewards();
+        countDown.text = Timer<Gift>.Instance.TriggersFromBegin >= 1 ? "Collect" :  Timer<Gift>.Instance.RemainTime_Sec.Hour_Minute_Second_1() + "s";
+        HighLightRewards();
         ToggleButton();
+        DisplayReward();
     }
 }
