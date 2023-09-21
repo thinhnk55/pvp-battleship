@@ -11,11 +11,17 @@ public class DailyReward : MonoBehaviour
     public Image imageBoard;
     public Image rewardCoin;
 
-    public int id;
-    public bool received;
+    public Sprite defaultBroard;
+    public Sprite highlightBroard;
 
-    /*private void Start()
+    public int id;
+
+    public void ChangeSprite(Sprite _sprite)
     {
-        amount.text = GameData.GiftConfig[id].ToString();
-    }*/
+        if (imageBoard != null && _sprite != null)
+        {
+            imageBoard.sprite = _sprite;
+        }    
+        
+    }    
 }

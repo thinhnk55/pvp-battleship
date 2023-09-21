@@ -14,79 +14,67 @@ public class DailyRewardDisplay : MonoBehaviour
     [SerializeField] GameObject resource;
     [SerializeField] TextMeshProUGUI countDown;
     [SerializeField] Button claim;
-
+    [SerializeField] Button watchAds;
     
 
+
     private void Start()
-    {
+    {     
         Timer<Gift>.Instance.OnTrigger += OnTrigger;
         Timer<Gift>.Instance.OnElapse += OnElapse;
-
-        SetAmount();
-        SetStatusRewards(0);
-        StartCoroutine(DisplayRewards(0f));
+        SetAmount();          
         claim.onClick.AddListener(OnClickClaimBt);
-        
-
-
-        if (Timer<Gift>.Instance.TriggersFromBegin >= 1)
+        DisplayRewards();
+        /*if (Timer<Gift>.Instance.TriggersFromBegin >= 1)
         {
-            countDown.text = "Collect";
+            //countDown.text = "Collect";
+            claim.interactable = true;
+            watchAds.interactable = true;
+            
         }
         else
         {
-            countDown.text = Timer<Gift>.Instance.RemainTime_Sec.Hour_Minute_Second_1();
-        }
+            claim.interactable = false;
+            watchAds.interactable = false;
+            //countDown.text = Timer<Gift>.Instance.RemainTime_Sec.Hour_Minute_Second_1();
+        }*/
     }
 
     public void OnClickClaimBt()
     {
         if (Timer<Gift>.Instance.TriggersFromBegin >= 1)
-        {
-            
-            SetStatusRewards(1);
-            StartCoroutine(DisplayRewards(0f));
+        {           
+            //StartCoroutine(DisplayRewards(0f));
             StartCoroutine(ActiveResource());
             CoinVFX.CoinVfx(resource.transform, rewards[GameData.ProgressGift].transform.position, rewards[GameData.ProgressGift].transform.position);
-
         }
     }
 
-    
-
-
-    public void SetStatusRewards(int number)
-    {
-        foreach (var reward in rewards)
+    public void DisplayRewards()
+    {  
+        if (Timer<Gift>.Instance.TriggersFromBegin >= 1)
         {
-            if (reward.id < GameData.ProgressGift + number)
+            foreach (var reward in rewards)
             {
-                reward.received = true;
+                if (reward.id == GameData.ProgressGift)
+                {
+                    reward.ChangeSprite(reward.highlightBroard);
+                }
+                else
+                {
+                    reward.ChangeSprite(reward.defaultBroard);
+                }
             }
-            else
-            {
-                reward.received = false;
-            }
-        }    
-    }
-
-    public IEnumerator DisplayRewards(float time)
-    {
-        yield return new WaitForSeconds(time);
-        foreach (var reward in rewards)
+        }
+        else
         {
-            if (reward.received)
-            {
-                reward.imageBoard.color = Color.Lerp(Color.white, Color.black, 0.5f); ;
-                reward.rewardCoin.color = Color.Lerp(Color.white, Color.black, 0.5f); ;
-            }
-            else
-            {
-                reward.imageBoard.color = Color.white;
-                reward.rewardCoin.color = Color.white;
+            foreach (var reward in rewards)
+            {               
+                reward.ChangeSprite(reward.defaultBroard);             
             }
         }
         
+
     }
 
     public IEnumerator ActiveResource()
@@ -94,27 +82,47 @@ public class DailyRewardDisplay : MonoBehaviour
         resource.SetActive(true);
         yield return new WaitForSeconds(2.5f);
         resource.SetActive(false);
-
     }
 
     public void SetAmount()
     {
-
-        foreach (var reward in rewards)
+        if(rewards != null)
         {
-            reward.amount.text = "x" + GameData.GiftConfig[reward.id].ToString();
-            //Debug.Log($"GameData.GiftConfig[{reward.id}] = {GameData.GiftConfig[reward.id]} ");
+            foreach (var reward in rewards)
+            {
+                reward.amount.text = "x" + GameData.GiftConfig[reward.id].ToString();
+                //Debug.Log($"GameData.GiftConfig[{reward.id}] = {GameData.GiftConfig[reward.id]} ");
+            }
+        }          
+    }    
+
+    public void ToggleButton()
+    {
+        if(Timer<Gift>.Instance.TriggersFromBegin >= 1)
+        {
+            claim.interactable = true;
+            watchAds.interactable = true;
+        }
+        else
+        {
+            claim.interactable = false;
+            watchAds.interactable = false;
+            
         }
     }    
 
     private void OnTrigger()
     {
-        countDown.text = Timer<Gift>.Instance.TriggersFromBegin >= 1 ? "Collect" :"next reward: " +Timer<Gift>.Instance.RemainTime_Sec.Hour_Minute_Second_1();
-        //reminder.UpdateObject();
+        countDown.text = Timer<Gift>.Instance.TriggersFromBegin >= 1 ? "Collect" : Timer<Gift>.Instance.RemainTime_Sec.Hour_Minute_Second_1() + "s";
+        //reminder.UpdateObject();        
+        DisplayRewards();
+        ToggleButton();
     }
 
     private void OnElapse()
     {
-        countDown.text = Timer<Gift>.Instance.TriggersFromBegin >= 1 ? "Collect" : "next reward: " + Timer<Gift>.Instance.RemainTime_Sec.Hour_Minute_Second_1();
+        countDown.text = Timer<Gift>.Instance.TriggersFromBegin >= 1 ? "Collect" :  Timer<Gift>.Instance.RemainTime_Sec.Hour_Minute_Second_1() + "s";      
+        DisplayRewards();
+        ToggleButton();
     }
 }
