@@ -523,9 +523,10 @@ public class CoreGame : SingletonMono<CoreGame>
     }
     private void TurnMiss(JSONNode data)
     {
+        if (playerTurn)
+            missturn++;
         Instance.playerTurn = !Instance.playerTurn;
         Instance.stateMachine.CurrentState = GameState.Turn;
-        missturn++;
         if (missturn == 2)
         {
             PopupHelper.Create(PrefabFactory.PopupMissTurn);
@@ -730,7 +731,7 @@ public class CoreGame : SingletonMono<CoreGame>
     {
         rematch = true;
         Instance.rematchChatB.transform.parent.gameObject.SetActive(true);
-        Instance.rematchChatB.text = "I WANT TO PLAY AGAINNN";
+        Instance.rematchChatB.text = "I WANT TO PLAY AGAINN";
         Instance.buttonRematch.GetComponentInChildren<TextMeshProUGUI>().text = "Ready";
     }
     void AcceptRematch(JSONNode data)
