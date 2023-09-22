@@ -13,7 +13,6 @@ namespace Framework
                 PopupRoot = GameObject.FindObjectOfType<PopupRootSetter>().transform;
 
             T popup = prefab.Create(PopupRoot, false).GetComponent<T>();
-            Debug.Log(123);
             popup.transform.SetAsLastSibling();
 
             return popup;

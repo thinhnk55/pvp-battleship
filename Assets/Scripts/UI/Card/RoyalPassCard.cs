@@ -1,6 +1,4 @@
 using Framework;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -17,6 +15,7 @@ public struct RoyalPassInfo
 public class RoyalPassCard : CardBase<RoyalPassInfo>
 {
     [SerializeField] Image BG;
+    [SerializeField] Image OrderFill;
     [SerializeField] Image OrderBG;
     [SerializeField] Image unlocked;
     [SerializeField] Image obtained;
@@ -32,11 +31,10 @@ public class RoyalPassCard : CardBase<RoyalPassInfo>
     public override void BuildUI(RoyalPassInfo info)
     {
         base.BuildUI(info);
-        BG?.SetSprite(info.Id % 5 == 0 ? SpriteFactory.RoyalPassMilestone : BG.sprite);
-        OrderBG?.SetSprite(info.Id % 5 == 0 ? SpriteFactory.RoyalPassMilestoneOrder : BG.sprite);
-        if (!info.Unlocked || info.Obtained)
+        BG?.SetSprite(info.Id == GameData.RoyalPass.Level ? SpriteFactory.RoyalPassMilestone : BG.sprite);
+        if (true)
         {
-            gameObject.SetChildrenRecursively<Image>((img) => { img.color = Color.gray; });
+            //Container.gameObject.SetChildrenRecursively<Image>((img) => { img.color = Color.gray; });
             if (!info.Unlocked)
             {
                 unlocked.color = Color.white;
@@ -46,18 +44,19 @@ public class RoyalPassCard : CardBase<RoyalPassInfo>
                 obtained.color = Color.white;
             }
         }
+        OrderFill?.SetAlpha(info.Id > GameData.RoyalPass.Level ? 0 : 1);
         unlocked?.SetAlpha(info.Unlocked ? 0 : 1);
         obtained?.SetAlpha(info.Obtained ? 1 : 0);
 
         Id?.SetText(info.Id.ToString());
 
-        if (info.Reward.Length>1)
+        if (info.Reward.Length > 1)
         {
             Icon.sprite = SpriteFactory.RoyalPassTreasure;
         }
         else if (info.Reward.Length == 1)
         {
-            if (info.Reward[0].Type.GetPResourceType()== PResourceType.Consumable)
+            if (info.Reward[0].Type.GetPResourceType() == PResourceType.Consumable)
             {
                 Number?.SetText(info.Reward[0].Value.ToString());
             }
@@ -67,7 +66,7 @@ public class RoyalPassCard : CardBase<RoyalPassInfo>
             }
             if (Icon)
             {
-                if (info.Reward[0].Type.GetPResourceType() == PResourceType.Consumable )
+                if (info.Reward[0].Type.GetPResourceType() == PResourceType.Consumable)
                 {
                     if (info.Reward[0].Type == (int)PConsumableType.GEM)
                     {
@@ -103,7 +102,7 @@ public class RoyalPassCard : CardBase<RoyalPassInfo>
         if (Button && info.Unlocked && !info.Obtained)
         {
             Button.onClick.RemoveAllListeners();
-            Button.onClick.AddListener(()=> info.Obtain?.Invoke(info));
+            Button.onClick.AddListener(() => info.Obtain?.Invoke(info));
         }
     }
 }

@@ -77,8 +77,8 @@
     <file>Assets/Plugins/Android/com.google.firebase.firebase-common-20.3.3.aar</file>
     <file>Assets/Plugins/Android/com.google.firebase.firebase-common-ktx-20.3.3.aar</file>
     <file>Assets/Plugins/Android/com.google.firebase.firebase-components-17.1.0.aar</file>
-    <file>Assets/Plugins/Android/com.google.firebase.firebase-crashlytics-18.4.1.aar</file>
-    <file>Assets/Plugins/Android/com.google.firebase.firebase-crashlytics-ndk-18.4.1.aar</file>
+    <file>Assets/Plugins/Android/com.google.firebase.firebase-crashlytics-18.4.3.aar</file>
+    <file>Assets/Plugins/Android/com.google.firebase.firebase-crashlytics-ndk-18.4.3.aar</file>
     <file>Assets/Plugins/Android/com.google.firebase.firebase-crashlytics-unity-11.4.0.aar</file>
     <file>Assets/Plugins/Android/com.google.firebase.firebase-datatransport-18.1.8.aar</file>
     <file>Assets/Plugins/Android/com.google.firebase.firebase-encoders-17.0.0.jar</file>
