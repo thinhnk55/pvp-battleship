@@ -56,3 +56,4 @@ MonoBehaviour:
   popupResourcePVE: {fileID: 1263694249909426757, guid: 4af637b9acc40ef478a748c0aa3f35ce, type: 3}
   popupReceiveRewardCompletePVE: {fileID: 1263694249909426757, guid: 1903c63b61d0aad49902c3d11d88a822, type: 3}
   popupMissTurn: {fileID: 3400952333942322712, guid: e90c1ccc4afd0784f8f5a1b6c6033feb, type: 3}
+  popupLuckyshot: {fileID: 8830385208864040464, guid: 71135c225ba44954198c88e4f99d1dcf, type: 3}

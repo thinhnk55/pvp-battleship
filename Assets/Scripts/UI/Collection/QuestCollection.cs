@@ -44,6 +44,17 @@ public class QuestCollection : CardCollectionBase<QuestInfo>
                         {
                             WSClientHandler.DailyQuestReward(_i);
                         }
+                        else
+                        {
+                            if (GameData.RoyalPass.Quests[GameData.RoyalPass.CurrentQuests.Data[_i]].Type == StatisticType.LUCKY_SHOT_COUNT)
+                            {
+                                PopupHelper.Create(PrefabFactory.PopupLuckyshot);
+                            }
+                            else
+                            {
+                                SceneTransitionHelper.Load(ESceneName.Bet);
+                            }
+                        }
                     },
                     OnChange = (info) =>
                     {
