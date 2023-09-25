@@ -131,7 +131,7 @@ MonoBehaviour:
   _target: {fileID: 3088152204828798535}
   _startPos: {x: 0, y: -1000}
   _endPos: {x: 0, y: 0}
-  _ease: 7
+  _ease: 21
   _durationRatio: 1
 --- !u!1 &601867862140626722
 GameObject:
@@ -1617,7 +1617,7 @@ MonoBehaviour:
   popup: {fileID: 0}
   numberOfChild: -1
   previewCard: {fileID: 0}
-  resource: {fileID: 0}
+  resource: {fileID: 7875853169748660398}
 --- !u!114 &8904831735105305397
 MonoBehaviour:
   m_ObjectHideFlags: 0
