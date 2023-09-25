@@ -42,54 +42,70 @@ public class DailyRewardDisplay : MonoBehaviour
     {  
         if (Timer<Gift>.Instance.TriggersFromBegin >= 1)
         {
-            foreach (var reward in rewards)
+            if(rewards != null)
             {
-                if (reward.id == GameData.ProgressGift)
+                foreach (DailyReward reward in rewards)
                 {
-                    reward.ChangeSprite(reward.highlightBroard);
+                    if (reward.id == GameData.ProgressGift)
+                    {
+                        reward.ChangeSprite(reward.highlightBroard);
+                    }
+                    else
+                    {
+                        reward.ChangeSprite(reward.defaultBroard);
+                    }
                 }
-                else
-                {
-                    reward.ChangeSprite(reward.defaultBroard);
-                }
-            }
+            }    
+            
         }
         else
         {
-            foreach (var reward in rewards)
-            {               
-                reward.ChangeSprite(reward.defaultBroard);             
-            }
+            if (rewards != null)
+            {
+                foreach (DailyReward reward in rewards)
+                {
+                    reward.ChangeSprite(reward.defaultBroard);
+                }
+            }    
+                
         }     
     }
 
     public void DisplayReward()
     {
-        foreach(var reward in rewards)
+        if (rewards != null)
         {
-            if(reward.id < GameData.ProgressGift)
+            foreach (DailyReward reward in rewards)
             {
-                reward.Received();
+                if (reward.id < GameData.ProgressGift)
+                {
+                    reward.Received();
+                }
+                else
+                {
+                    reward.NotReceived();
+                }
             }
-            else
-            {
-                reward.NotReceived();
-            }    
         }
+        
     }
 
     public IEnumerator ActiveResource()
     {
-        resource.SetActive(true);
-        yield return new WaitForSeconds(2.5f);
-        resource.SetActive(false);
+        if(resource != null)
+        {
+            resource.SetActive(true);
+            yield return new WaitForSeconds(2.5f);
+            resource.SetActive(false);
+        }    
+        
     }
 
     public void SetAmount()
     {
         if(rewards != null)
         {
-            foreach (var reward in rewards)
+            foreach (DailyReward reward in rewards)
             {
                 reward.amount.text = "x" + GameData.GiftConfig[reward.id].ToString();
                 //Debug.Log($"GameData.GiftConfig[{reward.id}] = {GameData.GiftConfig[reward.id]} ");
@@ -101,14 +117,20 @@ public class DailyRewardDisplay : MonoBehaviour
     {
         if(Timer<Gift>.Instance.TriggersFromBegin >= 1)
         {
-            claim.interactable = true;
-            watchAds.interactable = true;
+            if(claim != null && watchAds != null)
+            {
+                claim.interactable = true;
+                watchAds.interactable = true;
+            }    
+            
         }
         else
         {
-            claim.interactable = false;
-            watchAds.interactable = false;
-            
+            if(claim != null && watchAds != null)
+            {
+                claim.interactable = false;
+                watchAds.interactable = false;
+            }              
         }
     }    
 
