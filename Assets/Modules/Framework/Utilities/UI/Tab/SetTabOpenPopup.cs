@@ -17,12 +17,12 @@ namespace Framework
         }
         public void SetTab(PopupBehaviour popup)
         {
-            popup.GetComponentInChildren<Tabs>().Activate(tab);
+            popup?.GetComponentInChildren<Tabs>().Activate(tab);
         }
 
         public void SetTab(PopupBehaviour popup, int tab)
         {
-            popup.GetComponentInChildren<Tabs>().Activate(tab);
+            popup?.GetComponentInChildren<Tabs>().Activate(tab);
         }
     }
 }

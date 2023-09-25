@@ -242,15 +242,19 @@ public class WSClientHandler : Singleton<WSClientHandler>
         Timer<LuckyShot>.Instance.TriggerInterval_Sec = data["d"]["lucky_shot"]["rocket_restore_period"].AsInt / 1000;
 
         // gift
-        if (SceneManager.GetActiveScene().name == "PreHome")
+        if (CoreGame.reconnect == null)
         {
-            SceneTransitionHelper.Load(ESceneName.Home);
+            if (SceneManager.GetActiveScene().name == "PreHome")
+            {
+                SceneTransitionHelper.Load(ESceneName.Home);
+            }
+            else
+            {
+                LoadingScene.Instance.LoadScene("Home");
+                //SceneTransitionHelper.Load(ESceneName.Home);
+            }
         }
-        else
-        {
-            LoadingScene.Instance.LoadScene("Home");
-            //SceneTransitionHelper.Load(ESceneName.Home);
-        }
+
 
     }
     #endregion
@@ -616,8 +620,11 @@ public class WSClientHandler : Singleton<WSClientHandler>
     }
     public static void RecieveReconnect(JSONNode data)
     {
-        CoreGame.reconnect = data["d"];
-        LoadingScene.Instance.LoadScene("MainGame");
+        if (data["e"].AsInt == 0)
+        {
+            CoreGame.reconnect = data["d"];
+            LoadingScene.Instance.LoadScene("MainGame");
+        }
         //SceneTransitionHelper.Load(ESceneName.MainGame);
     }
     #endregion

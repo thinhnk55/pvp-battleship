@@ -1,3 +1,4 @@
+using FirebaseIntegration;
 using Framework;
 using System.Collections.Generic;
 
@@ -9,7 +10,10 @@ public class SeasonQuestCollection : CardCollectionBase<QuestInfo>
         GameData.RoyalPass.SeasonQuestsObtained.OnDataChanged += OnChange;
 
     }
-
+    private void OnEnable()
+    {
+        AnalyticsHelper.SelectContent("royalpass_season_quest");
+    }
     private void OnChange(HashSet<int> arg1, HashSet<int> arg2)
     {
         UpdateUIs();

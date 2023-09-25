@@ -1,14 +1,12 @@
+using FirebaseIntegration;
 using Framework;
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
 
 public class RoyalPassFreeCollection : CardCollectionBase<RoyalPassInfo>
 {
     private void OnEnable()
     {
+        AnalyticsHelper.SelectContent("royalpass_reward");
         GameData.RoyalPass.NormalObtains.OnDataChanged += OnObtain;
         UpdateUIs();
     }
@@ -41,7 +39,7 @@ public class RoyalPassFreeCollection : CardCollectionBase<RoyalPassInfo>
                 {
                     WSClientHandler.RoyalPassReward(info.Id, 0);
                 }
-            });;
+            }); ;
         }
 
 

@@ -1,3 +1,4 @@
+using FirebaseIntegration;
 using Framework;
 using Monetization;
 using Server;
@@ -11,6 +12,10 @@ public class QuestCollection : CardCollectionBase<QuestInfo>
         UpdateUIs();
         GameData.RoyalPass.CurrentQuests.OnDataChanged += OnChange;
 
+    }
+    private void OnEnable()
+    {
+        AnalyticsHelper.SelectContent("royalpass_normal_quest");
     }
     private void OnDestroy()
     {

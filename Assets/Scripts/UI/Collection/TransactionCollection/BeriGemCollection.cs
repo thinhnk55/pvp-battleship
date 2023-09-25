@@ -1,3 +1,4 @@
+using FirebaseIntegration;
 using Framework;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,7 +18,10 @@ public class BeriGemCollection : TransactionCollection
         list.Reverse();
         BuildUIs(list);
     }
-
+    private void OnEnable()
+    {
+        AnalyticsHelper.SelectContent(transactionType == TransactionType.usd ? "shop_gem" : transactionType == TransactionType.diamond ? "shop_gold" : "shop_deal");
+    }
     public override void UpdateUIs()
     {
 

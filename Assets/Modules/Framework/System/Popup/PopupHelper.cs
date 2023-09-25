@@ -9,6 +9,8 @@ namespace Framework
 
         public static T Create<T>(GameObject prefab) where T : PopupBehaviour
         {
+            if (!prefab)
+                return null;
             if (PopupRoot == null)
                 PopupRoot = GameObject.FindObjectOfType<PopupRootSetter>().transform;
 

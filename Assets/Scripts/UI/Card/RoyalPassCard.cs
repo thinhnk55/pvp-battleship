@@ -19,6 +19,7 @@ public class RoyalPassCard : CardBase<RoyalPassInfo>
     [SerializeField] Image OrderBG;
     [SerializeField] Image unlocked;
     [SerializeField] Image obtained;
+    [SerializeField] Image obtainable;
     [SerializeField] TextMeshProUGUI Id;
     [SerializeField] TextMeshProUGUI Number;
     [SerializeField] Image Icon;
@@ -31,8 +32,8 @@ public class RoyalPassCard : CardBase<RoyalPassInfo>
     public override void BuildUI(RoyalPassInfo info)
     {
         base.BuildUI(info);
-        BG?.SetSprite(info.Id == GameData.RoyalPass.Level ? SpriteFactory.RoyalPassMilestone : BG.sprite);
-        if (true)
+        //BG?.SetSprite(info.Id == GameData.RoyalPass.Level ? SpriteFactory.RoyalPassMilestone : BG.sprite);
+        if (!info.Unlocked || info.Obtained)
         {
             //Container.gameObject.SetChildrenRecursively<Image>((img) => { img.color = Color.gray; });
             if (!info.Unlocked)
@@ -43,6 +44,11 @@ public class RoyalPassCard : CardBase<RoyalPassInfo>
             {
                 obtained.color = Color.white;
             }
+            obtainable?.gameObject.SetActive(false);
+        }
+        else
+        {
+            obtainable?.gameObject.SetActive(true);
         }
         OrderFill?.SetAlpha(info.Id > GameData.RoyalPass.Level ? 0 : 1);
         unlocked?.SetAlpha(info.Unlocked ? 0 : 1);
@@ -93,11 +99,7 @@ public class RoyalPassCard : CardBase<RoyalPassInfo>
         }
         else if (info.Reward.Length == 0)
         {
-            Number?.SetText("");
-            if (Button)
-            {
-                Button.gameObject.SetChildrenRecursively<Image>((image) => { image.SetAlpha(0); });
-            }
+            Container.gameObject.SetActive(false);
         }
         if (Button && info.Unlocked && !info.Obtained)
         {

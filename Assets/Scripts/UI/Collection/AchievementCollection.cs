@@ -1,3 +1,4 @@
+using FirebaseIntegration;
 using Framework;
 using SimpleJSON;
 using System;
@@ -16,6 +17,7 @@ public class AchievementCollection : CardCollectionBase<AchievementInfo>
     [SerializeField] GameObject resource;
     private void Start()
     {
+        AnalyticsHelper.SelectContent(isSelection ? "achievement_select" : "achievement");
         if (!isSelection)
             OnSelectedCard += (oldCard, newCard) =>
             {

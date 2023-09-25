@@ -201,8 +201,9 @@ public class CoreGame : SingletonMono<CoreGame>
         Instance.shipListPlayer.gameObject.SetActive(true);
         Instance.opponent.gameObject.SetActive(false);
         Instance.player.InitBoard(10, 10);
-        Instance.player.Position = Vector3.right * (-sizeWidth * 1 / 32 - player.width / 2);
-        Instance.opponent.Position = Vector3.right * (sizeWidth * 15 / 32 - opponent.width / 2);
+        float margin = Mathf.Lerp(1f / 32, 1f / 16, (cam.aspect - 1.77f) / (2.1f - 1.77f));
+        Instance.player.Position = Vector3.right * (sizeWidth * (-1f / 2 + margin) + player.width / 2);
+        Instance.opponent.Position = Vector3.right * (sizeWidth * (+1f / 2 - margin) - opponent.width / 2);
 
         Instance.counterRematchObj.transform.parent.gameObject.SetActive(false);
         Instance.btnReady.gameObject.SetActive(false);
@@ -226,8 +227,9 @@ public class CoreGame : SingletonMono<CoreGame>
         Instance.shipListPlayer.gameObject.SetActive(true);
         Instance.opponent.gameObject.SetActive(false);
         Instance.player.InitBoard(10, 10);
-        Instance.player.Position = Vector3.right * (-sizeWidth * 1 / 32 - player.width / 2);
-        Instance.opponent.Position = Vector3.right * (sizeWidth * 15 / 32 - opponent.width / 2);
+        float margin = Mathf.Lerp(1f / 32, 1f / 16, (cam.aspect - 1.77f) / (2.1f - 1.77f));
+        Instance.player.Position = Vector3.right * (sizeWidth * (-1f / 2 + margin) + player.width / 2);
+        Instance.opponent.Position = Vector3.right * (sizeWidth * (+1f / 2 - margin) - opponent.width / 2);
 
         Instance.currentCounterRematch = counterRematch;
         Instance.counterRematchObj.transform.parent.gameObject.SetActive(true);
