@@ -385,6 +385,8 @@ public class WSClientHandler : Singleton<WSClientHandler>
             value.rewardAdUnitId = data["d"]["ad_unit"][i]["ad_unit_id"];
             AdsData.rewardTypeToConfigMap.Add(key, value);
         }
+
+        AdsManager.adsManager.Initialize();
     }
 
     public static void ReceiveRewardAds(JSONNode data)
