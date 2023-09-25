@@ -75,11 +75,11 @@ namespace Authentication
             {
                 if (!GameData.AcceptLoginTerm[0])
                 {
-                    ButtonOpenTermPopup.OnOpenTermPopup(ButtonOpenTermPopup.TermType.PRIVATE_POLICY);
+                    ButtonOpenTermPopup.OnOpenTermsPopup(ButtonOpenTermPopup.TermType.PRIVATE_POLICY);
                 }
                 else
                 {
-                    ButtonOpenTermPopup.OnOpenTermPopup(ButtonOpenTermPopup.TermType.USER_AGREEMENT);
+                    ButtonOpenTermPopup.OnOpenTermsPopup(ButtonOpenTermPopup.TermType.USER_AGREEMENT);
                 }
                 return false;
             }

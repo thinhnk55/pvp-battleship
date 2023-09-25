@@ -39,7 +39,8 @@ MonoBehaviour:
   popupMessage: {fileID: 2654862994088543119, guid: df0ec6ec913783f4b9b9fcd4d3e02297, type: 3}
   popupGood: {fileID: 1246542714237734646, guid: 4418c8112dcaf8f4494c804105ab0248, type: 3}
   popupGoodApply: {fileID: 8832357801222620734, guid: 232b11ebc2c641247bb1e67bf100362f, type: 3}
-  popupUserTerms: {fileID: 2654862994088543119, guid: c3c085afb4b6cea429255322cdc06f26, type: 3}
+  popupUserTerms: {fileID: 3698075590956648934, guid: 516aab4b17549214e831b6fd9696dbef, type: 3}
+  popupPrivacyPolicy: {fileID: 3698075590956648934, guid: c3c085afb4b6cea429255322cdc06f26, type: 3}
   popupRPGood: {fileID: 2833365651636579034, guid: ac5e813c47fb6de40a9911e794f23464, type: 3}
   popupStarter: {fileID: 2103894969078696100, guid: ced61fdbeed4a254c88e019cb179beaa, type: 3}
   popupQuestCompleted: {fileID: 2654862994088543119, guid: b6badf35326b8084c90955ed93f6110f, type: 3}
