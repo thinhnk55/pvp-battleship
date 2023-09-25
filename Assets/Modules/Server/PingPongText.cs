@@ -1,5 +1,5 @@
 using Framework;
-using WebSocketSharp;
+using SimpleJSON;
 
 namespace Server
 {
@@ -10,20 +10,16 @@ namespace Server
             base.Awake();
             WSClient.Instance.OnConnect += () =>
             {
-                WSClient.Instance.ws.OnMessage += Pong;
+                ServerMessenger.AddListener<JSONNode>(ServerResponse.Pong, Pong);
             };
             WSClient.Instance.OnDisconnect += () =>
             {
-                WSClient.Instance.ws.OnMessage -= Pong;
+                ServerMessenger.RemoveListener<JSONNode>(ServerResponse.Pong, Pong);
             };
         }
-
-        void Pong(object sender, MessageEventArgs e)
+        void Pong(JSONNode data)
         {
-            MainThreadDispatcher.ExecuteOnMainThread(() =>
-            {
-                text.text = (WSPingPong.Instance.PingPongTime * 1000).ToString();
-            });
+            text.text = (WSPingPong.Instance.PingPongTime * 1000).ToString();
         }
     }
 }

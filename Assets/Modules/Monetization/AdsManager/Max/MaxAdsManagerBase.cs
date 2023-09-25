@@ -153,7 +153,7 @@ public abstract class MaxAdsManagerBase : IAdsManager
         MaxSdkCallbacks.Rewarded.OnAdDisplayFailedEvent += OnRewardedAdFailedToDisplayEvent;
         MaxSdkCallbacks.Rewarded.OnAdReceivedRewardEvent += OnRewardedAdReceivedRewardEvent;
     }
-    public virtual void Initialize()
+    public virtual void Initialize(string userId)
     {
     }
 

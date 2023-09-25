@@ -27,8 +27,8 @@ namespace Server
             ws.OnOpen += OnOpen;
             ws.OnMessage += OnMessage;
             ws.OnError += OnError;
+            ws.OnClose += OnClose;
             ws.Connect();
-            WSPingPong.Create();
         }
         public void Disconnect(bool unlisten)
         {
@@ -42,8 +42,17 @@ namespace Server
             ws.OnOpen -= OnOpen;
             ws.OnMessage -= OnMessage;
             ws.OnError -= OnError;
+            ws.OnClose -= OnClose;
             ws.Close();
-            WSPingPong.Destroy();
+        }
+
+        private void OnClose(object sender, CloseEventArgs e)
+        {
+            MainThreadDispatcher.ExecuteOnMainThread(() =>
+            {
+                Debug.Log("Close " + ((WebSocket)sender).Url + " : " + e.Reason + ". Code " + e.Code);
+                WSPingPong.Destroy();
+            });
         }
 
         public void Send(JSONNode json)
@@ -63,6 +72,7 @@ namespace Server
         public void OnOpen(object sender, EventArgs e)
         {
             Debug.Log("Open " + ((WebSocket)sender).Url);
+            WSPingPong.Create();
         }
         public void OnMessage(object sender, MessageEventArgs e)
         {
