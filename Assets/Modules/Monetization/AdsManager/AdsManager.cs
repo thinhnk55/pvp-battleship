@@ -24,12 +24,10 @@ namespace Monetization
         public static string[] RewardAdUnitId { get => MonetizationConfig.RewardAdsIdAndroid; set { } }
 
 #endif
-        static IAdsManager adsManager;
+        public static IAdsManager adsManager;
         void Awake()
         {
             adsManager = new MaxAdsManager();
-            adsManager.Initialize();
-
         }
         public static void ShowBannerAds()
         {
