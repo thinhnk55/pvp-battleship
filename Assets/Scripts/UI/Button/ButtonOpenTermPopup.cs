@@ -26,6 +26,11 @@ public class ButtonOpenTermPopup : ButtonBase
         OnOpenTermsPopup += OpenTermsPopup;
     }
 
+    public void OnDestroy()
+    {
+        OnOpenTermsPopup -= OpenTermsPopup;
+    }
+
 
     protected override void Button_OnClicked()
     {
