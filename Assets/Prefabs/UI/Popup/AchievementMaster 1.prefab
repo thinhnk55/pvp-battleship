@@ -1614,7 +1614,7 @@ MonoBehaviour:
   contentRoot: {fileID: 1555201156488408506}
   isPlayer: 1
   isSelection: 1
-  popup: {fileID: 0}
+  popup: {fileID: 970453811562805637}
   numberOfChild: -1
   previewCard: {fileID: 0}
   resource: {fileID: 0}

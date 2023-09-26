@@ -46,7 +46,10 @@ namespace Server
         }
         public static void Destroy()
         {
-            Destroy(Instance.gameObject);
+            if (Instance)
+            {
+                Destroy(Instance.gameObject);
+            }
         }
 
     }

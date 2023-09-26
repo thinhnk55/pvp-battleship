@@ -201,7 +201,7 @@ public class CoreGame : SingletonMono<CoreGame>
         Instance.shipListPlayer.gameObject.SetActive(true);
         Instance.opponent.gameObject.SetActive(false);
         Instance.player.InitBoard(10, 10);
-        float margin = Mathf.Lerp(1f / 32, 1f / 16, (cam.aspect - 1.77f) / (2.1f - 1.77f));
+        float margin = Mathf.Lerp(1f / 32, 1f / 14, (cam.aspect - 1.77f) / (2.2f - 1.77f));
         Instance.player.Position = Vector3.right * (sizeWidth * (-1f / 2 + margin) + player.width / 2);
         Instance.opponent.Position = Vector3.right * (sizeWidth * (+1f / 2 - margin) - opponent.width / 2);
 
@@ -227,7 +227,7 @@ public class CoreGame : SingletonMono<CoreGame>
         Instance.shipListPlayer.gameObject.SetActive(true);
         Instance.opponent.gameObject.SetActive(false);
         Instance.player.InitBoard(10, 10);
-        float margin = Mathf.Lerp(1f / 32, 1f / 16, (cam.aspect - 1.77f) / (2.1f - 1.77f));
+        float margin = Mathf.Lerp(1f / 32, 1f / 14, (cam.aspect - 1.77f) / (2.2f - 1.77f));
         Instance.player.Position = Vector3.right * (sizeWidth * (-1f / 2 + margin) + player.width / 2);
         Instance.opponent.Position = Vector3.right * (sizeWidth * (+1f / 2 - margin) - opponent.width / 2);
 
@@ -587,21 +587,21 @@ public class CoreGame : SingletonMono<CoreGame>
         if (rematch)
         {
             rematch = false;
-            if (stateMachine.CurrentState == GameState.PreRematch || stateMachine.CurrentState == GameState.SearchRematch)
+            if (Instance.stateMachine.CurrentState == GameState.PreRematch || stateMachine.CurrentState == GameState.SearchRematch)
             {
                 SceneTransitionHelper.Load(ESceneName.Home);
             }
-            else if (stateMachine.CurrentState == GameState.Out)
+            else if (Instance.stateMachine.CurrentState == GameState.Out)
             {
-                rematchChatB.transform.parent.gameObject.SetActive(true);
-                rematchChatB.text = "SORRY I HAVE TO GO!";
+                Instance.rematchChatB.transform.parent.gameObject.SetActive(true);
+                Instance.rematchChatB.text = "SORRY I HAVE TO GO!";
             }
 
         }
         else
         {
-            rematchChatB.transform.parent.gameObject.SetActive(true);
-            rematchChatB.text = "SORRY I HAVE TO GO!";
+            Instance.rematchChatB.transform.parent.gameObject.SetActive(true);
+            Instance.rematchChatB.text = "SORRY I HAVE TO GO!";
         }
 
     }

@@ -5,10 +5,10 @@ namespace Monetization
 {
     public class MaxAdsManager : MaxAdsManagerBase
     {
-        public override void Initialize()
+        public override void Initialize(string userId)
         {
             MaxSdk.SetSdkKey(MonetizationConfig.SdkKey);
-            MaxSdk.SetUserId("USER_ID");
+            MaxSdk.SetUserId(userId);
             MaxSdk.InitializeSdk();
             MaxSdkCallbacks.OnSdkInitializedEvent += (MaxSdkBase.SdkConfiguration sdkConfiguration) =>
             {

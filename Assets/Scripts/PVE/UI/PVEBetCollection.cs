@@ -46,7 +46,7 @@ public class PVEBetCollection : CardCollectionBase<PVEBetInfo>
                             if (ok)
                             {
                                 PopupBehaviour.CloseAll();
-                                PopupHelper.Create(PrefabFactory.PopupShop).GetComponentInChildren<Tabs>().Activate(1);
+                                PopupHelper.Create(PrefabFactory.PopupShop).GetComponentInChildren<Tabs>().Activate(0);
                             }
                         });
                     }

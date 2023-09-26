@@ -13,7 +13,7 @@ public class ButtonOpenTermPopup : ButtonBase
 /*    [SerializeField] Text Header;
     [SerializeField] Text Body;*/
     public static Action OnUpdateTerm;
-    public static Action<TermType> OnOpenTermPopup;
+    public static Action<TermType> OnOpenTermsPopup;
     private String header;
     private String body;
     [SerializeField] TermType termType;
@@ -23,7 +23,7 @@ public class ButtonOpenTermPopup : ButtonBase
         header = termType == TermType.PRIVATE_POLICY ? "Private Policy" : "User Agreement";
         body = termType == TermType.PRIVATE_POLICY ? GameConfig.PrivatePolicy : GameConfig.UserAgreement;
 
-        OnOpenTermPopup += OpenTermsPopup;
+        OnOpenTermsPopup += OpenTermsPopup;
     }
 
 
@@ -31,19 +31,47 @@ public class ButtonOpenTermPopup : ButtonBase
     {
         base.Button_OnClicked();
 
-        OpenTermsPopup(this.termType);
+        NavigateToWebsite(this.termType);
     }
 
     private void OpenTermsPopup(TermType termType)
     {
-        if(this.termType != termType) { return; }
+        if (this.termType != termType) { return; }
 
-        PopupHelper.CreateConfirm(PrefabFactory.PopupUserTerms, header, body, null, (confirm) => {
-            int index = termType == TermType.PRIVATE_POLICY ? 0 : 1;
+        if (termType == TermType.PRIVATE_POLICY)
+        {
+            PopupHelper.CreateConfirm(PrefabFactory.PopupPrivacyPolicy, null, null, null, (confirm) =>
+            {
+                int index = termType == TermType.PRIVATE_POLICY ? 0 : 1;
 
-            GameData.AcceptLoginTerm[index] = confirm ? true : false;
-            OnUpdateTerm();
-        });
+                GameData.AcceptLoginTerm[index] = confirm ? true : false;
+                OnUpdateTerm();
+            });
+        }
+        else
+        {
+            PopupHelper.CreateConfirm(PrefabFactory.PopupUserTerms, null, null, null, (confirm) =>
+            {
+                int index = termType == TermType.PRIVATE_POLICY ? 0 : 1;
+
+                GameData.AcceptLoginTerm[index] = confirm ? true : false;
+                OnUpdateTerm();
+            });
+        }
+    }
+
+    private void NavigateToWebsite(TermType termType)
+    {
+        if (this.termType != termType) { return; }
+
+        if (termType == TermType.PRIVATE_POLICY)
+        {
+            Application.OpenURL("https://meepogames.com/privacy-policy");
+        }
+        else
+        {
+            Application.OpenURL("https://meepogames.com/terms-and-conditions");
+        }
     }
 
 
