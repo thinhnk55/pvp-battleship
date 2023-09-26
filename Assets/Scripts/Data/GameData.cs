@@ -196,9 +196,9 @@ public class ProfileData
     {
         profileData.Username = new PDataUnit<string>(data["n"]);
         profileData.Point = data["e"].AsInt;
-        profileData.Avatar = new PDataUnit<int>(data["a"]["a"].AsInt);
-        profileData.FrameAvatar = new PDataUnit<int>(data["a"]["f"].AsInt);
-        profileData.BattleField = new PDataUnit<int>(data["a"]["b"].AsInt);
+        profileData.Avatar = new PDataUnit<int>(data["a"]["k"]["a"].AsInt);
+        profileData.FrameAvatar = new PDataUnit<int>(data["a"]["k"]["f"].AsInt);
+        profileData.BattleField = new PDataUnit<int>(data["a"]["k"]["b"].AsInt);
         profileData.SkinShip = new PDataUnit<int>(0);//= new PDataUnit<int>(int.Parse(data["sk"]));
         //
         profileData.AchievementProgress = new List<int>() {
