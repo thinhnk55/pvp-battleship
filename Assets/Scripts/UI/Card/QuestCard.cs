@@ -90,7 +90,7 @@ public class QuestCard : CardBase<QuestInfo>
             add.gameObject.SetActive(true);
             add.onClick.AddListener(() =>
             {
-                AdsManager.ShowRewardAds(null, AdsData.adsUnitIdMap[RewardType.Get_Quest]);
+                AdsManager.ShowRewardAds(null, AdsData.AdsUnitIdMap[RewardType.Get_Quest]);
             });
         }
     }

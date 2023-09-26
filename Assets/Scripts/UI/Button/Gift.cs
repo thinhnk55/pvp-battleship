@@ -91,7 +91,7 @@ public class Gift : CacheMonoBehaviour
             {
                 //Watch ads done => Get x3beri
                 Debug.LogWarning("X2");
-                AdsManager.ShowRewardAds(null, AdsData.adsUnitIdMap[RewardType.Get_X2DailyGift]);
+                AdsManager.ShowRewardAds(null, AdsData.AdsUnitIdMap[RewardType.Get_X2DailyGift]);
             }
         });
     }

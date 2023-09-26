@@ -16,7 +16,7 @@ namespace Monetization{
 
         public void ShowAds(string customData = null)
         {
-            AdsManager.ShowRewardAds(() => rewardCallback?.Invoke(), AdsData.adsUnitIdMap[rewardType], customData);
+            AdsManager.ShowRewardAds(() => rewardCallback?.Invoke(), AdsData.AdsUnitIdMap[rewardType], customData);
         }
 
         protected override void Button_OnClicked()

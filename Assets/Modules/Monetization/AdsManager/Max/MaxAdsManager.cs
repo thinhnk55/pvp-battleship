@@ -19,7 +19,7 @@ namespace Monetization
             };
 
             // Load reward Ads
-            foreach (KeyValuePair<RewardType, string> kvp in AdsData.adsUnitIdMap)
+            foreach (KeyValuePair<RewardType, string> kvp in AdsData.AdsUnitIdMap)
             {
                 LoadAds(kvp.Value, AdsType.Reward);
             }

@@ -63,7 +63,7 @@ public class QuestCollection : CardCollectionBase<QuestInfo>
                     },
                     OnChange = (info) =>
                     {
-                        AdsManager.ShowRewardAds(null, AdsData.adsUnitIdMap[RewardType.Change_Quest], _i.ToString());
+                        AdsManager.ShowRewardAds(null, AdsData.AdsUnitIdMap[RewardType.Change_Quest], _i.ToString());
                     }
                 });
             }
