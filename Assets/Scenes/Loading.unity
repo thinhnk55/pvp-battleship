@@ -714,13 +714,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   text: {fileID: 1135225944}
   wifiIcon:
-  - {fileID: 21300000, guid: 57bc541734cb4624c93cbba27fe30e3b, type: 3}
-  - {fileID: 21300000, guid: 0030470a9e6fa4648be2bf43e42a1d9f, type: 3}
   - {fileID: 21300000, guid: f57b8f3df6742b641a8b40f3356b4ee4, type: 3}
+  - {fileID: 21300000, guid: 0030470a9e6fa4648be2bf43e42a1d9f, type: 3}
+  - {fileID: 21300000, guid: 57bc541734cb4624c93cbba27fe30e3b, type: 3}
   internetIcon:
-  - {fileID: 21300000, guid: cd919866b07741d4c87d5e1e1da7a1ab, type: 3}
-  - {fileID: 21300000, guid: 922042c90a389b74481e22eec326620d, type: 3}
   - {fileID: 21300000, guid: 4c54117516e26984b8a250d49606ee0e, type: 3}
+  - {fileID: 21300000, guid: 922042c90a389b74481e22eec326620d, type: 3}
+  - {fileID: 21300000, guid: cd919866b07741d4c87d5e1e1da7a1ab, type: 3}
   networkIcon: {fileID: 607310480}
 --- !u!114 &1135225944
 MonoBehaviour:

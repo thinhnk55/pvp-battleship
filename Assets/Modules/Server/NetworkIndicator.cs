@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace Server
 {
-    public class PingPongText : TextBase
+    public class NetworkIndicator : TextBase
     {
         [SerializeField] Sprite[] wifiIcon;
         [SerializeField] Sprite[] internetIcon;
