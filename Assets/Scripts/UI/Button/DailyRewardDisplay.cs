@@ -15,23 +15,23 @@ public class DailyRewardDisplay : MonoBehaviour
     [SerializeField] TextMeshProUGUI countDown;
     [SerializeField] Button claim;
     [SerializeField] Button watchAds;
-    
+
 
 
     private void Start()
-    {     
+    {
         Timer<Gift>.Instance.OnTrigger += OnTrigger;
         Timer<Gift>.Instance.OnElapse += OnElapse;
-        SetAmount();          
+        SetAmount();
         claim.onClick.AddListener(OnClickClaimBt);
         HighLightRewards();
-        
+
     }
 
     public void OnClickClaimBt()
     {
         if (Timer<Gift>.Instance.TriggersFromBegin >= 1)
-        {           
+        {
             //StartCoroutine(DisplayRewards(0f));
             StartCoroutine(ActiveResource());
             CoinVFX.CoinVfx(resource.transform, rewards[GameData.ProgressGift].transform.position, rewards[GameData.ProgressGift].transform.position);
@@ -39,10 +39,10 @@ public class DailyRewardDisplay : MonoBehaviour
     }
 
     public void HighLightRewards()
-    {  
+    {
         if (Timer<Gift>.Instance.TriggersFromBegin >= 1)
         {
-            if(rewards != null)
+            if (rewards != null)
             {
                 foreach (DailyReward reward in rewards)
                 {
@@ -55,8 +55,8 @@ public class DailyRewardDisplay : MonoBehaviour
                         reward.ChangeSprite(reward.defaultBroard);
                     }
                 }
-            }    
-            
+            }
+
         }
         else
         {
@@ -66,9 +66,9 @@ public class DailyRewardDisplay : MonoBehaviour
                 {
                     reward.ChangeSprite(reward.defaultBroard);
                 }
-            }    
-                
-        }     
+            }
+
+        }
     }
 
     public void DisplayReward()
@@ -87,52 +87,57 @@ public class DailyRewardDisplay : MonoBehaviour
                 }
             }
         }
-        
+
     }
 
     public IEnumerator ActiveResource()
     {
-        if(resource != null)
+        if (resource != null)
         {
             resource.SetActive(true);
             yield return new WaitForSeconds(2.5f);
             resource.SetActive(false);
-        }    
-        
+        }
+
     }
 
     public void SetAmount()
     {
-        if(rewards != null)
+        if (rewards != null)
         {
             foreach (DailyReward reward in rewards)
             {
                 reward.amount.text = "x" + GameData.GiftConfig[reward.id].ToString();
                 //Debug.Log($"GameData.GiftConfig[{reward.id}] = {GameData.GiftConfig[reward.id]} ");
             }
-        }          
-    }    
+        }
+    }
 
     public void ToggleButton()
     {
-        if(Timer<Gift>.Instance.TriggersFromBegin >= 1)
+        if (claim != null && watchAds != null)
         {
-            if(claim != null && watchAds != null)
+            if (Timer<Gift>.Instance.TriggersFromBegin >= 1)
             {
+
                 claim.interactable = true;
                 watchAds.interactable = true;
-            }    
-            
+            }
+            else
+            {   
+                claim.interactable = false;
+                watchAds.interactable = false;           
+            }
         }
         else
-        {
-            if(claim != null && watchAds != null)
-            {
-                claim.interactable = false;
-                watchAds.interactable = false;
-            }              
+        {      
+            return;
+            
         }
-    }    
+        
+      
+
+    }
 
     private void OnTrigger()
     {
@@ -145,7 +150,7 @@ public class DailyRewardDisplay : MonoBehaviour
 
     private void OnElapse()
     {
-        countDown.text = Timer<Gift>.Instance.TriggersFromBegin >= 1 ? "Collect" :  Timer<Gift>.Instance.RemainTime_Sec.Hour_Minute_Second_1() + "s";
+        countDown.text = Timer<Gift>.Instance.TriggersFromBegin >= 1 ? "Collect" : Timer<Gift>.Instance.RemainTime_Sec.Hour_Minute_Second_1() + "s";
         HighLightRewards();
         ToggleButton();
         DisplayReward();
