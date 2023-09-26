@@ -10,8 +10,8 @@ namespace FirebaseIntegration
         {
             FirebaseInitialization.OnInitialized += () =>
             {
-                Firebase.Messaging.FirebaseMessaging.TokenReceived += OnTokenReceived;
-                Firebase.Messaging.FirebaseMessaging.MessageReceived += OnMessageReceived;
+                FirebaseMessaging.TokenReceived += OnTokenReceived;
+                FirebaseMessaging.MessageReceived += OnMessageReceived;
             };
         }
 
@@ -27,15 +27,15 @@ namespace FirebaseIntegration
             }
         }
 
-        public void OnTokenReceived(object sender, Firebase.Messaging.TokenReceivedEventArgs token)
+        public void OnTokenReceived(object sender, TokenReceivedEventArgs token)
         {
-            UnityEngine.Debug.Log("Received Registration Token: " + token.Token);
+            Debug.Log("Received Registration Token: " + token.Token);
         }
 
-        public void OnMessageReceived(object sender, Firebase.Messaging.MessageReceivedEventArgs e)
+        public void OnMessageReceived(object sender, MessageReceivedEventArgs e)
         {
-            UnityEngine.Debug.Log("From: " + e.Message.From);
-            UnityEngine.Debug.Log("Message ID: " + e.Message.MessageId);
+            Debug.Log("From: " + e.Message.From);
+            Debug.Log("Message ID: " + e.Message.MessageId);
         }
     }
 }

@@ -15,7 +15,9 @@ namespace FirebaseIntegration
             {
                 Messenger.AddListener<MaxSdkBase.AdInfo>(GameEvent.REWARD_ADS_INFO, AnalyticsHelper.WatchAds);
                 ServerMessenger.AddListener<JSONNode>(ServerResponse._FIREBASE_ASK_UPDATE_TOKEN, FirebaseAskForUpdateToken);
+#if UNITY_EDITOR == false
                 GetTokenCloudMessage();
+#endif
             };
 
             WSClient.Instance.OnDisconnect += () =>
