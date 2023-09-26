@@ -9257,7 +9257,7 @@ GameObject:
   - component: {fileID: 4987967309165990553}
   - component: {fileID: 9017873879903052452}
   - component: {fileID: 3146629479267513042}
-  - component: {fileID: 8035579890295761199}
+  - component: {fileID: 1865941980248110678}
   m_Layer: 5
   m_Name: Tooltip
   m_TagString: Untagged
@@ -9367,7 +9367,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &8035579890295761199
+--- !u!114 &1865941980248110678
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -9376,9 +9376,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 8062481079146703481}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c844f41006a8e5847be97a9b8fb3ae12, type: 3}
+  m_Script: {fileID: 11500000, guid: aaf372802082afd459e93d7db45ecd34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _popup: {fileID: 2908859707685437178, guid: cd6d56b029b293340b493f336cd23e30, type: 3}
+  OnSpawnPopup:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &8234640361388361192
 GameObject:
   m_ObjectHideFlags: 0
