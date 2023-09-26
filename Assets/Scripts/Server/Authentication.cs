@@ -10,8 +10,7 @@ namespace Authentication
     public class Authentication : AuthenticationBase
     {
         [SerializeField] GameObject LoadingUI;
-        [SerializeField] GameObject ButtonGroupIos;
-        [SerializeField] GameObject ButtonGroupAndroid;
+        [SerializeField] GameObject ButtonAppleLogin;
 
         protected override void Awake()
         {
@@ -22,9 +21,9 @@ namespace Authentication
         void SetUpLoginScreen()
         {
 #if PLATFORM_ANDROID
-            ButtonGroupIos.SetActive(false);
+            ButtonAppleLogin.SetActive(false);
 #else
-            ButtonGroupAndroid.SetActive(false);
+            ButtonAppleLogin.SetActive(true);
 #endif
         }
 
