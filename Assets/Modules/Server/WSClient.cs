@@ -39,11 +39,11 @@ namespace Server
             {
                 OnDisconnect?.Invoke();
             }
+            ws.Close();
             ws.OnOpen -= OnOpen;
             ws.OnMessage -= OnMessage;
             ws.OnError -= OnError;
             ws.OnClose -= OnClose;
-            ws.Close();
         }
 
         private void OnClose(object sender, CloseEventArgs e)
