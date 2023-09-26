@@ -66,7 +66,7 @@ namespace Server
             {
                 Messenger.Broadcast(GameEvent.LostConnection);
                 Instance.Disconnect(true);
-                throw e;
+                Debug.Log(e);
             }
         }
         public void OnOpen(object sender, EventArgs e)

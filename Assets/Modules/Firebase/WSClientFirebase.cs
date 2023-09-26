@@ -30,13 +30,8 @@ namespace FirebaseIntegration
         private static async void FirebaseAskForUpdateToken(JSONNode data)
         {
             var task = FirebaseMessaging.GetTokenAsync();
-
             await task;
-
-            if (task.IsCompleted)
-            {
-                FirebaseUpdateToken(task.Result);
-            }
+            if (task.IsCompleted) FirebaseUpdateToken(task.Result);
         }
 
         public static void FirebaseUpdateToken(string tokenCloudMessage)
@@ -52,17 +47,11 @@ namespace FirebaseIntegration
         public static async void GetTokenCloudMessage()
         {
             var task = FirebaseMessaging.GetTokenAsync();
-
             await task;
-
             if (task.IsCompleted)
             {
                 Debug.Log(task.Result);
-                if (string.Equals(FirebaseData.TokenCloudMessage, task.Result))
-                {
-                    Debug.Log("Don't Update");
-                    return;
-                }
+                if (string.Equals(FirebaseData.TokenCloudMessage, task.Result)) return;
                 FirebaseData.TokenCloudMessage = task.Result;
                 FirebaseUpdateToken(task.Result);
             }

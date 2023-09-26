@@ -140,6 +140,5 @@ public class Gift : CacheMonoBehaviour
 
     public static void OnGetAdsGift(JSONNode data)
     {
-
     }
 }

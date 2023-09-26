@@ -52,6 +52,10 @@ public class PVEBetCollection : CardCollectionBase<PVEBetInfo>
                     }
                 }
             }); ;
+            if (isQualified && GameData.Bets[_i].Bet <= PConsumableType.BERRY.GetValue() && _i > highestAvalableBet)
+            {
+                highestAvalableBet = _i;
+            }
         }
 
         BuildUIs(list);

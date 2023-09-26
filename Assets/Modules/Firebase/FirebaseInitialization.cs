@@ -1,20 +1,17 @@
 using Firebase;
 using Firebase.Crashlytics;
 using Firebase.Extensions;
-using System;
 using System.Threading.Tasks;
 using UnityEngine;
 namespace FirebaseIntegration
 {
-    public class FirebaseInitialization : MonoBehaviour
+    public class FirebaseInitialization
     {
         static public bool initialized = false;
-        public delegate void Callback();
         public static Callback OnInitialized;
         public static Task InitTask;
-        void Start()
+        public static void Initialize()
         {
-            Progress<Task> progress = new Progress<Task>();
             InitTask = FirebaseApp.CheckAndFixDependenciesAsync().ContinueWithOnMainThread(task =>
             {
                 var dependencyStatus = task.Result;
