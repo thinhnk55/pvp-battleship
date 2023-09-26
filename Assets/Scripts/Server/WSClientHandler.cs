@@ -431,7 +431,7 @@ public class WSClientHandler : Singleton<WSClientHandler>
         }
         else if (String.Equals(ads_unit_id, AdsData.AdsUnitIdMap[RewardType.Get_X2DailyGift]))
         {
-            Gift.OnGetAdsGift(data);
+            //Gift.OnGetAdsGift(data);
         }
         else if (String.Equals(ads_unit_id, AdsData.AdsUnitIdMap[RewardType.Get_RevivalOnlyPVE]))
         {
