@@ -12,12 +12,6 @@ public class ButtonWatchBeriAds : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        BeriBonusAmount.text += AdsData.rewardTypeToConfigMap[AdsData.adsUnitIdMap[RewardType.Get_Beri]].reward[0];
-    }
-
-
-
-    private void OnDestroy()
-    {
+        BeriBonusAmount.text += AdsData.RewardTypeToConfigMap[AdsData.AdsUnitIdMap[RewardType.Get_Beri]].reward[0];
     }
 }

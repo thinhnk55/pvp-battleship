@@ -367,50 +367,53 @@ public class WSClientHandler : Singleton<WSClientHandler>
     }
     public static void ReceiveAdsConfig(JSONNode data)
     {
-        if (int.Parse(data["d"]["version"]) == AdsData.versionAds)
-            return;
-
-        AdsData.versionAds = int.Parse(data["d"]["version"]);
-
-
-        int platform;
-#if PLATFORM_ANDROID || UNITY_ANDROID
-        platform = 2;
-#else
-        platform = 1;
-#endif
-        for (int i = 0; i < data["d"]["ad_unit"].Count; i++)
+        if (int.Parse(data["d"]["version"]) != AdsData.VersionAds)
         {
-            if (int.Parse(data["d"]["ad_unit"][i]["platform"]) != platform)
-                continue;
-            AdsData.adsUnitIdMap.Add((RewardType)int.Parse(data["d"]["ad_unit"][i]["reward_type"][0]), data["d"]["ad_unit"][i]["ad_unit_id"]);
-            string key = data["d"]["ad_unit"][i]["ad_unit_id"];
-            AdsRewardConfig value = new AdsRewardConfig();
-            value.reward = data["d"]["ad_unit"][i]["reward"].ToListInt();
-            value.rewardAdUnitId = data["d"]["ad_unit"][i]["ad_unit_id"];
-            AdsData.rewardTypeToConfigMap.Add(key, value);
+            AdsData.VersionAds = int.Parse(data["d"]["version"]);
+
+            int platform;
+    #if PLATFORM_ANDROID || UNITY_ANDROID
+            platform = 2;
+    #else
+            platform = 1;
+    #endif
+
+            AdsData.AdsUnitIdMap.Clear();
+            AdsData.RewardTypeToConfigMap.Clear();
+            for (int i = 0; i < data["d"]["ad_unit"].Count; i++)
+            {
+                if (int.Parse(data["d"]["ad_unit"][i]["platform"]) != platform)
+                    continue;
+                AdsData.AdsUnitIdMap.Add((RewardType)int.Parse(data["d"]["ad_unit"][i]["reward_type"][0]), data["d"]["ad_unit"][i]["ad_unit_id"]);
+                string key = data["d"]["ad_unit"][i]["ad_unit_id"];
+                AdsRewardConfig value = new AdsRewardConfig();
+                value.reward = data["d"]["ad_unit"][i]["reward"].ToListInt();
+                value.rewardAdUnitId = data["d"]["ad_unit"][i]["ad_unit_id"];
+                AdsData.RewardTypeToConfigMap.Add(key, value);
+            }
         }
+
         AdsManager.adsManager.Initialize(DataAuth.AuthData.userId.ToString());
     }
 
     public static void ReceiveRewardAds(JSONNode data)
     {
         string ads_unit_id = data["d"]["a"];
-        if (String.Equals(ads_unit_id, AdsData.adsUnitIdMap[RewardType.Get_Beri]))
+        if (String.Equals(ads_unit_id, AdsData.AdsUnitIdMap[RewardType.Get_Beri]))
         {
             PConsumableType.BERRY.SetValue(int.Parse(data["d"]["g"]));
         }
-        else if (String.Equals(ads_unit_id, AdsData.adsUnitIdMap[RewardType.Get_Rocket]))
+        else if (String.Equals(ads_unit_id, AdsData.AdsUnitIdMap[RewardType.Get_Rocket]))
         {
             GameData.RocketCount.Data = int.Parse(data["d"]["l"]["r"]);
         }
-        else if (String.Equals(ads_unit_id, AdsData.adsUnitIdMap[RewardType.Get_Quest]))
+        else if (String.Equals(ads_unit_id, AdsData.AdsUnitIdMap[RewardType.Get_Quest]))
         {
             Debug.Log("AddQuest");
             GameData.RoyalPass.CurrentQuestsProgress = data["d"]["q"]["p"].ToArrayInt(true);
             GameData.RoyalPass.CurrentQuests.Data = data["d"]["q"]["q"].ToArrayInt(true);
         }
-        else if (String.Equals(ads_unit_id, AdsData.adsUnitIdMap[RewardType.Change_Quest]))
+        else if (String.Equals(ads_unit_id, AdsData.AdsUnitIdMap[RewardType.Change_Quest]))
         {
             int[] arr = new int[3];
             for (int i = 0; i < arr.Length; i++)
@@ -425,11 +428,11 @@ public class WSClientHandler : Singleton<WSClientHandler>
             GameData.RoyalPass.CurrentQuestsProgress[int.Parse(data["d"]["i"])] = int.Parse(data["d"]["q"]["p"][int.Parse(data["d"]["i"])]);
             GameData.RoyalPass.CurrentQuests.Data = arr;
         }
-        else if (String.Equals(ads_unit_id, AdsData.adsUnitIdMap[RewardType.Get_X2DailyGift]))
+        else if (String.Equals(ads_unit_id, AdsData.AdsUnitIdMap[RewardType.Get_X2DailyGift]))
         {
             Gift.OnGetAdsGift(data);
         }
-        else if (String.Equals(ads_unit_id, AdsData.adsUnitIdMap[RewardType.Get_RevivalOnlyPVE]))
+        else if (String.Equals(ads_unit_id, AdsData.AdsUnitIdMap[RewardType.Get_RevivalOnlyPVE]))
         {
             PVEData.TypeBoard = int.Parse(data["d"]["t"]["t"]);
             PVE.Instance.CurrentStep.Data = int.Parse(data["d"]["t"]["s"]);
