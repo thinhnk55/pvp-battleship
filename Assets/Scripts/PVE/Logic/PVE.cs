@@ -230,7 +230,7 @@ public class PVE : SingletonMono<PVE>
                 }
                 else
                 {
-                    AdsManager.ShowRewardAds(null, AdsData.adsUnitIdMap[RewardType.Get_RevivalOnlyPVE]);
+                    AdsManager.ShowRewardAds(null, AdsData.AdsUnitIdMap[RewardType.Get_RevivalOnlyPVE]);
                 }
             }
             else

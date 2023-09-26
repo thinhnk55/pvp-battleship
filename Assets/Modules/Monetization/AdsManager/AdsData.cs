@@ -24,15 +24,15 @@ public enum RewardType
 
 public class AdsData : PDataBlock<AdsData>
 {
-    [SerializeField] private Dictionary<RewardType, string> AdsUnitIdMap; public static Dictionary<RewardType, string> adsUnitIdMap { get { return Instance.AdsUnitIdMap; } set { Instance.AdsUnitIdMap = value;} }
-    [SerializeField] private Dictionary<string, AdsRewardConfig> RewardTypeToConfigMap; public static Dictionary<string, AdsRewardConfig> rewardTypeToConfigMap { get { return Instance.RewardTypeToConfigMap; } set { Instance.RewardTypeToConfigMap = value; } }
-    [SerializeField] private int VersionAds; public static int versionAds { get { return Instance.VersionAds; } set { Instance.VersionAds = value; } }
+    [SerializeField] private Dictionary<RewardType, string> adsUnitIdMap; public static Dictionary<RewardType, string> AdsUnitIdMap { get { return Instance.adsUnitIdMap; } set { Instance.adsUnitIdMap = value;} }
+    [SerializeField] private Dictionary<string, AdsRewardConfig> rewardTypeToConfigMap; public static Dictionary<string, AdsRewardConfig> RewardTypeToConfigMap { get { return Instance.rewardTypeToConfigMap; } set { Instance.rewardTypeToConfigMap = value; } }
+    [SerializeField] private int versionAds; public static int VersionAds { get { return Instance.versionAds; } set { Instance.versionAds = value; } }
 
     protected override void Init()
     {
         base.Init();
-        Instance.AdsUnitIdMap = Instance.AdsUnitIdMap ?? new Dictionary<RewardType, string>();
-        Instance.RewardTypeToConfigMap = Instance.RewardTypeToConfigMap ?? new Dictionary<string, AdsRewardConfig>();
+        Instance.adsUnitIdMap = Instance.adsUnitIdMap ?? new Dictionary<RewardType, string>();
+        Instance.rewardTypeToConfigMap = Instance.rewardTypeToConfigMap ?? new Dictionary<string, AdsRewardConfig>();
         //Instance.VersionAds = 0;
     }
 }
