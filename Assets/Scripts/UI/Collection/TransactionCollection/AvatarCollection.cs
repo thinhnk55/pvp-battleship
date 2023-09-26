@@ -1,9 +1,7 @@
+using FirebaseIntegration;
 using Framework;
 using SimpleJSON;
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Transactions;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -20,7 +18,10 @@ public class AvatarCollection : TransactionCollection
         ServerMessenger.AddListener<JSONNode>(ServerResponse._CHANGE_AVATAR, ReceiveChangeAvatar);
         PNonConsumableType.AVATAR.GetData().OnDataChanged += OnDataChanged;
     }
-
+    private void OnEnable()
+    {
+        AnalyticsHelper.SelectContent("shop_avatar");
+    }
     private void OnDataChanged(HashSet<int> arg1, HashSet<int> arg2)
     {
         UpdateUIs();
@@ -40,8 +41,8 @@ public class AvatarCollection : TransactionCollection
         for (int i = 0; i < GameData.TransactionConfigs[transactionType].Count; i++)
         {
             var transaction = GameData.TransactionConfigs[transactionType][i];
-            if ((isUnlocked == PNonConsumableType.AVATAR.GetValue().Contains((int)transaction.Product[0].Value) && isObtainable && ((isUnlocked) || (!isUnlocked && transaction.Cost[0].Value >= 0))) 
-                || (!isObtainable && transaction.Cost[0].Value==-1 && !PNonConsumableType.AVATAR.GetValue().Contains((int)transaction.Product[0].Value)))
+            if ((isUnlocked == PNonConsumableType.AVATAR.GetValue().Contains((int)transaction.Product[0].Value) && isObtainable && ((isUnlocked) || (!isUnlocked && transaction.Cost[0].Value >= 0)))
+                || (!isObtainable && transaction.Cost[0].Value == -1 && !PNonConsumableType.AVATAR.GetValue().Contains((int)transaction.Product[0].Value)))
             {
                 transactionInfos.Add(transaction);
             }

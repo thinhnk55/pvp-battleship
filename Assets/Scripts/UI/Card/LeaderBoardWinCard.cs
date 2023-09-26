@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public struct LeaderBoardWinInfo
 {
+    public int UserId;
     public int Order;
     public int Rank;
     public string UserName;
@@ -52,6 +53,6 @@ public class LeaderBoardWinCard : CardBase<LeaderBoardWinInfo>
         userName?.SetText(info.UserName);
         //cup =  info.Cup;
         winCount?.SetText(info.WinCount.ToString());
-        reward?.SetSprite(SpriteFactory.ResourceIcons[(int)PConsumableType.BERRY].sprites.GetClamp(info.Order));
+        reward?.SetSprite(SpriteFactory.ResourceIcons[(int)PConsumableType.BERRY].sprites[LeaderBoard.GetIconReward(info.Order)]);
     }
 }

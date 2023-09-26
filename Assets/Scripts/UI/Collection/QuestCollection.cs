@@ -1,3 +1,4 @@
+using FirebaseIntegration;
 using Framework;
 using Monetization;
 using Server;
@@ -11,6 +12,10 @@ public class QuestCollection : CardCollectionBase<QuestInfo>
         UpdateUIs();
         GameData.RoyalPass.CurrentQuests.OnDataChanged += OnChange;
 
+    }
+    private void OnEnable()
+    {
+        AnalyticsHelper.SelectContent("royalpass_normal_quest");
     }
     private void OnDestroy()
     {
@@ -43,6 +48,17 @@ public class QuestCollection : CardCollectionBase<QuestInfo>
                         if (GameData.RoyalPass.CurrentQuestsProgress[_i] >= GameData.RoyalPass.Quests[GameData.RoyalPass.CurrentQuests.Data[_i]].Require)
                         {
                             WSClientHandler.DailyQuestReward(_i);
+                        }
+                        else
+                        {
+                            if (GameData.RoyalPass.Quests[GameData.RoyalPass.CurrentQuests.Data[_i]].Type == StatisticType.LUCKY_SHOT_COUNT)
+                            {
+                                PopupHelper.Create(PrefabFactory.PopupLuckyshot);
+                            }
+                            else
+                            {
+                                SceneTransitionHelper.Load(ESceneName.Bet);
+                            }
                         }
                     },
                     OnChange = (info) =>

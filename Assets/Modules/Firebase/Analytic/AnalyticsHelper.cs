@@ -22,12 +22,12 @@ namespace FirebaseIntegration
             });
         }
 
-        public static void SelectContent(string content)
+        public static void SelectContent(string type)
         {
             Analytics.Log(FirebaseAnalytics.EventSelectContent,
             new List<KeyValuePair<string, object>>()
             {
-
+                new KeyValuePair<string, object>(FirebaseAnalytics.ParameterContentType, type),
             });
         }
 

@@ -130,29 +130,19 @@ public class AchievementCard : CardBase<AchievementInfo>
     {
         base.BuildUI(info);
         Id = info.Id;
-        int completed = 0;
         if (info.Title == null)
             return;
-        for (int i = 0; i < info.AchivementUnits.Length; i++)
-        {
-            if (info.Progress >= info.AchivementUnits[i].Task)
-            {
-                completed = i + 1;
-            }
-            else
-                break;
-        }
 
         //show unobtained info
-        if (Icon != null)
+        if (Icon)
             Icon.sprite = SpriteFactory.Achievements.GetClamp(info.Id).sprites[info.Obtained];
         if (Title)
             Title.text = info.Title;
         if (Description)
             Description.text = info.AchivementUnits.GetClamp(info.Obtained).Description;
-        if (RewardAmount != null)
+        if (RewardAmount)
             RewardAmount.text = "x " + TransactionCard.GetStringNumber(info.AchivementUnits.GetClamp(info.Obtained).RewardAmount);
-        if (Progress != null)
+        if (Progress)
         {
             Progress.maxValue = info.AchivementUnits.GetClamp(info.Obtained).Task;
             Progress.value = info.Progress;
@@ -191,6 +181,7 @@ public class AchievementCard : CardBase<AchievementInfo>
             if (info.Upgradable && info.Progress < info.AchivementUnits.GetClamp(info.Obtained).Task && info.IsPreview)
             {
                 Button.interactable = false;
+                Button.GetComponent<Image>().sprite = SpriteFactory.DisableButton;
             }
             Button.onClick.RemoveAllListeners();
             Button.onClick.AddListener(() =>
@@ -200,12 +191,13 @@ public class AchievementCard : CardBase<AchievementInfo>
                     Collection.SelectedCard = this;
             });
         }
-        if (OnClick == null || Button.onClick == null)
+        if (OnClick == null || (Button && Button.onClick == null))
         {
-            gameObject.SetChildrenRecursively<Image>((img) =>
-            {
-                img.color = Color.gray;
-            });
+            if (Button)
+                gameObject.SetChildrenRecursively<Image>((img) =>
+                {
+                    img.color = Color.gray;
+                });
         }
     }
 

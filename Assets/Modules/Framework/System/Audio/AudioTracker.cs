@@ -1,32 +1,34 @@
-using Framework;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class AudioTracker : CacheMonoBehaviour
+namespace Framework
 {
-    public SoundType type;
-    [SerializeField] private int activeSound; public int ActiveSound
+    public class AudioTracker : CacheMonoBehaviour
     {
-        get
+        public SoundType type;
+        [SerializeField] private int activeSound; public int ActiveSound
         {
-            int activeSound = 0;
-            for (int i = 0; i < transform.childCount; i++)
+            get
             {
-                if (transform.GetChild(i).gameObject.activeSelf)
+                int activeSound = 0;
+                for (int i = 0; i < transform.childCount; i++)
                 {
-                    activeSound++;
+                    if (transform.GetChild(i).gameObject.activeSelf)
+                    {
+                        activeSound++;
+                    }
                 }
-            } return activeSound; 
-        } 
-    }
-    void Start()
-    {
-        transform.GetChildren();
-    }
+                return activeSound;
+            }
+        }
+        void Start()
+        {
+            transform.GetChildren();
+        }
 
-    public bool IsFullActiveSound()
-    {
-        return ActiveSound == AudioConfig.SoundConfigs[type].maxActiveSound;
+        public bool IsFullActiveSound()
+        {
+            return ActiveSound == AudioConfig.SoundConfigs[type].maxActiveSound;
+        }
     }
 }
+

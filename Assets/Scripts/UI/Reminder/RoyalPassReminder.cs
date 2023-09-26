@@ -1,7 +1,5 @@
 ﻿using Framework;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class RoyalPassReminder : ConditionalMono
@@ -13,39 +11,47 @@ public class RoyalPassReminder : ConditionalMono
     {
         return (o) =>
         {
-            bool hasReward = false;
-            for (int i = 0; i <= GameData.RoyalPass.Level; i++)
+            try
             {
-                if (!GameData.RoyalPass.NormalObtains.Data.Contains(i) && i!=0)
+                bool hasReward = false;
+                for (int i = 0; i <= GameData.RoyalPass.Level; i++)
                 {
-                    hasReward = true;
-                    break;
+                    if (!GameData.RoyalPass.NormalObtains.Data.Contains(i) && i != 0)
+                    {
+                        hasReward = true;
+                        break;
+                    }
+                    if (PNonConsumableType.ELITE.GetValue().Contains(0) && !GameData.RoyalPass.EliteObtains.Data.Contains(i))
+                    {
+                        hasReward = true;
+                        break;
+                    }
                 }
-                if (PNonConsumableType.ELITE.GetValue().Contains(0)&& !GameData.RoyalPass.EliteObtains.Data.Contains(i))
+                bool hasQuest = false;
+                for (int i = 0; i < GameData.RoyalPass.SeasonQuests.Length; i++)
                 {
-                    hasReward = true;
-                    break;
+                    if (GameData.RoyalPass.SeasonQuestsProgress[i] >= GameData.RoyalPass.SeasonQuests[i].Require && !GameData.RoyalPass.SeasonQuestsObtained.Data.Contains(i))
+                    {
+                        hasQuest = true;
+                        break;
+                    }
                 }
+                for (int i = 0; i < GameData.RoyalPass.CurrentQuestsProgress.Length; i++)
+                {
+                    if (GameData.RoyalPass.CurrentQuests.Data[i] >= 0
+                        && GameData.RoyalPass.CurrentQuestsProgress[i] >= GameData.RoyalPass.Quests[GameData.RoyalPass.CurrentQuests.Data[i]].Require)
+                    {
+                        hasQuest = true;
+                        break;
+                    }
+                }
+                return (isReward && hasReward) || (isQuest && hasQuest);
             }
-            bool hasQuest = false;
-            for (int i = 0; i < GameData.RoyalPass.SeasonQuests.Length; i++)
+            catch (Exception)
             {
-                if (GameData.RoyalPass.SeasonQuestsProgress[i] > GameData.RoyalPass.SeasonQuests[i].Require && !GameData.RoyalPass.SeasonQuestsObtained.Data.Contains(i))
-                {
-                    hasQuest = true;
-                    break;
-                }
+                return false;
             }
-            for (int i = 0; i < GameData.RoyalPass.CurrentQuestsProgress.Length; i++)
-            {
-                if (GameData.RoyalPass.CurrentQuests.Data[i] >= 0 
-                    && GameData.RoyalPass.CurrentQuestsProgress[i] > GameData.RoyalPass.Quests[GameData.RoyalPass.CurrentQuests.Data[i]].Require )
-                {
-                    hasQuest = true;
-                    break;
-                }
-            }
-            return (isReward && hasReward) || (isQuest && hasQuest);
+
         };
     }
 }

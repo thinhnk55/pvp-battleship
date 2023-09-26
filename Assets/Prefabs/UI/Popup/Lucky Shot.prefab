@@ -3889,7 +3889,7 @@ MonoBehaviour:
   rocketRoot: {fileID: 4556426315817154568}
   rocketPrefab: {fileID: 2203868203271391617, guid: a6b203f875bffe849be0a90d55f561b1, type: 3}
   shotRoot: {fileID: 1579315796305608966}
-  resourceUI: {fileID: 8502610901330842300}
+  resourceUI: {fileID: 6266355991497853207}
   countDown: {fileID: 4273856656153017910}
   countDownSlider: {fileID: 4816795581315383745}
   emptyRocket: {fileID: 21300000, guid: 1213f6b7d32123448850083ee415415d, type: 3}
@@ -4246,7 +4246,7 @@ PrefabInstance:
     - target: {fileID: 1793247160581069838, guid: 33c887efe9e2d4f4792183fce278ad1a, type: 3}
       propertyPath: _popup
       value: 
-      objectReference: {fileID: 304417783529928262, guid: 0660f0785c8fedf4dac3e3326d731133, type: 3}
+      objectReference: {fileID: 8576714802656929068, guid: 0660f0785c8fedf4dac3e3326d731133, type: 3}
     - target: {fileID: 2260847644794012546, guid: 33c887efe9e2d4f4792183fce278ad1a, type: 3}
       propertyPath: m_Name
       value: Head
@@ -4254,7 +4254,7 @@ PrefabInstance:
     - target: {fileID: 2788109869845940657, guid: 33c887efe9e2d4f4792183fce278ad1a, type: 3}
       propertyPath: _popup
       value: 
-      objectReference: {fileID: 304417783529928262, guid: 0660f0785c8fedf4dac3e3326d731133, type: 3}
+      objectReference: {fileID: 8576714802656929068, guid: 0660f0785c8fedf4dac3e3326d731133, type: 3}
     - target: {fileID: 6775675615939780166, guid: 33c887efe9e2d4f4792183fce278ad1a, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -64
@@ -4386,7 +4386,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e116603e471294148a9645f071a14fd6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  i: 2
+  tab: 1
+  popup: {fileID: 0}
 --- !u!1 &6266355991916040767 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4566016811514662320, guid: 33c887efe9e2d4f4792183fce278ad1a, type: 3}
@@ -4404,12 +4405,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e116603e471294148a9645f071a14fd6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  i: 1
---- !u!1 &8502610901330842300 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2041263245140987187, guid: 33c887efe9e2d4f4792183fce278ad1a, type: 3}
-  m_PrefabInstance: {fileID: 7614269256175247247}
-  m_PrefabAsset: {fileID: 0}
+  tab: 2
+  popup: {fileID: 0}
 --- !u!1001 &8682915560419165756
 PrefabInstance:
   m_ObjectHideFlags: 0

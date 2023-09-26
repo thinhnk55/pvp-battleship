@@ -1,6 +1,6 @@
+using FirebaseIntegration;
 using Framework;
 using SimpleJSON;
-using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -17,6 +17,10 @@ public class BattleFieldCollection : TransactionCollection
         UpdateUIs();
         ServerMessenger.AddListener<JSONNode>(ServerResponse._CHANGE_BATTLE_FIELD, ReceiveChangeBattleField);
         PNonConsumableType.BATTLE_FIELD.GetData().OnDataChanged += OnDataChanged;
+    }
+    private void OnEnable()
+    {
+        AnalyticsHelper.SelectContent("shop_battlefield");
     }
     private void OnDestroy()
     {

@@ -138,8 +138,8 @@ MonoBehaviour:
     - {fileID: 21300000, guid: 401bc8ad28804bc4b8448f59c1b40472, type: 3}
     - {fileID: 21300000, guid: e566a3615096c1940b508a79a88a0040, type: 3}
     - {fileID: 21300000, guid: 13c6e97650068c34b9f9c27a98de0413, type: 3}
-    - {fileID: 21300000, guid: 552242b26c705f0469e2a6e876f4dac7, type: 3}
     - {fileID: 21300000, guid: e4891adf1c0022e4882347732c16932c, type: 3}
+    - {fileID: 21300000, guid: 552242b26c705f0469e2a6e876f4dac7, type: 3}
   - sprites:
     - {fileID: 21300000, guid: 5bf5f04f3bb09c244a4a2536e3e7ca09, type: 3}
     - {fileID: 21300000, guid: 9422e276c9eb4f649b1ad8bf04ffec8a, type: 3}
@@ -413,6 +413,7 @@ MonoBehaviour:
   unKnowmAvatar: {fileID: 21300000, guid: b88b401f8f3cff243abc5bc42918aa02, type: 3}
   x: {fileID: 21300000, guid: 1005cf58fdad3fb42a61aa5f789f3629, type: 3}
   questionMark: {fileID: 21300000, guid: b88b401f8f3cff243abc5bc42918aa02, type: 3}
+  disableButton: {fileID: 21300000, guid: 2949266cba906454fbdf0fcab580e2fe, type: 3}
   win: {fileID: 21300000, guid: 8bafef5e85a121540953df72c9eff522, type: 3}
   lose: {fileID: 21300000, guid: 1d168ac3d44663245a1d5face3e61d7c, type: 3}
   selectedAchievementBG: {fileID: 21300000, guid: 69fc80db13523a643848d5e7d7ad2086, type: 3}

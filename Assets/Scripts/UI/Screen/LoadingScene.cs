@@ -21,6 +21,10 @@ public class LoadingScene : SingletonMono<LoadingScene>
         });
         InvokeRepeating("CheckMultipleAudioListener", 0, 0.1f);
         FirebaseIntegration.FirebaseInitialization.OnInitialized += AutoLogin;
+        if (FirebaseIntegration.FirebaseInitialization.initialized == true)
+        {
+            AutoLogin();
+        }
     }
 
     private void Update()

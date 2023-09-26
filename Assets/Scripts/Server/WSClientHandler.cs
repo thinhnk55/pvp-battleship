@@ -1,4 +1,5 @@
 using Authentication;
+using DG.Tweening;
 using Framework;
 using Monetization;
 using Server;
@@ -107,7 +108,7 @@ public class WSClientHandler : Singleton<WSClientHandler>
                 if (Application.internetReachability == NetworkReachability.NotReachable)
                 {
                     SceneTransitionHelper.Load(ESceneName.PreHome);
-                    PopupReconnect();
+                    DOVirtual.DelayedCall(1.5f, () => PopupReconnect());
                 }
                 else
                 {
@@ -118,6 +119,7 @@ public class WSClientHandler : Singleton<WSClientHandler>
     }
     public static void GetData(JSONNode data)
     {
+        MusicType.MAINMENU.PlayMusic();
         Firebase.Crashlytics.Crashlytics.SetUserId(DataAuth.AuthData.userId.ToString());
         FirebaseIntegration.AnalyticsHelper.Login();
         AdsManager.SetUserId(DataAuth.AuthData.userId.ToString());
@@ -129,7 +131,6 @@ public class WSClientHandler : Singleton<WSClientHandler>
         RequestAdsConfig();
         GetConfigGift();
         LeaderBoardConfig();
-        MusicType.MAINMENU.PlayMusic();
         PConsumableType.GEM.SetValue(int.Parse(data["d"]["d"]));
         PConsumableType.BERRY.SetValue(int.Parse(data["d"]["g"]));
         PNonConsumableType.AVATAR.FromJson(data["d"]["a"]["k"]["al"]);
@@ -150,6 +151,7 @@ public class WSClientHandler : Singleton<WSClientHandler>
         Timer<Gift>.Instance.BeginPoint = data["d"]["a"]["d"]["t"].AsLong.NowFrom0001From1970();
         Timer<RankCollection>.Instance.TriggerInterval_Sec = GameData.RankReceiveCoolDown;
         GameData.Starter = data["d"]["a"]["s"].AsInt == 1;
+        GameData.StarterShow = false;
         GameData.ProgressGift = data["d"]["a"]["d"]["i"].AsInt;
 
     }
@@ -240,15 +242,19 @@ public class WSClientHandler : Singleton<WSClientHandler>
         Timer<LuckyShot>.Instance.TriggerInterval_Sec = data["d"]["lucky_shot"]["rocket_restore_period"].AsInt / 1000;
 
         // gift
-        if (SceneManager.GetActiveScene().name == "PreHome")
+        if (CoreGame.reconnect == null)
         {
-            SceneTransitionHelper.Load(ESceneName.Home);
+            if (SceneManager.GetActiveScene().name == "PreHome")
+            {
+                SceneTransitionHelper.Load(ESceneName.Home);
+            }
+            else
+            {
+                LoadingScene.Instance.LoadScene("Home");
+                //SceneTransitionHelper.Load(ESceneName.Home);
+            }
         }
-        else
-        {
-            LoadingScene.Instance.LoadScene("Home");
-            //SceneTransitionHelper.Load(ESceneName.Home);
-        }
+
 
     }
     #endregion
@@ -385,8 +391,7 @@ public class WSClientHandler : Singleton<WSClientHandler>
             value.rewardAdUnitId = data["d"]["ad_unit"][i]["ad_unit_id"];
             AdsData.rewardTypeToConfigMap.Add(key, value);
         }
-
-        AdsManager.adsManager.Initialize();
+        AdsManager.adsManager.Initialize(DataAuth.AuthData.userId.ToString());
     }
 
     public static void ReceiveRewardAds(JSONNode data)
@@ -616,8 +621,11 @@ public class WSClientHandler : Singleton<WSClientHandler>
     }
     public static void RecieveReconnect(JSONNode data)
     {
-        CoreGame.reconnect = data["d"];
-        LoadingScene.Instance.LoadScene("MainGame");
+        if (data["e"].AsInt == 0)
+        {
+            CoreGame.reconnect = data["d"];
+            LoadingScene.Instance.LoadScene("MainGame");
+        }
         //SceneTransitionHelper.Load(ESceneName.MainGame);
     }
     #endregion
@@ -917,6 +925,7 @@ public class WSClientHandler : Singleton<WSClientHandler>
         {
             GameData.LeaderBoard.goldInfos.Add(new LeaderBoardGoldInfo()
             {
+                UserId = data["d"]["g"][i]["u"].AsInt,
                 Order = i,
                 Rank = data["d"]["g"][i]["e"].AsInt,
                 Reward = GameData.LeaderBoard.goldReward[i],
@@ -929,6 +938,7 @@ public class WSClientHandler : Singleton<WSClientHandler>
         {
             GameData.LeaderBoard.winInfos.Add(new LeaderBoardWinInfo()
             {
+                UserId = data["d"]["g"][i]["u"].AsInt,
                 Order = i,
                 Rank = data["d"]["g"][i]["e"].AsInt,
                 Reward = GameData.LeaderBoard.goldReward[i],

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-
 public struct ProfileInfo
 {
+    public int UserId;
     public int Avatar;
     public int Frame;
     public string Username;
@@ -22,6 +22,7 @@ public struct ProfileInfo
 public class ProfileCollection : CardCollectionBase<ProfileInfo>
 {
     [SerializeField] bool isPlayer;
+    [SerializeField] TextMeshProUGUI userId;
     [SerializeField] Image avatar;
     [SerializeField] Image frame;
     [SerializeField] Image frameTail;
@@ -80,6 +81,10 @@ public class ProfileCollection : CardCollectionBase<ProfileInfo>
     }
     public void BuildUI(ProfileInfo infos)
     {
+        if (userId)
+        {
+            userId.text = "#" + infos.UserId.ToString();
+        }
         if (avatar)
         {
             if (infos.Avatar == -1)
@@ -183,6 +188,7 @@ public class ProfileCollection : CardCollectionBase<ProfileInfo>
             }
             ProfileInfo info = new ProfileInfo()
             {
+                UserId = profile.UserId,
                 Avatar = profile.Avatar.Data,
                 Frame = profile.FrameAvatar.Data,
                 Username = profile.Username.Data,
@@ -198,6 +204,6 @@ public class ProfileCollection : CardCollectionBase<ProfileInfo>
             };
             BuildUI(info);
         }
-
     }
+
 }

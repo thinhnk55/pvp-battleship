@@ -29,6 +29,7 @@ public class CoreGame : SingletonMono<CoreGame>
     public static bool rematch = false;
     public static int roomId;
     public static int playerChair;
+    public int missturn;
 
     public static List<List<Vector2Int>> shipConfigs = new List<List<Vector2Int>>()
     {
@@ -66,6 +67,7 @@ public class CoreGame : SingletonMono<CoreGame>
     static float counterRematch;
     float currentCounterRematch;
     [SerializeField] GameObject btnBackPreGame;
+    [SerializeField] GameObject btnBackSearchGame;
     [SerializeField] GameObject btnBattle;
     [SerializeField] GameObject btnReady;
     [SerializeField] TextMeshProUGUI rematchChatA;
@@ -199,8 +201,9 @@ public class CoreGame : SingletonMono<CoreGame>
         Instance.shipListPlayer.gameObject.SetActive(true);
         Instance.opponent.gameObject.SetActive(false);
         Instance.player.InitBoard(10, 10);
-        Instance.player.Position = Vector3.right * (-sizeWidth * 1 / 32 - player.width / 2);
-        Instance.opponent.Position = Vector3.right * (sizeWidth * 15 / 32 - opponent.width / 2);
+        float margin = Mathf.Lerp(1f / 32, 1f / 14, (cam.aspect - 1.77f) / (2.2f - 1.77f));
+        Instance.player.Position = Vector3.right * (sizeWidth * (-1f / 2 + margin) + player.width / 2);
+        Instance.opponent.Position = Vector3.right * (sizeWidth * (+1f / 2 - margin) - opponent.width / 2);
 
         Instance.counterRematchObj.transform.parent.gameObject.SetActive(false);
         Instance.btnReady.gameObject.SetActive(false);
@@ -212,10 +215,7 @@ public class CoreGame : SingletonMono<CoreGame>
     }
     void EndPregame()
     {
-        if (GameData.Tutorial[2] == 0)
-        {
-            GameData.Tutorial[2] = 1;
-        }
+
     }
     void StartPregameReMatch()
     {
@@ -227,8 +227,9 @@ public class CoreGame : SingletonMono<CoreGame>
         Instance.shipListPlayer.gameObject.SetActive(true);
         Instance.opponent.gameObject.SetActive(false);
         Instance.player.InitBoard(10, 10);
-        Instance.player.Position = Vector3.right * (-sizeWidth * 1 / 32 - player.width / 2);
-        Instance.opponent.Position = Vector3.right * (sizeWidth * 15 / 32 - opponent.width / 2);
+        float margin = Mathf.Lerp(1f / 32, 1f / 14, (cam.aspect - 1.77f) / (2.2f - 1.77f));
+        Instance.player.Position = Vector3.right * (sizeWidth * (-1f / 2 + margin) + player.width / 2);
+        Instance.opponent.Position = Vector3.right * (sizeWidth * (+1f / 2 - margin) - opponent.width / 2);
 
         Instance.currentCounterRematch = counterRematch;
         Instance.counterRematchObj.transform.parent.gameObject.SetActive(true);
@@ -261,6 +262,11 @@ public class CoreGame : SingletonMono<CoreGame>
     Tween searchTween;
     void StartSearch()
     {
+        if (GameData.Tutorial[2] == 0)
+        {
+            btnBackSearchGame.SetActive(false);
+            GameData.Tutorial[2] = 1;
+        }
         Instance.opponent.gameObject.SetActive(true);
         Instance.preUI.SetActive(false);
         Instance.searchUI.gameObject.SetActive(true);
@@ -339,6 +345,10 @@ public class CoreGame : SingletonMono<CoreGame>
             Instance.searchUI.amount.text = (GameData.Bets[bet].Bet * 1.95f).ToString();
             Instance.searchUI.gameObject.SetActive(true);
             Instance.stateMachine.CurrentState = GameState.Search;
+        }
+        else
+        {
+            PopupHelper.CreateMessage(PrefabFactory.PopupInvalidFormation, "Invalid Formation", "Please get all your ship in position", null);
         }
     }
     public void RandomShip()
@@ -515,11 +525,18 @@ public class CoreGame : SingletonMono<CoreGame>
     }
     private void TurnMiss(JSONNode data)
     {
+        if (playerTurn)
+            missturn++;
         Instance.playerTurn = !Instance.playerTurn;
         Instance.stateMachine.CurrentState = GameState.Turn;
+        if (missturn == 2)
+        {
+            PopupHelper.Create(PrefabFactory.PopupMissTurn);
+        }
     }
     void EndGame(JSONNode json)
     {
+        Instance.opponent.DestroyTutorIngame();
         Instance.rematchChatB.transform.parent.gameObject.SetActive(false);
         Instance.rematchChatA.transform.parent.gameObject.SetActive(false);
         for (int i = 0; i < json["d"]["s"].Count; i++)
@@ -565,25 +582,26 @@ public class CoreGame : SingletonMono<CoreGame>
     }
     void EnemyOutGame(JSONNode json)
     {
-        Instance.buttonRematch.GetComponent<Image>().color = Color.gray;
+        Instance.buttonRematch.GetComponent<Image>().sprite = SpriteFactory.DisableButton;
         Instance.buttonRematch.enabled = false;
         if (rematch)
         {
             rematch = false;
-            if (stateMachine.CurrentState == GameState.PreRematch || stateMachine.CurrentState == GameState.SearchRematch)
+            if (Instance.stateMachine.CurrentState == GameState.PreRematch || stateMachine.CurrentState == GameState.SearchRematch)
             {
                 SceneTransitionHelper.Load(ESceneName.Home);
             }
-            else if (stateMachine.CurrentState == GameState.Out)
+            else if (Instance.stateMachine.CurrentState == GameState.Out)
             {
-                rematchChatB.transform.parent.gameObject.SetActive(true);
-                rematchChatB.text = "SORRY I HAVE TO GO!";
+                Instance.rematchChatB.transform.parent.gameObject.SetActive(true);
+                Instance.rematchChatB.text = "SORRY I HAVE TO GO!";
             }
 
         }
         else
         {
-
+            Instance.rematchChatB.transform.parent.gameObject.SetActive(true);
+            Instance.rematchChatB.text = "SORRY I HAVE TO GO!";
         }
 
     }
@@ -715,7 +733,7 @@ public class CoreGame : SingletonMono<CoreGame>
     {
         rematch = true;
         Instance.rematchChatB.transform.parent.gameObject.SetActive(true);
-        Instance.rematchChatB.text = "I WANT TO PLAY AGAINNN";
+        Instance.rematchChatB.text = "I WANT TO PLAY AGAINN";
         Instance.buttonRematch.GetComponentInChildren<TextMeshProUGUI>().text = "Ready";
     }
     void AcceptRematch(JSONNode data)

@@ -1,20 +1,21 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-
-[RequireComponent(typeof(AudioSource))]
-public class AudioMono : MonoBehaviour
+namespace Framework
 {
-    AudioSource audioSource;
-    private void Awake()
+    [RequireComponent(typeof(AudioSource))]
+    public class AudioMono : MonoBehaviour
     {
-        audioSource = GetComponent<AudioSource>();
-    }
-    private void Update()
-    {
-        if (audioSource.time == audioSource.clip.length || !audioSource.isPlaying)
+        AudioSource audioSource;
+        private void Awake()
         {
-            gameObject.SetActive(false);
+            audioSource = GetComponent<AudioSource>();
+        }
+        private void Update()
+        {
+            if (audioSource.time == audioSource.clip.length || !audioSource.isPlaying)
+            {
+                gameObject.SetActive(false);
+            }
         }
     }
+
 }

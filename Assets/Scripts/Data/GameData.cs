@@ -48,6 +48,7 @@ public class GameData : PDataBlock<GameData>
     [SerializeField] private List<BoardInfo> listBoard; public static List<BoardInfo> ListBoard { get { return Instance.listBoard; } set { Instance.listBoard = value; } }
     [SerializeField] private bool[] acceptLoginTerm; public static bool[] AcceptLoginTerm { get { return Instance.acceptLoginTerm; } set { Instance.acceptLoginTerm = value; } }
     [SerializeField] private bool starter; public static bool Starter { get { return Instance.starter; } set { Instance.starter = value; } }
+    [SerializeField] private bool starterShow; public static bool StarterShow { get { return Instance.starterShow; } set { Instance.starterShow = value; } }
     [SerializeField] private int[] tutorial; public static int[] Tutorial { get { return Instance.tutorial; } set { Instance.tutorial = value; } }
     [SerializeField] private LeaderBoard leaderBoard; public static LeaderBoard LeaderBoard { get { return Instance.leaderBoard; } set { Instance.leaderBoard = value; } }
     protected override void Init()
@@ -83,6 +84,7 @@ public class GameData : PDataBlock<GameData>
 [Serializable]
 public class ProfileData
 {
+    public int UserId;
     public PDataUnit<string> Username;
     public PDataUnit<int> Avatar;
     public PDataUnit<int> FrameAvatar;
@@ -138,6 +140,7 @@ public class ProfileData
 
     public static ProfileData FromJson(ProfileData profileData, JSONNode data)
     {
+        profileData.UserId = data["d"]["u"].AsInt;
         profileData.Username = new PDataUnit<string>(data["d"]["n"]);
         profileData.Point = data["d"]["e"].AsInt;
         profileData.Avatar = new PDataUnit<int>(data["d"]["a"]["a"].AsInt);

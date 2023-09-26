@@ -9,6 +9,8 @@ namespace Framework
 
         public static T Create<T>(GameObject prefab) where T : PopupBehaviour
         {
+            if (!prefab)
+                return null;
             if (PopupRoot == null)
                 PopupRoot = GameObject.FindObjectOfType<PopupRootSetter>().transform;
 
@@ -31,7 +33,7 @@ namespace Framework
             return popup;
         }
 
-        public static PopupMessage CreateMessage(GameObject prefab, string header , string msg, Sprite icon)
+        public static PopupMessage CreateMessage(GameObject prefab, string header, string msg, Sprite icon)
         {
             PopupMessage popup = Create<PopupMessage>(prefab);
             popup.Construct(header, msg, icon);

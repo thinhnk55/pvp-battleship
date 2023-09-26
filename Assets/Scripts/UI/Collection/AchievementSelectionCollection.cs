@@ -1,10 +1,7 @@
 using Framework;
 using SimpleJSON;
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 
 public class AchievementSelectionCollection : AchievementCollection
 {
@@ -18,7 +15,7 @@ public class AchievementSelectionCollection : AchievementCollection
         {
             for (int i = 0; i < GameData.Player.AchievementSelected.Length; i++)
             {
-                if (GameData.Player.AchievementSelected[i]>=0)
+                if (GameData.Player.AchievementSelected[i] >= 0)
                 {
                     AchievementInfo info = GameData.AchievementConfig[(AchievementType)(GameData.Player.AchievementSelected[i])];
                     info.Obtained = GameData.Player.AchievementObtained[GameData.Player.AchievementSelected[i]];
@@ -42,7 +39,7 @@ public class AchievementSelectionCollection : AchievementCollection
                 }
                 else
                 {
-                    infosArr.Add(new AchievementInfo() { Id = -1});
+                    infosArr.Add(new AchievementInfo() { Id = -1 });
                 }
             }
         }
@@ -58,7 +55,8 @@ public class AchievementSelectionCollection : AchievementCollection
     public void Select(int slot)
     {
         AchievementSelectionCollection.slot = slot;
-        PopupHelper.Create(PrefabFactory.PopupAchie);
+        var pop = PopupHelper.Create(PrefabFactory.PopupAchie);
+        pop.GetComponentInChildren<Tabs>().Activate(1);
     }
 
     public void ReceiveChangeAchievement(JSONNode json)

@@ -1,7 +1,4 @@
-using Framework;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Framework
@@ -32,6 +29,7 @@ namespace Framework
         [SerializeField] private GameObject popupConfirm; public static GameObject PopupConfirm { get { return Instance.popupConfirm; } }
         [SerializeField] private GameObject popupOutOfResource; public static GameObject PopupOutOfResource { get { return Instance.popupOutOfResource; } }
         [SerializeField] private GameObject popupMessage; public static GameObject PopupMessage { get { return Instance.popupMessage; } }
+        [SerializeField] private GameObject popupInvalidFormation; public static GameObject PopupInvalidFormation { get { return Instance.popupInvalidFormation; } }
         [SerializeField] private GameObject popupGood; public static GameObject PopupGood { get { return Instance.popupGood; } }
         [SerializeField] private GameObject popupGoodApply; public static GameObject PopupGoodApply { get { return Instance.popupGoodApply; } }
         [SerializeField] private GameObject popupUserTerms; public static GameObject PopupUserTerms { get { return Instance.popupUserTerms; } }
@@ -51,6 +49,8 @@ namespace Framework
         [SerializeField] private GameObject popupRetreatPVE; public static GameObject PopupRetreatPVE { get { return Instance.popupRetreatPVE; } }
         [SerializeField] private GameObject popupResourcePVE; public static GameObject PopupResourcePVE { get { return Instance.popupResourcePVE; } }
         [SerializeField] private GameObject popupReceiveRewardCompletePVE; public static GameObject PopupReceiveRewardCompletePVE { get { return Instance.popupReceiveRewardCompletePVE; } }
+        [SerializeField] private GameObject popupMissTurn; public static GameObject PopupMissTurn { get { return Instance.popupMissTurn; } }
+        [SerializeField] private GameObject popupLuckyshot; public static GameObject PopupLuckyshot { get { return Instance.popupLuckyshot; } }
 
 
     }

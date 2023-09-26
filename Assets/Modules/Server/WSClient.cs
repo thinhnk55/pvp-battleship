@@ -16,6 +16,8 @@ namespace Server
         public event Callback OnLoginInOtherDevice;
         public event Callback OnAdminKick;
         public WebSocket ws;
+
+
         public void Connect(int userId, string token)
         {
             ServerMessenger.AddListener<JSONNode>(ServerResponse.CheckLoginConnection, CheckLoginConnection);
@@ -25,8 +27,8 @@ namespace Server
             ws.OnOpen += OnOpen;
             ws.OnMessage += OnMessage;
             ws.OnError += OnError;
+            ws.OnClose += OnClose;
             ws.Connect();
-            WSPingPong.Create();
         }
         public void Disconnect(bool unlisten)
         {
@@ -40,12 +42,17 @@ namespace Server
             ws.OnOpen -= OnOpen;
             ws.OnMessage -= OnMessage;
             ws.OnError -= OnError;
+            ws.OnClose -= OnClose;
             ws.Close();
-            WSPingPong.Destroy();
         }
-        public void Ping()
+
+        private void OnClose(object sender, CloseEventArgs e)
         {
-            ws.Send("{\"id\":2}");
+            MainThreadDispatcher.ExecuteOnMainThread(() =>
+            {
+                Debug.Log("Close " + ((WebSocket)sender).Url + " : " + e.Reason + ". Code " + e.Code);
+                WSPingPong.Destroy();
+            });
         }
 
         public void Send(JSONNode json)
@@ -53,27 +60,25 @@ namespace Server
             try
             {
                 ws.Send(json.ToString());
+                Debug.Log($"<color=#FFA500>{json}</color>");
             }
             catch (Exception e)
             {
-                if (e != null)
-                {
-                    Debug.LogError(e.ToString());
-                }
                 Messenger.Broadcast(GameEvent.LostConnection);
-                throw;
+                Instance.Disconnect(true);
+                throw e;
             }
-            Debug.Log($"<color=#FFA500>{json}</color>");
         }
         public void OnOpen(object sender, EventArgs e)
         {
             Debug.Log("Open " + ((WebSocket)sender).Url);
+            WSPingPong.Create();
         }
         public void OnMessage(object sender, MessageEventArgs e)
         {
-            Debug.Log($"<color=yellow>{e.Data}</color>");
             MainThreadDispatcher.ExecuteOnMainThread(() =>
             {
+                Debug.Log($"<color=yellow>{e.Data}</color>");
                 JSONNode idJson = JSON.Parse(e.Data)["id"];
                 if (idJson != null)
                 {

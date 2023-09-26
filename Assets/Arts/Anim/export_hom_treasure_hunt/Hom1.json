@@ -1,10 +1,10 @@
 {
 "skeleton": {
-	"hash": "5icj8I1TDlc",
+	"hash": "9RZA2pX1poM",
 	"spine": "4.1.00",
-	"x": -112.42,
+	"x": -104,
 	"y": -5,
-	"width": 235.41,
+	"width": 226.99,
 	"height": 206.99,
 	"images": "./images/",
 	"audio": "E:/Game Bắn tàu/VFX/Hom"
@@ -30,12 +30,6 @@
 "slots": [
 	{ "name": "Layer 14172", "bone": "Layer 14172", "attachment": "Layer 14172" },
 	{ "name": "Layer 14173", "bone": "Layer 14174", "attachment": "Layer 14173" },
-	{ "name": "sang1", "bone": "sang1", "attachment": "sang1" },
-	{ "name": "sang6", "bone": "sang1", "attachment": "sang1", "blend": "additive" },
-	{ "name": "sang2", "bone": "sang2", "attachment": "sang2" },
-	{ "name": "sang5", "bone": "sang2", "attachment": "sang2", "blend": "additive" },
-	{ "name": "sang3", "bone": "sang3", "attachment": "sang3" },
-	{ "name": "sang4", "bone": "sang3", "attachment": "sang3", "blend": "additive" },
 	{ "name": "gc1", "bone": "gc1", "attachment": "gc1" },
 	{ "name": "mash_gc", "bone": "gc1" },
 	{ "name": "coin1", "bone": "coin1", "attachment": "coin1" },
@@ -48,9 +42,7 @@
 	{ "name": "star4", "bone": "star4", "attachment": "star" },
 	{ "name": "star5", "bone": "star5", "attachment": "star" },
 	{ "name": "star6", "bone": "star6", "attachment": "star" },
-	{ "name": "mash1", "bone": "root", "attachment": "mash1" },
-	{ "name": "sangg4", "bone": "sangg4", "color": "b4fffbff", "attachment": "sangg4" },
-	{ "name": "sangg5", "bone": "sangg4", "color": "d2ffffff", "attachment": "sangg4", "blend": "additive" }
+	{ "name": "mash1", "bone": "root", "attachment": "mash1" }
 ],
 "skins": [
 	{
@@ -74,35 +66,11 @@
 			"mash1": {
 				"mash1": {
 					"type": "clipping",
-					"end": "sangg5",
+					"end": "mash1",
 					"vertexCount": 16,
 					"vertices": [ -74.52, 114.96, -25.73, 87.53, 67.46, 103.64, 58.67, 109.08, 57.22, 118.25, 36.95, 127.1, 27.46, 127.1, 27.3, 132.57, 5.74, 146.89, -14.69, 141.42, -14.21, 131.12, -18.87, 130.8, -19.68, 135.15, -39.47, 139.81, -61.99, 125.17, -62.47, 121.47 ],
 					"color": "ce3a3aff"
 				}
-			},
-			"sang1": {
-				"sang1": { "x": 50.55, "y": -3.4, "rotation": -154.65, "width": 115, "height": 67 }
-			},
-			"sang2": {
-				"sang2": { "x": 55.92, "y": 5.4, "rotation": -15.67, "width": 118, "height": 54 }
-			},
-			"sang3": {
-				"sang3": { "x": 43.03, "y": -21.09, "rotation": -73.11, "width": 79, "height": 96 }
-			},
-			"sang4": {
-				"sang3": { "x": 43.03, "y": -21.09, "rotation": -73.11, "width": 79, "height": 96 }
-			},
-			"sang5": {
-				"sang2": { "x": 55.92, "y": 5.4, "rotation": -15.67, "width": 118, "height": 54 }
-			},
-			"sang6": {
-				"sang1": { "x": 50.55, "y": -3.4, "rotation": -154.65, "width": 115, "height": 67 }
-			},
-			"sangg4": {
-				"sangg4": { "x": 3.88, "y": 7.91, "width": 113, "height": 207 }
-			},
-			"sangg5": {
-				"sangg4": { "x": 3.88, "y": 7.91, "width": 113, "height": 207 }
 			},
 			"star": {
 				"star": { "x": -0.69, "y": 1.1, "width": 20, "height": 19 }
@@ -127,21 +95,6 @@
 ],
 "animations": {
 	"animation": {
-		"slots": {
-			"sangg4": {
-				"rgba": [
-					{ "color": "b4fffbff" },
-					{ "time": 0.6667, "color": "b4fffb8b" },
-					{ "time": 1.6, "color": "b4fffba7" }
-				]
-			},
-			"sangg5": {
-				"rgba": [
-					{ "color": "d2ffffff" },
-					{ "time": 0.6667, "color": "d2ffffed" }
-				]
-			}
-		},
 		"bones": {
 			"sangg4": {
 				"translate": [
@@ -305,7 +258,6 @@
 			},
 			"star3": {
 				"rotate": [
-					{ "curve": "stepped" },
 					{ "time": 1 },
 					{ "time": 1.3333, "value": 90 },
 					{ "time": 1.6667, "value": 180 },

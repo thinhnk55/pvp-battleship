@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -13,10 +12,20 @@ namespace Framework
         protected List<GameObject> contents;
         protected GameObject activeContent;
         protected PDataUnit<int> activeIndex;
-        private void Awake()
+        protected virtual void Awake()
         {
-            contents = new List<GameObject>();
             tabs = GetComponentsInChildren<Button>().ToList();
+            for (int i = 0; i < tabs.Count; i++)
+            {
+                int _i = i;
+                tabs[i].onClick.AddListener(() =>
+                {
+                    activeIndex.Data = _i;
+                });
+                InactiveTab(_i);
+            }
+
+            contents = new List<GameObject>();
             for (int i = 0; i < rootContent.transform.childCount; i++)
             {
                 contents.Add(rootContent.transform.GetChild(i).gameObject);
@@ -28,14 +37,6 @@ namespace Framework
                 InactiveTab(oldIndex);
                 ActiveTab(newIndex);
             };
-            for (int i = 0; i < tabs.Count; i++)
-            {
-                int _i = i;
-                tabs[i].onClick.AddListener(() =>
-                {
-                    activeIndex.Data = _i;
-                });
-            }
 
             Activate(0);
         }
@@ -51,7 +52,23 @@ namespace Framework
         }
         public void Activate(int i)
         {
-            activeIndex.Data = i;
+            if (tabs[i].gameObject.activeSelf)
+            {
+                activeIndex.Data = i;
+            }
+            else
+            {
+                Activate(activeIndex.Data = (i + 1) % tabs.Count);
+            }
+        }
+        public virtual void DeleteTab(int i)
+        {
+            if (activeIndex.Data == i)
+            {
+                activeIndex.Data = (i + 1) % tabs.Count;
+                activeContent.SetActive(true);
+            }
+            tabs[i].gameObject.SetActive(false);
         }
     }
 }

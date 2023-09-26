@@ -1,6 +1,6 @@
+using FirebaseIntegration;
 using Framework;
 using SimpleJSON;
-using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -20,7 +20,10 @@ public class FrameCollection : TransactionCollection
         PNonConsumableType.AVATAR_FRAME.GetData().OnDataChanged += OnDataChanged;
 
     }
-
+    private void OnEnable()
+    {
+        AnalyticsHelper.SelectContent("shop_frame");
+    }
     private void OnDestroy()
     {
         PNonConsumableType.AVATAR_FRAME.GetData().OnDataChanged -= OnDataChanged;
@@ -38,7 +41,7 @@ public class FrameCollection : TransactionCollection
         for (int i = 0; i < GameData.TransactionConfigs[transactionType].Count; i++)
         {
             var transaction = GameData.TransactionConfigs[transactionType][i];
-            if ((isUnlocked == PNonConsumableType.AVATAR_FRAME.GetValue().Contains((int)transaction.Product[0].Value) && isObtainable && ((isUnlocked )||(!isUnlocked && transaction.Cost[0].Value>=0 )))
+            if ((isUnlocked == PNonConsumableType.AVATAR_FRAME.GetValue().Contains((int)transaction.Product[0].Value) && isObtainable && ((isUnlocked) || (!isUnlocked && transaction.Cost[0].Value >= 0)))
                 || (!isObtainable && transaction.Cost[0].Value == -1 && !PNonConsumableType.AVATAR_FRAME.GetValue().Contains((int)transaction.Product[0].Value)))
             {
 
