@@ -1,10 +1,12 @@
 using Framework;
+using Monetization;
+using SimpleJSON;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using static MaxSdkBase;
 
 
 public class DailyRewardDisplay : MonoBehaviour
@@ -20,12 +22,23 @@ public class DailyRewardDisplay : MonoBehaviour
 
     private void Start()
     {
+        
+        
+
         Timer<Gift>.Instance.OnTrigger += OnTrigger;
         Timer<Gift>.Instance.OnElapse += OnElapse;
         SetAmount();
         claim.onClick.AddListener(OnClickClaimBt);
         HighLightRewards();
 
+    }
+
+    private void OnDestroy()
+    {
+        
+        Timer<Gift>.Instance.OnTrigger -= OnTrigger;
+        Timer<Gift>.Instance.OnElapse -= OnElapse;
+        
     }
 
     public void OnClickClaimBt()
@@ -37,6 +50,15 @@ public class DailyRewardDisplay : MonoBehaviour
             CoinVFX.CoinVfx(resource.transform, rewards[GameData.ProgressGift].transform.position, rewards[GameData.ProgressGift].transform.position);
         }
     }
+
+    public void OnClickWatchAdsBt()
+    {
+        
+    }
+
+
+
+   
 
     public void HighLightRewards()
     {
@@ -141,7 +163,8 @@ public class DailyRewardDisplay : MonoBehaviour
 
     private void OnTrigger()
     {
-        countDown.text = Timer<Gift>.Instance.TriggersFromBegin >= 1 ? "Collect" : Timer<Gift>.Instance.RemainTime_Sec.Hour_Minute_Second_1() + "s";
+        
+        countDown.text = Timer<Gift>.Instance.TriggersFromBegin >= 1 ? "Collect" : "<color=#FFFFFF>Next rewards: </color>" + Timer<Gift>.Instance.RemainTime_Sec.Hour_Minute_Second_1() + "s";
         //reminder.UpdateObject();        
         HighLightRewards();
         ToggleButton();
@@ -150,9 +173,11 @@ public class DailyRewardDisplay : MonoBehaviour
 
     private void OnElapse()
     {
-        countDown.text = Timer<Gift>.Instance.TriggersFromBegin >= 1 ? "Collect" : Timer<Gift>.Instance.RemainTime_Sec.Hour_Minute_Second_1() + "s";
+        countDown.text = Timer<Gift>.Instance.TriggersFromBegin >= 1 ? "Collect" : "<color=#FFFFFF>Next rewards: </color>" + Timer<Gift>.Instance.RemainTime_Sec.Hour_Minute_Second_1() + "s";
         HighLightRewards();
         ToggleButton();
         DisplayReward();
     }
+
+    
 }
