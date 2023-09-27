@@ -1,8 +1,7 @@
-﻿using System.Collections.Generic;
-using System;
-using UnityEngine.SceneManagement;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
-using System.Linq;
+using UnityEngine.SceneManagement;
 
 namespace Framework
 {
@@ -10,8 +9,9 @@ namespace Framework
     {
         #region Internal variables
 
-        public static Dictionary<ServerResponse, Delegate> eventTable = new Dictionary<ServerResponse, Delegate>() { 
-                
+        public static Dictionary<ServerResponse, Delegate> eventTable = new Dictionary<ServerResponse, Delegate>()
+        {
+
         };
 
         //Message handlers (index) that should never be removed, regardless of calling Cleanup
