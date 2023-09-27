@@ -47,7 +47,7 @@ public class PVE : SingletonMono<PVE>
     }
 
     #region Server_Request_Response
-    private void GetData()
+    public void GetData()
     {
         new JSONClass()
         {
@@ -90,6 +90,7 @@ public class PVE : SingletonMono<PVE>
         PVEData.IsDeadPlayer.Data = int.Parse(data["d"]["d"]) == 1 ? true : false;
         IsRevived = int.Parse(data["d"]["r"]) == 1 ? true : false;
         StartCoroutine(InitTurn());
+        PConsumableType.BERRY.AddValue(-PVEData.Bets[PVEData.TypeBoard.Value]);
         PVEData.IsDeadPlayer.OnDataChanged += PlayerRevival;
     }
 

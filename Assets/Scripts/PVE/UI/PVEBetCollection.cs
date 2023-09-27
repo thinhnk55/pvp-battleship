@@ -32,7 +32,6 @@ public class PVEBetCollection : CardCollectionBase<PVEBetInfo>
                     {
                         PVEData.TypeBoard = _i;
                         SceneTransitionHelper.Load(ESceneName.PVE);
-                        PConsumableType.BERRY.AddValue(-PVEData.Bets[_i]);
                     }
                     else
                     {
