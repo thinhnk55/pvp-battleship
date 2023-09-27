@@ -12,7 +12,7 @@ using UnityEngine.SceneManagement;
 
 public class WSClientHandler : Singleton<WSClientHandler>
 {
-    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
     public static void Init()
     {
         WSClient.Instance.OnConnect += () =>
@@ -51,7 +51,6 @@ public class WSClientHandler : Singleton<WSClientHandler>
             ServerMessenger.RemoveListener<JSONNode>(ServerResponse._CONFIG_RP, GetConfigRoyalPass);
             ServerMessenger.RemoveListener<JSONNode>(ServerResponse._CONFIG_ADS, ReceiveAdsConfig);
             ServerMessenger.RemoveListener<JSONNode>(ServerResponse._LEADERBOARD_CONFIG, LeaderBoardConfig);
-
 
             //not config
             ServerMessenger.RemoveListener<JSONNode>(ServerResponse._PROFILE, GetData);

@@ -1,4 +1,5 @@
-﻿using Server;
+﻿using FirebaseIntegration;
+using Server;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -20,11 +21,12 @@ public class LoadingScene : SingletonMono<LoadingScene>
             }
         });
         InvokeRepeating("CheckMultipleAudioListener", 0, 0.1f);
-        FirebaseIntegration.FirebaseInitialization.OnInitialized += AutoLogin;
-        if (FirebaseIntegration.FirebaseInitialization.initialized == true)
+        FirebaseInitialization.OnInitialized += AutoLogin;
+        if (FirebaseInitialization.initialized == true)
         {
             AutoLogin();
         }
+        FirebaseInitialization.Initialize();
     }
 
     private void Update()
@@ -32,7 +34,7 @@ public class LoadingScene : SingletonMono<LoadingScene>
         if (asynScene == null) { return; }
 
         currentLoadingTime += Time.deltaTime;
-        loadingBar.value = asynScene.progress * 100 * Mathf.Clamp01(currentLoadingTime / loadingDuration);
+        loadingBar.value = (asynScene.progress + (FirebaseInitialization.initialized ? 1 : 0)) / 2 * 100 * Mathf.Clamp01(currentLoadingTime / loadingDuration);
     }
 
     protected override void OnDestroy()

@@ -18,7 +18,6 @@ public class Gift : CacheMonoBehaviour
     void Start()
     {
         progress?.SetText($"{GameData.ProgressGift}/5");
-        OnGetAdsGift += GetAdsGift;
         Timer<Gift>.Instance.OnTrigger += OnTrigger;
         Timer<Gift>.Instance.OnElapse += OnElapse;
         ServerMessenger.AddListener<JSONNode>(ServerResponse._GIFT, GetGift);
@@ -60,7 +59,6 @@ public class Gift : CacheMonoBehaviour
     }
     private void OnDestroy()
     {
-        OnGetAdsGift -= GetAdsGift;
         Timer<Gift>.Instance.OnTrigger -= OnTrigger;
         Timer<Gift>.Instance.OnElapse -= OnElapse;
         ServerMessenger.RemoveListener<JSONNode>(ServerResponse._GIFT, GetGift);
@@ -83,14 +81,14 @@ public class Gift : CacheMonoBehaviour
             if (confirm)
             {
                 //Get beri
-                Debug.LogWarning("GetX1");
+                Debug.Log("GetX1");
                 if (Timer<Gift>.Instance.TriggersFromBegin >= 1)
                     WSClientHandler.GetGift();
             }
             else
             {
                 //Watch ads done => Get x3beri
-                Debug.LogWarning("X2");
+                Debug.Log("X2");
                 AdsManager.ShowRewardAds(null, AdsData.AdsUnitIdMap[RewardType.Get_X2DailyGift]);
             }
         });
@@ -140,5 +138,7 @@ public class Gift : CacheMonoBehaviour
     }
 
 
-    public static Action<JSONNode> OnGetAdsGift;
+    public static void OnGetAdsGift(JSONNode data)
+    {
+    }
 }

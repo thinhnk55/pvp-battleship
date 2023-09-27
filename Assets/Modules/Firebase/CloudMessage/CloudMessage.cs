@@ -1,41 +1,28 @@
-using Firebase.Messaging;
 using UnityEngine;
 
 namespace FirebaseIntegration
 {
-    public class CloudMessage : MonoBehaviour
+    public class CloudMessage
     {
-        // Start is called before the first frame update
-        void Awake()
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+        static void Init()
         {
             FirebaseInitialization.OnInitialized += () =>
             {
-                FirebaseMessaging.TokenReceived += OnTokenReceived;
-                FirebaseMessaging.MessageReceived += OnMessageReceived;
+                Firebase.Messaging.FirebaseMessaging.TokenReceived += OnTokenReceived;
+                Firebase.Messaging.FirebaseMessaging.MessageReceived += OnMessageReceived;
             };
         }
 
-        public async void GetTokenAsync()
+        static void OnTokenReceived(object sender, Firebase.Messaging.TokenReceivedEventArgs token)
         {
-            var task = FirebaseMessaging.GetTokenAsync();
-
-            await task;
-
-            if (task.IsCompleted)
-            {
-                Debug.Log("GET TOKEN ASYNC " + task.Result);
-            }
+            UnityEngine.Debug.Log("Received Registration Token: " + token.Token);
         }
 
-        public void OnTokenReceived(object sender, TokenReceivedEventArgs token)
+        static void OnMessageReceived(object sender, Firebase.Messaging.MessageReceivedEventArgs e)
         {
-            Debug.Log("Received Registration Token: " + token.Token);
-        }
-
-        public void OnMessageReceived(object sender, MessageReceivedEventArgs e)
-        {
-            Debug.Log("From: " + e.Message.From);
-            Debug.Log("Message ID: " + e.Message.MessageId);
+            UnityEngine.Debug.Log("From: " + e.Message.From);
+            UnityEngine.Debug.Log("Message ID: " + e.Message.MessageId);
         }
     }
 }
