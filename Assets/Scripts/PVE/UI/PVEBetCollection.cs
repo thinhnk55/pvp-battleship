@@ -14,13 +14,9 @@ public class PVEBetCollection : CardCollectionBase<PVEBetInfo>
     [SerializeField] SnapScrollView SnapScrollView;
     [SerializeField] int highestAvalableBet;
 
-    private void Awake()
-    {
-        UpdateUIs();
-    }
-
     public override void UpdateUIs()
     {
+        Debug.Log(highestAvalableBet);
         List<PVEBetInfo> list = new List<PVEBetInfo>();
         for (int i = 0; i < PVEData.Bets.Count; i++)
         {
@@ -52,7 +48,7 @@ public class PVEBetCollection : CardCollectionBase<PVEBetInfo>
                     }
                 }
             }); ;
-            if (isQualified && GameData.Bets[_i].Bet <= PConsumableType.BERRY.GetValue() && _i > highestAvalableBet)
+            if (isQualified && _i > highestAvalableBet)
             {
                 highestAvalableBet = _i;
             }
@@ -65,6 +61,7 @@ public class PVEBetCollection : CardCollectionBase<PVEBetInfo>
     {
         UpdateUIs();
         SnapScrollView.Init();
+        Debug.Log(highestAvalableBet);
         SnapScrollView.SetToChildPosition(highestAvalableBet);
     }
 
