@@ -240,7 +240,7 @@ public class RoyalPass
                         royalPass.CurrentQuestsProgress[i] = json["d"]["p"][i].AsInt;
                         StatisticType statistic = (StatisticType)Enum.GetValues(typeof(RoyalPassQuestType)).GetValue(royalPass.CurrentQuests.Data[_i]);
                         StatisticTracker.RemoveAllListenerOnProgress(statistic);
-                        Debug.Log(statistic);
+                        //Debug.Log(statistic);
                         StatisticTracker.AddListenerOnProgress(statistic, (o, n) =>
                         {
                             GameData.RoyalPass.CurrentQuestsProgress[_i] += (n - o);
