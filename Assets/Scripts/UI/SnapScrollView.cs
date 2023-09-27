@@ -1,3 +1,4 @@
+using DG.Tweening;
 using Lean.Touch;
 using UnityEngine;
 using UnityEngine.UI;
@@ -17,7 +18,6 @@ public class SnapScrollView : MonoBehaviour
     [SerializeField] private float closestPosition;
     [SerializeField] private RectTransform scrollViewMiddle;
     private static float snapPointXPos;
-
     public static float SnapPointXPos { get => snapPointXPos; set => snapPointXPos = value; }
 
     public void Init()
@@ -45,6 +45,7 @@ public class SnapScrollView : MonoBehaviour
         LeanTouch.OnFingerDown += OnSelected;
         LeanTouch.OnFingerUp += OnUnselected;
         closestPosition = float.MaxValue;
+        isSnapping = false;
     }
     private void OnDestroy()
     {
@@ -76,17 +77,18 @@ public class SnapScrollView : MonoBehaviour
                     scrollRect.StopMovement();
                 }
             }
-        }
-        if (!isScrolling && !isDragging)
-        {
-            // Find the closest snap position when not scrolling and dragging
-            // Snap to the closest position if it's within the snap threshold
-            if (Mathf.Abs(closestPosition) < snapThreshold && Mathf.Abs(closestPosition) > 10f)
+            if (!isScrolling)
             {
-                isSnapping = true;
-                scrollRect.velocity = new Vector2(-closestPosition * snapSpeed, 0f);
+                // Find the closest snap position when not scrolling and dragging
+                // Snap to the closest position if it's within the snap threshold
+                if (Mathf.Abs(closestPosition) < snapThreshold && Mathf.Abs(closestPosition) > 10f)
+                {
+                    isSnapping = true;
+                    scrollRect.velocity = new Vector2(-closestPosition * snapSpeed, 0f);
+                }
             }
         }
+
     }
 
     public void OnSelected(LeanFinger leanFinger)
@@ -102,11 +104,13 @@ public class SnapScrollView : MonoBehaviour
     public void SetToChildPosition(int childIndex)
     {
         if (childIndex < 0) childIndex = 0;
-        if (childIndex >= childRects.Length) childIndex = childRects.Length;
+        if (childIndex >= childRects.Length) childIndex = childRects.Length - 1;
         // Calculate the target normalized position based on the child's position
-        float targetNormalizedPos = (childIndex / (float)(childRects.Length - 1));
-
+        float targetNormalizedPos = (childIndex + 1) / childRects.Length;
+        Debug.Log(targetNormalizedPos);
         // Set the scroll position to the target normalized position
-        scrollRect.normalizedPosition = new Vector2(targetNormalizedPos, 0f);
+        isDragging = true;
+        scrollRect.horizontalNormalizedPosition = targetNormalizedPos;
+        DOVirtual.DelayedCall(1f, () => { isDragging = false; });
     }
 }

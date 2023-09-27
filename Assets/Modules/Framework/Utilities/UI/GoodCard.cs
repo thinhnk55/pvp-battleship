@@ -1,14 +1,8 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-
 namespace Framework
 {
-    public struct GoodInfo
-    {
-        public float Value;
-        public int Type;
-    }
     public class GoodCard : CardBase<GoodInfo>
     {
         [SerializeField] TextMeshProUGUI value;
@@ -27,7 +21,7 @@ namespace Framework
             }
             else
             {
-                value.text = info.Value.ToString();
+                value.text = ((long)info.Value).ToString();
                 icon.sprite = SpriteFactory.ResourceIcons[info.Type].sprites[3];
                 if (info.Type == (int)PConsumableType.GEM)
                 {
@@ -44,5 +38,28 @@ namespace Framework
         {
 
         }
+
+        public static string GetStringNumber(long number)
+        {
+            string s = "";
+            if (number < 1000)
+            {
+                s = (number).ToString();
+            }
+            else if (number / 1000 < 1000)
+            {
+                s = (number / 1000).ToString() + "K";
+            }
+            else if (number / 1000000 < 1000)
+            {
+                s = (number / 1000000).ToString() + "M";
+            }
+            else if (number / 1000000000 < 1000)
+            {
+                s = (number / 1000000000).ToString() + "B";
+            }
+            return s;
+        }
     }
+
 }

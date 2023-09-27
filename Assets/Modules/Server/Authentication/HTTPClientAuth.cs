@@ -21,6 +21,7 @@ namespace Authentication
                         DataAuth.AuthData.username = jsonRes["data"]["username"];
                         //PDataAuth.AuthData.refresh_token = jsonRes["data"]["refresh_token"];
                         DataAuth.AuthData.token = jsonRes["data"]["token"];
+                        Debug.Log("HTTP Login");
                         WSClient.Instance.Connect(DataAuth.AuthData.userId, DataAuth.AuthData.token);
                     }
                     else

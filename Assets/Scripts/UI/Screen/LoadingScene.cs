@@ -26,7 +26,10 @@ public class LoadingScene : SingletonMono<LoadingScene>
         {
             AutoLogin();
         }
-        FirebaseInitialization.Initialize();
+        else
+        {
+            FirebaseInitialization.Initialize();
+        }
     }
 
     private void Update()
