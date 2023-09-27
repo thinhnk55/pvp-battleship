@@ -81,7 +81,6 @@ public class SnapScrollView : MonoBehaviour
             {
                 // Find the closest snap position when not scrolling and dragging
                 // Snap to the closest position if it's within the snap threshold
-                Debug.Log(closestPosition);
                 if (Mathf.Abs(closestPosition) < snapThresholdMax && Mathf.Abs(closestPosition) > snapThresholdMin)
                 {
                     isSnapping = true;
@@ -107,10 +106,10 @@ public class SnapScrollView : MonoBehaviour
         if (childIndex < 0) childIndex = 0;
         if (childIndex >= childRects.Length) childIndex = childRects.Length - 1;
         // Calculate the target normalized position based on the child's position
-        float targetNormalizedPos = (childIndex + 1f) / (childRects.Length + 1);
+        float targetNormalizedPos = (childIndex + 0.5f) / (childRects.Length);
         Debug.Log(targetNormalizedPos);
         // Set the scroll position to the target normalized position
         isDragging = true;
-        scrollRect.horizontalNormalizedPosition = targetNormalizedPos - 0.05f;
+        scrollRect.horizontalNormalizedPosition = targetNormalizedPos;
     }
 }
