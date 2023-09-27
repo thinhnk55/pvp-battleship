@@ -69,7 +69,7 @@ namespace Server
             try
             {
                 ws.Send(json.ToString());
-                Debug.Log($"<color=#FFA500>{json}</color>");
+                Debug.Log($"<color=#FFA500>{(ServerRequest)json["id"].AsInt} - {json}</color>");
             }
             catch (Exception e)
             {

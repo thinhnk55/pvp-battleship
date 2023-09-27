@@ -1,4 +1,3 @@
-using DG.Tweening;
 using Lean.Touch;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,7 +5,8 @@ using UnityEngine.UI;
 public class SnapScrollView : MonoBehaviour
 {
     public float snapSpeed = 10f;  // The speed at which the scrolling snaps to a position
-    public float snapThreshold = 100f;  // The distance threshold for snapping to a position
+    public float snapThresholdMax = 100f;  // The distance threshold for snapping to a position
+    public float snapThresholdMin = 30;  // The distance threshold for snapping to a position
 
     private ScrollRect scrollRect;
     private RectTransform contentRect;
@@ -31,7 +31,7 @@ public class SnapScrollView : MonoBehaviour
             SnapPointXPos = Screen.width / 2;
 
         //snapThreshold = Screen.width * 3 / 5;
-        snapThreshold = SnapPointXPos * 6 / 5;
+        snapThresholdMax = SnapPointXPos * 6 / 5;
         scrollRect = GetComponent<ScrollRect>();
         contentRect = scrollRect.content;
         childRects = new RectTransform[contentRect.childCount];
@@ -81,7 +81,8 @@ public class SnapScrollView : MonoBehaviour
             {
                 // Find the closest snap position when not scrolling and dragging
                 // Snap to the closest position if it's within the snap threshold
-                if (Mathf.Abs(closestPosition) < snapThreshold && Mathf.Abs(closestPosition) > 10f)
+                Debug.Log(closestPosition);
+                if (Mathf.Abs(closestPosition) < snapThresholdMax && Mathf.Abs(closestPosition) > snapThresholdMin)
                 {
                     isSnapping = true;
                     scrollRect.velocity = new Vector2(-closestPosition * snapSpeed, 0f);
@@ -106,11 +107,10 @@ public class SnapScrollView : MonoBehaviour
         if (childIndex < 0) childIndex = 0;
         if (childIndex >= childRects.Length) childIndex = childRects.Length - 1;
         // Calculate the target normalized position based on the child's position
-        float targetNormalizedPos = (childIndex + 1) / childRects.Length;
+        float targetNormalizedPos = (childIndex + 1f) / (childRects.Length + 1);
         Debug.Log(targetNormalizedPos);
         // Set the scroll position to the target normalized position
         isDragging = true;
-        scrollRect.horizontalNormalizedPosition = targetNormalizedPos;
-        DOVirtual.DelayedCall(1f, () => { isDragging = false; });
+        scrollRect.horizontalNormalizedPosition = targetNormalizedPos - 0.05f;
     }
 }
