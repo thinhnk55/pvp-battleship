@@ -25,7 +25,7 @@ namespace Server
         }
         void Pong(JSONNode data)
         {
-            int ping = (int)WSPingPong.Instance.PingPongTime * 1000;
+            int ping = (int)(WSPingPong.Instance.PingPongTime * 1000);
             text.text = ping.ToString() + "ms";
             Sprite[] images = Application.internetReachability == NetworkReachability.ReachableViaCarrierDataNetwork ? wifiIcon : internetIcon;
             if (ping > 0 && ping < 150)
