@@ -110,7 +110,15 @@ public class ProfileCollection : CardCollectionBase<ProfileInfo>
         }
         if (frameTail)
         {
-            frameTail.sprite = SpriteFactory.Tailframes.GetLoop(infos.Frame);
+            if (infos.Avatar == -1)
+            {
+                avatar.SetAlpha(0);
+            }
+            else
+            {
+                avatar.SetAlpha(1);
+                frameTail.sprite = SpriteFactory.Tailframes.GetLoop(infos.Frame);
+            }
         }
         if (username)
         {

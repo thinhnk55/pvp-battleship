@@ -33,6 +33,10 @@ namespace Server
         }
         public void Disconnect(bool unlisten)
         {
+            if (unlisten)
+            {
+                OnDisconnect?.Invoke();
+            }
             ws.Close();
             Debug.Log("Disconnect");
         }
@@ -60,7 +64,6 @@ namespace Server
                 ws.OnMessage -= OnMessage;
                 ws.OnError -= OnError;
                 ws.OnClose -= OnClose;
-                OnDisconnect?.Invoke();
             });
         }
 
