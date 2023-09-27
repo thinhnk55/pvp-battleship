@@ -16,7 +16,6 @@ public class PVEBetCollection : CardCollectionBase<PVEBetInfo>
 
     public override void UpdateUIs()
     {
-        Debug.Log(highestAvalableBet);
         List<PVEBetInfo> list = new List<PVEBetInfo>();
         for (int i = 0; i < PVEData.Bets.Count; i++)
         {
@@ -61,7 +60,10 @@ public class PVEBetCollection : CardCollectionBase<PVEBetInfo>
     {
         UpdateUIs();
         SnapScrollView.Init();
-        Debug.Log(highestAvalableBet);
+        if (PVEData.TypeBoard != -1 || PVEData.IsDeadPlayer.Data == false) // Old game
+        {
+            highestAvalableBet = PVEData.TypeBoard.Value;
+        }
         SnapScrollView.SetToChildPosition(highestAvalableBet);
     }
 

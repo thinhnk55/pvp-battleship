@@ -83158,7 +83158,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1239785540
 Transform:
   m_ObjectHideFlags: 0
@@ -96251,6 +96251,10 @@ PrefabInstance:
       propertyPath: looping
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4802921010107632601, guid: 92dd664ccb49de547a0a2596125effc9, type: 3}
+      propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5342179816093566168, guid: 92dd664ccb49de547a0a2596125effc9, type: 3}
       propertyPath: looping
       value: 0
@@ -96267,12 +96271,40 @@ PrefabInstance:
       propertyPath: lengthInSec
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 6144530263473794193, guid: 92dd664ccb49de547a0a2596125effc9, type: 3}
+      propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6249491999779827919, guid: 92dd664ccb49de547a0a2596125effc9, type: 3}
       propertyPath: looping
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6313809251151502562, guid: 92dd664ccb49de547a0a2596125effc9, type: 3}
       propertyPath: looping
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6358541314875389830, guid: 92dd664ccb49de547a0a2596125effc9, type: 3}
+      propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6358541315067624938, guid: 92dd664ccb49de547a0a2596125effc9, type: 3}
+      propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6358541316314692079, guid: 92dd664ccb49de547a0a2596125effc9, type: 3}
+      propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6358541316655668129, guid: 92dd664ccb49de547a0a2596125effc9, type: 3}
+      propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6358541316745690556, guid: 92dd664ccb49de547a0a2596125effc9, type: 3}
+      propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6679862840773594714, guid: 92dd664ccb49de547a0a2596125effc9, type: 3}
+      propertyPath: playOnAwake
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8471944175871987490, guid: 92dd664ccb49de547a0a2596125effc9, type: 3}
