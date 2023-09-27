@@ -13,6 +13,7 @@ public class PVEBetCard : CardBase<PVEBetInfo>
     [SerializeField] Image lockImgae;
     [SerializeField] TextMeshProUGUI nameCard;
     [SerializeField] TextMeshProUGUI cost;
+    [SerializeField] TextMeshProUGUI nameButton;
     protected override void OnClicked(PVEBetInfo info)
     {
     }
@@ -27,14 +28,34 @@ public class PVEBetCard : CardBase<PVEBetInfo>
             info.onclick?.Invoke();
         });
 
-        if (info.IsQualified)
+        //if (info.IsQualified)
+        //{
+        //    lockImgae.SetAlpha(0);
+        //}
+        //else
+        //{
+        //    lockImgae.SetAlpha(1);  
+        //}
+
+        if (PVEData.TypeBoard != -1 || PVEData.IsDeadPlayer.Data == false) // Old game
+        {
+            if(info.id != PVEData.TypeBoard) // Not current bet pve
+            {
+                lockImgae.SetAlpha(1);
+                Button.gameObject.SetActive(false);
+            }
+            else // Current bet pve
+            {
+                lockImgae.SetAlpha(0);
+                nameButton.SetText("Resume");
+            }
+        }
+        else // New game
         {
             lockImgae.SetAlpha(0);
         }
-        else
-        {
-            lockImgae.SetAlpha(1);  
-        }
+
+
 
         BG.sprite = SpriteFactory.BetsPVE.GetLoop(info.id);
         nameCard.SetText(GameConfig.BetPVENames[info.id]);
