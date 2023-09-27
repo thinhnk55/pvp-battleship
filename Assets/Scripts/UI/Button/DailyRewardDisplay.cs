@@ -22,8 +22,8 @@ public class DailyRewardDisplay : MonoBehaviour
 
     private void Start()
     {
-        
-        
+        ServerMessenger.AddListener<JSONNode>(ServerResponse._REWARD_ADS, OnGetAdsGift);
+
 
         Timer<Gift>.Instance.OnTrigger += OnTrigger;
         Timer<Gift>.Instance.OnElapse += OnElapse;
@@ -38,7 +38,7 @@ public class DailyRewardDisplay : MonoBehaviour
         
         Timer<Gift>.Instance.OnTrigger -= OnTrigger;
         Timer<Gift>.Instance.OnElapse -= OnElapse;
-        
+        ServerMessenger.RemoveListener<JSONNode>(ServerResponse._REWARD_ADS, OnGetAdsGift);
     }
 
     public void OnClickClaimBt()
@@ -155,10 +155,7 @@ public class DailyRewardDisplay : MonoBehaviour
         {      
             return;
             
-        }
-        
-      
-
+        }       
     }
 
     private void OnTrigger()
@@ -179,5 +176,18 @@ public class DailyRewardDisplay : MonoBehaviour
         DisplayReward();
     }
 
-    
+    public void OnGetAdsGift(JSONNode data)
+    {
+       
+        PConsumableType.BERRY.AddValue(int.Parse(data["d"]["x"]["g"]));
+        Timer<Gift>.Instance.BeginPoint = DateTime.UtcNow.Ticks;
+        
+        StartCoroutine(ActiveResource());
+        if (resource != null)
+        {
+            CoinVFX.CoinVfx(resource.transform, rewards[GameData.ProgressGift].transform.position, rewards[GameData.ProgressGift].transform.position);
+            Debug.Log("coinfly");
+        }
+        GameData.ProgressGift++;
+    }
 }
