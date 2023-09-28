@@ -34,7 +34,7 @@ namespace Framework
                 if (elapse >= 1)
                 {
                     elapse -= 1;
-                    if (RemainTime_Sec - 1 == 0)
+                    if (ResidalTime_Sec - 1 == 0)
                     {
                         OnTrigger?.Invoke();
                     }
