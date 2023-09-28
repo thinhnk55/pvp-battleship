@@ -953,7 +953,7 @@ RectTransform:
   - {fileID: 7776313299053943820}
   - {fileID: 7113155921568141906}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
@@ -977,6 +977,7 @@ MonoBehaviour:
     Title: 
     Obtained: 0
     Upgradable: 0
+    IsPreview: 0
     progress: 0
     AchivementUnits: []
   Button: {fileID: 5888969901505869864}
