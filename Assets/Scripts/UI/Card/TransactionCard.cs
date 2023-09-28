@@ -63,6 +63,7 @@ public struct TransactionInfo
                     }
 #endif
                 break;
+
             case TransactionType.diamond:
                 cost_type.Add((int)PConsumableType.GEM);
                 cost_value.Add(data["price"].AsInt);
