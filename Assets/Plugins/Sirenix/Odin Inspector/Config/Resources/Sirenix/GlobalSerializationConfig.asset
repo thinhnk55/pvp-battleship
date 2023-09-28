@@ -17,6 +17,6 @@ MonoBehaviour:
   HideOdinSerializeAttributeWarningMessages: 1
   HideNonSerializedShowInInspectorWarningMessages: 1
   buildSerializationFormat: 0
-  editorSerializationFormat: 2
-  loggingPolicy: 0
+  editorSerializationFormat: 0
+  loggingPolicy: 2
   errorHandlingPolicy: 0

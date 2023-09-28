@@ -101,12 +101,8 @@ public class SnapScrollView : MonoBehaviour
 
     public void SetToChildPosition(int childIndex)
     {
-        if (childIndex < 0 || childIndex >= childRects.Length)
-        {
-            Debug.LogWarning("Invalid child index.");
-            return;
-        }
-
+        if (childIndex < 0) childIndex = 0;
+        if (childIndex >= childRects.Length) childIndex = childRects.Length;
         // Calculate the target normalized position based on the child's position
         float targetNormalizedPos = (childIndex / (float)(childRects.Length - 1));
 

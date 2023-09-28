@@ -126,20 +126,20 @@ public class CoreGame : SingletonMono<CoreGame>
             Instance.player.battleFieldSprite.sprite = SpriteFactory.BattleFields[GameData.Player.BattleField.Data];
         }
         Instance.shipsOpponent = shipListOpponent.GetComponentsInChildren<Ship>().ToList();
-        stateMachine = new StateMachine<GameState>();
-        stateMachine.AddState(GameState.Pre, Instance.StartPregame, Instance.UpdatePregame, Instance.EndPregame);
-        stateMachine.AddState(GameState.PreRematch, Instance.StartPregameReMatch, Instance.UpdatePregameRematch, Instance.EndPregameRematch);
-        stateMachine.AddState(GameState.Search, Instance.StartSearch, Instance.UpdateSearch, Instance.EndSearch);
-        stateMachine.AddState(GameState.SearchRematch, Instance.StartSearchRematch, Instance.UpdateSearchRematch, Instance.EndSearchRematch);
-        stateMachine.AddState(GameState.Turn, Instance.StartTurn, Instance.UpdateTurn, Instance.EndTurn);
-        stateMachine.AddState(GameState.Out, null, null, null);
+        Instance.stateMachine = new StateMachine<GameState>();
+        Instance.stateMachine.AddState(GameState.Pre, Instance.StartPregame, Instance.UpdatePregame, Instance.EndPregame);
+        Instance.stateMachine.AddState(GameState.PreRematch, Instance.StartPregameReMatch, Instance.UpdatePregameRematch, Instance.EndPregameRematch);
+        Instance.stateMachine.AddState(GameState.Search, Instance.StartSearch, Instance.UpdateSearch, Instance.EndSearch);
+        Instance.stateMachine.AddState(GameState.SearchRematch, Instance.StartSearchRematch, Instance.UpdateSearchRematch, Instance.EndSearchRematch);
+        Instance.stateMachine.AddState(GameState.Turn, Instance.StartTurn, Instance.UpdateTurn, Instance.EndTurn);
+        Instance.stateMachine.AddState(GameState.Out, null, null, null);
         if (rematch)
         {
             Instance.stateMachine.CurrentState = GameState.PreRematch;
         }
         else
         {
-            stateMachine.CurrentState = GameState.Pre;
+            Instance.stateMachine.CurrentState = GameState.Pre;
         }
         ServerMessenger.AddListener<JSONNode>(ServerResponse._MATCH, Instance.Match);
         ServerMessenger.AddListener<JSONNode>(ServerResponse._GAME_START, Instance.GameStart);
@@ -160,16 +160,16 @@ public class CoreGame : SingletonMono<CoreGame>
 
     void Update()
     {
-        stateMachine.Update();
+        Instance.stateMachine.Update();
     }
     protected override void OnDestroy()
     {
         AudioHelper.StopMusic();
         LeanTouch.OnFingerUp -= Instance.opponent.BeingAttacked;
         LeanTouch.OnFingerUpdate -= Instance.opponent.SelectingTarget;
-        Instance.opponent.horzLine.gameObject.SetActive(false);
-        Instance.opponent.vertLine.gameObject.SetActive(false);
-        stateMachine.CurrentState = GameState.Out;
+        Instance.opponent.horzLine.SetActive(false);
+        Instance.opponent.vertLine.SetActive(false);
+        Instance.stateMachine.CurrentState = GameState.Out;
         ServerMessenger.RemoveListener<JSONNode>(ServerResponse._MATCH, Instance.Match);
         ServerMessenger.RemoveListener<JSONNode>(ServerResponse._GAME_START, Instance.GameStart);
         ServerMessenger.RemoveListener<JSONNode>(ServerResponse._GAME_DESTROY, Instance.EnemyOutGame);
@@ -270,7 +270,7 @@ public class CoreGame : SingletonMono<CoreGame>
         Instance.opponent.gameObject.SetActive(true);
         Instance.preUI.SetActive(false);
         Instance.searchUI.gameObject.SetActive(true);
-        Instance.shipListPlayer.gameObject.SetActive(false);
+        Instance.shipListPlayer.SetActive(false);
         WSClientHandler.SearchOpponent(bet, player.ships);
         var profile = new ProfileInfo()
         {
@@ -294,10 +294,10 @@ public class CoreGame : SingletonMono<CoreGame>
         Instance.opponent.InitBoard(10, 10);
         Instance.preUI.SetActive(false);
         Instance.searchUI.gameObject.SetActive(true);
-        Instance.shipListPlayer.gameObject.SetActive(false);
+        Instance.shipListPlayer.SetActive(false);
         Instance.searchUI.opponentProfile.UpdateUIs();
         Instance.opponent.battleFieldSprite.sprite = SpriteFactory.BattleFields[GameData.Opponent.BattleField.Data];
-        DOVirtual.DelayedCall(3, () => { stateMachine.CurrentState = GameState.Turn; });
+        DOVirtual.DelayedCall(3, () => { Instance.stateMachine.CurrentState = GameState.Turn; });
     }
     void UpdateSearchRematch()
     {
@@ -437,7 +437,7 @@ public class CoreGame : SingletonMono<CoreGame>
         timeInit = json["d"]["c"].AsInt;
         Instance.playerTurn = int.Parse(json["d"]["f"]) == playerChair;
         Debug.Log(json["d"]["f"].AsInt + "_" + playerChair);
-        if (stateMachine.CurrentState == GameState.PreRematch)
+        if (Instance.stateMachine.CurrentState == GameState.PreRematch)
         {
             Instance.stateMachine.CurrentState = GameState.SearchRematch;
         }
@@ -587,7 +587,7 @@ public class CoreGame : SingletonMono<CoreGame>
         if (rematch)
         {
             rematch = false;
-            if (Instance.stateMachine.CurrentState == GameState.PreRematch || stateMachine.CurrentState == GameState.SearchRematch)
+            if (Instance.stateMachine.CurrentState == GameState.PreRematch || Instance.stateMachine.CurrentState == GameState.SearchRematch)
             {
                 SceneTransitionHelper.Load(ESceneName.Home);
             }
