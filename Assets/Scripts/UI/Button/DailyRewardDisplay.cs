@@ -17,20 +17,20 @@ public class DailyRewardDisplay : MonoBehaviour
     [SerializeField] TextMeshProUGUI countDown;
     [SerializeField] Button claim;
     [SerializeField] Button watchAds;
-
+    
 
 
     private void Start()
     {
         ServerMessenger.AddListener<JSONNode>(ServerResponse._REWARD_ADS, OnGetAdsGift);
-
+        ServerMessenger.AddListener<JSONNode>(ServerResponse._GIFT, OnClickClaimBt);
 
         Timer<Gift>.Instance.OnTrigger += OnTrigger;
         Timer<Gift>.Instance.OnElapse += OnElapse;
         SetAmount();
-        claim.onClick.AddListener(OnClickClaimBt);
+        //claim.onClick.AddListener(OnClickClaimBt);
         HighLightRewards();
-
+        resource.SetActive(false); 
     }
 
     private void OnDestroy()
@@ -39,26 +39,31 @@ public class DailyRewardDisplay : MonoBehaviour
         Timer<Gift>.Instance.OnTrigger -= OnTrigger;
         Timer<Gift>.Instance.OnElapse -= OnElapse;
         ServerMessenger.RemoveListener<JSONNode>(ServerResponse._REWARD_ADS, OnGetAdsGift);
+        ServerMessenger.RemoveListener<JSONNode>(ServerResponse._GIFT, OnClickClaimBt);
     }
 
-    public void OnClickClaimBt()
+    public void OnClickClaimBt(JSONNode data)
     {
-        if (Timer<Gift>.Instance.TriggersFromBegin >= 1)
+        if (data["e"].AsInt != 0)
+            return;
+        else
         {
-            //StartCoroutine(DisplayRewards(0f));
+            
             StartCoroutine(ActiveResource());
-            CoinVFX.CoinVfx(resource.transform, rewards[GameData.ProgressGift].transform.position, rewards[GameData.ProgressGift].transform.position);
+            if(GameData.ProgressGift == 0)
+            {
+                CoinVFX.CoinVfx(resource.transform, rewards[^1].transform.position, rewards[^1].transform.position);
+            }    
+            else
+            {
+                CoinVFX.CoinVfx(resource.transform, rewards[GameData.ProgressGift - 1].transform.position, rewards[GameData.ProgressGift - 1].transform.position);
+            }    
+            
         }
-    }
-
-    public void OnClickWatchAdsBt()
-    {
         
     }
 
 
-
-   
 
     public void HighLightRewards()
     {
@@ -190,4 +195,6 @@ public class DailyRewardDisplay : MonoBehaviour
         }
         GameData.ProgressGift++;
     }
+
+    
 }
