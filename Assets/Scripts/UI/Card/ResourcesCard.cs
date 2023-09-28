@@ -13,7 +13,7 @@ public class ResourcesCard : MonoBehaviour
     [SerializeField] Tween tweenBeri;
     [SerializeField] Tween tweenGem;
 
-    void Start()
+    private void Awake()
     {
         beri.text = PConsumableType.BERRY.GetValue().ToString();
         gem.text = PConsumableType.GEM.GetValue().ToString();
@@ -30,7 +30,6 @@ public class ResourcesCard : MonoBehaviour
         tweenGem.Kill();
         tweenGem = DOTween.To(() => int.Parse(gem.text), (value) => gem.text = value.ToString(), newValue, tweenDuration).OnComplete(() => gem.text = newValue.ToString());
     }
-
     private void OnDestroy()
     {
         PConsumableType.GEM.GetData().OnDataChanged -= OnChangeValueGem;
