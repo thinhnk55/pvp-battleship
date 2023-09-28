@@ -52,13 +52,13 @@ namespace Server
         {
             MainThreadDispatcher.ExecuteOnMainThread(() =>
             {
-                if (e.Code == 1006)
+                if (e.Code != 1005 || e.Code != 1000)
                 {
                     Messenger.Broadcast(GameEvent.LostConnection);
                 }
                 ServerMessenger.RemoveListener<JSONNode>(ServerResponse.CheckLoginConnection, CheckLoginConnection);
                 Messenger.RemoveListener(GameEvent.LostConnection, OnLostConnection);
-                Debug.Log("Close " + ((WebSocket)sender).Url + " : " + e.Reason + ". Code " + e.Code);
+                Debug.Log("Close " + ((WebSocket)sender).Url + " : " + e.Reason + " - " + e.Code);
                 WSPingPong.Destroy();
                 ws.OnOpen -= OnOpen;
                 ws.OnMessage -= OnMessage;
