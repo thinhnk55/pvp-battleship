@@ -12,8 +12,9 @@ namespace Server
         [SerializeField] float interval = 5;
         private float currentPingPongTime = 0;
         private float pingPongTime = 0; public float PingPongTime { get { return pingPongTime; } }
-        void Start()
+        protected override void Awake()
         {
+            base.Awake();
             WSClient.Instance.OnConnect += () =>
             {
                 ServerMessenger.AddListener<JSONNode>(ServerResponse.Pong, Pong);

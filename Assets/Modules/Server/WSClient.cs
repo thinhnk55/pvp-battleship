@@ -20,38 +20,50 @@ namespace Server
 
         public void Connect(int userId, string token)
         {
-            ServerMessenger.AddListener<JSONNode>(ServerResponse.CheckLoginConnection, CheckLoginConnection);
-            Messenger.AddListener(GameEvent.LostConnection, OnLostConnection);
+            Debug.Log("Connect");
             ws = new WebSocket(ServerConfig.WebSocketURL + "?id=" + userId + "&token=" + token);
-            //ws = new WebSocket(ServerConfig.WebSocketURL + "?id="+ 12 + "&token=" + "7lnyeclvtjlk49en9b63dsx8e6q5tqyi");
             ws.OnOpen += OnOpen;
-            ws.OnMessage += OnMessage;
-            ws.OnError += OnError;
-            ws.OnClose += OnClose;
+            //ws = new WebSocket(ServerConfig.WebSocketURL + "?id="+ 12 + "&token=" + "7lnyeclvtjlk49en9b63dsx8e6q5tqyi");
             ws.Connect();
+            if (ws.IsAlive)
+            {
+                ServerMessenger.AddListener<JSONNode>(ServerResponse.CheckLoginConnection, CheckLoginConnection);
+                Messenger.AddListener(GameEvent.LostConnection, OnLostConnection);
+            }
         }
         public void Disconnect(bool unlisten)
         {
-            ServerMessenger.RemoveListener<JSONNode>(ServerResponse.CheckLoginConnection, CheckLoginConnection);
-            Messenger.RemoveListener(GameEvent.LostConnection, OnLostConnection);
-            Debug.Log("Disconnect");
             if (unlisten)
             {
                 OnDisconnect?.Invoke();
             }
             ws.Close();
-            ws.OnOpen -= OnOpen;
-            ws.OnMessage -= OnMessage;
-            ws.OnError -= OnError;
-            ws.OnClose -= OnClose;
+            Debug.Log("Disconnect");
         }
-
+        public void OnOpen(object sender, EventArgs e)
+        {
+            Debug.Log("Open " + ((WebSocket)sender).Url);
+            ws.OnMessage += OnMessage;
+            ws.OnError += OnError;
+            ws.OnClose += OnClose;
+            WSPingPong.Create();
+        }
         private void OnClose(object sender, CloseEventArgs e)
         {
             MainThreadDispatcher.ExecuteOnMainThread(() =>
             {
+                if (e.Code == 1006)
+                {
+                    Messenger.Broadcast(GameEvent.LostConnection);
+                }
+                ServerMessenger.RemoveListener<JSONNode>(ServerResponse.CheckLoginConnection, CheckLoginConnection);
+                Messenger.RemoveListener(GameEvent.LostConnection, OnLostConnection);
                 Debug.Log("Close " + ((WebSocket)sender).Url + " : " + e.Reason + ". Code " + e.Code);
                 WSPingPong.Destroy();
+                ws.OnOpen -= OnOpen;
+                ws.OnMessage -= OnMessage;
+                ws.OnError -= OnError;
+                ws.OnClose -= OnClose;
             });
         }
 
@@ -60,7 +72,7 @@ namespace Server
             try
             {
                 ws.Send(json.ToString());
-                Debug.Log($"<color=#FFA500>{json}</color>");
+                Debug.Log($"<color=#FFA500>{(ServerRequest)json["id"].AsInt} - {json}</color>");
             }
             catch (Exception e)
             {
@@ -69,22 +81,18 @@ namespace Server
                 Debug.Log(e);
             }
         }
-        public void OnOpen(object sender, EventArgs e)
-        {
-            Debug.Log("Open " + ((WebSocket)sender).Url);
-            WSPingPong.Create();
-        }
+
         public void OnMessage(object sender, MessageEventArgs e)
         {
             MainThreadDispatcher.ExecuteOnMainThread(() =>
             {
-                Debug.Log($"<color=yellow>{e.Data}</color>");
                 JSONNode idJson = JSON.Parse(e.Data)["id"];
                 if (idJson != null)
                 {
                     ServerResponse id = (ServerResponse)int.Parse(idJson);
                     if (ServerMessenger.eventTable.ContainsKey(id))
                     {
+                        Debug.Log($"<color=yellow>{id} - {e.Data}</color>");
                         ServerMessenger.Broadcast(id, JSON.Parse(e.Data));
                     }
                 }

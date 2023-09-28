@@ -1073,7 +1073,7 @@ RectTransform:
   - {fileID: 6483044787763394476}
   - {fileID: 2071424633772356253}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1200,6 +1200,7 @@ MonoBehaviour:
   lockImgae: {fileID: 1406022785032144984}
   nameCard: {fileID: 5205732160567888003}
   cost: {fileID: 8965421552501460365}
+  nameButton: {fileID: 3257913848894294040}
 --- !u!1 &8965421552682883425
 GameObject:
   m_ObjectHideFlags: 0

@@ -21,7 +21,6 @@ public class ButtonJoinTreasureHunt : ButtonBase
 
     private void ChangeStatusButton()
     {
-        Debug.Log(PVEData.TypeBoard + "---" + PVEData.IsDeadPlayer.Data);
         if (PVEData.TypeBoard == -1 || PVEData.IsDeadPlayer.Data) // New Game
         {
             return;

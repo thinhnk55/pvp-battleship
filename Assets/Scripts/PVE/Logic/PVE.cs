@@ -216,6 +216,8 @@ public class PVE : SingletonMono<PVE>
 
     private IEnumerator Lose()
     {
+        PVEData.TypeBoard = -1;
+        PVEData.IsDeadPlayer.Data = true;
         yield return StartCoroutine(player.BeingDestroyed());
         yield return new WaitForSeconds(1);
         //SceneTransitionHelper.Load(ESceneName.Home);
