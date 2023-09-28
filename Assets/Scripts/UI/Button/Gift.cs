@@ -72,7 +72,7 @@ public class Gift : CacheMonoBehaviour
     private void OnTrigger()
     {
         countDown.text = Timer<Gift>.Instance.TriggersFromBegin >= 1 ? "Collect" : Timer<Gift>.Instance.RemainTime_Sec.Hour_Minute_Second_1();
-        reminder.UpdateObject();
+        ConditionalMono.UpdateObject(typeof(GiftReminder));
     }
 
     private void OnElapse()
@@ -126,7 +126,7 @@ public class Gift : CacheMonoBehaviour
                 bigGiftBar.SetActive(false);
             progress.text = $"{GameData.ProgressGift}/5";
         }
-        reminder.UpdateObject();
+        ConditionalMono.UpdateObject(typeof(GiftReminder));
     }
 
     void GetAdsGift(JSONNode data)
