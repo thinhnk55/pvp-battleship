@@ -143,13 +143,13 @@ public class ProfileData
         profileData.UserId = data["d"]["u"].AsInt;
         profileData.Username = new PDataUnit<string>(data["d"]["n"]);
         profileData.Point = data["d"]["e"].AsInt;
-        profileData.Avatar = new PDataUnit<int>(data["d"]["a"]["a"].AsInt);
-        profileData.FrameAvatar = new PDataUnit<int>(data["d"]["a"]["f"].AsInt);
-        profileData.BattleField = new PDataUnit<int>(data["d"]["a"]["b"].AsInt);
+        profileData.Avatar = new PDataUnit<int>(data["d"]["a"]["k"]["a"].AsInt);
+        profileData.FrameAvatar = new PDataUnit<int>(data["d"]["a"]["k"]["f"].AsInt);
+        profileData.BattleField = new PDataUnit<int>(data["d"]["a"]["k"]["b"].AsInt);
         profileData.SkinShip = new PDataUnit<int>(0); // new PDataUnit<int>(int.Parse(data["profile"]["sk"]));
-        PNonConsumableType.AVATAR.SetValue(data["d"]["a"]["al"].ToListInt());
-        PNonConsumableType.AVATAR_FRAME.SetValue(data["d"]["a"]["fl"].ToListInt());
-        PNonConsumableType.BATTLE_FIELD.SetValue(data["d"]["a"]["bl"].ToListInt());
+        PNonConsumableType.AVATAR.SetValue(data["d"]["a"]["k"]["al"].ToListInt());
+        PNonConsumableType.AVATAR_FRAME.SetValue(data["d"]["a"]["k"]["fl"].ToListInt());
+        PNonConsumableType.BATTLE_FIELD.SetValue(data["d"]["a"]["k"]["bl"].ToListInt());
         StatisticTracker.quests[StatisticType.SHIP_DESTROY_CONSECUTIVE_MAX] = new(data["d"]["s"]["k"].AsInt);
         // statistic / achievement
         //profileData.Achievement = data["statistics"]["achie"].ToList();

@@ -12,9 +12,9 @@ namespace Server
         [SerializeField] float interval = 5;
         private float currentPingPongTime = 0;
         private float pingPongTime = 0; public float PingPongTime { get { return pingPongTime; } }
-        protected override void Awake()
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
+        public static void Init()
         {
-            base.Awake();
             WSClient.Instance.OnConnect += () =>
             {
                 ServerMessenger.AddListener<JSONNode>(ServerResponse.Pong, Pong);
@@ -23,6 +23,10 @@ namespace Server
             {
                 ServerMessenger.RemoveListener<JSONNode>(ServerResponse.Pong, Pong);
             };
+        }
+        protected override void Awake()
+        {
+            base.Awake();
             InvokeRepeating("Ping", 0, interval);
         }
         void Ping()
@@ -30,16 +34,17 @@ namespace Server
             if ((!WSClient.Instance.ws.IsAlive) || Application.internetReachability == NetworkReachability.NotReachable)
             {
                 Messenger.Broadcast(GameEvent.LostConnection);
+                Debug.Log("Ping failed");
                 WSClient.Instance.Disconnect(true);
                 return;
             }
             currentPingPongTime = Time.time;
             WSClient.Instance.Send(new JSONClass() { { "id", ServerRequest.Ping.ToJson() } });
         }
-        void Pong(JSONNode data)
+        static void Pong(JSONNode data)
         {
-            pingPongTime = Time.time - currentPingPongTime;
-            currentPingPongTime = Time.time;
+            Instance.pingPongTime = Time.time - Instance.currentPingPongTime;
+            Instance.currentPingPongTime = Time.time;
         }
         public static void Create()
         {

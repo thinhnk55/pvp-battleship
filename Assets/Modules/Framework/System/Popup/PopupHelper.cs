@@ -28,7 +28,7 @@ namespace Framework
         public static PopupConfirm CreateConfirm(GameObject prefab, string header, string content, Sprite icon, Callback<bool> onConfirm)
         {
             PopupConfirm popup = Create<PopupConfirm>(prefab);
-            popup.Construct(header, content, icon, onConfirm);
+            popup?.Construct(header, content, icon, onConfirm);
 
             return popup;
         }
@@ -36,7 +36,7 @@ namespace Framework
         public static PopupMessage CreateMessage(GameObject prefab, string header, string msg, Sprite icon)
         {
             PopupMessage popup = Create<PopupMessage>(prefab);
-            popup.Construct(header, msg, icon);
+            popup?.Construct(header, msg, icon);
 
             return popup;
         }
@@ -44,7 +44,7 @@ namespace Framework
         public static PopupGoods CreateGoods(GameObject prefab, string msg, List<GoodInfo> goods)
         {
             PopupGoods popup = Create<PopupGoods>(prefab);
-            popup.Construct(msg, goods);
+            popup?.Construct(msg, goods);
             return popup;
         }
     }
