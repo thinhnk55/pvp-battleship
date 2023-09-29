@@ -17,7 +17,11 @@ public class DailyRewardDisplay : MonoBehaviour
     [SerializeField] TextMeshProUGUI countDown;
     [SerializeField] Button claim;
     [SerializeField] Button watchAds;
-    
+    [SerializeField] Image claimImg;
+    [SerializeField] Image watchAdsImg;
+    [SerializeField] Sprite claimDefault;
+    [SerializeField] Sprite watchAdsDefault;
+    [SerializeField] Sprite btInteractable;
 
 
     private void Start()
@@ -146,12 +150,15 @@ public class DailyRewardDisplay : MonoBehaviour
         {
             if (Timer<Gift>.Instance.TriggersFromBegin >= 1)
             {
-
+                claimImg.sprite = claimDefault;
+                watchAdsImg.sprite = watchAdsDefault;
                 claim.interactable = true;
                 watchAds.interactable = true;
             }
             else
-            {   
+            {
+                claimImg.sprite = btInteractable;
+                watchAdsImg.sprite = btInteractable;
                 claim.interactable = false;
                 watchAds.interactable = false;           
             }
