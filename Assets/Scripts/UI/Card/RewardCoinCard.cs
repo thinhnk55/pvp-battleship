@@ -10,29 +10,20 @@ using UnityEngine.UI;
 
 public struct RewardCoinInfo
 {
-    public int _Id;
-    public long _Amount;
-    
-    public int Id { get; set; }
-    public long Amount { get; set; }
+    public int Id;
+    public long Amount;    
 }
 
 public class RewardCoinCard : CardBase<RewardCoinInfo>
-{
-    [HideInInspector] public int Id;  
-    [HideInInspector] protected long Amount;
+{   
     [SerializeField] private TextMeshProUGUI amountTxt;
 
     public override void BuildUI(RewardCoinInfo info)
     {
-        
-        this.Id = info._Id;
-        this.Amount = info._Amount;
-        amountTxt.text ="x"+ Amount.ToString();
-
-
         base.BuildUI(info);
-        
+
+        amountTxt.text ="x"+ info.Amount.ToString();
+       
     }
 
     protected override void OnClicked(RewardCoinInfo info)
