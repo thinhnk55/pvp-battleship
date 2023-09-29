@@ -215,7 +215,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u01B0erq"
+  m_text: x1000
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 67daf692a0720484389a461dd818fd69, type: 2}
   m_sharedMaterial: {fileID: -6081805586234899183, guid: 67daf692a0720484389a461dd818fd69, type: 2}
@@ -242,7 +242,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 23.6
+  m_fontSize: 18.3
   m_fontSizeBase: 57
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -421,9 +421,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Info:
-    Id: 0
-    Amount: 5000
+    _Id: 0
+    _Amount: 0
   Button: {fileID: 6014602949702816441}
   Collection: {fileID: 0}
   Id: 0
-  Icon: {fileID: 0}
+  amountTxt: {fileID: 6247595933143741952}
