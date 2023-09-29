@@ -46,13 +46,13 @@ public struct TransactionInfo
                 break;
             case TransactionType.usd:
 #if UNITY_ANDROID || UNITY_STANDALONE
-                    if (data["platform"].AsInt == 0 || data["platform"].AsInt == 1)
-                    {
-                        cost_type.Add(0);
-                        cost_value.Add(data["price"].AsFloat);
-                        product_type.Add((int)PConsumableType.GEM);
-                        product_value.Add(data["quantity"].AsInt);
-                    }
+                if (data["platform"].AsInt == 0 || data["platform"].AsInt == 1)
+                {
+                    cost_type.Add(0);
+                    cost_value.Add(data["price"].AsFloat);
+                    product_type.Add((int)PConsumableType.GEM);
+                    product_value.Add(data["quantity"].AsInt);
+                }
 #elif UNITY_IOS
                     if (data["platform"].AsInt == 0 || data["platform"].AsInt == 2)
                     {
@@ -63,6 +63,7 @@ public struct TransactionInfo
                     }
 #endif
                 break;
+
             case TransactionType.diamond:
                 cost_type.Add((int)PConsumableType.GEM);
                 cost_value.Add(data["price"].AsInt);

@@ -37,7 +37,7 @@ public class PVEBetCard : CardBase<PVEBetInfo>
         //    lockImgae.SetAlpha(1);  
         //}
 
-        if (PVEData.TypeBoard != -1 || PVEData.IsDeadPlayer.Data == false) // Old game
+        if (PVEData.TypeBoard != -1 && PVEData.IsDeadPlayer.Data == false) // Old game
         {
             if(info.id != PVEData.TypeBoard) // Not current bet pve
             {
