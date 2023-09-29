@@ -9,19 +9,10 @@ public class RewadCoinCollection : CardCollectionBase<RewardCoinInfo>
 {
     protected List<RewardCoinInfo> infos = new(8);
 
-    private void Awake()
+    private void OnEnable()
     {
-        Debug.Log(infos.Count);
-        for (int i = 0;i < 8;i++)
-        {
-            RewardCoinInfo info = new RewardCoinInfo
-            {
-                Id = i,
-                Amount = 5000
-            };
-            infos.Add(info);
-        }
-        Debug.Log(infos.Count);
+        UpdateUIs();
+        
     }
     public override void BuildUIs(List<RewardCoinInfo> infos)
     {
@@ -31,6 +22,15 @@ public class RewadCoinCollection : CardCollectionBase<RewardCoinInfo>
     public override void UpdateUIs()
     {
         //base.UpdateUIs();
+        for (int i = 0; i < 8; i++)
+        {
+            RewardCoinInfo info = new RewardCoinInfo
+            {
+                Id = i,
+                Amount = 5000
+            };
+            infos.Add(info);
+        }
         BuildUIs(infos);
     }    
 }
