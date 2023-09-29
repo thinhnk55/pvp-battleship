@@ -132,7 +132,7 @@ public class Gift : CacheMonoBehaviour
     void GetAdsGift(JSONNode data)
     {
         PConsumableType.BERRY.AddValue(int.Parse(data["d"]["x"]["g"]));
-        //CoinVFX.CoinVfx(resource, Position, Position);
+        CoinVFX.CoinVfx(resource, Position, Position);
         Timer<Gift>.Instance.BeginPoint = DateTime.UtcNow.Ticks;
         GameData.ProgressGift += int.Parse(data["d"]["x"]["i"]) + 1;
     }
@@ -141,8 +141,5 @@ public class Gift : CacheMonoBehaviour
     void Update()
     {
         Timer<Gift>.Instance.Elasping();
-    }
-
-
-    
+    }  
 }

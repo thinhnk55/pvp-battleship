@@ -35,10 +35,10 @@ namespace Server
         {
             if (unlisten)
             {
+                Debug.Log("Unlisten");
                 OnDisconnect?.Invoke();
             }
             ws.Close();
-            Debug.Log("Disconnect");
         }
         public void OnOpen(object sender, EventArgs e)
         {
@@ -52,13 +52,19 @@ namespace Server
         {
             MainThreadDispatcher.ExecuteOnMainThread(() =>
             {
-                if (e.Code != 1005 || e.Code != 1000)
+                Debug.Log("Close " + ((WebSocket)sender).Url + " : " + e.Reason + " - " + e.Code);
+                if (e.Code != 1005 && e.Code != 1000)
                 {
                     Messenger.Broadcast(GameEvent.LostConnection);
+                    OnDisconnect?.Invoke();
+                    Debug.Log("Network shutdown");
+                }
+                else
+                {
+                    Debug.Log("Close network manually");
                 }
                 ServerMessenger.RemoveListener<JSONNode>(ServerResponse.CheckLoginConnection, CheckLoginConnection);
                 Messenger.RemoveListener(GameEvent.LostConnection, OnLostConnection);
-                Debug.Log("Close " + ((WebSocket)sender).Url + " : " + e.Reason + " - " + e.Code);
                 WSPingPong.Destroy();
                 ws.OnOpen -= OnOpen;
                 ws.OnMessage -= OnMessage;
