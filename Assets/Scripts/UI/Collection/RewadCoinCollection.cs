@@ -27,8 +27,8 @@ public class RewadCoinCollection : CardCollectionBase<RewardCoinInfo>
         {
             RewardCoinInfo info = new()
             {
-                _Id = i,
-                _Amount = 5000
+                Id = i,
+                Amount = 5000
             };
             infos.Add(info);
         }
