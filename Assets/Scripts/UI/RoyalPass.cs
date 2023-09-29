@@ -207,6 +207,7 @@ public class RoyalPass
                             royalPass.SeasonQuestsProgress[i] = json["s"]["w1"].AsInt;
                             break;
                         default:
+                            royalPass.SeasonQuestsProgress[i] = 0;
                             break;
                     }
                     StatisticTracker.RemoveAllListenerOnProgress((StatisticType)royalPass.SeasonQuests[_i].Type);
