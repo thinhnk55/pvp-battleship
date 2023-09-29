@@ -401,7 +401,7 @@ public class WSClientHandler : Singleton<WSClientHandler>
         string ads_unit_id = data["d"]["a"];
         if (String.Equals(ads_unit_id, AdsData.AdsUnitIdMap[RewardType.Get_Beri]))
         {
-            PConsumableType.BERRY.SetValue(int.Parse(data["d"]["g"]));
+            //PConsumableType.BERRY.SetValue(int.Parse(data["d"]["g"]));
         }
         else if (String.Equals(ads_unit_id, AdsData.AdsUnitIdMap[RewardType.Get_Rocket]))
         {
@@ -409,24 +409,24 @@ public class WSClientHandler : Singleton<WSClientHandler>
         }
         else if (String.Equals(ads_unit_id, AdsData.AdsUnitIdMap[RewardType.Get_Quest]))
         {
-            Debug.Log("AddQuest");
-            GameData.RoyalPass.CurrentQuestsProgress = data["d"]["q"]["p"].ToArrayInt(true);
-            GameData.RoyalPass.CurrentQuests.Data = data["d"]["q"]["q"].ToArrayInt(true);
+            //Debug.Log("AddQuest");
+            //GameData.RoyalPass.CurrentQuestsProgress = data["d"]["q"]["p"].ToArrayInt(true);
+            //GameData.RoyalPass.CurrentQuests.Data = data["d"]["q"]["q"].ToArrayInt(true);
         }
         else if (String.Equals(ads_unit_id, AdsData.AdsUnitIdMap[RewardType.Change_Quest]))
         {
-            int[] arr = new int[3];
-            for (int i = 0; i < arr.Length; i++)
-            {
-                if (i == int.Parse(data["d"]["i"]))
-                {
-                    arr[i] = int.Parse(data["d"]["n"]);
-                    continue;
-                }
-                arr[i] = GameData.RoyalPass.CurrentQuests.Data[i];
-            }
-            GameData.RoyalPass.CurrentQuestsProgress[int.Parse(data["d"]["i"])] = int.Parse(data["d"]["q"]["p"][int.Parse(data["d"]["i"])]);
-            GameData.RoyalPass.CurrentQuests.Data = arr;
+            //int[] arr = new int[3];
+            //for (int i = 0; i < arr.Length; i++)
+            //{
+            //    if (i == int.Parse(data["d"]["i"]))
+            //    {
+            //        arr[i] = int.Parse(data["d"]["n"]);
+            //        continue;
+            //    }
+            //    arr[i] = GameData.RoyalPass.CurrentQuests.Data[i];
+            //}
+            //GameData.RoyalPass.CurrentQuestsProgress[int.Parse(data["d"]["i"])] = int.Parse(data["d"]["q"]["p"][int.Parse(data["d"]["i"])]);
+            //GameData.RoyalPass.CurrentQuests.Data = arr;
         }
         else if (String.Equals(ads_unit_id, AdsData.AdsUnitIdMap[RewardType.Get_X2DailyGift]))
         {

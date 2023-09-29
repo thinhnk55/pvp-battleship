@@ -3,6 +3,7 @@ using Framework;
 using Monetization;
 using Server;
 using SimpleJSON;
+using System;
 using System.Collections.Generic;
 
 public class QuestCollection : CardCollectionBase<QuestInfo>
@@ -15,8 +16,15 @@ public class QuestCollection : CardCollectionBase<QuestInfo>
     }
     private void OnEnable()
     {
+        ServerMessenger.AddListener<JSONNode>(ServerResponse._REWARD_ADS, ReceiveRewardAds);
         AnalyticsHelper.SelectContent("royalpass_normal_quest");
     }
+
+    private void OnDisable()
+    {
+        ServerMessenger.RemoveListener<JSONNode>(ServerResponse._REWARD_ADS, ReceiveRewardAds);
+    }
+
     private void OnDestroy()
     {
         GameData.RoyalPass.CurrentQuests.OnDataChanged -= OnChange;
@@ -96,5 +104,30 @@ public class QuestCollection : CardCollectionBase<QuestInfo>
             { "id", ServerResponse._RP_CHANGE_QUEST.ToJson() },
             { "index", new JSONData(index)},
         }.RequestServer();
+    }
+
+    private void ReceiveRewardAds(JSONNode data)
+    {
+        string adsUnitId = data["d"]["a"];
+        if (String.Equals(adsUnitId, AdsData.AdsUnitIdMap[RewardType.Get_Quest]))
+        {
+            GameData.RoyalPass.CurrentQuestsProgress = data["d"]["q"]["p"].ToArrayInt(false);
+            GameData.RoyalPass.CurrentQuests.Data = data["d"]["q"]["q"].ToArrayInt(false);
+        }
+        else if(String.Equals(adsUnitId, AdsData.AdsUnitIdMap[RewardType.Change_Quest]))
+        {
+            int[] arr = new int[3];
+            for (int i = 0; i < arr.Length; i++)
+            {
+                if (i == int.Parse(data["d"]["i"]))
+                {
+                    arr[i] = int.Parse(data["d"]["n"]);
+                    continue;
+                }
+                arr[i] = GameData.RoyalPass.CurrentQuests.Data[i];
+            }
+            GameData.RoyalPass.CurrentQuestsProgress[int.Parse(data["d"]["i"])] = int.Parse(data["d"]["q"]["p"][int.Parse(data["d"]["i"])]);
+            GameData.RoyalPass.CurrentQuests.Data = arr;
+        }
     }
 }

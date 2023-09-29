@@ -5584,6 +5584,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cafff469724fe5a4a806189550f7d4f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  resource: {fileID: 1129137302338621016}
   BeriBonusAmount: {fileID: 2001698103}
 --- !u!1 &1761088191
 GameObject:
