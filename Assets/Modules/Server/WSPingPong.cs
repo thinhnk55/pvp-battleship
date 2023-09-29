@@ -24,10 +24,9 @@ namespace Server
                 ServerMessenger.RemoveListener<JSONNode>(ServerResponse.Pong, Pong);
             };
         }
-        protected override void Awake()
+        protected void Start()
         {
-            base.Awake();
-            InvokeRepeating("Ping", 0, interval);
+            InvokeRepeating("Ping", 1, interval);
         }
         void Ping()
         {
