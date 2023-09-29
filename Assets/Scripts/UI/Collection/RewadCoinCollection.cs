@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class RewadCoinCollection : CardCollectionBase<RewardCoinInfo>
 {
-    protected List<RewardCoinInfo> infos = new(8);
+    
 
     private void OnEnable()
     {
@@ -21,13 +21,14 @@ public class RewadCoinCollection : CardCollectionBase<RewardCoinInfo>
 
     public override void UpdateUIs()
     {
+        List<RewardCoinInfo> infos = new(8);
         //base.UpdateUIs();
         for (int i = 0; i < 8; i++)
         {
-            RewardCoinInfo info = new RewardCoinInfo
+            RewardCoinInfo info = new()
             {
-                Id = i,
-                Amount = 5000
+                _Id = i,
+                _Amount = 5000
             };
             infos.Add(info);
         }
