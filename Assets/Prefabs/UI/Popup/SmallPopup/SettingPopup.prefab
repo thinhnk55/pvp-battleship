@@ -392,7 +392,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2531440799941075633}
+      - m_Target: {fileID: 3934149898432412272}
         m_TargetAssemblyTypeName: Framework.PopupBehaviour, Framework
         m_MethodName: ForceClose
         m_Mode: 1
@@ -687,7 +687,7 @@ GameObject:
   - component: {fileID: 6383724051852820910}
   - component: {fileID: 4902024548898895360}
   - component: {fileID: 3445329426225772966}
-  - component: {fileID: 2531440799941075633}
+  - component: {fileID: 3934149898432412272}
   m_Layer: 5
   m_Name: SettingPopup
   m_TagString: Untagged
@@ -782,8 +782,8 @@ MonoBehaviour:
   _startScale: 0
   _endScale: 1
   _ease: 27
-  _scaleDurationRatio: 1
---- !u!114 &2531440799941075633
+  _scaleDurationRatio: 0.2
+--- !u!114 &3934149898432412272
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -792,7 +792,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2654862994088543119}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3e1add7950ded0049be91c7524f554ca, type: 3}
+  m_Script: {fileID: 11500000, guid: 4db882017e2c1e244a40cb691f77c826, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _openDuration: 0.4
@@ -804,9 +804,6 @@ MonoBehaviour:
   _eventOnClosed:
     m_PersistentCalls:
       m_Calls: []
-  _header: {fileID: 0}
-  _txtContent: {fileID: 0}
-  _icon: {fileID: 0}
 --- !u!1 &3021577786294166437
 GameObject:
   m_ObjectHideFlags: 0
