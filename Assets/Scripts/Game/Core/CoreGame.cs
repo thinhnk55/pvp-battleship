@@ -41,6 +41,7 @@ public class CoreGame : SingletonMono<CoreGame>
 
     [SerializeField] public Board player;
     [SerializeField] Board opponent;
+    [SerializeField] ProfileCollection playerProfile;
     [SerializeField] ProfileCollection opponentProfile;
     [SerializeField] GameObject lineRoot;
     public GameObject shipListPlayer;
@@ -235,6 +236,9 @@ public class CoreGame : SingletonMono<CoreGame>
         Instance.counterRematchObj.transform.parent.gameObject.SetActive(true);
         Instance.btnReady.gameObject.SetActive(true);
         Instance.btnBattle.gameObject.SetActive(false);
+
+        Instance.playerProfile.UpdateUIs();
+        Instance.opponentProfile.UpdateUIs();
     }
     void UpdatePregameRematch()
     {

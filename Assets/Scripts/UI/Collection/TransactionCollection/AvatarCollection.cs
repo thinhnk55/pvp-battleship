@@ -20,7 +20,8 @@ public class AvatarCollection : TransactionCollection
     }
     private void OnEnable()
     {
-        AnalyticsHelper.SelectContent("shop_avatar");
+        if (isUnlocked)
+            AnalyticsHelper.SelectContent("shop_avatar");
     }
     private void OnDataChanged(HashSet<int> arg1, HashSet<int> arg2)
     {

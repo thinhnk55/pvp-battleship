@@ -5,16 +5,18 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum RoyalPassSeasonQuestType
+public enum RoyalPassQuestIndex
 {
-    WIN_COUNT = 2,
-    SHIP_1_DESTROY = 5,
-    SHIP_2_DESTROY = 6,
-    SHIP_3_DESTROY = 7,
-    SHIP_4_DESTROY = 8,
-    LUCKY_SHOT_COUNT = 15,
-    PLAY_COUNT = 14,
-    DESTROY_SHIP_CONSECUTIVE_3 = 17,
+    SHIP_DESTROY = 0,
+    PLAY_COUNT = 1,
+    SHIP_1_DESTROY = 2,
+    SHIP_2_DESTROY = 3,
+    SHIP_3_DESTROY = 4,
+    SHIP_4_DESTROY = 5,
+    WIN_COUNT = 6,
+    LUCKY_SHOT_COUNT = 7,
+    DESTROY_SHIP_CONSECUTIVE_2 = 8,
+    DESTROY_SHIP_CONSECUTIVE_3 = 9,
     ALIVE_1_SHIP = 10,
 }
 public enum RoyalPassQuestType
@@ -109,23 +111,27 @@ public class RoyalPass
         Timer<RoyalPass>.Instance.TriggerInterval_Sec = (int)(long.Parse(json["end_timestamp"]).NowFrom0001From1970() - Timer<RoyalPass>.Instance.BeginPoint);
         royalPass.PointPerLevel = int.Parse(json["point_per_milestone"]);
         royalPass.SeasonQuests = new RoyalPassQuest[json["season_quest"].Count];
+        RoyalPassQuestIndex[] array = (RoyalPassQuestIndex[])Enum.GetValues(typeof(RoyalPassQuestIndex));
         for (int i = 0; i < json["season_quest"].Count; i++)
         {
+            StatisticType statistic = (StatisticType)Enum.Parse(typeof(RoyalPassQuestType), array.GetValue(json["season_quest"][i]["type"].AsInt).ToString());
             RoyalPassQuest quest = new RoyalPassQuest()
             {
                 Reward = int.Parse(json["season_quest"][i]["reward"]),
-                Type = (StatisticType)Enum.GetValues(typeof(RoyalPassQuestType)).GetValue(json["season_quest"][i]["type"].AsInt),
+                Type = statistic,
                 Require = int.Parse(json["season_quest"][i]["require"]),
             };
             royalPass.SeasonQuests[i] = quest;
         }
         royalPass.Quests = new RoyalPassQuest[json["daily_quest"].Count];
+        RoyalPassQuestType[] array2 = (RoyalPassQuestType[])Enum.GetValues(typeof(RoyalPassQuestType));
         for (int i = 0; i < json["daily_quest"].Count; i++)
         {
+            StatisticType statistic = (StatisticType)Enum.Parse(typeof(RoyalPassQuestType), array.GetValue(json["daily_quest"][i]["type"].AsInt).ToString());
             RoyalPassQuest quest = new RoyalPassQuest()
             {
                 Reward = int.Parse(json["daily_quest"][i]["reward"]),
-                Type = (StatisticType)Enum.GetValues(typeof(RoyalPassQuestType)).GetValue(json["daily_quest"][i]["type"].AsInt),
+                Type = statistic,
                 Require = int.Parse(json["daily_quest"][i]["require"]),
             };
             royalPass.Quests[i] = quest;

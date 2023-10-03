@@ -22,7 +22,8 @@ public class FrameCollection : TransactionCollection
     }
     private void OnEnable()
     {
-        AnalyticsHelper.SelectContent("shop_frame");
+        if (isUnlocked)
+            AnalyticsHelper.SelectContent("shop_frame");
     }
     private void OnDestroy()
     {
