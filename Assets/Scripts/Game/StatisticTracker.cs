@@ -132,6 +132,7 @@ public static class StatisticTracker
         else
         {
             GameData.Player.WinStreak = 0;
+            GameData.Player.Losts++;
         }
         StatisticType.PLAY_COUNT.AddProgress(1);
     }

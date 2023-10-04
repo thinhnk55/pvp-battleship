@@ -138,7 +138,7 @@ public class ProfileCollection : CardCollectionBase<ProfileInfo>
             rankProgress.value = infos.Point;
             pointRank?.SetText(rankProgress.value + "/" + rankProgress.maxValue);
         }
-        if (battles)
+        if (battles && !infos.Achievement.IsNullOrEmpty())
         {
             battles.text = (infos.Wins + infos.Losts).ToString();
         }
@@ -146,24 +146,24 @@ public class ProfileCollection : CardCollectionBase<ProfileInfo>
         {
             shipDestroyed.text = infos.Achievement[(int)AchievementType.DESTROY_SHIP].ToString();
         }
-        if (perfectGame)
+        if (perfectGame && !infos.Achievement.IsNullOrEmpty())
         {
-            perfectGame.text = infos.PerfectGame.ToString();
+            perfectGame.text = infos.Achievement[(int)AchievementType.PERFECT_GAME].ToString();
         }
-        if (winStreak)
+        if (winStreak && !infos.Achievement.IsNullOrEmpty())
         {
-            winStreak.text = infos.WinStreak.ToString();
+            winStreak.text = infos.Achievement[(int)AchievementType.WIN_STREAK_MAX].ToString();
         }
         winStreakMax?.SetText(infos.WinStreakMax.ToString());
         if (wins)
         {
-            wins.text = infos.Wins.ToString();
+            wins.text = infos.Achievement[(int)AchievementType.WIN].ToString();
         }
         if (losts)
         {
-            losts.text = infos.Losts.ToString();
+            //losts.text = infos.Achievement[(int)AchievementType.].ToString() - infos.Achievement[(int)AchievementType.WIN].ToString();
         }
-        if (winRate)
+        if (winRate && !infos.Achievement.IsNullOrEmpty())
         {
             winRate.text = (infos.WinRate * 100).ToString("F1") + "%";
         }
