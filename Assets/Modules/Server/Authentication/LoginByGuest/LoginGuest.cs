@@ -48,13 +48,12 @@ namespace Authentication
 
         public void SignIn()
         {
-            Debug.Log("Login By Guest");
             HTTPClientAuth.LoginByGuest(GenerateTokenDeviceId(SystemInfo.deviceUniqueIdentifier));
         }
 
         public void SignOut()
         {
-            throw new NotImplementedException();
+
         }
 
     }
