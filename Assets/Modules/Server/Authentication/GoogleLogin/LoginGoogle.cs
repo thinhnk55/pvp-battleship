@@ -20,8 +20,6 @@ namespace Authentication
                 Debug.LogError(configuration);
             }*/
 
-        public void SignInWithGoogle() { OnSignIn(); }
-        public void SignOutFromGoogle() { OnSignOut(); }
 
         private void OnSignIn()
         {
@@ -103,12 +101,12 @@ namespace Authentication
 
         public void SignIn()
         {
-            SignInWithGoogle();
+            OnSignIn();
         }
 
         public void SignOut()
         {
-            throw new NotImplementedException();
+            OnSignOut();
         }
 
         public void Update()

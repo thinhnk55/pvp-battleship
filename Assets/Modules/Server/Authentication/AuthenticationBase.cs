@@ -1,3 +1,4 @@
+using Framework;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -6,12 +7,13 @@ using UnityEngine;
 
 namespace Authentication
 {
-    public abstract class AuthenticationBase : SingletonMono<AuthenticationBase>
+    public class AuthenticationBase : Singleton<AuthenticationBase>
     {
-        protected Dictionary<SocialAuthType, ISocialAuth> auths = new Dictionary<SocialAuthType, ISocialAuth>();
-        protected async override void Awake()
+        public Dictionary<SocialAuthType, ISocialAuth> auths = new Dictionary<SocialAuthType, ISocialAuth>();
+
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
+        static async void Init()
         {
-            base.Awake();
             try
             {
                 await UnityServices.InitializeAsync();
@@ -20,7 +22,7 @@ namespace Authentication
             {
                 Debug.LogException(e);
             }
-            auths = new Dictionary<SocialAuthType, ISocialAuth>();
+            Instance.auths = new Dictionary<SocialAuthType, ISocialAuth>();
             for (int i = 0; i <= (int)SocialAuthType.Guest; i++)
             {
                 ISocialAuth auth = null;
@@ -53,16 +55,9 @@ namespace Authentication
                 if (auth != null)
                 {
                     auth.Initialize();
-                    auths.Add((SocialAuthType)i, auth);
+                    Instance.auths.Add((SocialAuthType)i, auth);
                 }
             }
         }
-        public abstract void Authenticate();
-        public abstract void Signup(int type);
-        public abstract void Signin(int type);
-        public abstract void Signout(int type);
-        public abstract void Delete();
-        public abstract void UpdatePlayerName();
-
     } 
 }
