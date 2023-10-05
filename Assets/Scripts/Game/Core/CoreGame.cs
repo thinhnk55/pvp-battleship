@@ -573,6 +573,7 @@ public class CoreGame : SingletonMono<CoreGame>
                 Instance.postUI.ResultOpponent.sprite = SpriteFactory.Lose;
                 CoinVFX.CoinVfx(postUI.avatar1.transform, postUI.treasure.transform.position, postUI.treasure.transform.position);
                 AnalyticsHelper.EarnVirtualCurrency(PConsumableType.BERRY.ToString().ToLower(), "classic" + bet.ToString());
+                GameData.Player.Point += GameData.Bets[bet].BetRankPoint;
             }
             else
             {

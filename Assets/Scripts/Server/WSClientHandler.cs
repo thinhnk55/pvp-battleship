@@ -372,11 +372,11 @@ public class WSClientHandler : Singleton<WSClientHandler>
             AdsData.VersionAds = int.Parse(data["d"]["version"]);
 
             int platform;
-    #if PLATFORM_ANDROID || UNITY_ANDROID
+#if PLATFORM_ANDROID || UNITY_ANDROID
             platform = 2;
-    #else
+#else
             platform = 1;
-    #endif
+#endif
 
             AdsData.AdsUnitIdMap.Clear();
             AdsData.RewardTypeToConfigMap.Clear();
@@ -940,12 +940,12 @@ public class WSClientHandler : Singleton<WSClientHandler>
         {
             GameData.LeaderBoard.winInfos.Add(new LeaderBoardWinInfo()
             {
-                UserId = data["d"]["g"][i]["u"].AsInt,
+                UserId = data["d"]["w"][i]["u"].AsInt,
                 Order = i,
-                Rank = data["d"]["g"][i]["e"].AsInt,
+                Rank = data["d"]["w"][i]["e"].AsInt,
                 Reward = GameData.LeaderBoard.goldReward[i],
-                WinCount = data["d"]["g"][i]["g"].AsInt,
-                UserName = data["d"]["g"][i]["n"],
+                WinCount = data["d"]["w"][i]["g"].AsInt,
+                UserName = data["d"]["w"][i]["n"],
 
             });
         }

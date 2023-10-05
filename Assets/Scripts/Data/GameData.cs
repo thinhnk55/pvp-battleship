@@ -1,8 +1,10 @@
+using Authentication;
 using Framework;
 using SimpleJSON;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor;
 using UnityEngine;
 
 public class GameData : PDataBlock<GameData>
@@ -51,6 +53,7 @@ public class GameData : PDataBlock<GameData>
     [SerializeField] private bool starterShow; public static bool StarterShow { get { return Instance.starterShow; } set { Instance.starterShow = value; } }
     [SerializeField] private int[] tutorial; public static int[] Tutorial { get { return Instance.tutorial; } set { Instance.tutorial = value; } }
     [SerializeField] private LeaderBoard leaderBoard; public static LeaderBoard LeaderBoard { get { return Instance.leaderBoard; } set { Instance.leaderBoard = value; } }
+    [SerializeField] private SocialAuthType typeLogin; public static SocialAuthType TypeLogin { get { return Instance.typeLogin; } set { Instance.typeLogin = value; } }
     protected override void Init()
     {
         base.Init();
@@ -130,7 +133,7 @@ public class ProfileData
     }
     [SerializeField] private int loseStreak; public int LoseStreak { get; set; }
     [SerializeField] private int loseStreakMax; public int LoseStreakMax { get; set; }
-    [SerializeField] private int wins; public int Wins { get { return wins; } set { wins = value; winRate = wins / (wins + losts + 0.001f); } }
+    [SerializeField] private int wins; public int Wins { get { return AchievementProgress[(int)AchievementType.WIN_STREAK_MAX]; } set { AchievementProgress[(int)AchievementType.WIN_STREAK_MAX] = value; winRate = wins / (wins + losts + 0.001f); } }
     [SerializeField] private int losts; public int Losts { get { return losts; } set { losts = value; winRate = wins / (wins + losts + 0.001f); } }
     public int Battles { get => Wins + Losts; }
     [SerializeField] private float winRate; public float WinRate { get { return winRate; } }
