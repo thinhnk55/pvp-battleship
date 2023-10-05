@@ -20,7 +20,8 @@ public class BattleFieldCollection : TransactionCollection
     }
     private void OnEnable()
     {
-        AnalyticsHelper.SelectContent("shop_battlefield");
+        if (isUnlocked)
+            AnalyticsHelper.SelectContent("shop_battlefield");
     }
     private void OnDestroy()
     {

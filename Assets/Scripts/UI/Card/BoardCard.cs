@@ -110,7 +110,7 @@ public class BoardCard : CardBase<BoardInfo>
             {
                 Button.onClick.AddListener(() =>
                 {
-                    PopupHelper.CreateMessage(PrefabFactory.PopupInvalidFormation, "Invalid Formation", "Please get all your ship in position", null);
+                    PopupHelper.CreateConfirm(PrefabFactory.PopupInvalidFormation, "Invalid Formation", "Please get all your ship in position", null, null);
 
                 });
 
