@@ -17,7 +17,7 @@ namespace Monetization
 #if UNITY_IOS
         public static string BannerAdUnitId { get => MonetizationConfig.BannerAdsIdIOS; set { } }
         public static string InterAdUnitId { get => MonetizationConfig.IntertialAdsIdIOS; set { } }
-        public static string RewardAdUnitId { get => MonetizationConfig.RewardAdsIdIOS; set { } }
+        public static string[] RewardAdUnitId { get => MonetizationConfig.RewardAdsIdIOS; set { } }
 #else
         public static string BannerAdUnitId { get => MonetizationConfig.BannerAdsIdAndroid; set { } }
         public static string InterAdUnitId { get => MonetizationConfig.IntertialAdsIdAndroid; set { } }

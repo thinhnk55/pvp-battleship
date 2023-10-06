@@ -1,4 +1,4 @@
-﻿#if PLATFORM_IOS
+﻿#if UNITY_IOS
 using AppleAuth;
 using AppleAuth.Enums;
 using AppleAuth.Extensions;
@@ -7,6 +7,7 @@ using AppleAuth.Native;
 using UnityEngine;
 using System;
 using System.Text;
+using Server;
 namespace Authentication
 {
     public class LoginApple : ISocialAuth
@@ -93,7 +94,7 @@ namespace Authentication
                         PlayerPrefs.SetString(AppleUserIdKey, credential.User);
                     }
                     Debug.Log("Quick login: " + Encoding.UTF8.GetString(appleIdCredential.AuthorizationCode));
-                    HTTPClient.Instance.LoginApple(Encoding.UTF8.GetString(appleIdCredential.AuthorizationCode));
+                    HTTPClientAuth.LoginApple(Encoding.UTF8.GetString(appleIdCredential.AuthorizationCode));
                 },
                 error =>
                 {
@@ -115,7 +116,7 @@ namespace Authentication
                     PlayerPrefs.SetString(AppleUserIdKey, credential.User);
                     var appleIdCredential = credential as IAppleIDCredential;
                     Debug.Log("Sign in with apple: " + Encoding.UTF8.GetString(appleIdCredential.AuthorizationCode));
-                    HTTPClient.Instance.LoginApple(Encoding.UTF8.GetString(appleIdCredential.AuthorizationCode));
+                    HTTPClientAuth.LoginApple(Encoding.UTF8.GetString(appleIdCredential.AuthorizationCode));
                 },
                 error =>
                 {
