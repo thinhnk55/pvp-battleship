@@ -943,8 +943,8 @@ public class WSClientHandler : Singleton<WSClientHandler>
                 UserId = data["d"]["w"][i]["u"].AsInt,
                 Order = i,
                 Rank = data["d"]["w"][i]["e"].AsInt,
-                Reward = GameData.LeaderBoard.goldReward[i],
-                WinCount = data["d"]["w"][i]["g"].AsInt,
+                Reward = GameData.LeaderBoard.winReward[i],
+                WinCount = data["d"]["w"][i]["w"].AsInt,
                 UserName = data["d"]["w"][i]["n"],
 
             });
