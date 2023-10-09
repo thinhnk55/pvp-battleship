@@ -244,7 +244,7 @@ GameObject:
   - component: {fileID: 471082008006668174}
   - component: {fileID: 471908426503224650}
   - component: {fileID: 6687795931607823990}
-  - component: {fileID: 2655127402257304231}
+  - component: {fileID: 1487330454363283897}
   m_Layer: 5
   m_Name: InvalidFormationPopup
   m_TagString: Untagged
@@ -340,7 +340,7 @@ MonoBehaviour:
   _endScale: 1
   _ease: 27
   _scaleDurationRatio: 1
---- !u!114 &2655127402257304231
+--- !u!114 &1487330454363283897
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -349,7 +349,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 721933510132650832}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f585c203d9654a54097de37498afe93c, type: 3}
+  m_Script: {fileID: 11500000, guid: 3e1add7950ded0049be91c7524f554ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _openDuration: 0.4
@@ -361,11 +361,9 @@ MonoBehaviour:
   _eventOnClosed:
     m_PersistentCalls:
       m_Calls: []
-  _txtHeader: {fileID: 2244812907619953754}
-  _txtContent: {fileID: 352228473848890518}
+  _header: {fileID: 0}
+  _txtContent: {fileID: 0}
   _icon: {fileID: 0}
-  _btnYes: {fileID: 5825111266165349371}
-  _btnNo: {fileID: 0}
 --- !u!1 &3095086946009964385
 GameObject:
   m_ObjectHideFlags: 0
@@ -837,7 +835,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 6990883008352244447}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1487330454363283897}
+        m_TargetAssemblyTypeName: Framework.PopupBehaviour, Framework
+        m_MethodName: ForceClose
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &4231704818081957722
 MonoBehaviour:
   m_ObjectHideFlags: 0
