@@ -7,6 +7,7 @@ namespace Authentication
 {
     public class HTTPClientAuth : Singleton<HTTPClientAuth>
     {
+        #region LOGIN
         private static void HTTPPostLogin(JSONNode json, string loginRoute)
         {
             PCoroutine.PStartCoroutine(HTTPClientBase.Post(ServerConfig.HttpURL + loginRoute, json.ToString()
@@ -63,6 +64,51 @@ namespace Authentication
 
             HTTPPostLogin(json, "/login/apple");
         }
+        #endregion
+
+        #region LINK ACCOUNT
+        public static void HTTPPostLinkAccount(JSONNode json, string linkAccountRouter)
+        {
+            PCoroutine.PStartCoroutine(HTTPClientBase.Post(ServerConfig.HttpURL, linkAccountRouter.ToString(),
+                (res) =>
+                {
+
+                })
+            );
+        }
+        public static void CheckLinkedAccount(string idToken, string userId)
+        {
+            JSONNode json = new JSONClass()
+            {
+                {"userid", userId},
+                {"token", idToken},
+            };
+
+            HTTPPostLinkAccount(json, "/link/check");
+        }
+        public static void LinkGoogleAccount(string idToken, string userId)
+        {
+            JSONNode json = new JSONClass()
+            {
+                {"userid", userId},
+                {"token", idToken},
+            };
+
+            HTTPPostLinkAccount(json, "/link/check");
+        }
+
+        public static void LinkAppleAccount(string idToken, string userId)
+        {
+            JSONNode json = new JSONClass()
+            {
+                {"userid", userId},
+                {"token", idToken},
+            };
+
+            HTTPPostLinkAccount(json, "/link/check");
+
+        }
+        #endregion
     }
 
 }
