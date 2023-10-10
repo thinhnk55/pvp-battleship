@@ -1,7 +1,6 @@
 using Framework;
 using Server;
 using SimpleJSON;
-using System;
 using UnityEngine;
 
 namespace Authentication
@@ -11,11 +10,11 @@ namespace Authentication
         #region EVENT
         //Paramater 1: IsLinkedGoogleAccount
         //Paramater 2: IsLinkedAppleAccount
-        public static Action<bool, bool> OnCheckLinkedAccount;
+        public static Callback<bool, bool> OnCheckLinkedAccount;
         //Paramater : IsSuccess
-        public static Action<bool> OnLinkGoogleAccount;
+        public static Callback<bool> OnLinkGoogleAccount;
         //Paramater : IsSuccess
-        public static Action<bool> OnLinkAppleAccount;
+        public static Callback<bool> OnLinkAppleAccount;
 
         #endregion
 
@@ -103,7 +102,7 @@ namespace Authentication
 
             HTTPGetCheckLinkedAccount(json, "/link/check");
         }
-        public static void LinkAccount(string idToken, string userId, string route)
+        public static void LinkAccount(string idToken, string userId, Callback<bool> onLinkedAccount, string route)
         {
             JSONNode json = new JSONClass()
             {
@@ -114,18 +113,18 @@ namespace Authentication
                 (res) =>
                 {
                     JSONNode jsonParse = JSONNode.Parse(res);
-                    OnLinkGoogleAccount(jsonParse["error"].AsInt == 0);
+                    onLinkedAccount?.Invoke(jsonParse["error"].AsInt == 0);
                 })
             );
         }
         public static void LinkGoogleAccount(string idToken, string userId)
         {
-            LinkAccount(idToken, userId, "/gg");
+            LinkAccount(idToken, userId, OnLinkGoogleAccount, "/gg");
         }
 
         public static void LinkAppleAccount(string idToken, string userId)
         {
-            LinkAccount(idToken, userId, "/apple");
+            LinkAccount(idToken, userId, OnLinkAppleAccount, "/apple");
         }
         #endregion
     }
