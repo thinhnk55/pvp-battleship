@@ -16,15 +16,15 @@ namespace Server
         void Start()
         {
             HTTPClientAuth.OnCheckLinkedAccount += OnCheckLinkedAccount;
-            HTTPClientAuth.OnLinkAppleAccount += OnLinkAppleAccount;
-            HTTPClientAuth.OnLinkGoogleAccount += OnLinkGoogleAccount;
+            HTTPClientAuth.OnLinkedAppleAccount += OnLinkAppleAccount;
+            HTTPClientAuth.OnLinkedGoogleAccount += OnLinkGoogleAccount;
         }
 
         private void OnDestroy()
         {
             HTTPClientAuth.OnCheckLinkedAccount -= OnCheckLinkedAccount;
-            HTTPClientAuth.OnLinkAppleAccount -= OnLinkAppleAccount;
-            HTTPClientAuth.OnLinkGoogleAccount -= OnLinkGoogleAccount;
+            HTTPClientAuth.OnLinkedAppleAccount -= OnLinkAppleAccount;
+            HTTPClientAuth.OnLinkedGoogleAccount -= OnLinkGoogleAccount;
         }
 
 #if PLATFORM_IOS

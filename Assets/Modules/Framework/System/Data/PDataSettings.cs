@@ -20,7 +20,7 @@ namespace Framework
         {
             base.Init();
 
-            _soundEnabled = _soundEnabled == null ? new PDataUnit<bool>(true) : _soundEnabled;
+            _soundEnabled ??= new PDataUnit<bool>(true);
             _musicEnabled = _musicEnabled == null ? new PDataUnit<bool>(true) : _musicEnabled;
             _vibrationEnabled = _vibrationEnabled == null ? new PDataUnit<bool>(true) : _vibrationEnabled;
         }

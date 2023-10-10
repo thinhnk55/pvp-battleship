@@ -12,9 +12,9 @@ namespace Authentication
         //Paramater 2: IsLinkedAppleAccount
         public static Callback<bool, bool> OnCheckLinkedAccount;
         //Paramater : IsSuccess
-        public static Callback<bool> OnLinkGoogleAccount;
+        public static Callback<bool> OnLinkedGoogleAccount;
         //Paramater : IsSuccess
-        public static Callback<bool> OnLinkAppleAccount;
+        public static Callback<bool> OnLinkedAppleAccount;
 
         #endregion
 
@@ -119,12 +119,12 @@ namespace Authentication
         }
         public static void LinkGoogleAccount(string idToken, string userId)
         {
-            LinkAccount(idToken, userId, OnLinkGoogleAccount, "/gg");
+            LinkAccount(idToken, userId, OnLinkedGoogleAccount, "/gg");
         }
 
         public static void LinkAppleAccount(string idToken, string userId)
         {
-            LinkAccount(idToken, userId, OnLinkAppleAccount, "/apple");
+            LinkAccount(idToken, userId, OnLinkedAppleAccount, "/apple");
         }
         #endregion
     }
