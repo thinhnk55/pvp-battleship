@@ -1,12 +1,24 @@
 using Framework;
 using Server;
 using SimpleJSON;
+using System;
 using UnityEngine;
 
 namespace Authentication
 {
     public class HTTPClientAuth : Singleton<HTTPClientAuth>
     {
+        #region EVENT
+        //Paramater 1: IsLinkedGoogleAccount
+        //Paramater 2: IsLinkedAppleAccount
+        public static Action<bool, bool> OnCheckLinkedAccount;
+        //Paramater : IsSuccess
+        public static Action<bool> OnLinkGoogleAccount;
+        //Paramater : IsSuccess
+        public static Action<bool> OnLinkAppleAccount;
+        
+        #endregion
+
         #region LOGIN
         private static void HTTPPostLogin(JSONNode json, string loginRoute)
         {
@@ -67,15 +79,40 @@ namespace Authentication
         #endregion
 
         #region LINK ACCOUNT
-        public static void HTTPPostLinkAccount(JSONNode json, string linkAccountRouter)
+        public static void HTTPGetCheckLinkedAccount(JSONNode json, string linkAccountRouter)
         {
-            PCoroutine.PStartCoroutine(HTTPClientBase.Post(ServerConfig.HttpURL, linkAccountRouter.ToString(),
+            PCoroutine.PStartCoroutine(HTTPClientBase.Get(ServerConfig.HttpURL + linkAccountRouter,
                 (res) =>
                 {
+                    JSONNode jsonParse = JSONNode.Parse(res);
+                    if (int.Parse(jsonParse["error"]) != 0)
+                        return;
+
+
+                    if (jsonParse["data"].Count == 0)
+                    {
+                        OnCheckLinkedAccount(false, false);
+                    }
+                    else
+                    {
+                        if (jsonParse["data"]["gg"] == null)
+                        {
+                            OnCheckLinkedAccount(false, true);
+                        }
+                        else if(jsonParse["data"]["ap"] == null)
+                        {
+                            OnCheckLinkedAccount(true, false);
+                        }
+                        else
+                        {
+                            OnCheckLinkedAccount(true, true);
+                        }
+                    }
 
                 })
             );
         }
+
         public static void CheckLinkedAccount(string idToken, string userId)
         {
             JSONNode json = new JSONClass()
@@ -84,7 +121,7 @@ namespace Authentication
                 {"token", idToken},
             };
 
-            HTTPPostLinkAccount(json, "/link/check");
+            HTTPGetCheckLinkedAccount(json, "/link/check");
         }
         public static void LinkGoogleAccount(string idToken, string userId)
         {
@@ -94,7 +131,21 @@ namespace Authentication
                 {"token", idToken},
             };
 
-            HTTPPostLinkAccount(json, "/link/check");
+            PCoroutine.PStartCoroutine(HTTPClientBase.Post(ServerConfig.HttpURL + "/link/google", json.ToString(),
+                (res) =>
+                {
+                    JSONNode jsonParse = JSONNode.Parse(res);
+                    if (int.Parse(jsonParse["error"]) == 0)
+                    {
+                        OnLinkGoogleAccount(true);
+                    }
+                    else
+                    {
+                        OnLinkGoogleAccount(false);
+                        Debug.Log(res.ToString());
+                    }
+                })
+            );
         }
 
         public static void LinkAppleAccount(string idToken, string userId)
@@ -105,7 +156,21 @@ namespace Authentication
                 {"token", idToken},
             };
 
-            HTTPPostLinkAccount(json, "/link/check");
+            PCoroutine.PStartCoroutine(HTTPClientBase.Post(ServerConfig.HttpURL, "/link/apple",
+                (res) =>
+                {
+                    JSONNode jsonParse = JSONNode.Parse(res);
+                    if (int.Parse(jsonParse["error"]) == 0)
+                    {
+                        OnLinkAppleAccount(true);
+                    }
+                    else
+                    {
+                        OnLinkAppleAccount(false);
+                        Debug.Log(res.ToString());
+                    }
+                })
+            );
 
         }
         #endregion
