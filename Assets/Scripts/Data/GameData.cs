@@ -4,7 +4,6 @@ using SimpleJSON;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEditor;
 using UnityEngine;
 
 public class GameData : PDataBlock<GameData>
@@ -133,7 +132,11 @@ public class ProfileData
     }
     [SerializeField] private int loseStreak; public int LoseStreak { get; set; }
     [SerializeField] private int loseStreakMax; public int LoseStreakMax { get; set; }
-    [SerializeField] private int wins; public int Wins { get { return AchievementProgress[(int)AchievementType.WIN_STREAK_MAX]; } set { AchievementProgress[(int)AchievementType.WIN_STREAK_MAX] = value; winRate = wins / (wins + losts + 0.001f); } }
+    [SerializeField] private int wins; public int Wins
+    {
+        get { return AchievementProgress[(int)AchievementType.WIN_STREAK_MAX]; }
+        set { AchievementProgress[(int)AchievementType.WIN_STREAK_MAX] = value; winRate = value / (value + losts + 0.001f); }
+    }
     [SerializeField] private int losts; public int Losts { get { return losts; } set { losts = value; winRate = wins / (wins + losts + 0.001f); } }
     public int Battles { get => Wins + Losts; }
     [SerializeField] private float winRate; public float WinRate { get { return winRate; } }
