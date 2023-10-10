@@ -51,7 +51,6 @@ public class HTTPClientBase
         }
 
         Debug.Log(url + data);
-        webRequest.SetRequestHeader("Content-Type", "application/json");
         webRequest.uploadHandler = new UploadHandlerRaw(bodyRaw);
         webRequest.downloadHandler = new DownloadHandlerBuffer();
         yield return webRequest.SendWebRequest();

@@ -16,19 +16,20 @@ namespace Server
         private void Awake()
         {
             SetUpButtonLinkAccount();
-            HTTPClientAuth.CheckLinkedAccount();
         }
 
         void Start()
         {
-            HTTPClientAuth.OnCheckLinkedAccount += OnCheckLinkedAccount;
+            DataAuth.IsLinkedGoogleAccount.OnDataChanged += OnDataIsLinkedGoogleAccountChange;
+            DataAuth.IsLinkedAppleAccount.OnDataChanged += OnDataIsLinkedAppleAccountChange;
             HTTPClientAuth.OnLinkAppleAccount += OnLinkAppleAccount;
             HTTPClientAuth.OnLinkGoogleAccount += OnLinkGoogleAccount;
         }
 
         private void OnDestroy()
         {
-            HTTPClientAuth.OnCheckLinkedAccount -= OnCheckLinkedAccount;
+            DataAuth.IsLinkedGoogleAccount.OnDataChanged -= OnDataIsLinkedGoogleAccountChange;
+            DataAuth.IsLinkedAppleAccount.OnDataChanged -= OnDataIsLinkedAppleAccountChange;
             HTTPClientAuth.OnLinkAppleAccount -= OnLinkAppleAccount;
             HTTPClientAuth.OnLinkGoogleAccount -= OnLinkGoogleAccount;
         }
@@ -40,7 +41,6 @@ namespace Server
                 AuthenticationBase.Instance.auths[SocialAuthType.Apple].Update();  
         }
 #endif
-
         private void SetUpButtonLinkAccount()
         {
 #if PLATFORM_ANDROID
@@ -48,29 +48,23 @@ namespace Server
 #else
             buttonLinkAppleAccount.gameObject.SetActive(true);
 #endif
+
+            UpdateButtonLinkAppleAccountState(DataAuth.IsLinkedAppleAccount.Data);
+            UpdateButtonLinkGoogleAccountState(DataAuth.IsLinkedGoogleAccount.Data);
         }
 
-        private void OnCheckLinkedAccount(bool isLinkedGoogle, bool isLinkedApple)
-        {
-            if (isLinkedGoogle)
-            {
-                textButtonLinkGoogleAccount.SetText("Logged");
-                buttonLinkGoogleAccount.interactable = false;
-            }
-            else
-            {
-                textButtonLinkGoogleAccount.SetText("Sign in");
-            }
 
-            if (isLinkedApple)
-            {
-                textButtonLinkAppleAccount.SetText("Logged");
-                buttonLinkAppleAccount.interactable = false;
-            }
-            else
-            {
-                textButtonLinkAppleAccount.SetText("Sign in");
-            }
+
+
+        #region EVENT HANDLE
+        private void OnDataIsLinkedGoogleAccountChange(bool oValue, bool nValue)
+        {
+            UpdateButtonLinkGoogleAccountState(nValue);
+        }
+
+        private void OnDataIsLinkedAppleAccountChange(bool oValue, bool nValue)
+        {
+            UpdateButtonLinkAppleAccountState(nValue);
         }
 
         public void LinkAppleAccount()
@@ -85,32 +79,80 @@ namespace Server
             AuthenticationBase.Instance.auths[SocialAuthType.Google].LinkAccount();
         }
 
-        private void OnLinkAppleAccount(bool isSuccess)
+        private void UpdateButtonLinkAppleAccountState(bool enable)
         {
-            if(isSuccess) 
+            if (enable)
             {
-                Debug.Log("Apple account Linking successful");
+                textButtonLinkAppleAccount.SetText("Logged");
+                buttonLinkAppleAccount.interactable = false;
             }
             else
             {
-                buttonLinkAppleAccount.interactable = true;
-                Debug.Log("Apple account linking failed");
+                textButtonLinkAppleAccount.SetText("Sign in");
             }
         }
 
-        private void OnLinkGoogleAccount(bool isSuccess)
+        private void UpdateButtonLinkGoogleAccountState(bool enable)
         {
-            if (isSuccess)
+            if (enable)
             {
-                Debug.Log("Google account Linking successful");
+                textButtonLinkGoogleAccount.SetText("Logged");
+                buttonLinkGoogleAccount.interactable = false;
             }
             else
             {
-                buttonLinkGoogleAccount.interactable = true;
-                Debug.Log("Google account linking failed");
+                textButtonLinkGoogleAccount.SetText("Sign in");
             }
         }
 
+        /// <summary>
+        /// Handle event link account
+        /// </summary>
+        /// <param name="error">
+        /// 0: link successful
+        /// 1: system_error
+        /// 10: invalid_token
+        /// 11: account_linked
+        /// </param>
+        private void OnLinkAppleAccount(int error)
+        {
+            switch (error)
+            {
+                case 0:
+                    PopupHelper.CreateMessage(PrefabFactory.PopupMessage, "Message", "Apple account linking successful", null);
+                    break;
+                case 1:
+                    PopupHelper.CreateMessage(PrefabFactory.PopupMessage, "Message", "System error!", null);
+                    break;
+                case 10:
+                    PopupHelper.CreateMessage(PrefabFactory.PopupMessage, "Message", "Invalid token!", null);
+                    break;
+                case 11:
+                    PopupHelper.CreateMessage(PrefabFactory.PopupMessage, "Message", "Account linked!", null);
+                    break;
+            }
+        }
+
+        private void OnLinkGoogleAccount(int error)
+        {
+            switch (error)
+            {
+                case 0:
+                    PopupHelper.CreateMessage(PrefabFactory.PopupMessage, "Message", "Google account linking successful", null);
+                    break;
+                case 1:
+                    PopupHelper.CreateMessage(PrefabFactory.PopupMessage, "Message", "System error!", null);
+                    break;
+                case 10:
+                    PopupHelper.CreateMessage(PrefabFactory.PopupMessage, "Message", "Invalid token!", null);
+                    break;
+                case 11:
+                    PopupHelper.CreateMessage(PrefabFactory.PopupMessage, "Message", "Account linked!", null);
+                    break;
+            }
+            #endregion
+
+        }
     }
 }
 
