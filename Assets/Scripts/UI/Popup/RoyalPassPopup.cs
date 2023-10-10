@@ -21,7 +21,7 @@ public class RoyalPassPopup : MonoBehaviour
     void Start()
     {
         GameData.RoyalPass.Point.OnDataChanged += OnPointChange;
-        level.text = (GameData.RoyalPass.Point.Data / GameData.RoyalPass.PointPerLevel + 1).ToString();
+        level.text = (GameData.RoyalPass.Point.Data / GameData.RoyalPass.PointPerLevel).ToString();
         progressBar.maxValue = GameData.RoyalPass.PointPerLevel;
         progressBar.value = GameData.RoyalPass.Point.Data % GameData.RoyalPass.PointPerLevel;
         progress.text = (GameData.RoyalPass.Point.Data % GameData.RoyalPass.PointPerLevel).ToString() + "/" + GameData.RoyalPass.PointPerLevel;

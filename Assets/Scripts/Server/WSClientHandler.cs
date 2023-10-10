@@ -479,6 +479,7 @@ public class WSClientHandler : Singleton<WSClientHandler>
     #region Old
     private static bool waitingJoinTreasureRoom = false;
 
+
     public static void RequestTreasureConfig()
     {
         new JSONClass()
@@ -667,6 +668,8 @@ public class WSClientHandler : Singleton<WSClientHandler>
     }
     public static void DailyQuestReward(JSONNode json)
     {
+        PopupHelper.Create(PrefabFactory.PopupRPConfirm);
+        SoundType.RPCONFIRM.PlaySound();
         int[] receive = new int[3] { GameData.RoyalPass.CurrentQuests.Data[0], GameData.RoyalPass.CurrentQuests.Data[1], GameData.RoyalPass.CurrentQuests.Data[2] };
         receive[json["d"]["i"].AsInt] = -1;
         GameData.RoyalPass.CurrentQuests.Data = receive;
@@ -683,6 +686,9 @@ public class WSClientHandler : Singleton<WSClientHandler>
     }
     public static void SeasonQuestReward(JSONNode json)
     {
+        PopupHelper.Create(PrefabFactory.PopupRPConfirm);
+        SoundType.RPCONFIRM.PlaySound();
+
         GameData.RoyalPass.Point.Data += json["d"]["r"].AsInt;
         HashSet<int> receive = new HashSet<int>();
         receive.AddRange(GameData.RoyalPass.SeasonQuestsObtained.Data);
