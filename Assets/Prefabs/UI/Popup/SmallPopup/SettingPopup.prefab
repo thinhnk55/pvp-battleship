@@ -2645,6 +2645,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01227cf47f574604390aef5a6c1a584f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buttonLinkAppleAccount: {fileID: 6063652365633303559}
+  textButtonLinkAppleAccount: {fileID: 8948996252966852610}
+  buttonLinkGoogleAccount: {fileID: 4963952301984117328}
+  textButtonLinkGoogleAccount: {fileID: 8270244753936266015}
 --- !u!1 &6402113498047498255
 GameObject:
   m_ObjectHideFlags: 0
@@ -2774,7 +2778,7 @@ GameObject:
   - component: {fileID: 2149596333674439932}
   - component: {fileID: 4963952301984117328}
   m_Layer: 5
-  m_Name: AppleLink (1)
+  m_Name: GoogleLink
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2882,7 +2886,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2149596333674439932}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 6370217595798857913}
+        m_TargetAssemblyTypeName: Server.LinkAccount, Authentication
+        m_MethodName: LinkGoogleAccount
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &6766479987117707289
 GameObject:
   m_ObjectHideFlags: 0
@@ -3293,7 +3309,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 6357915585155706522}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 6370217595798857913}
+        m_TargetAssemblyTypeName: Server.LinkAccount, Authentication
+        m_MethodName: LinkAppleAccount
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &7293281653193625668
 GameObject:
   m_ObjectHideFlags: 0

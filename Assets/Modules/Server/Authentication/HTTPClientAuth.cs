@@ -7,6 +7,17 @@ namespace Authentication
 {
     public class HTTPClientAuth : Singleton<HTTPClientAuth>
     {
+        #region EVENT
+        //Paramater 1: IsLinkedGoogleAccount
+        //Paramater 2: IsLinkedAppleAccount
+        public static Callback<bool, bool> OnCheckLinkedAccount;
+        //Paramater : IsSuccess
+        public static Callback<bool> OnLinkedGoogleAccount;
+        //Paramater : IsSuccess
+        public static Callback<bool> OnLinkedAppleAccount;
+
+        #endregion
+
         #region LOGIN
         private static void HTTPPostLogin(JSONNode json, string loginRoute)
         {
@@ -67,15 +78,20 @@ namespace Authentication
         #endregion
 
         #region LINK ACCOUNT
-        public static void HTTPPostLinkAccount(JSONNode json, string linkAccountRouter)
+        public static void HTTPGetCheckLinkedAccount(JSONNode json, string linkAccountRouter)
         {
-            PCoroutine.PStartCoroutine(HTTPClientBase.Post(ServerConfig.HttpURL, linkAccountRouter.ToString(),
+            PCoroutine.PStartCoroutine(HTTPClientBase.Get(ServerConfig.HttpURL + linkAccountRouter,
                 (res) =>
                 {
-
+                    JSONNode jsonParse = JSONNode.Parse(res);
+                    if (int.Parse(jsonParse["error"]) != 0) return;
+                    bool islinkedGoogle = jsonParse["data"]["gg"] != null;
+                    bool islinkedApple = jsonParse["data"]["ap"] != null;
+                    OnCheckLinkedAccount?.Invoke(islinkedGoogle, islinkedApple);
                 })
             );
         }
+
         public static void CheckLinkedAccount(string idToken, string userId)
         {
             JSONNode json = new JSONClass()
@@ -84,29 +100,31 @@ namespace Authentication
                 {"token", idToken},
             };
 
-            HTTPPostLinkAccount(json, "/link/check");
+            HTTPGetCheckLinkedAccount(json, "/link/check");
         }
-        public static void LinkGoogleAccount(string idToken, string userId)
+        public static void LinkAccount(string idToken, string userId, Callback<bool> onLinkedAccount, string route)
         {
             JSONNode json = new JSONClass()
             {
                 {"userid", userId},
                 {"token", idToken},
             };
-
-            HTTPPostLinkAccount(json, "/link/check");
+            PCoroutine.PStartCoroutine(HTTPClientBase.Post(ServerConfig.HttpURL + "/link" + route, json.ToString(),
+                (res) =>
+                {
+                    JSONNode jsonParse = JSONNode.Parse(res);
+                    onLinkedAccount?.Invoke(jsonParse["error"].AsInt == 0);
+                })
+            );
+        }
+        public static void LinkGoogleAccount(string idToken, string userId)
+        {
+            LinkAccount(idToken, userId, OnLinkedGoogleAccount, "/gg");
         }
 
         public static void LinkAppleAccount(string idToken, string userId)
         {
-            JSONNode json = new JSONClass()
-            {
-                {"userid", userId},
-                {"token", idToken},
-            };
-
-            HTTPPostLinkAccount(json, "/link/check");
-
+            LinkAccount(idToken, userId, OnLinkedAppleAccount, "/apple");
         }
         #endregion
     }

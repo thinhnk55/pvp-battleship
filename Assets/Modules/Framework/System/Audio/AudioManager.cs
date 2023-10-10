@@ -20,7 +20,11 @@ namespace Framework
             {
                 if (!n)
                 {
-                    AudioHelper.StopMusic();
+                    Instance.audioSource.Stop();
+                }
+                else
+                {
+                    Instance.audioSource.Play();
                 }
             };
         }
