@@ -17,7 +17,7 @@ public struct ShipInfo
         info.x = ship.octilesComposition[0].pos.x;
         info.y = ship.octilesComposition[0].pos.y;
         info.type = ship.octilesComposition.Count - 1;
-        Debug.LogError(info.x + " ; " + info.y + "=>>>>" + info.type);
+        //Debug.LogError(info.x + " ; " + info.y + "=>>>>" + info.type);
         int d = 0;
         if (ship.Dir == Vector2Int.right)
         {

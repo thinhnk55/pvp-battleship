@@ -58,11 +58,11 @@ public class ButtonOpenRetreatPVEPopup : ButtonBase
     {
         PopupBehaviour popupResource = PopupHelper.Create(PrefabFactory.PopupResourcePVE);
         CoinVFX.CoinVfx(popupResource.transform.GetChild(0).transform, Position, Position);
+        popupRetreatPVE?.ForceClose();
         yield return new WaitForSeconds(1);
         PConsumableType.BERRY.SetValue(beri);
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(1.5f);
         popupResource.ForceClose();
-        popupRetreatPVE?.ForceClose();
         SceneTransitionHelper.Load(ESceneName.Home);
     }
 }
