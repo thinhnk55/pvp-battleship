@@ -56,5 +56,9 @@ namespace Authentication
 
         }
 
+        public void LinkAccount()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -13,6 +13,12 @@ namespace Server
         [SerializeField] Button buttonLinkGoogleAccount;
         [SerializeField] TextMeshProUGUI textButtonLinkGoogleAccount;
         // Start is called before the first frame update
+        private void Awake()
+        {
+            SetUpButtonLinkAccount();
+            HTTPClientAuth.CheckLinkedAccount();
+        }
+
         void Start()
         {
             HTTPClientAuth.OnCheckLinkedAccount += OnCheckLinkedAccount;
@@ -34,6 +40,15 @@ namespace Server
                 AuthenticationBase.Instance.auths[SocialAuthType.Apple].Update();  
         }
 #endif
+
+        private void SetUpButtonLinkAccount()
+        {
+#if PLATFORM_ANDROID
+            buttonLinkAppleAccount.gameObject.SetActive(false);
+#else
+            buttonLinkAppleAccount.gameObject.SetActive(true);
+#endif
+        }
 
         private void OnCheckLinkedAccount(bool isLinkedGoogle, bool isLinkedApple)
         {
@@ -61,13 +76,13 @@ namespace Server
         public void LinkAppleAccount()
         {
             buttonLinkAppleAccount.interactable = false;
-            AuthenticationBase.Instance.auths[SocialAuthType.Apple].SignIn();
+            AuthenticationBase.Instance.auths[SocialAuthType.Apple].LinkAccount();
         }
 
         public void LinkGoogleAccount()
         {
             buttonLinkAppleAccount.interactable = false;
-            AuthenticationBase.Instance.auths[SocialAuthType.Google].SignIn();
+            AuthenticationBase.Instance.auths[SocialAuthType.Google].LinkAccount();
         }
 
         private void OnLinkAppleAccount(bool isSuccess)

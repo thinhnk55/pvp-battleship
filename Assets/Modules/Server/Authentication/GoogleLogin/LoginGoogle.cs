@@ -13,14 +13,6 @@ namespace Authentication
 
         private GoogleSignInConfiguration configuration;
 
-        /*    private void Udate()
-            {
-                Debug.Log("config");
-                configuration = new GoogleSignInConfiguration { WebClientId = webClientId, RequestEmail = true, RequestIdToken = true };
-                Debug.LogError(configuration);
-            }*/
-
-
         private void OnSignIn()
         {
             GoogleSignIn.Configuration = configuration;
@@ -69,25 +61,34 @@ namespace Authentication
             }
         }
 
-        public void OnSignInSilently()
+        internal void OnLinkAcountFinished(Task<GoogleSignInUser> task)
         {
-            GoogleSignIn.Configuration = configuration;
-            GoogleSignIn.Configuration.UseGameSignIn = false;
-            GoogleSignIn.Configuration.RequestIdToken = true;
-
-            GoogleSignIn.DefaultInstance.SignInSilently().ContinueWith(OnAuthenticationFinished);
+            if (task.IsFaulted)
+            {
+                using (IEnumerator<Exception> enumerator = task.Exception.InnerExceptions.GetEnumerator())
+                {
+                    if (enumerator.MoveNext())
+                    {
+                        GoogleSignIn.SignInException error = (GoogleSignIn.SignInException)enumerator.Current;
+                        Debug.Log(error);
+                    }
+                    else
+                    {
+                        Debug.Log("Error!!!!!!!!");
+                    }
+                }
+            }
+            else if (task.IsCanceled)
+            {
+                Debug.Log("isCanceled!!!");
+            }
+            else
+            {
+                Debug.Log("link google account Done");
+                Debug.Log(task.Result.IdToken);
+                HTTPClientAuth.LinkGoogleAccount(task.Result.IdToken);
+            }
         }
-
-        public void OnGamesSignIn()
-        {
-            GoogleSignIn.Configuration = configuration;
-            GoogleSignIn.Configuration.UseGameSignIn = true;
-            GoogleSignIn.Configuration.RequestIdToken = false;
-
-            GoogleSignIn.DefaultInstance.SignIn().ContinueWith(OnAuthenticationFinished);
-        }
-
-        /*    private void AddToInformation(string str) { infoText.text += "\n" + str; }*/
 
         public void Initialize()
         {
@@ -101,16 +102,29 @@ namespace Authentication
 
         public void SignIn()
         {
-            OnSignIn();
+            GoogleSignIn.Configuration = configuration;
+            GoogleSignIn.Configuration.UseGameSignIn = false;
+            GoogleSignIn.Configuration.RequestIdToken = true;
+
+            GoogleSignIn.DefaultInstance.SignIn().ContinueWith(OnAuthenticationFinished);
         }
 
         public void SignOut()
         {
-            OnSignOut();
+            GoogleSignIn.DefaultInstance.SignOut();
+        }
+        public void LinkAccount()
+        {
+            GoogleSignIn.Configuration = configuration;
+            GoogleSignIn.Configuration.UseGameSignIn = false;
+            GoogleSignIn.Configuration.RequestIdToken = true;
+
+            GoogleSignIn.DefaultInstance.SignIn().ContinueWith(OnLinkAcountFinished);
         }
 
         public void Update()
         {
         }
+
     }
 }

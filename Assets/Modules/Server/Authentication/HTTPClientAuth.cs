@@ -2,6 +2,7 @@ using Framework;
 using Server;
 using SimpleJSON;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Authentication
@@ -79,9 +80,13 @@ namespace Authentication
         #endregion
 
         #region LINK ACCOUNT
-        public static void HTTPGetCheckLinkedAccount(JSONNode json, string linkAccountRouter)
+        public static void CheckLinkedAccount()
         {
-            PCoroutine.PStartCoroutine(HTTPClientBase.Get(ServerConfig.HttpURL + linkAccountRouter,
+            var header = new List<KeyValuePair<string, string>>();
+            header.Add(new KeyValuePair<string, string>("userid", DataAuth.AuthData.userId.ToString()));
+            header.Add(new KeyValuePair<string, string>("token", DataAuth.AuthData.token.ToString()));
+
+            PCoroutine.PStartCoroutine(HTTPClientBase.Get(ServerConfig.HttpURL + "/link/check",
                 (res) =>
                 {
                     JSONNode jsonParse = JSONNode.Parse(res);
@@ -99,7 +104,7 @@ namespace Authentication
                         {
                             OnCheckLinkedAccount(false, true);
                         }
-                        else if(jsonParse["data"]["ap"] == null)
+                        else if (jsonParse["data"]["ap"] == null)
                         {
                             OnCheckLinkedAccount(true, false);
                         }
@@ -109,29 +114,17 @@ namespace Authentication
                         }
                     }
 
-                })
+                }
+                , header)
             );
         }
-
-        public static void CheckLinkedAccount(string idToken, string userId)
+        public static void LinkGoogleAccount(string idToken)
         {
-            JSONNode json = new JSONClass()
-            {
-                {"userid", userId},
-                {"token", idToken},
-            };
+            var header = new List<KeyValuePair<string, string>>();
+            header.Add(new KeyValuePair<string, string>("userid", DataAuth.AuthData.userId.ToString()));
+            header.Add(new KeyValuePair<string, string>("token", DataAuth.AuthData.token.ToString()));
 
-            HTTPGetCheckLinkedAccount(json, "/link/check");
-        }
-        public static void LinkGoogleAccount(string idToken, string userId)
-        {
-            JSONNode json = new JSONClass()
-            {
-                {"userid", userId},
-                {"token", idToken},
-            };
-
-            PCoroutine.PStartCoroutine(HTTPClientBase.Post(ServerConfig.HttpURL + "/link/google", json.ToString(),
+            PCoroutine.PStartCoroutine(HTTPClientBase.Post(ServerConfig.HttpURL + "/link/google", idToken,
                 (res) =>
                 {
                     JSONNode jsonParse = JSONNode.Parse(res);
@@ -144,19 +137,18 @@ namespace Authentication
                         OnLinkGoogleAccount(false);
                         Debug.Log(res.ToString());
                     }
-                })
+                }
+                , header)
             );
         }
 
-        public static void LinkAppleAccount(string idToken, string userId)
+        public static void LinkAppleAccount(string idToken)
         {
-            JSONNode json = new JSONClass()
-            {
-                {"userid", userId},
-                {"token", idToken},
-            };
+            var header = new List<KeyValuePair<string, string>>();
+            header.Add(new KeyValuePair<string, string>("userid", DataAuth.AuthData.userId.ToString()));
+            header.Add(new KeyValuePair<string, string>("token", DataAuth.AuthData.token.ToString()));
 
-            PCoroutine.PStartCoroutine(HTTPClientBase.Post(ServerConfig.HttpURL, "/link/apple",
+            PCoroutine.PStartCoroutine(HTTPClientBase.Post(ServerConfig.HttpURL + "/link/apple", idToken,
                 (res) =>
                 {
                     JSONNode jsonParse = JSONNode.Parse(res);
@@ -169,7 +161,8 @@ namespace Authentication
                         OnLinkAppleAccount(false);
                         Debug.Log(res.ToString());
                     }
-                })
+                }
+                , header)
             );
 
         }
