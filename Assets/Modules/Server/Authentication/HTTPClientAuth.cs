@@ -12,12 +12,12 @@ namespace Authentication
         #region EVENT
         //Paramater 1: IsLinkedGoogleAccount
         //Paramater 2: IsLinkedAppleAccount
-        public static Action<bool, bool> OnCheckLinkedAccount;
+        public static Callback<bool, bool> OnCheckLinkedAccount;
         //Paramater : IsSuccess
-        public static Action<bool> OnLinkGoogleAccount;
+        public static Callback<bool> OnLinkGoogleAccount;
         //Paramater : IsSuccess
-        public static Action<bool> OnLinkAppleAccount;
-        
+        public static Callback<bool> OnLinkAppleAccount;
+
         #endregion
 
         #region LOGIN
@@ -90,32 +90,11 @@ namespace Authentication
                 (res) =>
                 {
                     JSONNode jsonParse = JSONNode.Parse(res);
-                    if (int.Parse(jsonParse["error"]) != 0)
-                        return;
-
-
-                    if (jsonParse["data"].Count == 0)
-                    {
-                        OnCheckLinkedAccount(false, false);
-                    }
-                    else
-                    {
-                        if (jsonParse["data"]["gg"] == null)
-                        {
-                            OnCheckLinkedAccount(false, true);
-                        }
-                        else if (jsonParse["data"]["ap"] == null)
-                        {
-                            OnCheckLinkedAccount(true, false);
-                        }
-                        else
-                        {
-                            OnCheckLinkedAccount(true, true);
-                        }
-                    }
-
-                }
-                , header)
+                    if (int.Parse(jsonParse["error"]) != 0) return;
+                    bool islinkedGoogle = jsonParse["data"]["gg"] != null;
+                    bool islinkedApple = jsonParse["data"]["ap"] != null;
+                    OnCheckLinkedAccount?.Invoke(islinkedGoogle, islinkedApple);
+                })
             );
         }
         public static void LinkGoogleAccount(string idToken)
@@ -124,47 +103,31 @@ namespace Authentication
             header.Add(new KeyValuePair<string, string>("userid", DataAuth.AuthData.userId.ToString()));
             header.Add(new KeyValuePair<string, string>("token", DataAuth.AuthData.token.ToString()));
 
-            PCoroutine.PStartCoroutine(HTTPClientBase.Post(ServerConfig.HttpURL + "/link/google", idToken,
+            HTTPGetCheckLinkedAccount(json, "/link/check");
+        }
+        public static void LinkAccount(string idToken, string userId, Callback<bool> onLinkedAccount, string route)
+        {
+            JSONNode json = new JSONClass()
+            {
+                {"userid", userId},
+                {"token", idToken},
+            };
+            PCoroutine.PStartCoroutine(HTTPClientBase.Post(ServerConfig.HttpURL + "/link" + route, json.ToString(),
                 (res) =>
                 {
                     JSONNode jsonParse = JSONNode.Parse(res);
-                    if (int.Parse(jsonParse["error"]) == 0)
-                    {
-                        OnLinkGoogleAccount(true);
-                    }
-                    else
-                    {
-                        OnLinkGoogleAccount(false);
-                        Debug.Log(res.ToString());
-                    }
-                }
-                , header)
+                    onLinkedAccount?.Invoke(jsonParse["error"].AsInt == 0);
+                })
             );
+        }
+        public static void LinkGoogleAccount(string idToken, string userId)
+        {
+            LinkAccount(idToken, userId, OnLinkGoogleAccount, "/gg");
         }
 
         public static void LinkAppleAccount(string idToken)
         {
-            var header = new List<KeyValuePair<string, string>>();
-            header.Add(new KeyValuePair<string, string>("userid", DataAuth.AuthData.userId.ToString()));
-            header.Add(new KeyValuePair<string, string>("token", DataAuth.AuthData.token.ToString()));
-
-            PCoroutine.PStartCoroutine(HTTPClientBase.Post(ServerConfig.HttpURL + "/link/apple", idToken,
-                (res) =>
-                {
-                    JSONNode jsonParse = JSONNode.Parse(res);
-                    if (int.Parse(jsonParse["error"]) == 0)
-                    {
-                        OnLinkAppleAccount(true);
-                    }
-                    else
-                    {
-                        OnLinkAppleAccount(false);
-                        Debug.Log(res.ToString());
-                    }
-                }
-                , header)
-            );
-
+            LinkAccount(idToken, userId, OnLinkAppleAccount, "/apple");
         }
         #endregion
     }
