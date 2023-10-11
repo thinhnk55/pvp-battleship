@@ -10,9 +10,6 @@ public class ButtonLogout : ButtonBase
         base.Button_OnClicked();
         WSClient.Instance.Disconnect(true);
         Auth.Instance.auths[GameData.TypeLogin].SignOut();
-        DataAuth.AuthData.token = "";
         SceneTransitionHelper.Load(ESceneName.PreHome);
     }
 }
-
-

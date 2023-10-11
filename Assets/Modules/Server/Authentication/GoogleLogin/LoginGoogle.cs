@@ -111,6 +111,7 @@ namespace Authentication
 
         public void SignOut()
         {
+            HTTPClientAuth.Logout();
             GoogleSignIn.DefaultInstance.SignOut();
         }
         public void LinkAccount()
@@ -126,5 +127,16 @@ namespace Authentication
         {
         }
 
+        public void DisableAccount()
+        {
+            HTTPClientAuth.DisableAccount();
+            GoogleSignIn.DefaultInstance.SignOut();
+        }
+
+        public void DeleteAccount()
+        {
+            HTTPClientAuth.DeleteAccount();
+            GoogleSignIn.DefaultInstance.SignOut();
+        }
     }
 }

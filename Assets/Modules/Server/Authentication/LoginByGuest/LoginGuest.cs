@@ -53,12 +53,21 @@ namespace Authentication
 
         public void SignOut()
         {
-
+            HTTPClientAuth.Logout();
         }
 
         public void LinkAccount()
         {
-            throw new NotImplementedException();
+        }
+
+        public void DisableAccount()
+        {
+            HTTPClientAuth.DisableAccount();
+        }
+
+        public void DeleteAccount()
+        {
+            HTTPClientAuth.DeleteAccount();
         }
     }
 }

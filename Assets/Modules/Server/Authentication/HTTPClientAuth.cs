@@ -76,9 +76,7 @@ namespace Authentication
         #region LINK ACCOUNT
         public static void CheckLinkedAccount()
         {
-            var header = new List<KeyValuePair<string, string>>();
-            header.Add(new KeyValuePair<string, string>("userid", DataAuth.AuthData.userId.ToString()));
-            header.Add(new KeyValuePair<string, string>("token", DataAuth.AuthData.token.ToString()));
+            var header = GenHeaderUseridAndToken();
 
             PCoroutine.PStartCoroutine(HTTPClientBase.Get(ServerConfig.HttpURL + "/link/check",
                 (res) =>
@@ -96,9 +94,7 @@ namespace Authentication
 
         public static void LinkAccount(string idToken, Callback<int> onLinkedAccount, string route)
         {
-            var header = new List<KeyValuePair<string, string>>();
-            header.Add(new KeyValuePair<string, string>("userid", DataAuth.AuthData.userId.ToString()));
-            header.Add(new KeyValuePair<string, string>("token", DataAuth.AuthData.token.ToString()));
+            var header = GenHeaderUseridAndToken();
 
             JSONNode json = new JSONClass()
             {
@@ -122,6 +118,67 @@ namespace Authentication
         public static void LinkAppleAccount(string idToken)
         {
             LinkAccount(idToken, OnLinkAppleAccount, "/apple");
+        }
+        #endregion
+
+        #region LOGOUT-DISABLE-DELETE ACCOUNT
+        public static void Logout()
+        {
+            var header = GenHeaderUseridAndToken();
+
+            PCoroutine.PStartCoroutine(HTTPClientBase.Get(ServerConfig.HttpURL + "/logout"
+                , (res) =>
+                {
+                    JSONNode jsonParse = JSONNode.Parse(res);
+                    if (int.Parse(jsonParse["error"]) == 0)
+                    {
+                        PopupHelper.CreateMessage(PrefabFactory.PopupMessage, "Message", "Log out successful", null);
+                    }
+                }
+                , header));
+        }
+
+        public static void DisableAccount()
+        {
+            var header = GenHeaderUseridAndToken();
+
+            PCoroutine.PStartCoroutine(HTTPClientBase.Get(ServerConfig.HttpURL + "/disable"
+                , (res) =>
+                {
+                    JSONNode jsonParse = JSONNode.Parse(res);
+                    if (int.Parse(jsonParse["error"]) == 0)
+                    {
+                        PopupHelper.CreateMessage(PrefabFactory.PopupMessage, "Message", "Disable account successful", null);
+                    }
+                }
+                , header));
+        }
+
+        public static void DeleteAccount()
+        {
+            var header = GenHeaderUseridAndToken();
+
+            PCoroutine.PStartCoroutine(HTTPClientBase.Get(ServerConfig.HttpURL + "/delete"
+                , (res) =>
+                {
+                    JSONNode jsonParse = JSONNode.Parse(res);
+                    if (int.Parse(jsonParse["error"]) == 0)
+                    {
+                        PopupHelper.CreateMessage(PrefabFactory.PopupMessage, "Message", "Delete account successful", null);
+                    }
+                }
+                , header));
+        }
+        #endregion
+
+        #region GEN_HEADER
+        public static List<KeyValuePair<string, string>> GenHeaderUseridAndToken()
+        {
+            List<KeyValuePair<string, string>> header = new List<KeyValuePair<string, string>>();
+            header.Add(new KeyValuePair<string, string>("userid", DataAuth.AuthData.userId.ToString()));
+            header.Add(new KeyValuePair<string, string>("token", DataAuth.AuthData.token.ToString()));
+
+            return header;
         }
         #endregion
     }
