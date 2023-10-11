@@ -1,7 +1,6 @@
 ﻿using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Events;
-
 namespace Framework
 {
     public class AutoDestructable : CacheMonoBehaviour

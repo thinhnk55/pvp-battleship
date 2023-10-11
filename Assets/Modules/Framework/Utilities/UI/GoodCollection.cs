@@ -10,7 +10,7 @@ namespace Framework
     {
         public override void UpdateUIs()
         {
-            
+        
         }
 
         public override void BuildUIs(List<GoodInfo> infos)

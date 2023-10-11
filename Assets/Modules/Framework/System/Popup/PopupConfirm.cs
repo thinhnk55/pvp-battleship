@@ -1,7 +1,6 @@
 ﻿using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
-
+using UnityEngine.UI;   
 namespace Framework
 {
     public class PopupConfirm : PopupBehaviour

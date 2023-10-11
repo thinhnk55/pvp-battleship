@@ -39,6 +39,7 @@ namespace Framework
 
         public static string GetProductPriceFromStore(string id, string defaultPrice = "")
         {
+            Debug.Log(id);
             if (Instance.m_StoreController != null && Instance.m_StoreController.products != null)
                 return Instance.m_StoreController.products.WithID(id).metadata.localizedPriceString;
             else

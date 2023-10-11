@@ -20,6 +20,7 @@ namespace Authentication
             PCoroutine.PStartCoroutine(HTTPClientBase.Post(ServerConfig.HttpURL + loginRoute, json.ToString()
                 , (res) =>
                 {
+                    Debug.Log("2");
                     JSONNode jsonRes = JSONNode.Parse(res);
                     if (int.Parse(jsonRes["error"]) == 0)
                     {
@@ -57,6 +58,7 @@ namespace Authentication
             {
                 {"token",  idToken},
             };
+            Debug.Log("1");
             HTTPPostLogin(json, "/login/google");
         }
 
