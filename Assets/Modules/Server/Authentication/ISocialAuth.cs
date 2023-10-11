@@ -18,5 +18,7 @@ namespace Authentication
         void SignIn();
         void SignOut();
         void LinkAccount();
+        void DisableAccount();
+        void DeleteAccount();
     }
 }
