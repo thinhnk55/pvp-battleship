@@ -1,3 +1,4 @@
+using FirebaseIntegration;
 using Framework;
 using SimpleJSON;
 using System;
@@ -18,6 +19,7 @@ public class RankCollection : CardCollectionBase<RankInfo>
     [SerializeField] Transform resource;
     private void Start()
     {
+        AnalyticsHelper.SelectContent("rank");
         OnSelectedCard += (oldCard, newCard) =>
         {
             if (oldCard && ((RankCard)oldCard).BG)

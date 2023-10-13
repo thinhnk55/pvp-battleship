@@ -1,3 +1,4 @@
+using FirebaseIntegration;
 using Framework;
 using SimpleJSON;
 using System.Collections.Generic;
@@ -18,6 +19,7 @@ public class LeaderBoardWinCollection : CardCollectionBase<LeaderBoardWinInfo>
     }
     private void OnEnable()
     {
+        AnalyticsHelper.SelectContent("win_leaderboard");
         WSClientHandler.LeaderBoardData();
         WSClientHandler.LeaderData();
     }

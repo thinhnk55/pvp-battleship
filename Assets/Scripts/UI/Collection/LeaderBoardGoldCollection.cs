@@ -1,3 +1,4 @@
+using FirebaseIntegration;
 using Framework;
 using SimpleJSON;
 using System.Collections.Generic;
@@ -19,6 +20,7 @@ public class LeaderBoardGoldCollection : CardCollectionBase<LeaderBoardGoldInfo>
     }
     private void OnEnable()
     {
+        AnalyticsHelper.SelectContent("gold_leaderboard");
         WSClientHandler.LeaderBoardData();
         WSClientHandler.LeaderData();
     }

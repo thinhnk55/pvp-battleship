@@ -1,5 +1,6 @@
 using CartoonFX;
 using DG.Tweening;
+using FirebaseIntegration;
 using Framework;
 using SimpleJSON;
 using Spine.Unity;
@@ -32,6 +33,7 @@ public class LuckyShot : SingletonMono<LuckyShot>
     [SerializeField] Sequence sequence;
     private void Start()
     {
+        AnalyticsHelper.SelectContent("luckyshot");
         //ServerMessenger.AddListener<JSONNode>(ServerResponse.RECIEVE_REWARD_ROCKET, RewardAds);
         AudioHelper.PauseMusic();
         Instance.anim.timeScale = 0.9f;

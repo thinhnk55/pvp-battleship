@@ -64,7 +64,7 @@ namespace FirebaseIntegration
         }
         public static void Transaction(string transaction)
         {
-            Analytics.Log(FirebaseAnalytics.EventSpendVirtualCurrency,
+            Analytics.Log("transaction",
                 new List<KeyValuePair<string, object>>()
             {
                     new KeyValuePair<string, object>(FirebaseAnalytics.ParameterTransactionId, transaction),

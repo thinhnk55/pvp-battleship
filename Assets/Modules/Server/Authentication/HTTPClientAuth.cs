@@ -149,7 +149,6 @@ namespace Authentication
             List<KeyValuePair<string, string>> header = new List<KeyValuePair<string, string>>();
             header.Add(new KeyValuePair<string, string>("userid", DataAuth.AuthData.userId.ToString()));
             header.Add(new KeyValuePair<string, string>("token", DataAuth.AuthData.token.ToString()));
-
             return header;
         }
         #endregion
