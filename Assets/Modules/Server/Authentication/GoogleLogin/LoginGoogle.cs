@@ -13,20 +13,6 @@ namespace Authentication
 
         private GoogleSignInConfiguration configuration;
 
-        private void OnSignIn()
-        {
-            GoogleSignIn.Configuration = configuration;
-            GoogleSignIn.Configuration.UseGameSignIn = false;
-            GoogleSignIn.Configuration.RequestIdToken = true;
-
-            GoogleSignIn.DefaultInstance.SignIn().ContinueWith(OnAuthenticationFinished);
-        }
-
-        private void OnSignOut()
-        {
-            GoogleSignIn.DefaultInstance.SignOut();
-        }
-
         public void OnDisconnect()
         {
             GoogleSignIn.DefaultInstance.Disconnect();
@@ -109,11 +95,6 @@ namespace Authentication
             GoogleSignIn.DefaultInstance.SignIn().ContinueWith(OnAuthenticationFinished);
         }
 
-        public void SignOut()
-        {
-            HTTPClientAuth.Logout();
-            GoogleSignIn.DefaultInstance.SignOut();
-        }
         public void LinkAccount()
         {
             GoogleSignIn.Configuration = configuration;
@@ -126,16 +107,18 @@ namespace Authentication
         public void Update()
         {
         }
+        public void SignOut()
+        {
+            GoogleSignIn.DefaultInstance.SignOut();
+        }
 
         public void DisableAccount()
         {
-            HTTPClientAuth.DisableAccount();
             GoogleSignIn.DefaultInstance.SignOut();
         }
 
         public void DeleteAccount()
         {
-            HTTPClientAuth.DeleteAccount();
             GoogleSignIn.DefaultInstance.SignOut();
         }
     }

@@ -3,6 +3,7 @@ using Framework;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using SimpleJSON;
 
 namespace Server
 {
@@ -52,8 +53,6 @@ namespace Server
             UpdateButtonLinkAppleAccountState(DataAuth.IsLinkedAppleAccount.Data);
             UpdateButtonLinkGoogleAccountState(DataAuth.IsLinkedGoogleAccount.Data);
         }
-
-
 
 
         #region EVENT HANDLE
@@ -114,9 +113,10 @@ namespace Server
         /// 10: invalid_token
         /// 11: account_linked
         /// </param>
-        private void OnLinkAppleAccount(int error)
+        private void OnLinkAppleAccount(string res)
         {
-            switch (error)
+            JSONNode error = JSONNode.Parse(res);
+            switch (error["e"].AsInt)
             {
                 case 0:
                     PopupHelper.CreateMessage(PrefabFactory.PopupMessage, "Message", "Apple account linking successful", null);
@@ -133,9 +133,10 @@ namespace Server
             }
         }
 
-        private void OnLinkGoogleAccount(int error)
+        private void OnLinkGoogleAccount(string res)
         {
-            switch (error)
+            JSONNode error = JSONNode.Parse(res);
+            switch (error["e"].AsInt)
             {
                 case 0:
                     PopupHelper.CreateMessage(PrefabFactory.PopupMessage, "Message", "Google account linking successful", null);
@@ -151,6 +152,7 @@ namespace Server
                     break;
             }
             #endregion
+
 
         }
     }

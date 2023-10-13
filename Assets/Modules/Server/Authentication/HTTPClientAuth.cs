@@ -10,8 +10,13 @@ namespace Authentication
     public class HTTPClientAuth : Singleton<HTTPClientAuth>
     {
         #region EVENT
-        public static Callback<int> OnLinkGoogleAccount;
-        public static Callback<int> OnLinkAppleAccount;
+        public static Callback<string> HandleLoginAccountResponse;
+        public static Callback<string> HandleCheckLinkAccoutResponse;
+        public static Callback<string> HandleLogoutResponse;
+        public static Callback<string> HandleDeleteAccountResponse;
+        public static Callback<string> HandleDisableAccountResponse;
+        public static Callback<string> OnLinkGoogleAccount;
+        public static Callback<string> OnLinkAppleAccount;
         #endregion
 
         #region LOGIN
@@ -20,22 +25,7 @@ namespace Authentication
             PCoroutine.PStartCoroutine(HTTPClientBase.Post(ServerConfig.HttpURL + loginRoute, json.ToString()
                 , (res) =>
                 {
-                    JSONNode jsonRes = JSONNode.Parse(res);
-                    if (int.Parse(jsonRes["error"]) == 0)
-                    {
-                        DataAuth.AuthData = new AuthData();
-                        DataAuth.AuthData.userId = int.Parse(jsonRes["data"]["id"]);
-                        Debug.Log("User Id: " + DataAuth.AuthData.userId);
-                        DataAuth.AuthData.username = jsonRes["data"]["username"];
-                        //PDataAuth.AuthData.refresh_token = jsonRes["data"]["refresh_token"];
-                        DataAuth.AuthData.token = jsonRes["data"]["token"];
-                        Debug.Log("HTTP Login");
-                        WSClient.Instance.Connect(DataAuth.AuthData.userId, DataAuth.AuthData.token);
-                    }
-                    else
-                    {
-                        Debug.Log(res);
-                    }
+                    HandleLoginAccountResponse(res);
                 })
 
             );
@@ -51,8 +41,6 @@ namespace Authentication
 
         public static void LoginGoogle(string idToken)
         {
-            string deviceId = SystemInfo.deviceUniqueIdentifier;
-
             JSONNode json = new JSONClass()
             {
                 {"token",  idToken},
@@ -62,8 +50,6 @@ namespace Authentication
 
         public static void LoginApple(string authentication)
         {
-            string deviceId = SystemInfo.deviceUniqueIdentifier;
-
             JSONNode json = new JSONClass()
             {
                 {"token",  authentication},
@@ -81,18 +67,13 @@ namespace Authentication
             PCoroutine.PStartCoroutine(HTTPClientBase.Get(ServerConfig.HttpURL + "/link/check",
                 (res) =>
                 {
-                    JSONNode jsonParse = JSONNode.Parse(res);
-                    if (int.Parse(jsonParse["error"]) != 0) return;
-                    bool islinkedGoogle = jsonParse["data"]["gg"] != null;
-                    bool islinkedApple = jsonParse["data"]["ap"] != null;
-                    DataAuth.IsLinkedGoogleAccount.Data = jsonParse["data"]["gg"] != null;
-                    DataAuth.IsLinkedAppleAccount.Data = jsonParse["data"]["ap"] != null;
+                    HandleCheckLinkAccoutResponse(res);
                 }
                 , header)
             );
         }
 
-        public static void LinkAccount(string idToken, Callback<int> onLinkedAccount, string route)
+        public static void LinkAccount(string idToken, Callback<string> onLinkedAccount, string route)
         {
             var header = GenHeaderUseridAndToken();
 
@@ -104,8 +85,7 @@ namespace Authentication
             PCoroutine.PStartCoroutine(HTTPClientBase.Post(ServerConfig.HttpURL + "/link" + route, json.ToString(),
                 (res) =>
                 {
-                    JSONNode jsonParse = JSONNode.Parse(res);
-                    onLinkedAccount?.Invoke(jsonParse["error"].AsInt);
+                    onLinkedAccount?.Invoke(res);
                 }
                 , header)
             );
@@ -129,11 +109,7 @@ namespace Authentication
             PCoroutine.PStartCoroutine(HTTPClientBase.Get(ServerConfig.HttpURL + "/logout"
                 , (res) =>
                 {
-                    JSONNode jsonParse = JSONNode.Parse(res);
-                    if (int.Parse(jsonParse["error"]) == 0)
-                    {
-                        PopupHelper.CreateMessage(PrefabFactory.PopupMessage, "Message", "Log out successful", null);
-                    }
+                    HandleLogoutResponse(res);
                 }
                 , header));
         }
@@ -145,11 +121,7 @@ namespace Authentication
             PCoroutine.PStartCoroutine(HTTPClientBase.Get(ServerConfig.HttpURL + "/disable"
                 , (res) =>
                 {
-                    JSONNode jsonParse = JSONNode.Parse(res);
-                    if (int.Parse(jsonParse["error"]) == 0)
-                    {
-                        PopupHelper.CreateMessage(PrefabFactory.PopupMessage, "Message", "Disable account successful", null);
-                    }
+                    HandleDisableAccountResponse(res);
                 }
                 , header));
         }
@@ -161,11 +133,7 @@ namespace Authentication
             PCoroutine.PStartCoroutine(HTTPClientBase.Get(ServerConfig.HttpURL + "/delete"
                 , (res) =>
                 {
-                    JSONNode jsonParse = JSONNode.Parse(res);
-                    if (int.Parse(jsonParse["error"]) == 0)
-                    {
-                        PopupHelper.CreateMessage(PrefabFactory.PopupMessage, "Message", "Delete account successful", null);
-                    }
+                    HandleDeleteAccountResponse(res);
                 }
                 , header));
         }
