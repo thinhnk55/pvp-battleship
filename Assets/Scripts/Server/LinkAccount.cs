@@ -4,7 +4,6 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using SimpleJSON;
-
 namespace Server
 {
     public class LinkAccount : MonoBehaviour
@@ -13,12 +12,13 @@ namespace Server
         [SerializeField] TextMeshProUGUI textButtonLinkAppleAccount;
         [SerializeField] Button buttonLinkGoogleAccount;
         [SerializeField] TextMeshProUGUI textButtonLinkGoogleAccount;
-        // Start is called before the first frame update
+
         private void Awake()
         {
             SetUpButtonLinkAccount();
         }
 
+        // Start is called before the first frame update
         void Start()
         {
             DataAuth.IsLinkedGoogleAccount.OnDataChanged += OnDataIsLinkedGoogleAccountChange;

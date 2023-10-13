@@ -2538,7 +2538,7 @@ GameObject:
   - component: {fileID: 5591567759260247722}
   - component: {fileID: 7649145891669231957}
   - component: {fileID: 8852208984192411214}
-  - component: {fileID: 6370217595798857913}
+  - component: {fileID: 4206764958150458368}
   m_Layer: 5
   m_Name: LinkAccount
   m_TagString: Untagged
@@ -2607,7 +2607,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HorizontalFit: 2
   m_VerticalFit: 0
---- !u!114 &6370217595798857913
+--- !u!114 &4206764958150458368
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2992,8 +2992,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 6370217595798857913}
-        m_TargetAssemblyTypeName: Server.LinkAccount, Authentication
+      - m_Target: {fileID: 4206764958150458368}
+        m_TargetAssemblyTypeName: Server.LinkAccount, Assembly-CSharp
         m_MethodName: LinkGoogleAccount
         m_Mode: 1
         m_Arguments:
@@ -3411,8 +3411,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 6370217595798857913}
-        m_TargetAssemblyTypeName: Server.LinkAccount, Authentication
+      - m_Target: {fileID: 4206764958150458368}
+        m_TargetAssemblyTypeName: Server.LinkAccount, Assembly-CSharp
         m_MethodName: LinkAppleAccount
         m_Mode: 1
         m_Arguments:

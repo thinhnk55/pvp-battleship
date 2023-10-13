@@ -22,9 +22,11 @@ namespace Authentication
         #region LOGIN
         private static void HTTPPostLogin(JSONNode json, string loginRoute)
         {
+            Debug.Log("HTTPPostLogin");
             PCoroutine.PStartCoroutine(HTTPClientBase.Post(ServerConfig.HttpURL + loginRoute, json.ToString()
                 , (res) =>
                 {
+                    Debug.Log("PStartCoroutine");
                     HandleLoginAccountResponse(res);
                 })
 
@@ -41,6 +43,7 @@ namespace Authentication
 
         public static void LoginGoogle(string idToken)
         {
+            Debug.Log("LoginGoogle");
             JSONNode json = new JSONClass()
             {
                 {"token",  idToken},

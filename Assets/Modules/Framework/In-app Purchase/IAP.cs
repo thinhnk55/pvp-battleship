@@ -23,6 +23,7 @@ namespace Framework
             builder.AddProduct($"{ApplicationConfig.BundleId}.starter", ProductType.NonConsumable);
             builder.AddProduct($"{ApplicationConfig.BundleId}.elite", ProductType.NonConsumable);
             UnityPurchasing.Initialize(this, builder);
+
         }
     }
 }
