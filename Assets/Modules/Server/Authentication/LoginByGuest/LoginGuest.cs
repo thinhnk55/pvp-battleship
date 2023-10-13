@@ -53,8 +53,19 @@ namespace Authentication
 
         public void SignOut()
         {
-
+            
         }
 
+        public void LinkAccount()
+        {
+        }
+
+        public void DisableAccount()
+        {
+        }
+
+        public void DeleteAccount()
+        {
+        }
     }
 }

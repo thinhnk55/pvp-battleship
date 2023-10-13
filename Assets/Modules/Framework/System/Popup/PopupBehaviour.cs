@@ -38,7 +38,6 @@ namespace Framework
         public static int PopupCount { get { return PopupStack.Count; } }
 
         #region MonoBehaviour
-
         protected virtual void Awake()
         {
             // Setup input listen to this popup

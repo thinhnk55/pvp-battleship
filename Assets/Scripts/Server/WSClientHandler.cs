@@ -122,6 +122,7 @@ public class WSClientHandler : Singleton<WSClientHandler>
         Firebase.Crashlytics.Crashlytics.SetUserId(DataAuth.AuthData.userId.ToString());
         FirebaseIntegration.AnalyticsHelper.Login();
         AdsManager.SetUserId(DataAuth.AuthData.userId.ToString());
+        HTTPClientAuth.CheckLinkedAccount();
         GetConfig();
         GetConfigShop();
         GetCheckRank();

@@ -146,7 +146,45 @@ namespace Authentication
 
         public void SignIn()
         {
-            SignInWithApple();
+            var loginArgs = new AppleAuthLoginArgs(LoginOptions.IncludeEmail | LoginOptions.IncludeFullName);
+
+            this._appleAuthManager.LoginWithAppleId(
+                loginArgs,
+                credential =>
+                {
+                    // If a sign in with apple succeeds, we should have obtained the credential with the user id, name, and email, save it
+                    PlayerPrefs.SetString(AppleUserIdKey, credential.User);
+                    var appleIdCredential = credential as IAppleIDCredential;
+                    Debug.Log("Sign in with apple: " + Encoding.UTF8.GetString(appleIdCredential.AuthorizationCode));
+                    HTTPClientAuth.LoginApple(Encoding.UTF8.GetString(appleIdCredential.AuthorizationCode));
+                },
+                error =>
+                {
+                    var authorizationErrorCode = error.GetAuthorizationErrorCode();
+                    Debug.LogWarning("Sign in with Apple failed " + authorizationErrorCode.ToString() + " " + error.ToString());
+                });
+        }
+
+        public void LinkAccount()
+        {
+            var loginArgs = new AppleAuthLoginArgs(LoginOptions.IncludeEmail | LoginOptions.IncludeFullName);
+
+            this._appleAuthManager.LoginWithAppleId(
+                loginArgs,
+                credential =>
+                {
+                    // If a sign in with apple succeeds, we should have obtained the credential with the user id, name, and email, save it
+                    PlayerPrefs.SetString(AppleUserIdKey, credential.User);
+                    var appleIdCredential = credential as IAppleIDCredential;
+                    Debug.Log("Sign in with apple: " + Encoding.UTF8.GetString(appleIdCredential.AuthorizationCode));
+
+                    HTTPClientAuth.LinkAppleAccount(Encoding.UTF8.GetString(appleIdCredential.AuthorizationCode));
+                },
+                error =>
+                {
+                    var authorizationErrorCode = error.GetAuthorizationErrorCode();
+                    Debug.LogWarning("Sign in with Apple failed " + authorizationErrorCode.ToString() + " " + error.ToString());
+                });
         }
 
         public void SignOut()
@@ -161,6 +199,7 @@ namespace Authentication
                 this._appleAuthManager.Update();
             }
         }
+
     }
 }
 #endif
