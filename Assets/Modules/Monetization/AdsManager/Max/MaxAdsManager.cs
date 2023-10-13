@@ -1,5 +1,6 @@
 using Framework;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Monetization
 {
@@ -7,22 +8,28 @@ namespace Monetization
     {
         public override void Initialize(string userId)
         {
+            Debug.Log("Initialize");
             MaxSdk.SetSdkKey(MonetizationConfig.SdkKey);
+            Debug.Log("SetSdkKey");
             MaxSdk.SetUserId(userId);
-            MaxSdk.InitializeSdk();
+            Debug.Log("SetUserId");
             MaxSdkCallbacks.OnSdkInitializedEvent += (MaxSdkBase.SdkConfiguration sdkConfiguration) =>
             {
                 // AppLovin SDK is initialized, start loading ads
                 //InitializeBannerAds();
                 //InitializeInterstitialAds();
-                InitializeRewardedAds();
+                InitializeRewardedAds();            // Load reward Ads
+                Debug.Log("InitializeRewardedAds");
+                foreach (KeyValuePair<RewardType, string> kvp in AdsData.AdsUnitIdMap)
+                {
+                    LoadAds(kvp.Value, AdsType.Reward);
+                }
+                Debug.Log("LoadAds");
             };
+            MaxSdk.InitializeSdk();
+            Debug.Log("InitializeSdk");
 
-            // Load reward Ads
-            foreach (KeyValuePair<RewardType, string> kvp in AdsData.AdsUnitIdMap)
-            {
-                LoadAds(kvp.Value, AdsType.Reward);
-            }
+
         }
 
 

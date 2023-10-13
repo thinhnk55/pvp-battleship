@@ -24,6 +24,7 @@ namespace Framework
                 }
             };
         }
+
         protected override void Awake()
         {
             base.Awake();

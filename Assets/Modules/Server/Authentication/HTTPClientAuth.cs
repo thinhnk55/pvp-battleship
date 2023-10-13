@@ -45,6 +45,7 @@ namespace Authentication
             {
                 {"token",  idToken},
             };
+            Debug.Log("1");
             HTTPPostLogin(json, "/login/google");
         }
 

@@ -6,8 +6,7 @@ using UnityEngine;
 /// If first time spawn object, create a new pool
 /// </summary>
 public class ObjectPoolManager : SingletonMono<ObjectPoolManager>
-{
-
+{   
     static Dictionary<GameObject, BasePool> objectPoolDict = new Dictionary<GameObject, BasePool>();
     [SerializeField] List<GameObject> beforeLoadObject;
     [SerializeField] Canvas canvasRoot;
