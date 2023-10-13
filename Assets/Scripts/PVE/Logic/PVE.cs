@@ -1,4 +1,5 @@
 using DG.Tweening;
+using FirebaseIntegration;
 using Framework;
 using Monetization;
 using Server;
@@ -91,6 +92,7 @@ public class PVE : SingletonMono<PVE>
         IsRevived = int.Parse(data["d"]["r"]) == 1 ? true : false;
         StartCoroutine(InitTurn());
         PConsumableType.BERRY.AddValue(-PVEData.Bets[PVEData.TypeBoard.Value]);
+        AnalyticsHelper.SpendVirtualCurrency(PConsumableType.BERRY.ToString().ToLower(), "classic" + -PVEData.Bets[PVEData.TypeBoard.Value]);
         PVEData.IsDeadPlayer.OnDataChanged += PlayerRevival;
     }
 
