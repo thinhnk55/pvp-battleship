@@ -25,7 +25,7 @@ MonoBehaviour:
       clip: {fileID: 8300000, guid: 5d2eed75ce0a8e6429bf4269ff851a68, type: 3}
       volume: 1
   soundConfigs:
-    keyData: 03000000040000000000000002000000050000000600000008000000090000000a000000
+    keyData: 03000000040000000000000002000000050000000600000008000000090000000a0000000b000000
     valueData:
     - type: 3
       clipConfigs:
@@ -86,6 +86,13 @@ MonoBehaviour:
     - type: 10
       clipConfigs:
       - clip: {fileID: 8300000, guid: 20ead430a763b3546a8231d8f10eb334, type: 3}
+        volumn: 1
+      spatial: 0
+      isFollow: 0
+      maxActiveSound: 1
+    - type: 11
+      clipConfigs:
+      - clip: {fileID: 8300000, guid: 8e89a8b65caf47f47a5f33bcf64a5b8d, type: 3}
         volumn: 1
       spatial: 0
       isFollow: 0
