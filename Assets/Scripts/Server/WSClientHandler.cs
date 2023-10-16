@@ -316,10 +316,11 @@ public class WSClientHandler : Singleton<WSClientHandler>
                 int oProgress = GameData.Player.AchievementProgress[_i];
                 GameData.Player.AchievementProgress[_i] += (nValue - oValue);
                 AchievementType type = (AchievementType)_i;
+                Debug.Log("Achievement Progress _ " + type + "_" + GameData.Player.AchievementProgress[_i]);
                 int nextMilestone = 0;
-                for (int i = 0; i < GameData.AchievementConfig[type].AchivementUnits.Length; i++)
+                for (int j = 0; j < GameData.AchievementConfig[type].AchivementUnits.Length; j++)
                 {
-                    if (oProgress >= GameData.AchievementConfig[type].AchivementUnits[i].Task)
+                    if (oProgress >= GameData.AchievementConfig[type].AchivementUnits[j].Task)
                     {
                         nextMilestone++;
                     }

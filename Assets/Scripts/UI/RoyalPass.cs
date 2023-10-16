@@ -70,6 +70,9 @@ public class RoyalPass
             case StatisticType.SHIP_DESTROY:
                 s = $"Destroy {value} ships";
                 break;
+            case StatisticType.PLAY_COUNT:
+                s = $"Play {value} batlles";
+                break;
             case StatisticType.WIN_COUNT:
                 s = $"Win {value} battles";
                 break;
@@ -84,9 +87,6 @@ public class RoyalPass
                 break;
             case StatisticType.SHIP_3_DESTROY:
                 s = $"Destroy {value} four-deck ships";
-                break;
-            case StatisticType.PLAY_COUNT:
-                s = $"Play {value} batlles";
                 break;
             case StatisticType.LUCKY_SHOT_COUNT:
                 s = $"Play {value} times Lucky Shot";
@@ -216,12 +216,12 @@ public class RoyalPass
                             royalPass.SeasonQuestsProgress[i] = 0;
                             break;
                     }
-                    StatisticTracker.RemoveAllListenerOnProgress((StatisticType)royalPass.SeasonQuests[_i].Type);
                     StatisticTracker.AddListenerOnProgress((StatisticType)royalPass.SeasonQuests[_i].Type, (o, n) =>
                     {
                         royalPass.SeasonQuestsProgress[_i] += (n - o);
                     });
                 }
+                RoyalPassQuestIndex[] array = (RoyalPassQuestIndex[])Enum.GetValues(typeof(RoyalPassQuestIndex));
                 royalPass.CurrentQuests = new PDataUnit<int[]>(new int[3] { -1, -1, -1 });
                 royalPass.CurrentQuestsProgress = new int[json["d"]["q"].Count];
                 royalPass.CurrentQuests.OnDataChanged += (o, n) =>
@@ -232,9 +232,9 @@ public class RoyalPass
                         {
                             currentIndexQuestChange = i;
                             if (o[currentIndexQuestChange] > 0)
-                                StatisticTracker.RemoveListenerOnProgress((StatisticType)Enum.GetValues(typeof(RoyalPassQuestType)).GetValue(o[currentIndexQuestChange]), OnChangeQuestProgress);
+                                StatisticTracker.RemoveListenerOnProgress((StatisticType)Enum.Parse(typeof(RoyalPassQuestType), array.GetValue(o[currentIndexQuestChange]).ToString()), OnChangeQuestProgress);
                             if (n[currentIndexQuestChange] > 0)
-                                StatisticTracker.AddListenerOnProgress((StatisticType)Enum.GetValues(typeof(RoyalPassQuestType)).GetValue(n[currentIndexQuestChange]), OnChangeQuestProgress);
+                                StatisticTracker.AddListenerOnProgress((StatisticType)Enum.Parse(typeof(RoyalPassQuestType), array.GetValue(n[currentIndexQuestChange]).ToString()), OnChangeQuestProgress);
                         }
                     }
                 };
@@ -245,8 +245,7 @@ public class RoyalPass
                         int _i = i;
                         royalPass.CurrentQuests.Data[i] = json["d"]["q"][i].AsInt;
                         royalPass.CurrentQuestsProgress[i] = json["d"]["p"][i].AsInt;
-                        StatisticType statistic = (StatisticType)Enum.GetValues(typeof(RoyalPassQuestType)).GetValue(royalPass.CurrentQuests.Data[_i]);
-                        StatisticTracker.RemoveAllListenerOnProgress(statistic);
+                        StatisticType statistic = (StatisticType)Enum.Parse(typeof(RoyalPassQuestType), array.GetValue(royalPass.CurrentQuests.Data[_i]).ToString());
                         //Debug.Log(statistic);
                         StatisticTracker.AddListenerOnProgress(statistic, (o, n) =>
                         {
