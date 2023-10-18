@@ -16,7 +16,7 @@ namespace Framework
         CLICK,
         DOOR,
         LUCKYSHOT_FALSE,
-
+        RPCONFIRM,
     }
     [Serializable]
     public struct ClipConfig

@@ -53,7 +53,7 @@ namespace Framework
         [SerializeField] private GameObject popupLinkAccountMessage; public static GameObject PopupLinkAccountMessage { get { return Instance.popupLinkAccountMessage; } }
         [SerializeField] private GameObject popupDeleteAccount; public static GameObject PopupDeleteAccount { get { return Instance.popupDeleteAccount; } }
 
-
+        [SerializeField] private GameObject popupRPConfirm; public static GameObject PopupRPConfirm { get { return Instance.popupRPConfirm; } }
     }
 }
 

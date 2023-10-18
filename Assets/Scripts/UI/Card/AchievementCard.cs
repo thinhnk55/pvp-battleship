@@ -9,20 +9,20 @@ using UnityEngine.UI;
 [Serializable]
 public enum AchievementType
 {
-    DESTROY_SHIP,
-    AVATAR_COLLECTOR,
-    WIN,
-    WIN_STREAK_MAX,
-    DESTROY_ACCUMULATIVE,
-    DESTROY_SHIP_1,
-    DESTROY_SHIP_2,
-    DESTROY_SHIP_3,
-    DESTROY_SHIP_4,
-    PERFECT_GAME,
-    WIN_WITH_1_SHIP,
-    SPEND_GEM,
-    FRAME_COLLECTOR,
-    BATTLEFIELD_COLLECTOR,
+    DESTROY_SHIP = 0,
+    AVATAR_COLLECTOR = 1,
+    WIN = 2,
+    WIN_STREAK_MAX = 3,
+    DESTROY_ACCUMULATIVE = 4,
+    DESTROY_SHIP_1 = 5,
+    DESTROY_SHIP_2 = 6,
+    DESTROY_SHIP_3 = 7,
+    DESTROY_SHIP_4 = 8,
+    PERFECT_GAME = 9,
+    WIN_WITH_1_SHIP = 10,
+    SPEND_GEM = 11,
+    FRAME_COLLECTOR = 12,
+    BATTLEFIELD_COLLECTOR = 13,
 }
 [Serializable]
 public struct AchievementUnit
