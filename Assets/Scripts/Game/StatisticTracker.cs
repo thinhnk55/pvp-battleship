@@ -48,34 +48,32 @@ public static class StatisticTracker
         PNonConsumableType.AVATAR.GetData().OnDataChanged += OnAvatarChange;
         PNonConsumableType.AVATAR_FRAME.GetData().OnDataChanged += OnAvatarFrameChange;
         PNonConsumableType.BATTLE_FIELD.GetData().OnDataChanged += OnBattleFieldChange;
-
         Messenger.AddListener(GameEvent.LostConnection, LostConnection);
-
     }
-    public static void AddQuest(this StatisticType requireTypes)
+    public static void AddQuest(this StatisticType statisticTypes)
     {
-        quests.Add(requireTypes, new PDataUnit<int>(0));
+        quests.Add(statisticTypes, new PDataUnit<int>(0));
     }
-    public static void AddListenerOnProgress(this StatisticType requireTypes, Callback<int, int> onProgress)
+    public static void AddListenerOnProgress(this StatisticType statisticTypes, Callback<int, int> onProgress)
     {
-        quests[requireTypes].OnDataChanged += onProgress;
+        quests[statisticTypes].OnDataChanged += onProgress;
     }
-    public static void RemoveListenerOnProgress(this StatisticType requireTypes, Callback<int, int> onProgress)
+    public static void RemoveListenerOnProgress(this StatisticType statisticTypes, Callback<int, int> onProgress)
     {
-        quests[requireTypes].OnDataChanged -= onProgress;
+        quests[statisticTypes].OnDataChanged -= onProgress;
     }
-    public static void RemoveAllListenerOnProgress(this StatisticType requireTypes)
+    public static void RemoveAllListenerOnProgress(this StatisticType statisticTypes)
     {
-        quests[requireTypes].OnDataChanged = null;
+        quests[statisticTypes].OnDataChanged = null;
     }
-    public static void SetProgress(this StatisticType requireTypes, int progress)
+    public static void SetProgress(this StatisticType statisticTypes, int progress)
     {
-        quests[requireTypes].Data = progress;
+        quests[statisticTypes].Data = progress;
     }
-    public static void AddProgress(this StatisticType requireTypes, int progress)
+    public static void AddProgress(this StatisticType statisticTypes, int progress)
     {
-        Debug.Log(requireTypes.ToString() + " progress changed " + progress);
-        quests[requireTypes].Data = quests[requireTypes].Data + progress;
+        quests[statisticTypes].Data = quests[statisticTypes].Data + progress;
+        Debug.Log(statisticTypes.ToString() + " progress changed " + progress);
     }
 
     private static void OnAvatarFrameChange(HashSet<int> oValue, HashSet<int> nValue)

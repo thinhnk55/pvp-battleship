@@ -7,8 +7,6 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-
-
 public class DailyRewardDisplay : MonoBehaviour
 {
     [SerializeField] List<DailyReward> rewards = new();

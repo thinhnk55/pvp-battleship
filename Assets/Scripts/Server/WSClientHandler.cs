@@ -316,10 +316,11 @@ public class WSClientHandler : Singleton<WSClientHandler>
                 int oProgress = GameData.Player.AchievementProgress[_i];
                 GameData.Player.AchievementProgress[_i] += (nValue - oValue);
                 AchievementType type = (AchievementType)_i;
+                Debug.Log("Achievement Progress _ " + type + "_" + GameData.Player.AchievementProgress[_i]);
                 int nextMilestone = 0;
-                for (int i = 0; i < GameData.AchievementConfig[type].AchivementUnits.Length; i++)
+                for (int j = 0; j < GameData.AchievementConfig[type].AchivementUnits.Length; j++)
                 {
-                    if (oProgress >= GameData.AchievementConfig[type].AchivementUnits[i].Task)
+                    if (oProgress >= GameData.AchievementConfig[type].AchivementUnits[j].Task)
                     {
                         nextMilestone++;
                     }
@@ -479,6 +480,7 @@ public class WSClientHandler : Singleton<WSClientHandler>
     #region TREASUREHUNT
     #region Old
     private static bool waitingJoinTreasureRoom = false;
+
 
     public static void RequestTreasureConfig()
     {
@@ -668,6 +670,8 @@ public class WSClientHandler : Singleton<WSClientHandler>
     }
     public static void DailyQuestReward(JSONNode json)
     {
+        PopupHelper.Create(PrefabFactory.PopupRPConfirm);
+        SoundType.RPCONFIRM.PlaySound();
         int[] receive = new int[3] { GameData.RoyalPass.CurrentQuests.Data[0], GameData.RoyalPass.CurrentQuests.Data[1], GameData.RoyalPass.CurrentQuests.Data[2] };
         receive[json["d"]["i"].AsInt] = -1;
         GameData.RoyalPass.CurrentQuests.Data = receive;
@@ -684,6 +688,9 @@ public class WSClientHandler : Singleton<WSClientHandler>
     }
     public static void SeasonQuestReward(JSONNode json)
     {
+        PopupHelper.Create(PrefabFactory.PopupRPConfirm);
+        SoundType.RPCONFIRM.PlaySound();
+
         GameData.RoyalPass.Point.Data += json["d"]["r"].AsInt;
         HashSet<int> receive = new HashSet<int>();
         receive.AddRange(GameData.RoyalPass.SeasonQuestsObtained.Data);

@@ -134,12 +134,12 @@ public class ProfileData
     [SerializeField] private int loseStreakMax; public int LoseStreakMax { get; set; }
     [SerializeField] private int wins; public int Wins
     {
-        get { return (!AchievementProgress.IsNullOrEmpty())? AchievementProgress[(int)AchievementType.WIN] : 0; }
-        set { AchievementProgress[(int)AchievementType.WIN] = value; winRate = value / (value + losts + 0.001f); }
+        get { return (!AchievementProgress.IsNullOrEmpty()) ? AchievementProgress[(int)AchievementType.WIN] : 0; }
+        set { AchievementProgress[(int)AchievementType.WIN] = value; }
     }
-    [SerializeField] private int losts; public int Losts { get { return losts; } set { losts = value; winRate = wins / (wins + losts + 0.001f); } }
+    [SerializeField] private int losts; public int Losts { get { return losts; } set { losts = value; } }
     public int Battles { get => Wins + Losts; }
-    [SerializeField] private float winRate; public float WinRate { get { return winRate; } }
+    [SerializeField] private float winRate; public float WinRate { get { return Battles == 0 ? 0 : Wins / (Battles); } }
     public int[] AchievementSelected;
     public List<int> AchievementObtained;
     public List<int> AchievementProgress;

@@ -107,7 +107,7 @@ public class SnapScrollView : MonoBehaviour
         if (childIndex >= childRects.Length) childIndex = childRects.Length - 1;
         // Calculate the target normalized position based on the child's position
         float targetNormalizedPos = (childIndex + 0.5f) / (childRects.Length);
-        Debug.Log(targetNormalizedPos);
+        //Debug.Log(targetNormalizedPos);
         // Set the scroll position to the target normalized position
         isDragging = true;
         scrollRect.horizontalNormalizedPosition = targetNormalizedPos;
