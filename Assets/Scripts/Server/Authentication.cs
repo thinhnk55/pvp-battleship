@@ -73,7 +73,18 @@ namespace Authentication
 
         public void Delete()
         {
-            HTTPClientAuth.DeleteAccount();
+            PopupHelper.CreateConfirm(PrefabFactory.PopupDeleteAccount, null, null, null, (ok) =>
+            {
+                if(ok)
+                {
+
+                }
+                else
+                {
+                    
+                }
+            });
+            //HTTPClientAuth.DeleteAccount();
         }
 
         public bool IsAllowedLogin()

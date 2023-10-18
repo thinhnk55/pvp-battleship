@@ -336,7 +336,7 @@ GameObject:
   - component: {fileID: 8066041394766998734}
   - component: {fileID: 7547525391917594224}
   m_Layer: 5
-  m_Name: ChangeNamePopup
+  m_Name: FillUserid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -862,7 +862,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Save
+  m_text: Delete
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 67daf692a0720484389a461dd818fd69, type: 2}
   m_sharedMaterial: {fileID: -6081805586234899183, guid: 67daf692a0720484389a461dd818fd69, type: 2}
@@ -945,7 +945,7 @@ GameObject:
   - component: {fileID: 7488460291142854281}
   - component: {fileID: 5189923980011801852}
   m_Layer: 5
-  m_Name: Save
+  m_Name: Delete
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -999,8 +999,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 8967629bee598284b82d3d10c4e1abce, type: 3}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: 821ac75c5e7661e449def5e84685f4ad, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -1430,7 +1430,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: ENTER YOUR NAME
+  m_text: ENTER YOUR USER ID
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 67daf692a0720484389a461dd818fd69, type: 2}
   m_sharedMaterial: {fileID: -6081805586234899183, guid: 67daf692a0720484389a461dd818fd69, type: 2}

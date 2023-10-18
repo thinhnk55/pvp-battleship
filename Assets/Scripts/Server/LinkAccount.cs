@@ -116,7 +116,7 @@ namespace Server
         private void OnLinkAppleAccount(string res)
         {
             JSONNode error = JSONNode.Parse(res);
-            switch (error["e"].AsInt)
+            switch (error["error"].AsInt)
             {
                 case 0:
                     PopupHelper.CreateMessage(PrefabFactory.PopupMessage, "Message", "Apple account linking successful", null);
@@ -136,7 +136,7 @@ namespace Server
         private void OnLinkGoogleAccount(string res)
         {
             JSONNode error = JSONNode.Parse(res);
-            switch (error["e"].AsInt)
+            switch (error["error"].AsInt)
             {
                 case 0:
                     PopupHelper.CreateMessage(PrefabFactory.PopupMessage, "Message", "Google account linking successful", null);
