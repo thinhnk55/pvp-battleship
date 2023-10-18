@@ -115,11 +115,12 @@ namespace Server
         /// </param>
         private void OnLinkAppleAccount(string res)
         {
-            JSONNode error = JSONNode.Parse(res);
-            switch (error["e"].AsInt)
+            JSONNode jsonParse = JSONNode.Parse(res);
+            switch (int.Parse(jsonParse["error"]))
             {
                 case 0:
                     PopupHelper.CreateMessage(PrefabFactory.PopupMessage, "Message", "Apple account linking successful", null);
+                    DataAuth.IsLinkedAppleAccount.Data = true;
                     break;
                 case 1:
                     PopupHelper.CreateMessage(PrefabFactory.PopupMessage, "Message", "System error!", null);
@@ -135,11 +136,12 @@ namespace Server
 
         private void OnLinkGoogleAccount(string res)
         {
-            JSONNode error = JSONNode.Parse(res);
-            switch (error["e"].AsInt)
+            JSONNode jsonParse = JSONNode.Parse(res);
+            switch (int.Parse(jsonParse["error"]))
             {
                 case 0:
                     PopupHelper.CreateMessage(PrefabFactory.PopupMessage, "Message", "Google account linking successful", null);
+                    DataAuth.IsLinkedGoogleAccount.Data = true;
                     break;
                 case 1:
                     PopupHelper.CreateMessage(PrefabFactory.PopupMessage, "Message", "System error!", null);
