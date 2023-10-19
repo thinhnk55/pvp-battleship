@@ -74,7 +74,7 @@ namespace Server
 
         public void LinkGoogleAccount()
         {
-            buttonLinkAppleAccount.interactable = false;
+            buttonLinkGoogleAccount.interactable = false;
             AuthenticationBase.Instance.auths[SocialAuthType.Google].LinkAccount();
         }
 

@@ -246,7 +246,7 @@ GameObject:
   - component: {fileID: 6687795931607823990}
   - component: {fileID: 1487330454363283897}
   m_Layer: 5
-  m_Name: LinkAccountMessagePopup
+  m_Name: ServerMessagePopup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
