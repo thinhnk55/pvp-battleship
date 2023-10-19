@@ -4,7 +4,6 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using SimpleJSON;
-
 namespace Server
 {
     public class LinkAccount : MonoBehaviour
@@ -13,12 +12,13 @@ namespace Server
         [SerializeField] TextMeshProUGUI textButtonLinkAppleAccount;
         [SerializeField] Button buttonLinkGoogleAccount;
         [SerializeField] TextMeshProUGUI textButtonLinkGoogleAccount;
-        // Start is called before the first frame update
+
         private void Awake()
         {
             SetUpButtonLinkAccount();
         }
 
+        // Start is called before the first frame update
         void Start()
         {
             DataAuth.IsLinkedGoogleAccount.OnDataChanged += OnDataIsLinkedGoogleAccountChange;
@@ -115,11 +115,12 @@ namespace Server
         /// </param>
         private void OnLinkAppleAccount(string res)
         {
-            JSONNode error = JSONNode.Parse(res);
-            switch (error["error"].AsInt)
+            JSONNode jsonParse = JSONNode.Parse(res);
+            switch (int.Parse(jsonParse["error"]))
             {
                 case 0:
                     PopupHelper.CreateMessage(PrefabFactory.PopupMessage, "Message", "Apple account linking successful", null);
+                    DataAuth.IsLinkedAppleAccount.Data = true;
                     break;
                 case 1:
                     PopupHelper.CreateMessage(PrefabFactory.PopupMessage, "Message", "System error!", null);
@@ -135,11 +136,12 @@ namespace Server
 
         private void OnLinkGoogleAccount(string res)
         {
-            JSONNode error = JSONNode.Parse(res);
-            switch (error["error"].AsInt)
+            JSONNode jsonParse = JSONNode.Parse(res);
+            switch (int.Parse(jsonParse["error"]))
             {
                 case 0:
                     PopupHelper.CreateMessage(PrefabFactory.PopupMessage, "Message", "Google account linking successful", null);
+                    DataAuth.IsLinkedGoogleAccount.Data = true;
                     break;
                 case 1:
                     PopupHelper.CreateMessage(PrefabFactory.PopupMessage, "Message", "System error!", null);
