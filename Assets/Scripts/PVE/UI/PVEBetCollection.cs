@@ -46,10 +46,10 @@ public class PVEBetCollection : CardCollectionBase<PVEBetInfo>
                     }
                 }
             }); ;
-            if (isQualified && _i > highestAvalableBet)
-            {
-                highestAvalableBet = _i;
-            }
+            //if (isQualified && _i > highestAvalableBet)
+            //{
+            //    highestAvalableBet = _i;
+            //}
         }
 
         BuildUIs(list);

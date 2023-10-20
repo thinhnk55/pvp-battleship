@@ -6,9 +6,9 @@ using System;
 
 public class PVEData : PDataBlock<PVEData>
 {
+    [SerializeField] private int verisonPVEData; public static int VerisonPVEConfig { get { return Instance.verisonPVEData; } set { Instance.verisonPVEData = value; } }
     [SerializeField] private int? typeBoard; public static int? TypeBoard { get { return Instance.typeBoard; } set { Instance.typeBoard = value; } }
     [SerializeField] private PDataUnit<bool> isDeadPlayer; public static PDataUnit<bool> IsDeadPlayer { get { return Instance.isDeadPlayer; } set { Instance.isDeadPlayer = value; } }
-    [SerializeField] private int verisonPVEData; public static int VerisonPVEData { get { return Instance.verisonPVEData; } set { Instance.verisonPVEData = value; } }
     [SerializeField] private List<int> bets; public static List<int> Bets { get { return Instance.bets; } set { Instance.bets = value; } }
     [SerializeField] private List<List<int>> stageMulReward; public static List<List<int>> StageMulReward { get { return Instance.stageMulReward; } set { Instance.stageMulReward = value; } }
     [SerializeField] private List<List<int>> winRate; public static List<List<int>> WinRate { get { return Instance.winRate; } set { Instance.winRate = value; } }

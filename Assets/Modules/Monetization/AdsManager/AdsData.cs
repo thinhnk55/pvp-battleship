@@ -26,7 +26,7 @@ public class AdsData : PDataBlock<AdsData>
 {
     [SerializeField] private Dictionary<RewardType, string> adsUnitIdMap; public static Dictionary<RewardType, string> AdsUnitIdMap { get { return Instance.adsUnitIdMap; } set { Instance.adsUnitIdMap = value;} }
     [SerializeField] private Dictionary<string, AdsRewardConfig> rewardTypeToConfigMap; public static Dictionary<string, AdsRewardConfig> RewardTypeToConfigMap { get { return Instance.rewardTypeToConfigMap; } set { Instance.rewardTypeToConfigMap = value; } }
-    [SerializeField] private int versionAds; public static int VersionAds { get { return Instance.versionAds; } set { Instance.versionAds = value; } }
+    [SerializeField] private int versionAdsConfig; public static int VersionAdsConfig { get { return Instance.versionAdsConfig; } set { Instance.versionAdsConfig = value; } }
 
     protected override void Init()
     {
