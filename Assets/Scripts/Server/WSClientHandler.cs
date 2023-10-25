@@ -365,14 +365,14 @@ public class WSClientHandler : Singleton<WSClientHandler>
         new JSONClass()
         {
             { "id", ServerRequest._CONFIG_ADS.ToJson() },
-            { "v",  new JSONData(AdsData.VersionAdsConfig)}
+            { "v",  new JSONData(AdsData.VersionAds)}
         }.RequestServer();
     }
     public static void ReceiveAdsConfig(JSONNode data)
     {
-        if (int.Parse(data["d"]["version"]) != AdsData.VersionAdsConfig)
+        if (int.Parse(data["d"]["version"]) != AdsData.VersionAds)
         {
-            AdsData.VersionAdsConfig = int.Parse(data["d"]["version"]);
+            AdsData.VersionAds = int.Parse(data["d"]["version"]);
 
             int platform;
 #if PLATFORM_ANDROID || UNITY_ANDROID
