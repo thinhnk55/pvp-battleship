@@ -222,7 +222,7 @@ public class WSClientHandler : Singleton<WSClientHandler>
         new JSONClass()
         {
             { "id", ServerRequest._CONFIG.ToJson() },
-            { "v", new JSONData(0) },
+            { "v", new JSONData(1) },
         }.RequestServer();
     }
     static void GetConfig(JSONNode data)
@@ -264,7 +264,7 @@ public class WSClientHandler : Singleton<WSClientHandler>
         new JSONClass()
         {
             { "id", ServerRequest._CONFIG_SHOP.ToJson() },
-            { "v", new JSONData(0) },
+            { "v", new JSONData(1) },
         }.RequestServer();
     }
     static void GetConfigShop(JSONNode data)
@@ -301,7 +301,7 @@ public class WSClientHandler : Singleton<WSClientHandler>
         new JSONClass()
         {
             { "id", ServerRequest._CONFIG_ACHIEVEMENT.ToJson() },
-            { "v", new JSONData(0) },
+            { "v", new JSONData(1) },
         }.RequestServer();
     }
     static void GetConfigAchievement(JSONNode data)
@@ -364,14 +364,13 @@ public class WSClientHandler : Singleton<WSClientHandler>
         new JSONClass()
         {
             { "id", ServerRequest._CONFIG_ADS.ToJson() },
-            { "v",  new JSONData(0)}
+            { "v",  new JSONData(1)}
         }.RequestServer();
     }
     public static void ReceiveAdsConfig(JSONNode data)
     {
         if (int.Parse(data["d"]["version"]) != AdsData.VersionAds)
         {
-            AdsData.VersionAds = int.Parse(data["d"]["version"]);
 
             int platform;
 #if PLATFORM_ANDROID || UNITY_ANDROID
@@ -393,6 +392,8 @@ public class WSClientHandler : Singleton<WSClientHandler>
                 value.rewardAdUnitId = data["d"]["ad_unit"][i]["ad_unit_id"];
                 AdsData.RewardTypeToConfigMap.Add(key, value);
             }
+            AdsData.VersionAds = int.Parse(data["d"]["version"]);
+
         }
 
         AdsManager.adsManager.Initialize(DataAuth.AuthData.userId.ToString());
