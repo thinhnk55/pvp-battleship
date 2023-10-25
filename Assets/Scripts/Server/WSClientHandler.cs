@@ -123,14 +123,16 @@ public class WSClientHandler : Singleton<WSClientHandler>
         FirebaseIntegration.AnalyticsHelper.Login();
         AdsManager.SetUserId(DataAuth.AuthData.userId.ToString());
         HTTPClientAuth.CheckLinkedAccount();
+
         GetConfig();
         GetConfigShop();
-        GetCheckRank();
         GetConfigAchievement();
         GetConfigRoyalPass();
         RequestAdsConfig();
         GetConfigGift();
-        LeaderBoardConfig();
+        LeaderBoardConfig(); //You need to place this configuration retrieval command after other configuration retrieval commands to ensure that the load home scene command is called after the configuration has been successfully retrieved.
+
+        GetCheckRank();
         PConsumableType.GEM.SetValue(int.Parse(data["d"]["d"]));
         PConsumableType.BERRY.SetValue(int.Parse(data["d"]["g"]));
         PNonConsumableType.AVATAR.FromJson(data["d"]["a"]["k"]["al"]);
@@ -222,11 +224,14 @@ public class WSClientHandler : Singleton<WSClientHandler>
         new JSONClass()
         {
             { "id", ServerRequest._CONFIG.ToJson() },
-            { "v", new JSONData(1) },
+            { "v", new JSONData(GameData.VersionConfig) },
         }.RequestServer();
     }
     static void GetConfig(JSONNode data)
     {
+        if (data["d"]["version"].AsInt == GameData.VersionConfig)
+            return;
+
         // rank
         GameData.RankConfigs = RankConfig.ListFromJson(data["d"]["level"]);
         // bet
@@ -240,22 +245,8 @@ public class WSClientHandler : Singleton<WSClientHandler>
         }
         // luckyshot
         Timer<LuckyShot>.Instance.TriggerInterval_Sec = data["d"]["lucky_shot"]["rocket_restore_period"].AsInt / 1000;
-
-        // gift
-        if (CoreGame.reconnect == null)
-        {
-            if (SceneManager.GetActiveScene().name == "PreHome")
-            {
-                SceneTransitionHelper.Load(ESceneName.Home);
-            }
-            else
-            {
-                LoadingScene.Instance.LoadScene("Home");
-                //SceneTransitionHelper.Load(ESceneName.Home);
-            }
-        }
-
-
+        GameData.LuckyShotCoolDown = data["d"]["lucky_shot"]["rocket_restore_period"].AsInt / 1000;
+        GameData.VersionConfig = data["d"]["version"].AsInt;
     }
     #endregion
     #region Shop
@@ -264,11 +255,14 @@ public class WSClientHandler : Singleton<WSClientHandler>
         new JSONClass()
         {
             { "id", ServerRequest._CONFIG_SHOP.ToJson() },
-            { "v", new JSONData(1) },
+            { "v", new JSONData(GameData.VersionShopConfig) },
         }.RequestServer();
     }
     static void GetConfigShop(JSONNode data)
     {
+        if (data["d"]["version"].AsInt == GameData.VersionShopConfig)
+            return;
+
         GameData.TransactionConfigs = new Dictionary<TransactionType, List<TransactionInfo>>();
         Array @enum = Enum.GetValues(typeof(TransactionType));
         for (int i = 0; i < @enum.Length; i++)
@@ -286,6 +280,8 @@ public class WSClientHandler : Singleton<WSClientHandler>
                 GameData.TransactionConfigs.Add((TransactionType)i, infos);
             }
         }
+
+        GameData.VersionShopConfig = data["d"]["version"].AsInt;
     }
     public static void Transaction(JSONNode data)
     {
@@ -301,11 +297,14 @@ public class WSClientHandler : Singleton<WSClientHandler>
         new JSONClass()
         {
             { "id", ServerRequest._CONFIG_ACHIEVEMENT.ToJson() },
-            { "v", new JSONData(1) },
+            { "v", new JSONData(GameData.VersionAchievementConfig) },
         }.RequestServer();
     }
     static void GetConfigAchievement(JSONNode data)
     {
+        if (data["d"]["version"].AsInt == GameData.VersionAchievementConfig)
+            return;
+
         GameData.AchievementConfig = new Dictionary<AchievementType, AchievementInfo>();
         for (int i = 0; i < data["d"]["achievements"].Count; i++)
         {
@@ -334,6 +333,8 @@ public class WSClientHandler : Singleton<WSClientHandler>
                 }
             });
         }
+
+        GameData.VersionAchievementConfig = data["d"]["version"].AsInt;
     }
     public static void RequestObtainAchievemnt(int id)
     {
@@ -364,13 +365,14 @@ public class WSClientHandler : Singleton<WSClientHandler>
         new JSONClass()
         {
             { "id", ServerRequest._CONFIG_ADS.ToJson() },
-            { "v",  new JSONData(1)}
+            { "v",  new JSONData(AdsData.VersionAdsConfig)}
         }.RequestServer();
     }
     public static void ReceiveAdsConfig(JSONNode data)
     {
-        if (int.Parse(data["d"]["version"]) != AdsData.VersionAds)
+        if (int.Parse(data["d"]["version"]) != AdsData.VersionAdsConfig)
         {
+            AdsData.VersionAdsConfig = int.Parse(data["d"]["version"]);
 
             int platform;
 #if PLATFORM_ANDROID || UNITY_ANDROID
@@ -444,17 +446,6 @@ public class WSClientHandler : Singleton<WSClientHandler>
 
         }
     }
-
-    public static void TestOnChange()
-    {
-        Debug.Log("ChangeQuest");
-        int[] arr = GameData.RoyalPass.CurrentQuests.Data;
-        arr[1] = 0;
-        GameData.RoyalPass.CurrentQuestsProgress[1] = 2;
-        GameData.RoyalPass.CurrentQuests.Data = arr;
-    }
-
-
     #endregion
     #region Lucky Shot
     public static void LuckyShotEarn(JSONNode data)
@@ -652,14 +643,19 @@ public class WSClientHandler : Singleton<WSClientHandler>
         new JSONClass()
         {
             { "id", ServerRequest._CONFIG_RP.ToJson() },
-            { "v", new JSONData(0) },
+            { "v", new JSONData(GameData.VersionRoyalPassConfig) },
         }.RequestServer();
     }
     static void GetConfigRoyalPass(JSONNode data)
     {
+        if (data["d"]["version"].AsInt == GameData.VersionRoyalPassConfig)
+            return;
+
         RoyalPass.ConfigFromJson(GameData.RoyalPass, data["d"]);
         GameData.RoyalPass.Version = data["v"].AsInt;
         GetDataRoyalPass();
+
+        GameData.VersionRoyalPassConfig = data["d"]["version"].AsInt;
     }
     public static void DailyQuestReward(int index)
     {
@@ -870,13 +866,18 @@ public class WSClientHandler : Singleton<WSClientHandler>
         new JSONClass()
         {
             { "id", ServerRequest._GIFT_CONFIG.ToJson() },
-            { "v", new JSONData(0) },
+            { "v", new JSONData(GameData.VersionGiftConfig) },
         }.RequestServer();
     }
     public static void GetConfigGift(JSONNode data)
     {
+        if (data["d"]["version"].AsInt == GameData.VersionGiftConfig)
+            return;
+
         GameData.GiftConfig = data["d"]["gold"].ToListInt();
         Timer<Gift>.Instance.TriggerInterval_Sec = data["d"]["bonus_period"].AsInt / 1000;
+
+        GameData.VersionGiftConfig = data["d"]["version"].AsInt;
     }
     public static void GetGift()
     {
@@ -892,12 +893,12 @@ public class WSClientHandler : Singleton<WSClientHandler>
         new JSONClass
         {
             { "id", ServerRequest._LEADERBOARD_CONFIG.ToJson() },
-            { "v", new JSONData(0) },
+            { "v", new JSONData(GameData.VersionLeaderBoardConfig) },
         }.RequestServer();
     }
     public static void LeaderBoardConfig(JSONNode data)
     {
-        if (data["v"] != GameData.LeaderBoard.Version)
+        if (data["d"]["version"].AsInt != GameData.VersionLeaderBoardConfig)
         {
             GameData.LeaderBoard.Period = data["d"]["leader_period"].AsInt / 1000;
             GameData.LeaderBoard.goldReward = new List<int>();
@@ -909,6 +910,20 @@ public class WSClientHandler : Singleton<WSClientHandler>
             for (int i = 0; i < data["d"]["reward_win"].Count; i++)
             {
                 GameData.LeaderBoard.winReward.Add(data["d"]["reward_win"][i].AsInt);
+            }
+
+            GameData.VersionLeaderBoardConfig = data["d"]["version"].AsInt;
+        }
+
+        if (CoreGame.reconnect == null)
+        {
+            if (SceneManager.GetActiveScene().name == "PreHome")
+            {
+                SceneTransitionHelper.Load(ESceneName.Home);
+            }
+            else
+            {
+                LoadingScene.Instance.LoadScene("Home");
             }
         }
     }

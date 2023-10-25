@@ -22,18 +22,17 @@ public class WSClientPVE : Singleton<WSClientPVE>
         new JSONClass()
         {
             {"id" , ServerRequest._CONFIG_TREASURE.ToJson() },
-            {"v", new JSONData(0)}
+            {"v", new JSONData(PVEData.VerisonPVEConfig)}
         }.RequestServer();
     }
     static void GetConfigTreasure(JSONNode data)
     {
-        Debug.Log(PVEData.VerisonPVEData.ToString());
-        if (PVEData.VerisonPVEData == int.Parse(data["d"]["version"]))
+        if (PVEData.VerisonPVEConfig == int.Parse(data["d"]["version"]))
         {
             return;
         }
 
-        PVEData.VerisonPVEData = int.Parse(data["d"]["version"]);
+        PVEData.VerisonPVEConfig = int.Parse(data["d"]["version"]);
         for (int i = 0; i < data["d"]["treasure"].Count; i++)
         {
             PVEData.Bets.Add(int.Parse(data["d"]["treasure"][i]["ticket"]));

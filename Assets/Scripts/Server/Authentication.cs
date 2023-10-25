@@ -73,7 +73,18 @@ namespace Authentication
 
         public void Delete()
         {
-            HTTPClientAuth.DeleteAccount();
+            PopupHelper.CreateConfirm(PrefabFactory.PopupDeleteAccount, null, null, null, (ok) =>
+            {
+                if(ok)
+                {
+                    PopupHelper.Create(PrefabFactory.PopupDeleteConfirm);
+                }
+                else
+                {
+                    HTTPClientAuth.DisableAccount();
+                }
+            });
+            //HTTPClientAuth.DeleteAccount();
         }
 
         public bool IsAllowedLogin()
@@ -138,7 +149,6 @@ namespace Authentication
             {
                 AuthenticationBase.Instance.auths[GameData.TypeLogin].SignOut();
                 WSClient.Instance.Disconnect(true);
-                PopupHelper.CreateMessage(PrefabFactory.PopupMessage, "Message", "Log out successful", null);
                 SceneTransitionHelper.Load(ESceneName.PreHome);
             }
         }
@@ -148,8 +158,9 @@ namespace Authentication
             JSONNode jsonParse = JSONNode.Parse(res);
             if (int.Parse(jsonParse["error"]) == 0)
             {
-                PopupHelper.CreateMessage(PrefabFactory.PopupMessage, "Message", "Disable account successful", null);
                 AuthenticationBase.Instance.auths[GameData.TypeLogin].DisableAccount();
+                WSClient.Instance.Disconnect(true);
+                SceneTransitionHelper.Load(ESceneName.PreHome);
             }
         }
 
@@ -158,8 +169,9 @@ namespace Authentication
             JSONNode jsonParse = JSONNode.Parse(res);
             if (int.Parse(jsonParse["error"]) == 0)
             {
-                PopupHelper.CreateMessage(PrefabFactory.PopupMessage, "Message", "Delete account successful", null);
                 AuthenticationBase.Instance.auths[GameData.TypeLogin].DeleteAccount();
+                WSClient.Instance.Disconnect(true);
+                SceneTransitionHelper.Load(ESceneName.PreHome);
             }
         }
         #endregion

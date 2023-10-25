@@ -136,7 +136,7 @@ namespace Authentication
                 this._appleAuthManager = new AppleAuthManager(deserializer);
             }
 
-            this.InitializeLoginMenu();
+            //his.InitializeLoginMenu();
         }
 
         public void SignUp()
@@ -189,7 +189,6 @@ namespace Authentication
 
         public void SignOut()
         {
-            throw new NotImplementedException();
         }
 
         void ISocialAuth.Update()
@@ -200,6 +199,13 @@ namespace Authentication
             }
         }
 
+        public void DisableAccount()
+        {
+        }
+
+        public void DeleteAccount()
+        {
+        }
     }
 }
 #endif

@@ -23,7 +23,7 @@ public class ButtonOpenRetreatPVEPopup : ButtonBase
     {
         base.Button_OnClicked();
         int currentReward = PVEData.Bets[PVEData.TypeBoard.Value] *
-            PVEData.StageMulReward[PVEData.TypeBoard.Value][PVE.Instance.CurrentStep.Data - 1];
+            PVEData.StageMulReward[PVEData.TypeBoard.Value][PVE.Instance.CurrentStep.Data];
         popupRetreatPVE = PopupHelper.CreateConfirm(PrefabFactory.PopupRetreatPVE, null,
             "+" + currentReward.ToString(), null, (confirm) =>
             {

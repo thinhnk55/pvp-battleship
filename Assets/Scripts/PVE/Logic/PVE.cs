@@ -9,6 +9,8 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
+
 public class PVE : SingletonMono<PVE>
 {
     public PDataUnit<int> CurrentStep;
@@ -17,7 +19,7 @@ public class PVE : SingletonMono<PVE>
     [SerializeField] ShipPVE player;
     List<ShipPVE> shipPVEs;
     [SerializeField] Transform enemyRoot;
-    [SerializeField] GameObject Retreat;
+    [SerializeField] Button Retreat;
     public int selectedEnemy;
     [SerializeField] TMP_InputField input;
 
@@ -107,7 +109,7 @@ public class PVE : SingletonMono<PVE>
     void Attack(JSONNode data)
     {
         int shipListCount = data["d"]["s"].Count;
-        Retreat.SetActive(false);
+        Retreat.interactable = false;
 
 
         for (int i = 0; i < shipListCount; i++)
@@ -161,7 +163,7 @@ public class PVE : SingletonMono<PVE>
     {
         for (int i = 0; i < 3; i++)
         {
-            Instance.shipPVEs[i].ShowPoint();
+            Instance.shipPVEs[i].ShowPoint( Instance.shipPVEs[i].point.Data < player.point.Data ? false : true);
         }
     }
 
@@ -219,6 +221,7 @@ public class PVE : SingletonMono<PVE>
 
     private IEnumerator Lose()
     {
+        ShowEnemyPoint();
         PVEData.TypeBoard = -1;
         PVEData.IsDeadPlayer.Data = true;
         yield return StartCoroutine(player.BeingDestroyed());
@@ -247,9 +250,9 @@ public class PVE : SingletonMono<PVE>
 
     IEnumerator InitTurn()
     {
-        if (CurrentStep.Data > 4)
+        if (CurrentStep.Data > 3)
         {
-            Retreat.SetActive(true);
+            Retreat.interactable = true;
         }
 
         int prefabIndex = GetIndexShipEnemyCurrentTurn();
@@ -286,7 +289,7 @@ public class PVE : SingletonMono<PVE>
             Debug.Log("Revival");
             if (CurrentStep.Data > 4)
             {
-                Retreat.SetActive(true);
+                Retreat.interactable = true;
             }
             HideEnemyPoint();
             SetDisableLeanSelectableShipEnemy(true);
