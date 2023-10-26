@@ -165,8 +165,10 @@ public class CoreGame : SingletonMono<CoreGame>
     }
     protected override void OnDestroy()
     {
-        base.OnDestroy();
-        AudioHelper.StopMusic();
+        if (AudioManager.Instance)
+        {
+            AudioHelper.StopMusic();
+        }
         LeanTouch.OnFingerUp -= Instance.opponent.BeingAttacked;
         LeanTouch.OnFingerUpdate -= Instance.opponent.SelectingTarget;
         Instance.opponent.horzLine.SetActive(false);
@@ -181,6 +183,7 @@ public class CoreGame : SingletonMono<CoreGame>
         ServerMessenger.RemoveListener<JSONNode>(ServerResponse._REMATCH_ACCEPT, Instance.AcceptRematch);
         ServerMessenger.RemoveListener<JSONNode>(ServerResponse._QUIT_SEARCH, Instance.QuitSearch);
         Debug.Log("Destroyed");
+        base.OnDestroy();
     }
 
 

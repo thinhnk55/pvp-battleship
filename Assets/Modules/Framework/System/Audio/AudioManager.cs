@@ -6,7 +6,7 @@ namespace Framework
     public class AudioManager : SingletonMono<AudioManager>
     {
         public AudioSource audioSource;
-        AudioTrackerDictionary audioTrackers = new AudioTrackerDictionary();
+        readonly AudioTrackerDictionary audioTrackers = new();
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         static void Init()
