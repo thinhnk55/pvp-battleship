@@ -33,6 +33,8 @@ public class WSClientPVE : Singleton<WSClientPVE>
         }
 
         PVEData.VerisonPVEConfig = int.Parse(data["d"]["version"]);
+        PVEData.Bets.Clear();
+        PVEData.StageMulReward.Clear();
         for (int i = 0; i < data["d"]["treasure"].Count; i++)
         {
             PVEData.Bets.Add(int.Parse(data["d"]["treasure"][i]["ticket"]));
