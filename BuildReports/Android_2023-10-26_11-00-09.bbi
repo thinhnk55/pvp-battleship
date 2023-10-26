@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="utf-8"?>
+<buildInfo xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <dateUTC>638338896098282654</dateUTC>
+  <compressedSize>123768125</compressedSize>
+  <totalSize>211941886</totalSize>
+  <streamingAssetsSize>371780</streamingAssetsSize>
+  <runtimeSize>119633429</runtimeSize>
+  <compressedRuntimeSize>44196263</compressedRuntimeSize>
+  <buildTarget>Android</buildTarget>
+  <projectPath>D:/VDef/pvp-battleship</projectPath>
+  <outputPath>C:/Users/saong/OneDrive/Máy tính/battleship.apk</outputPath>
+  <unityVersion>2022.3.10f1</unityVersion>
+  <buildTime>0</buildTime>
+  <overheadTime>0.053</overheadTime>
+  <buildSettings>
+    <setting name="accelerometerFrequency" value="60" />
+    <setting name="actionOnDotNetUnhandledException" value="Crash" />
+    <setting name="activeBuildTarget" value="Android" />
+    <setting name="activeScriptCompilationDefines" value="UNITY_2022_3_10;UNITY_2022_3;UNITY_2022;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_5_OR_NEWER;UNITY_5_6_OR_NEWER;UNITY_2017_1_OR_NEWER;UNITY_2017_2_OR_NEWER;UNITY_2017_3_OR_NEWER;UNITY_2017_4_OR_NEWER;UNITY_2018_1_OR_NEWER;UNITY_2018_2_OR_NEWER;UNITY_2018_3_OR_NEWER;UNITY_2018_4_OR_NEWER;UNITY_2019_1_OR_NEWER;UNITY_2019_2_OR_NEWER;UNITY_2019_3_OR_NEWER;UNITY_2019_4_OR_NEWER;UNITY_2020_1_OR_NEWER;UNITY_2020_2_OR_NEWER;UNITY_2020_3_OR_NEWER;UNITY_2021_1_OR_NEWER;UNITY_2021_2_OR_NEWER;UNITY_2021_3_OR_NEWER;UNITY_2022_1_OR_NEWER;UNITY_2022_2_OR_NEWER;UNITY_2022_3_OR_NEWER;UNITY_INCLUDE_TESTS;ENABLE_AR;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_EVENT_QUEUE;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_TEXTURE_STREAMING;ENABLE_LZMA;ENABLE_UNITYEVENTS;ENABLE_VR;ENABLE_WEBCAM;ENABLE_UNITYWEBREQUEST;ENABLE_WWW;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_SERVICES_USE_WEBREQUEST;ENABLE_CLOUD_SERVICES_CRASH_REPORTING;ENABLE_CLOUD_SERVICES_NATIVE_CRASH_REPORTING;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_EDITOR_GAME_SERVICES;ENABLE_UNITY_GAME_SERVICES_ANALYTICS_SUPPORT;ENABLE_CLOUD_LICENSE;ENABLE_EDITOR_HUB_LICENSE;ENABLE_WEBSOCKET_CLIENT;ENABLE_GENERATE_NATIVE_PLUGINS_FOR_ASSEMBLIES_API;ENABLE_DIRECTOR_AUDIO;ENABLE_DIRECTOR_TEXTURE;ENABLE_MANAGED_JOBS;ENABLE_MANAGED_TRANSFORM_JOBS;ENABLE_MANAGED_ANIMATION_JOBS;ENABLE_MANAGED_AUDIO_JOBS;ENABLE_RUNTIME_PERMISSIONS;ENABLE_ENGINE_CODE_STRIPPING;ENABLE_ONSCREEN_KEYBOARD;ENABLE_MANAGED_UNITYTLS;INCLUDE_DYNAMIC_GI;ENABLE_SCRIPTING_GC_WBARRIERS;PLATFORM_SUPPORTS_MONO;ENABLE_VIDEO;ENABLE_ACCELERATOR_CLIENT_DEBUGGING;ENABLE_NAVIGATION_PACKAGE_DEBUG_VISUALIZATION;ENABLE_NAVIGATION_HEIGHTMESH_RUNTIME_SUPPORT;ENABLE_NAVIGATION_UI_REQUIRES_PACKAGE;PLATFORM_ANDROID;TEXTCORE_1_0_OR_NEWER;UNITY_ANDROID;UNITY_ANDROID_API;ENABLE_EGL;ENABLE_NETWORK;ENABLE_RUNTIME_GI;ENABLE_CRUNCH_TEXTURE_COMPRESSION;UNITY_CAN_SHOW_SPLASH_SCREEN;UNITY_HAS_GOOGLEVR;UNITY_HAS_TANGO;ENABLE_SPATIALTRACKING;ENABLE_ETC_COMPRESSION;PLATFORM_EXTENDS_VULKAN_DEVICE;PLATFORM_HAS_MULTIPLE_SWAPCHAINS;UNITY_ANDROID_SUPPORTS_SHADOWFILES;PLATFORM_UPDATES_TIME_OUTSIDE_OF_PLAYER_LOOP;ENABLE_UNITYADS_RUNTIME;UNITY_UNITYADS_API;ENABLE_MONO;NET_STANDARD_2_0;NET_STANDARD;NET_STANDARD_2_1;NETSTANDARD;NETSTANDARD2_1;ENABLE_PROFILER;DEBUG;TRACE;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN;ENABLE_UNITY_COLLECTIONS_CHECKS;ENABLE_BURST_AOT;UNITY_TEAM_LICENSE;ENABLE_CUSTOM_RENDER_TEXTURE;ENABLE_DIRECTOR;ENABLE_LOCALIZATION;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_TILEMAP;ENABLE_TIMELINE;ENABLE_LEGACY_INPUT_MANAGER;TEXTCORE_FONT_ENGINE_1_5_OR_NEWER;ODIN_INSPECTOR;ODIN_INSPECTOR_3;ODIN_INSPECTOR_3_1" />
+    <setting name="advancedLicense" value="False" />
+    <setting name="allowDebugging" value="False" />
+    <setting name="allowedAutorotateToLandscapeLeft" value="True" />
+    <setting name="allowedAutorotateToLandscapeRight" value="True" />
+    <setting name="allowedAutorotateToPortrait" value="False" />
+    <setting name="allowedAutorotateToPortraitUpsideDown" value="False" />
+    <setting name="allowFullscreenSwitch" value="True" />
+    <setting name="allowUnsafeCode" value="True" />
+    <setting name="alwaysDisplayWatermark" value="False" />
+    <setting name="androidBuildSubtarget" value="Generic" />
+    <setting name="androidBuildSystem" value="Gradle" />
+    <setting name="androidBuildType" value="Release" />
+    <setting name="androidCreateSymbols" value="Disabled" />
+    <setting name="androidCreateSymbolsZip" value="False" />
+    <setting name="androidDebugMinification" value="None" />
+    <setting name="androidETC2Fallback" value="Quality32Bit" />
+    <setting name="androidIsGame" value="True" />
+    <setting name="androidReleaseMinification" value="None" />
+    <setting name="androidTargetDevices" value="AllDevices" />
+    <setting name="androidTVCompatibility" value="False" />
+    <setting name="androidUseLegacySdkTools" value="False" />
+    <setting name="aotOptions" value="" />
+    <setting name="apiCompatibilityLevel" value="NET_Standard_2_0" />
+    <setting name="applicationIdentifier" value="com.meepo.sea.battle.ship" />
+    <setting name="ARCoreEnabled" value="False" />
+    <setting name="assemblyVersionValidation" value="False" />
+    <setting name="bakeCollisionMeshes" value="False" />
+    <setting name="blitType" value="Always" />
+    <setting name="buildApkPerCpuArchitecture" value="False" />
+    <setting name="buildAppBundle" value="False" />
+    <setting name="buildScriptsOnly" value="False" />
+    <setting name="buildWithDeepProfilingSupport" value="False" />
+    <setting name="bundleIdentifier" value="com.meepo.sea.battle.ship" />
+    <setting name="bundleVersion" value="0.1.4" />
+    <setting name="bundleVersionCode" value="19" />
+    <setting name="captureSingleScreen" value="False" />
+    <setting name="chromeosInputEmulation" value="True" />
+    <setting name="cloudProjectId" value="61ccf8bf-9604-47fe-8c99-150f705f6207" />
+    <setting name="colorSpace" value="Gamma" />
+    <setting name="companyName" value="Meepo" />
+    <setting name="compressFilesInPackage" value="False" />
+    <setting name="compressWithPsArc" value="False" />
+    <setting name="connectProfiler" value="False" />
+    <setting name="cursorHotspot" value="(0.00, 0.00)" />
+    <setting name="d3d11FullscreenMode" value="FullscreenWindow" />
+    <setting name="d3d9FullscreenMode" value="FullscreenWindow" />
+    <setting name="D3DHDRBitDepth" value="D3DHDRDisplayBitDepth10" />
+    <setting name="dedicatedServerOptimizations" value="False" />
+    <setting name="defaultCursor" value="" />
+    <setting name="defaultInterfaceOrientation" value="AutoRotation" />
+    <setting name="defaultIsFullScreen" value="True" />
+    <setting name="defaultIsNativeResolution" value="True" />
+    <setting name="defaultScreenHeight" value="1080" />
+    <setting name="defaultScreenWidth" value="1920" />
+    <setting name="defaultWebScreenHeight" value="600" />
+    <setting name="defaultWebScreenWidth" value="960" />
+    <setting name="defaultWindowHeight" value="1080" />
+    <setting name="defaultWindowWidth" value="1920" />
+    <setting name="development" value="False" />
+    <setting name="disableDepthAndStencilBuffers" value="False" />
+    <setting name="displayResolutionDialog" value="Disabled" />
+    <setting name="enable360StereoCapture" value="False" />
+    <setting name="enableArmv9SecurityFeatures" value="False" />
+    <setting name="enableCrashReportAPI" value="False" />
+    <setting name="enableFrameTimingStats" value="False" />
+    <setting name="enableHeadlessMode" value="False" />
+    <setting name="enableInternalProfiler" value="False" />
+    <setting name="enableMetalAPIValidation" value="True" />
+    <setting name="enableOpenGLProfilerGPURecorders" value="True" />
+    <setting name="explicitArrayBoundsChecks" value="False" />
+    <setting name="explicitDivideByZeroChecks" value="False" />
+    <setting name="explicitNullChecks" value="False" />
+    <setting name="exportAsGoogleAndroidProject" value="False" />
+    <setting name="firstStreamedLevelWithResources" value="0" />
+    <setting name="forceInstallation" value="False" />
+    <setting name="forceInternetPermission" value="False" />
+    <setting name="forceOptimizeScriptCompilation" value="False" />
+    <setting name="forceSDCardPermission" value="False" />
+    <setting name="forceSingleInstance" value="False" />
+    <setting name="fullscreenMode" value="FullScreenWindow" />
+    <setting name="fullScreenMode" value="FullScreenWindow" />
+    <setting name="gcIncremental" value="True" />
+    <setting name="generateNintendoSwitchShaderInfo" value="False" />
+    <setting name="gpuSkinning" value="False" />
+    <setting name="graphicsJobMode" value="Native" />
+    <setting name="graphicsJobs" value="False" />
+    <setting name="hdrBitDepth" value="BitDepth10" />
+    <setting name="il2CppCodeGeneration" value="OptimizeSpeed" />
+    <setting name="insecureHttpOption" value="NotAllowed" />
+    <setting name="installInBuildFolder" value="False" />
+    <setting name="iOSBuildConfigType" value="Release" />
+    <setting name="iOSXcodeBuildConfig" value="Release" />
+    <setting name="iPhoneBundleIdentifier" value="com.Meepo.BattleShip" />
+    <setting name="keyaliasName" value="battleship" />
+    <setting name="keystoreName" value="battleship.keystore" />
+    <setting name="legacyClampBlendShapeWeights" value="False" />
+    <setting name="licenseVerification" value="False" />
+    <setting name="locationUsageDescription" value="" />
+    <setting name="logObjCUncaughtExceptions" value="True" />
+    <setting name="macFullscreenMode" value="FullscreenWindowWithDockAndMenuBar" />
+    <setting name="macOSXcodeBuildConfig" value="Release" />
+    <setting name="macRetinaSupport" value="True" />
+    <setting name="managedDebuggerFixedPort" value="0" />
+    <setting name="maxAspectRatio" value="2.1" />
+    <setting name="minifyDebug" value="False" />
+    <setting name="minifyRelease" value="False" />
+    <setting name="minifyWithR8" value="True" />
+    <setting name="minimumWindowHeight" value="300" />
+    <setting name="minimumWindowWidth" value="400" />
+    <setting name="minSdkVersion" value="AndroidApiLevel22" />
+    <setting name="mipStripping" value="False" />
+    <setting name="mobileRenderingPath" value="Forward" />
+    <setting name="movePackageToDiscOuterEdge" value="False" />
+    <setting name="MTRendering" value="True" />
+    <setting name="muteOtherAudioSources" value="False" />
+    <setting name="needSubmissionMaterials" value="False" />
+    <setting name="openGLRequireES31" value="False" />
+    <setting name="openGLRequireES31AEP" value="False" />
+    <setting name="openGLRequireES32" value="False" />
+    <setting name="optimizedFramePacing" value="True" />
+    <setting name="overrideMaxTextureSize" value="0" />
+    <setting name="overrideTextureCompression" value="NoOverride" />
+    <setting name="pathOnRemoteDevice" value="" />
+    <setting name="preferredInstallLocation" value="PreferExternal" />
+    <setting name="preserveFramebufferAlpha" value="False" />
+    <setting name="productGUID" value="4fc48619-1458-4f00-bb19-c3532c8226ac" />
+    <setting name="productName" value="BattleShip" />
+    <setting name="protectGraphicsMemory" value="False" />
+    <setting name="ps4BuildSubtarget" value="PCHosted" />
+    <setting name="ps4HardwareTarget" value="NeoAndBase" />
+    <setting name="remoteDeviceAddress" value="" />
+    <setting name="remoteDeviceExports" value="" />
+    <setting name="remoteDeviceInfo" value="False" />
+    <setting name="remoteDeviceUsername" value="" />
+    <setting name="renderingPath" value="Forward" />
+    <setting name="renderOutsideSafeArea" value="True" />
+    <setting name="resetResolutionOnWindowResize" value="False" />
+    <setting name="resizableWindow" value="False" />
+    <setting name="resolutionDialogBanner" value="" />
+    <setting name="runInBackground" value="False" />
+    <setting name="scriptingRuntimeVersion" value="Latest" />
+    <setting name="selectedBuildTargetGroup" value="Android" />
+    <setting name="selectedEmbeddedLinuxArchitecture" value="Arm64" />
+    <setting name="selectedQnxArchitecture" value="Arm64" />
+    <setting name="selectedQnxOsVersion" value="Neutrino71" />
+    <setting name="selectedStandaloneTarget" value="StandaloneWindows64" />
+    <setting name="showActivityIndicatorOnLoading" value="DontShow" />
+    <setting name="showUnitySplashScreen" value="True" />
+    <setting name="singlePassStereoRendering" value="False" />
+    <setting name="splashScreenScale" value="Center" />
+    <setting name="splashScreenStyle" value="Dark" />
+    <setting name="spriteBatchVertexThreshold" value="300" />
+    <setting name="standaloneBuildSubtarget" value="Player" />
+    <setting name="startInFullscreen" value="True" />
+    <setting name="statusBarHidden" value="True" />
+    <setting name="stereoRenderingPath" value="MultiPass" />
+    <setting name="stereoscopic3D" value="False" />
+    <setting name="streamingInstallLaunchRange" value="0" />
+    <setting name="strictShaderVariantMatching" value="False" />
+    <setting name="stripEngineCode" value="True" />
+    <setting name="strippingLevel" value="StripAssemblies" />
+    <setting name="stripUnusedMeshComponents" value="False" />
+    <setting name="suppressCommonWarnings" value="True" />
+    <setting name="switchCreateRomFile" value="False" />
+    <setting name="switchEnableDebugPad" value="True" />
+    <setting name="switchEnableMemoryTracker" value="False" />
+    <setting name="switchEnableRomCompression" value="False" />
+    <setting name="switchHTCSScriptDebugging" value="True" />
+    <setting name="switchNVNDrawValidation" value="False" />
+    <setting name="switchNVNDrawValidation_Heavy" value="False" />
+    <setting name="switchNVNDrawValidation_Light" value="False" />
+    <setting name="switchNVNGraphicsDebugger" value="False" />
+    <setting name="switchNVNShaderDebugging" value="False" />
+    <setting name="switchRedirectWritesToHostMount" value="False" />
+    <setting name="switchRomCompressionConfig" value="" />
+    <setting name="switchRomCompressionLevel" value="0" />
+    <setting name="switchRomCompressionType" value="Lz4" />
+    <setting name="switchSaveADF" value="False" />
+    <setting name="switchUseLegacyNvnPoolAllocator" value="False" />
+    <setting name="switchWaitForMemoryTrackerOnStartup" value="False" />
+    <setting name="symlinkLibraries" value="False" />
+    <setting name="symlinkSources" value="False" />
+    <setting name="targetArchitectures" value="ARMv7, ARM64" />
+    <setting name="targetDevice" value="FAT" />
+    <setting name="targetGlesGraphics" value="Automatic" />
+    <setting name="targetIOSGraphics" value="Automatic" />
+    <setting name="targetSdkVersion" value="33" />
+    <setting name="use24BitDepthBuffer" value="True" />
+    <setting name="use32BitDisplayBuffer" value="True" />
+    <setting name="useAnimatedAutorotation" value="True" />
+    <setting name="useAPKExpansionFiles" value="False" />
+    <setting name="useCustomKeystore" value="True" />
+    <setting name="useDirect3D11" value="True" />
+    <setting name="useFlipModelSwapchain" value="True" />
+    <setting name="useHDRDisplay" value="True" />
+    <setting name="useMacAppStoreValidation" value="False" />
+    <setting name="usePlayerLog" value="True" />
+    <setting name="useReferenceAssemblies" value="True" />
+    <setting name="virtualRealitySplashScreen" value="" />
+    <setting name="virtualRealitySupported" value="False" />
+    <setting name="visibleInBackground" value="True" />
+    <setting name="vulkanEnableLateAcquireNextImage" value="False" />
+    <setting name="vulkanEnablePreTransform" value="False" />
+    <setting name="vulkanEnableSetSRGBWrite" value="False" />
+    <setting name="vulkanNumSwapchainBuffers" value="3" />
+    <setting name="vulkanUseSWCommandBuffers" value="False" />
+    <setting name="waitForManagedDebugger" value="False" />
+    <setting name="waitForPlayerConnection" value="False" />
+    <setting name="webGLBuildSubtarget" value="Generic" />
+    <setting name="webGLUsePreBuiltUnityEngine" value="False" />
+    <setting name="windowsDevicePortalAddress" value="" />
+    <setting name="windowsDevicePortalPassword" value="" />
+    <setting name="windowsDevicePortalUsername" value="" />
+    <setting name="windowsGamepadBackendHint" value="WindowsGamepadBackendHintDefault" />
+    <setting name="wsaArchitecture" value="" />
+    <setting name="wsaBuildAndRunDeployTarget" value="LocalMachine" />
+    <setting name="wsaMinUWPSDK" value="" />
+    <setting name="wsaSDK" value="UWP" />
+    <setting name="wsaSubtarget" value="AnyDevice" />
+    <setting name="wsaUWPBuildType" value="D3D" />
+    <setting name="wsaUWPSDK" value="" />
+    <setting name="wsaUWPVisualStudioVersion" value="" />
+    <setting name="xboxAdditionalTitleMemorySize" value="0" />
+    <setting name="xboxBuildSubtarget" value="Development" />
+    <setting name="xboxDeployKinectHeadOrientation" value="False" />
+    <setting name="xboxDeployKinectHeadPosition" value="False" />
+    <setting name="xboxDeployKinectResources" value="False" />
+    <setting name="xboxEnableAvatar" value="False" />
+    <setting name="xboxEnableGuest" value="False" />
+    <setting name="xboxEnableKinect" value="False" />
+    <setting name="xboxEnableKinectAutoTracking" value="False" />
+    <setting name="xboxEnableSpeech" value="False" />
+    <setting name="xboxGenerateSpa" value="False" />
+    <setting name="xboxImageXexFilePath" value="" />
+    <setting name="xboxOneAdditionalDebugPorts" value="" />
+    <setting name="xboxOneDeployDrive" value="Default" />
+    <setting name="xboxOneDeployMethod" value="Push" />
+    <setting name="xboxOneNetworkSharePath" value="" />
+    <setting name="xboxOneRebootIfDeployFailsAndRetry" value="False" />
+    <setting name="xboxOneResolution" value="0" />
+    <setting name="xboxOneUsername" value="" />
+    <setting name="xboxPIXTextureCapture" value="False" />
+    <setting name="xboxSpaFilePath" value="" />
+    <setting name="xboxSpeechDB" value="0" />
+    <setting name="xboxSplashScreen" value="" />
+    <setting name="xboxTitleId" value="" />
+  </buildSettings>
+  <environmentVariables>
+    <environmentVariable name="ALLUSERSPROFILE" value="C:\ProgramData" />
+    <environmentVariable name="AMPLITUDE_API_KEY" value="28f3cae0b33b8b3702120c9ed1a935aa" />
+    <environmentVariable name="AMPLITUDE_API_KEY_STAGING" value="83ee04fccc67e4fcc7dd527c4c6f1e21" />
+    <environmentVariable name="ANDROID_NDK_ROOT" value="C:\Program Files\Unity\Hub\Editor\2022.3.10f1\Editor\Data\PlaybackEngines\AndroidPlayer\NDK" />
+    <environmentVariable name="APPDATA" value="C:\Users\saong\AppData\Roaming" />
+    <environmentVariable name="BURST_ANDROID_MIN_API_LEVEL" value="22" />
+    <environmentVariable name="CHROME_CRASHPAD_PIPE_NAME" value="\\.\pipe\crashpad_40212_DWEYBITWEJACABVE" />
+    <environmentVariable name="CommonProgramFiles" value="C:\Program Files\Common Files" />
+    <environmentVariable name="CommonProgramFiles(x86)" value="C:\Program Files (x86)\Common Files" />
+    <environmentVariable name="CommonProgramW6432" value="C:\Program Files\Common Files" />
+    <environmentVariable name="COMPUTERNAME" value="DEV_VIETDEFI" />
+    <environmentVariable name="ComSpec" value="C:\Windows\system32\cmd.exe" />
+    <environmentVariable name="DEBUG_ENV_VAR" value="UnityHub" />
+    <environmentVariable name="DriverData" value="C:\Windows\System32\Drivers\DriverData" />
+    <environmentVariable name="EFC_19312" value="1" />
+    <environmentVariable name="HEAP_CLIENT_TOKEN" value="1717415662" />
+    <environmentVariable name="HEAP_CLIENT_TOKEN_STAGING" value="3786794399" />
+    <environmentVariable name="HOMEDRIVE" value="C:" />
+    <environmentVariable name="HOMEPATH" value="\Users\saong" />
+    <environmentVariable name="IGCCSVC_DB" value="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAA02yMaHJisEmHrtCpNvP6dQQAAAACAAAAAAAQZgAAAAEAACAAAACLdIRONJjUXFc+0WzUevxQeNlFlXjwhMCtMNodbC2EmgAAAAAOgAAAAAIAACAAAABTSz+4iuoIBmU47owjOiBtCSUjxUa4JqimU2KBhkm/+GAAAAAu7z6nQPseAc6oPrtpq4F/Mqjaj7xF5n/Om2uy15m/WaYXAvjAb+19N+LvdbaPiKxRXcFVSERDUGm6WiEU9OlmirLqEC7GMPQ0t7MMAeo+BlepdrNJNJlW6qBmFRwmy8dAAAAAbBu8CHRmr9e/m72cwTcZlvQKhNSdUUqHjPWqtXC5sr8pDQWxnqHOKpAFz6HL0HhhfyQs21p2vBHpN9D+hyyUSg==" />
+    <environmentVariable name="JAVA_HOME" value="C:\Program Files\Unity\Hub\Editor\2022.3.10f1\Editor\Data\PlaybackEngines\AndroidPlayer\OpenJDK" />
+    <environmentVariable name="LAUNCH_DARKLY_CLIENT_TOKEN" value="60a7e30fafc7e60e33446283" />
+    <environmentVariable name="LAUNCH_DARKLY_CLIENT_TOKEN_STAGING" value="60a7e30fafc7e60e33446282" />
+    <environmentVariable name="LOCALAPPDATA" value="C:\Users\saong\AppData\Local" />
+    <environmentVariable name="LOGONSERVER" value="\\DEV_VIETDEFI" />
+    <environmentVariable name="NUMBER_OF_PROCESSORS" value="12" />
+    <environmentVariable name="OneDrive" value="C:\Users\saong\OneDrive" />
+    <environmentVariable name="ORIGINAL_XDG_CURRENT_DESKTOP" value="undefined" />
+    <environmentVariable name="OS" value="Windows_NT" />
+    <environmentVariable name="Path" value="C:\Program Files\Common Files\Oracle\Java\javapath;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files\Java\jdk-20\bin;C:\Users\saong\AppData\Local\Microsoft\WindowsApps;" />
+    <environmentVariable name="PATHEXT" value=".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC" />
+    <environmentVariable name="PROCESSOR_ARCHITECTURE" value="AMD64" />
+    <environmentVariable name="PROCESSOR_IDENTIFIER" value="Intel64 Family 6 Model 151 Stepping 5, GenuineIntel" />
+    <environmentVariable name="PROCESSOR_LEVEL" value="6" />
+    <environmentVariable name="PROCESSOR_REVISION" value="9705" />
+    <environmentVariable name="ProgramData" value="C:\ProgramData" />
+    <environmentVariable name="ProgramFiles" value="C:\Program Files" />
+    <environmentVariable name="ProgramFiles(x86)" value="C:\Program Files (x86)" />
+    <environmentVariable name="ProgramW6432" value="C:\Program Files" />
+    <environmentVariable name="PSModulePath" value="C:\Program Files\WindowsPowerShell\Modules;C:\Windows\system32\WindowsPowerShell\v1.0\Modules" />
+    <environmentVariable name="PUBLIC" value="C:\Users\Public" />
+    <environmentVariable name="SENTRY_ACCESS_TOKEN" value="3df78d9e53f8456aa90fbae044ce1a6261421ab1d0014674bc2e933477289017" />
+    <environmentVariable name="SESSIONNAME" value="Console" />
+    <environmentVariable name="SystemDrive" value="C:" />
+    <environmentVariable name="SystemRoot" value="C:\Windows" />
+    <environmentVariable name="TEMP" value="C:\Users\saong\AppData\Local\Temp" />
+    <environmentVariable name="TMP" value="C:\Users\saong\AppData\Local\Temp" />
+    <environmentVariable name="USERDOMAIN" value="DEV_VIETDEFI" />
+    <environmentVariable name="USERDOMAIN_ROAMINGPROFILE" value="DEV_VIETDEFI" />
+    <environmentVariable name="USERNAME" value="saong" />
+    <environmentVariable name="USERPROFILE" value="C:\Users\saong" />
+    <environmentVariable name="windir" value="C:\Windows" />
+    <environmentVariable name="WOOTRIC_CLIENT_TOKEN" value="NPS-aa8be4c3" />
+    <environmentVariable name="ZES_ENABLE_SYSMAN" value="1" />
+  </environmentVariables>
+  <assets>
+    <asset path="Assets/StreamingAssets/dexopt/baseline.prof" size="435">
+      <info name="CompressedSize" value="435" />
+    </asset>
+    <asset path="Assets/StreamingAssets/GoogleService-Info.plist" size="1276">
+      <info name="CompressedSize" value="1276" />
+    </asset>
+    <asset path="Assets/StreamingAssets/google-services.json" size="1647">
+      <info name="CompressedSize" value="1647" />
+    </asset>
+    <asset path="Assets/StreamingAssets/google-services-desktop.json" size="1647">
+      <info name="CompressedSize" value="1647" />
+    </asset>
+    <asset path="Assets/StreamingAssets/meta.mp4" size="346513">
+      <info name="CompressedSize" value="346513" />
+    </asset>
+    <asset path="Assets/StreamingAssets/meta-logo.png" size="18617">
+      <info name="CompressedSize" value="18617" />
+    </asset>
+    <asset path="Assets/StreamingAssets/UnityServicesProjectConfiguration.json" size="1645">
+      <info name="CompressedSize" value="1645" />
+    </asset>
+    <asset path="unity default resources" size="1110488">
+      <info name="CompressedSize" value="286931" />
+    </asset>
+  </assets>
+  <scenes />
+  <assetBundles />
+</buildInfo>

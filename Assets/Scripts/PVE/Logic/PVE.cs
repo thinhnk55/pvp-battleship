@@ -21,7 +21,7 @@ public class PVE : SingletonMono<PVE>
     [SerializeField] Transform enemyRoot;
     [SerializeField] Button Retreat;
     public int selectedEnemy;
-    [SerializeField] TMP_InputField input;
+    [SerializeField] GameObject resource;
 
     protected override void Awake()
     {
@@ -197,9 +197,9 @@ public class PVE : SingletonMono<PVE>
 
         yield return new WaitForSeconds(1f);
 
-        if (CurrentStep.Data < 9)
+        CurrentStep.Data++;
+        if (CurrentStep.Data < 10)
         {
-            CurrentStep.Data++;
             StartCoroutine(InitTurn());
         }
         else // pha dao
@@ -220,14 +220,14 @@ public class PVE : SingletonMono<PVE>
 
     private IEnumerator OnCompletePopup()
     {
-        PopupBehaviour popupResource = PopupHelper.Create(PrefabFactory.PopupResourcePVE);
-        CoinVFX.CoinVfx(popupResource.transform.GetChild(0).transform, Position, Position);
+        resource.SetActive(true);
+        CoinVFX.CoinVfx(resource.transform.GetChild(0).transform, Position, Position);
         yield return new WaitForSeconds(1);
         PConsumableType.BERRY.AddValue((PVEData.Bets[PVEData.TypeBoard.Value] *
             PVEData.StageMulReward[PVEData.TypeBoard.Value][PVE.Instance.CurrentStep.Data]));
         yield return new WaitForSeconds(1f);
         PVEData.TypeBoard = -1;
-        popupResource.ForceClose();
+        resource.SetActive(false);
         popupComplete.ForceClose();
         SceneTransitionHelper.Load(ESceneName.Home);
     }
@@ -263,7 +263,7 @@ public class PVE : SingletonMono<PVE>
 
     IEnumerator InitTurn()
     {
-        if (CurrentStep.Data > 3)
+        if (CurrentStep.Data > 4)
         {
             Retreat.interactable = true;
         }
