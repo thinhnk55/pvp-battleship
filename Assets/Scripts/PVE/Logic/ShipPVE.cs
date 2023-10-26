@@ -23,23 +23,23 @@ public class ShipPVE : MonoBehaviour
         {
             if (index == -1) // Tau player
             {
-                tweenPoint = DOTween.To(() => int.Parse(pointTxt.text),
-                                        (value) => pointTxt.text = value.ToString(), n, 1)
+                tweenPoint = DOTween.To(() => int.Parse(pointTxt.text), (value) => pointTxt.text = value.ToString(), n, 1)
                                             .OnComplete(() => pointTxt.text = n.ToString());
             }
-            else
-            {
-                pointTxt.text = n.ToString();
-            }
+            //else
+            //{
+            //    pointTxt.text = n.ToString();
+            //}
         };
     }
     public void HidePoint()
     {
         pointTxt.text = "????";
     }
-    public void ShowPoint()
+    public void ShowPoint(bool isRedColor)
     {
         pointTxt.text = point.Data.ToString();
+        pointTxt.color = isRedColor ? Color.red : Color.white;
     }
     public void OnSelectShip()
     {

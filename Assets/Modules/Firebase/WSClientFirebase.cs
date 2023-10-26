@@ -8,6 +8,7 @@ namespace FirebaseIntegration
 {
     public class WSClientFirebase : Singleton<WSClientFirebase>
     {
+        public static bool isNewTokenCloudMessage = false;
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
         public static void Init()
         {
@@ -16,7 +17,10 @@ namespace FirebaseIntegration
                 Messenger.AddListener<MaxSdkBase.AdInfo>(GameEvent.REWARD_ADS_INFO, AnalyticsHelper.WatchAds);
                 ServerMessenger.AddListener<JSONNode>(ServerResponse._FIREBASE_ASK_UPDATE_TOKEN, FirebaseAskForUpdateToken);
 #if UNITY_EDITOR == false
-                GetTokenCloudMessage();
+                if(isNewTokenCloudMessage)
+                {
+                    FirebaseUpdateToken(FirebaseData.TokenCloudMessage);
+                }
 #endif
             };
 
@@ -29,11 +33,9 @@ namespace FirebaseIntegration
 
 
         #region FirebaseCloudMessaging
-        private static async void FirebaseAskForUpdateToken(JSONNode data)
+        private static void FirebaseAskForUpdateToken(JSONNode data)
         {
-            var task = FirebaseMessaging.GetTokenAsync();
-            await task;
-            if (task.IsCompleted) FirebaseUpdateToken(task.Result);
+            FirebaseUpdateToken(FirebaseData.TokenCloudMessage);
         }
 
         public static void FirebaseUpdateToken(string tokenCloudMessage)
@@ -44,19 +46,6 @@ namespace FirebaseIntegration
                 { "id", ServerRequest._FIREBASE_UPDATE_TOKEN.ToJson() },
                 { "token", tokenCloudMessage}
             }.RequestServer();
-        }
-
-        public static async void GetTokenCloudMessage()
-        {
-            var task = FirebaseMessaging.GetTokenAsync();
-            await task;
-            if (task.IsCompleted)
-            {
-                Debug.Log(task.Result);
-                if (string.Equals(FirebaseData.TokenCloudMessage, task.Result)) return;
-                FirebaseData.TokenCloudMessage = task.Result;
-                FirebaseUpdateToken(task.Result);
-            }
         }
         #endregion
     }

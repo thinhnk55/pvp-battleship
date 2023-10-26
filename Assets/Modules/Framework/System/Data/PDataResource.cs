@@ -9,8 +9,7 @@ namespace Framework
         [SerializeField] Dictionary<PConsumableType, PDataUnit<int>> _consumableResource;
         [SerializeField] Dictionary<PNonConsumableType, PDataUnit<HashSet<int>>> _nonConsumableResource;
         [SerializeField] PDataUnit<int> _resourceDiamond;
-        [SerializeField] PDataUnit<int> _resourceBeri;
-
+        [SerializeField] PDataUnit<int> _resourceBeri;  
         protected override void Init()
         {
             base.Init();

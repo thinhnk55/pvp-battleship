@@ -1,6 +1,8 @@
 using Framework;
 using Server;
 using SimpleJSON;
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Authentication
@@ -8,38 +10,24 @@ namespace Authentication
     public class HTTPClientAuth : Singleton<HTTPClientAuth>
     {
         #region EVENT
-        //Paramater 1: IsLinkedGoogleAccount
-        //Paramater 2: IsLinkedAppleAccount
-        public static Callback<bool, bool> OnCheckLinkedAccount;
-        //Paramater : IsSuccess
-        public static Callback<bool> OnLinkedGoogleAccount;
-        //Paramater : IsSuccess
-        public static Callback<bool> OnLinkedAppleAccount;
-
+        public static Callback<string> HandleLoginAccountResponse;
+        public static Callback<string> HandleCheckLinkAccoutResponse;
+        public static Callback<string> HandleLogoutResponse;
+        public static Callback<string> HandleDeleteAccountResponse;
+        public static Callback<string> HandleDisableAccountResponse;
+        public static Callback<string> OnLinkGoogleAccount;
+        public static Callback<string> OnLinkAppleAccount;
         #endregion
 
         #region LOGIN
         private static void HTTPPostLogin(JSONNode json, string loginRoute)
         {
+            Debug.Log("HTTPPostLogin");
             PCoroutine.PStartCoroutine(HTTPClientBase.Post(ServerConfig.HttpURL + loginRoute, json.ToString()
                 , (res) =>
                 {
-                    JSONNode jsonRes = JSONNode.Parse(res);
-                    if (int.Parse(jsonRes["error"]) == 0)
-                    {
-                        DataAuth.AuthData = new AuthData();
-                        DataAuth.AuthData.userId = int.Parse(jsonRes["data"]["id"]);
-                        Debug.Log("User Id: " + DataAuth.AuthData.userId);
-                        DataAuth.AuthData.username = jsonRes["data"]["username"];
-                        //PDataAuth.AuthData.refresh_token = jsonRes["data"]["refresh_token"];
-                        DataAuth.AuthData.token = jsonRes["data"]["token"];
-                        Debug.Log("HTTP Login");
-                        WSClient.Instance.Connect(DataAuth.AuthData.userId, DataAuth.AuthData.token);
-                    }
-                    else
-                    {
-                        Debug.Log(res);
-                    }
+                    Debug.Log("PStartCoroutine");
+                    HandleLoginAccountResponse(res);
                 })
 
             );
@@ -55,19 +43,17 @@ namespace Authentication
 
         public static void LoginGoogle(string idToken)
         {
-            string deviceId = SystemInfo.deviceUniqueIdentifier;
-
+            Debug.Log("LoginGoogle");
             JSONNode json = new JSONClass()
             {
                 {"token",  idToken},
             };
+            Debug.Log("1");
             HTTPPostLogin(json, "/login/google");
         }
 
         public static void LoginApple(string authentication)
         {
-            string deviceId = SystemInfo.deviceUniqueIdentifier;
-
             JSONNode json = new JSONClass()
             {
                 {"token",  authentication},
@@ -78,53 +64,92 @@ namespace Authentication
         #endregion
 
         #region LINK ACCOUNT
-        public static void HTTPGetCheckLinkedAccount(JSONNode json, string linkAccountRouter)
+        public static void CheckLinkedAccount()
         {
-            PCoroutine.PStartCoroutine(HTTPClientBase.Get(ServerConfig.HttpURL + linkAccountRouter,
+            var header = GenHeaderUseridAndToken();
+
+            PCoroutine.PStartCoroutine(HTTPClientBase.Get(ServerConfig.HttpURL + "/link/check",
                 (res) =>
                 {
-                    JSONNode jsonParse = JSONNode.Parse(res);
-                    if (int.Parse(jsonParse["error"]) != 0) return;
-                    bool islinkedGoogle = jsonParse["data"]["gg"] != null;
-                    bool islinkedApple = jsonParse["data"]["ap"] != null;
-                    OnCheckLinkedAccount?.Invoke(islinkedGoogle, islinkedApple);
-                })
+                    HandleCheckLinkAccoutResponse(res);
+                }
+                , header)
             );
         }
 
-        public static void CheckLinkedAccount(string idToken, string userId)
+        public static void LinkAccount(string idToken, Callback<string> onLinkedAccount, string route)
         {
+            var header = GenHeaderUseridAndToken();
+
             JSONNode json = new JSONClass()
             {
-                {"userid", userId},
-                {"token", idToken},
+                { "token", idToken },
             };
 
-            HTTPGetCheckLinkedAccount(json, "/link/check");
-        }
-        public static void LinkAccount(string idToken, string userId, Callback<bool> onLinkedAccount, string route)
-        {
-            JSONNode json = new JSONClass()
-            {
-                {"userid", userId},
-                {"token", idToken},
-            };
             PCoroutine.PStartCoroutine(HTTPClientBase.Post(ServerConfig.HttpURL + "/link" + route, json.ToString(),
                 (res) =>
                 {
-                    JSONNode jsonParse = JSONNode.Parse(res);
-                    onLinkedAccount?.Invoke(jsonParse["error"].AsInt == 0);
-                })
+                    onLinkedAccount?.Invoke(res);
+                }
+                , header)
             );
         }
-        public static void LinkGoogleAccount(string idToken, string userId)
+        public static void LinkGoogleAccount(string idToken)
         {
-            LinkAccount(idToken, userId, OnLinkedGoogleAccount, "/gg");
+            LinkAccount(idToken, OnLinkGoogleAccount, "/google");
         }
 
-        public static void LinkAppleAccount(string idToken, string userId)
+        public static void LinkAppleAccount(string idToken)
         {
-            LinkAccount(idToken, userId, OnLinkedAppleAccount, "/apple");
+            LinkAccount(idToken, OnLinkAppleAccount, "/apple");
+        }
+        #endregion
+
+        #region LOGOUT-DISABLE-DELETE ACCOUNT
+        public static void Logout()
+        {
+            var header = GenHeaderUseridAndToken();
+
+            PCoroutine.PStartCoroutine(HTTPClientBase.Get(ServerConfig.HttpURL + "/logout"
+                , (res) =>
+                {
+                    HandleLogoutResponse(res);
+                }
+                , header));
+        }
+
+        public static void DisableAccount()
+        {
+            var header = GenHeaderUseridAndToken();
+
+            PCoroutine.PStartCoroutine(HTTPClientBase.Get(ServerConfig.HttpURL + "/disable"
+                , (res) =>
+                {
+                    HandleDisableAccountResponse(res);
+                }
+                , header));
+        }
+
+        public static void DeleteAccount()
+        {
+            var header = GenHeaderUseridAndToken();
+
+            PCoroutine.PStartCoroutine(HTTPClientBase.Get(ServerConfig.HttpURL + "/delete"
+                , (res) =>
+                {
+                    HandleDeleteAccountResponse(res);
+                }
+                , header));
+        }
+        #endregion
+
+        #region GEN_HEADER
+        public static List<KeyValuePair<string, string>> GenHeaderUseridAndToken()
+        {
+            List<KeyValuePair<string, string>> header = new List<KeyValuePair<string, string>>();
+            header.Add(new KeyValuePair<string, string>("userid", DataAuth.AuthData.userId.ToString()));
+            header.Add(new KeyValuePair<string, string>("token", DataAuth.AuthData.token.ToString()));
+            return header;
         }
         #endregion
     }

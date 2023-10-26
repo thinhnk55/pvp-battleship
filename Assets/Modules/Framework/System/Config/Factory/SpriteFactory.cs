@@ -12,6 +12,7 @@ namespace Framework
                 Instance.ToString();
             }
         }
+
         [SerializeField] private Sprite octile; public static Sprite Octile { get { return Instance.octile; } }
         [SerializeField] private Sprite missed; public static Sprite Missed { get { return Instance.missed; } }
         [SerializeField] private Sprite occupied; public static Sprite Occupied { get { return Instance.occupied; } }

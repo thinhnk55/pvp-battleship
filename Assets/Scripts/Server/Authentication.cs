@@ -1,3 +1,7 @@
+using Framework;
+using Google;
+using Server;
+using SimpleJSON;
 using System;
 using UnityEngine;
 
@@ -8,6 +12,17 @@ namespace Authentication
         [SerializeField] GameObject LoadingUI;
         [SerializeField] GameObject ButtonAppleLogin;
 
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
+        public static void Init()
+        {
+            Debug.Log("Authentication Init");
+            HTTPClientAuth.HandleLoginAccountResponse += HandleLoginAccountResponse;
+            HTTPClientAuth.HandleCheckLinkAccoutResponse += HandleCheckLinkAccoutResponse;
+            HTTPClientAuth.HandleLogoutResponse += HandleLogoutResponse;
+            HTTPClientAuth.HandleDisableAccountResponse += HandleDisableAccountResponse;
+            HTTPClientAuth.HandleDeleteAccountResponse += HandleDeleteAccountResponse;
+        } 
+
         protected void Awake()
         {
             SetUpLoginScreen();
@@ -16,9 +31,15 @@ namespace Authentication
         void SetUpLoginScreen()
         {
 #if PLATFORM_ANDROID
-            ButtonAppleLogin.SetActive(false);
+            if(ButtonAppleLogin != null)
+            {
+                ButtonAppleLogin?.SetActive(false);
+            }
 #else
-            ButtonAppleLogin.SetActive(true);
+            if(ButtonAppleLogin != null)
+            {
+                ButtonAppleLogin?.SetActive(true);
+            }
 #endif
         }
 
@@ -38,6 +59,32 @@ namespace Authentication
             AuthenticationBase.Instance.auths[(SocialAuthType)type].SignIn();
             GameData.TypeLogin = (SocialAuthType)type;
             LoadingUI.SetActive(true);
+        }
+
+        public void Logout()
+        {
+            HTTPClientAuth.Logout();
+        }
+
+        public void Disable()
+        {
+            HTTPClientAuth.DisableAccount();
+        }
+
+        public void Delete()
+        {
+            PopupHelper.CreateConfirm(PrefabFactory.PopupDeleteAccount, null, null, null, (ok) =>
+            {
+                if(ok)
+                {
+                    PopupHelper.Create(PrefabFactory.PopupDeleteConfirm);
+                }
+                else
+                {
+                    HTTPClientAuth.DisableAccount();
+                }
+            });
+            //HTTPClientAuth.DeleteAccount();
         }
 
         public bool IsAllowedLogin()
@@ -60,15 +107,75 @@ namespace Authentication
             }
         }
 
-        public void Signout(int type)
+        #region HANDLE EVENT
+        #region LOGIN ACCOUNT
+        public static void HandleLoginAccountResponse(string res)
         {
-            AuthenticationBase.Instance.auths[(SocialAuthType)type].SignOut();
+            JSONNode jsonRes = JSONNode.Parse(res);
+            if (int.Parse(jsonRes["error"]) == 0)
+            {
+                DataAuth.AuthData = new AuthData();
+                DataAuth.AuthData.userId = int.Parse(jsonRes["data"]["id"]);
+                DataAuth.AuthData.username = jsonRes["data"]["username"];
+                //PDataAuth.AuthData.refresh_token = jsonRes["data"]["refresh_token"];
+                DataAuth.AuthData.token = jsonRes["data"]["token"];
+                WSClient.Instance.Connect(DataAuth.AuthData.userId, DataAuth.AuthData.token);
+            }
+            else
+            {
+                Debug.Log(res);
+            }
+        }
+        #endregion  
+
+        #region CHECK LINK ACCOUNT
+        public static void HandleCheckLinkAccoutResponse(string res)
+        {
+            JSONNode jsonParse = JSONNode.Parse(res);
+            if (int.Parse(jsonParse["error"]) == 0)
+            {
+                DataAuth.IsLinkedGoogleAccount.Data = jsonParse["data"]["gg"] != null;
+                DataAuth.IsLinkedAppleAccount.Data = jsonParse["data"]["ap"] != null;
+            }
         }
 
-        public void Delete()
+        #endregion
+
+        #region LOGOUT-DISABLE-DELETE ACCOUNT
+        public static void HandleLogoutResponse(string res)
         {
-            throw new NotImplementedException();
+            JSONNode jsonParse = JSONNode.Parse(res);
+            if (int.Parse(jsonParse["error"]) == 0)
+            {
+                AuthenticationBase.Instance.auths[GameData.TypeLogin].SignOut();
+                WSClient.Instance.Disconnect(true);
+                SceneTransitionHelper.Load(ESceneName.PreHome);
+            }
         }
+
+        public static void HandleDisableAccountResponse(string res)
+        {
+            JSONNode jsonParse = JSONNode.Parse(res);
+            if (int.Parse(jsonParse["error"]) == 0)
+            {
+                AuthenticationBase.Instance.auths[GameData.TypeLogin].DisableAccount();
+                WSClient.Instance.Disconnect(true);
+                SceneTransitionHelper.Load(ESceneName.PreHome);
+            }
+        }
+
+        public static void HandleDeleteAccountResponse(string res)
+        {
+            JSONNode jsonParse = JSONNode.Parse(res);
+            if (int.Parse(jsonParse["error"]) == 0)
+            {
+                AuthenticationBase.Instance.auths[GameData.TypeLogin].DeleteAccount();
+                WSClient.Instance.Disconnect(true);
+                SceneTransitionHelper.Load(ESceneName.PreHome);
+            }
+        }
+        #endregion
+        #endregion
     }
 }
 

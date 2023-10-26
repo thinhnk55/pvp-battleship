@@ -1,9 +1,6 @@
 using Framework;
-using Monetization;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Playables;
 
 
 public struct AdsRewardConfig
@@ -24,7 +21,7 @@ public enum RewardType
 
 public class AdsData : PDataBlock<AdsData>
 {
-    [SerializeField] private Dictionary<RewardType, string> adsUnitIdMap; public static Dictionary<RewardType, string> AdsUnitIdMap { get { return Instance.adsUnitIdMap; } set { Instance.adsUnitIdMap = value;} }
+    [SerializeField] private Dictionary<RewardType, string> adsUnitIdMap; public static Dictionary<RewardType, string> AdsUnitIdMap { get { return Instance.adsUnitIdMap; } set { Instance.adsUnitIdMap = value; } }
     [SerializeField] private Dictionary<string, AdsRewardConfig> rewardTypeToConfigMap; public static Dictionary<string, AdsRewardConfig> RewardTypeToConfigMap { get { return Instance.rewardTypeToConfigMap; } set { Instance.rewardTypeToConfigMap = value; } }
     [SerializeField] private int versionAds; public static int VersionAds { get { return Instance.versionAds; } set { Instance.versionAds = value; } }
 

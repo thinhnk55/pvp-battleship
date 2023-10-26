@@ -39,7 +39,6 @@ namespace Framework
         [SerializeField] private GameObject popupQuestCompleted; public static GameObject PospupQuestCompleted { get { return Instance.popupQuestCompleted; } }
         [SerializeField] private GameObject popupShop; public static GameObject PopupShop { get { return Instance.popupShop; } }
         [SerializeField] private GameObject popupDisconnect; public static GameObject PopupDisconnect { get { return Instance.popupDisconnect; } }
-
         [SerializeField] private GameObject popupTuTorHome; public static GameObject PopupTuTorHome { get { return Instance.popupTuTorHome; } }
         [SerializeField] private GameObject popupTuTorBet; public static GameObject PopupTuTorBet { get { return Instance.popupTuTorBet; } }
         [SerializeField] private GameObject popupTuTorFormation; public static GameObject PopupTuTorFormation { get { return Instance.popupTuTorFormation; } }
@@ -51,6 +50,9 @@ namespace Framework
         [SerializeField] private GameObject popupReceiveRewardCompletePVE; public static GameObject PopupReceiveRewardCompletePVE { get { return Instance.popupReceiveRewardCompletePVE; } }
         [SerializeField] private GameObject popupMissTurn; public static GameObject PopupMissTurn { get { return Instance.popupMissTurn; } }
         [SerializeField] private GameObject popupLuckyshot; public static GameObject PopupLuckyshot { get { return Instance.popupLuckyshot; } }
+        [SerializeField] private GameObject popupLinkAccountMessage; public static GameObject PopupLinkAccountMessage { get { return Instance.popupLinkAccountMessage; } }
+        [SerializeField] private GameObject popupDeleteAccount; public static GameObject PopupDeleteAccount { get { return Instance.popupDeleteAccount; } }
+        [SerializeField] private GameObject popupDeleteConfirm; public static GameObject PopupDeleteConfirm { get { return Instance.popupDeleteConfirm; } }
 
         [SerializeField] private GameObject popupRPConfirm; public static GameObject PopupRPConfirm { get { return Instance.popupRPConfirm; } }
     }

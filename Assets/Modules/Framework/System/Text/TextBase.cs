@@ -1,6 +1,5 @@
 ﻿using TMPro;
 using UnityEngine;
-
 namespace Framework
 {
     public class TextBase : MonoBehaviour

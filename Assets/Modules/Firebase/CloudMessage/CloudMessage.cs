@@ -17,6 +17,8 @@ namespace FirebaseIntegration
         static void OnTokenReceived(object sender, Firebase.Messaging.TokenReceivedEventArgs token)
         {
             UnityEngine.Debug.Log("Received Registration Token: " + token.Token);
+            FirebaseData.TokenCloudMessage = token.Token;
+            WSClientFirebase.isNewTokenCloudMessage = true;
         }
 
         static void OnMessageReceived(object sender, Firebase.Messaging.MessageReceivedEventArgs e)

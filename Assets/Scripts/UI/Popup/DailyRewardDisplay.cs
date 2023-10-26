@@ -1,5 +1,5 @@
+using FirebaseIntegration;
 using Framework;
-using Monetization;
 using SimpleJSON;
 using System;
 using System.Collections;
@@ -7,8 +7,6 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-
-
 public class DailyRewardDisplay : MonoBehaviour
 {
     [SerializeField] List<DailyReward> rewards = new();
@@ -26,6 +24,7 @@ public class DailyRewardDisplay : MonoBehaviour
 
     private void Start()
     {
+        AnalyticsHelper.SelectContent("daily_reward");
         ServerMessenger.AddListener<JSONNode>(ServerResponse._REWARD_ADS, OnGetAdsGift);
         ServerMessenger.AddListener<JSONNode>(ServerResponse._GIFT, OnClickClaimBt);
 
@@ -34,12 +33,12 @@ public class DailyRewardDisplay : MonoBehaviour
         SetAmount();
         //claim.onClick.AddListener(OnClickClaimBt);
         HighLightRewards();
-        resource.SetActive(false); 
+        resource.SetActive(false);
     }
 
     private void OnDestroy()
     {
-        
+
         Timer<Gift>.Instance.OnTrigger -= OnTrigger;
         Timer<Gift>.Instance.OnElapse -= OnElapse;
         ServerMessenger.RemoveListener<JSONNode>(ServerResponse._REWARD_ADS, OnGetAdsGift);
@@ -52,19 +51,19 @@ public class DailyRewardDisplay : MonoBehaviour
             return;
         else
         {
-            
+
             StartCoroutine(ActiveResource());
-            if(GameData.ProgressGift == 0)
+            if (GameData.ProgressGift == 0)
             {
                 CoinVFX.CoinVfx(resource.transform, rewards[^1].transform.position, rewards[^1].transform.position);
-            }    
+            }
             else
             {
                 CoinVFX.CoinVfx(resource.transform, rewards[GameData.ProgressGift - 1].transform.position, rewards[GameData.ProgressGift - 1].transform.position);
-            }    
-            
+            }
+
         }
-        
+
     }
 
 
@@ -160,19 +159,19 @@ public class DailyRewardDisplay : MonoBehaviour
                 claimImg.sprite = btInteractable;
                 watchAdsImg.sprite = btInteractable;
                 claim.interactable = false;
-                watchAds.interactable = false;           
+                watchAds.interactable = false;
             }
         }
         else
-        {      
+        {
             return;
-            
-        }       
+
+        }
     }
 
     private void OnTrigger()
     {
-        
+
         countDown.text = Timer<Gift>.Instance.TriggersFromBegin >= 1 ? "Collect" : "<color=#FFFFFF>Next rewards: </color>" + Timer<Gift>.Instance.RemainTime_Sec.Hour_Minute_Second_1() + "s";
         //reminder.UpdateObject();        
         HighLightRewards();
@@ -190,10 +189,10 @@ public class DailyRewardDisplay : MonoBehaviour
 
     public void OnGetAdsGift(JSONNode data)
     {
-       
+
         PConsumableType.BERRY.AddValue(int.Parse(data["d"]["x"]["g"]));
         Timer<Gift>.Instance.BeginPoint = DateTime.UtcNow.Ticks;
-        
+
         StartCoroutine(ActiveResource());
         if (resource != null)
         {
@@ -203,5 +202,5 @@ public class DailyRewardDisplay : MonoBehaviour
         GameData.ProgressGift++;
     }
 
-    
+
 }

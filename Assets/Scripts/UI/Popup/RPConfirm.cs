@@ -18,15 +18,11 @@ public class RPConfirm : MonoBehaviour
         level.text = (GameData.RoyalPass.Point.Data / GameData.RoyalPass.PointPerLevel).ToString();
         progressBar.maxValue = GameData.RoyalPass.PointPerLevel;
         progressBar.value = GameData.RoyalPass.Point.Data % GameData.RoyalPass.PointPerLevel;
-        Debug.Log("2 GameData.RoyalPass.Point.Data = " + GameData.RoyalPass.Point.Data);
-        Debug.Log("2 Level = " + level.text);
         GameData.RoyalPass.Point.OnDataChanged += OnChangeValueProgress;
     }
 
     public void OnChangeValueProgress(int oldValue, int newValue)
     {
-        Debug.Log("2 GameData.RoyalPass.Point.Data = " + GameData.RoyalPass.Point.Data);
-        Debug.Log("2 Level = " + level.text);
         tweenProgess?.Kill();
         tweenProgess = DOTween.To(() => progressBar.value + float.Parse(level.text) * GameData.RoyalPass.PointPerLevel,
             (value) =>

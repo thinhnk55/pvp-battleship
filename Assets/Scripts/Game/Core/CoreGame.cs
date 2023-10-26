@@ -438,6 +438,7 @@ public class CoreGame : SingletonMono<CoreGame>
     }
     void GameStart(JSONNode json)
     {
+        Analytics.Log("startgame", new List<KeyValuePair<string, object>>());
         timeInit = json["d"]["c"].AsInt;
         Instance.playerTurn = int.Parse(json["d"]["f"]) == playerChair;
         Debug.Log(json["d"]["f"].AsInt + "_" + playerChair);
@@ -530,7 +531,10 @@ public class CoreGame : SingletonMono<CoreGame>
     private void TurnMiss(JSONNode data)
     {
         if (playerTurn)
+        {
+            Analytics.Log("turnmiss", new List<KeyValuePair<string, object>>());
             missturn++;
+        }
         Instance.playerTurn = !Instance.playerTurn;
         Instance.stateMachine.CurrentState = GameState.Turn;
         if (missturn == 2)
@@ -613,6 +617,7 @@ public class CoreGame : SingletonMono<CoreGame>
     }
     public void Reconnect(JSONNode data)
     {
+        Analytics.Log("reconnect", new List<KeyValuePair<string, object>>());
         reconnect = null;
         int[,] arr = new int[Instance.player.octiles.Count, Instance.player.octiles.Count];
         Instance.opponent.gameObject.SetActive(true);
