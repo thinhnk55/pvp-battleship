@@ -871,12 +871,11 @@ public class WSClientHandler : Singleton<WSClientHandler>
     }
     public static void GetConfigGift(JSONNode data)
     {
-        if (data["d"]["version"].AsInt == GameData.VersionGiftConfig)
-            return;
+        if (data["d"]["version"].AsInt == GameData.VersionGiftConfig) return;
 
         GameData.GiftConfig = data["d"]["gold"].ToListInt();
         Timer<Gift>.Instance.TriggerInterval_Sec = data["d"]["bonus_period"].AsInt / 1000;
-
+        GameData.GiftCoolDown = Timer<Gift>.Instance.TriggerInterval_Sec;
         GameData.VersionGiftConfig = data["d"]["version"].AsInt;
     }
     public static void GetGift()
