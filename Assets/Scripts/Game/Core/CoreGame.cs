@@ -165,6 +165,7 @@ public class CoreGame : SingletonMono<CoreGame>
     }
     protected override void OnDestroy()
     {
+        base.OnDestroy();
         AudioHelper.StopMusic();
         LeanTouch.OnFingerUp -= Instance.opponent.BeingAttacked;
         LeanTouch.OnFingerUpdate -= Instance.opponent.SelectingTarget;
@@ -180,7 +181,6 @@ public class CoreGame : SingletonMono<CoreGame>
         ServerMessenger.RemoveListener<JSONNode>(ServerResponse._REMATCH_ACCEPT, Instance.AcceptRematch);
         ServerMessenger.RemoveListener<JSONNode>(ServerResponse._QUIT_SEARCH, Instance.QuitSearch);
         Debug.Log("Destroyed");
-        base.OnDestroy();
     }
 
 
@@ -662,7 +662,7 @@ public class CoreGame : SingletonMono<CoreGame>
                 }
             }
         }
-        Debug.Log("Consecutive :" + consecutiveKill + "Max " + consecutiveKillMax.Data);
+        //Debug.Log("Consecutive :" + consecutiveKill + "Max " + consecutiveKillMax.Data);
 
         Instance.searchUI.opponentProfile.UpdateUIs();
         Instance.opponent.battleFieldSprite.sprite = SpriteFactory.BattleFields[GameData.Opponent.BattleField.Data];

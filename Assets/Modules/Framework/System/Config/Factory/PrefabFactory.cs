@@ -13,10 +13,12 @@ namespace Framework
             {
                 Instance.ToString();
             }
+            GameObject.Instantiate(CoreDontDestroyOnLoad);
         }
         #region PrimitiveAsset
         [SerializeField] private GameObject textPrefab; public static GameObject TextPrefab { get { return Instance.textPrefab; } }
         [SerializeField] private GameObject audioSourcePrefab; public static GameObject AudioSourcePrefab { get { return Instance.audioSourcePrefab; } }
+        [SerializeField] private GameObject coreDontDestroyOnLoad; public static GameObject CoreDontDestroyOnLoad { get { return Instance.coreDontDestroyOnLoad; } }
         #endregion
         [SerializeField] private GameObject octile; public static GameObject Octile { get { return Instance.octile; } }
         [SerializeField] private GameObject octileUI; public static GameObject OctileUI { get { return Instance.octileUI; } }

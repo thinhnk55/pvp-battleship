@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   textPrefab: {fileID: 6053683390545495231, guid: 2377e2fb17d7ac5409a365d17d6211cc, type: 3}
   audioSourcePrefab: {fileID: 7142884410866609616, guid: b83a1f4d64c9b844db36a6b63753a64a, type: 3}
+  coreDontDestroyOnLoad: {fileID: 2469400166265019647, guid: 03d3b172f4e783d4b9f2dbb140158913, type: 3}
   octile: {fileID: 266113691064255059, guid: e183c55efcddf14429510c2a6c0c1d9d, type: 3}
   octileUI: {fileID: 9043592396033923574, guid: 31e97d5afcdff2c4daf01885569b9485, type: 3}
   ships:

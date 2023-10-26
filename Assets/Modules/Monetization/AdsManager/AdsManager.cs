@@ -28,6 +28,7 @@ namespace Monetization
         void Awake()
         {
             adsManager = new MaxAdsManager();
+            adsManager.InitializeSDKEventOnInitialized();
         }
         public static void ShowBannerAds()
         {

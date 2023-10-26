@@ -57,11 +57,11 @@ namespace Server
                 {
                     Messenger.Broadcast(GameEvent.LostConnection);
                     OnDisconnect?.Invoke();
-                    Debug.Log("Network shutdown");
+                    Debug.Log("Network shutdown unintentionally");
                 }
                 else
                 {
-                    Debug.Log("Close network manually");
+                    Debug.Log("Close websocket connection manually");
                 }
                 ServerMessenger.RemoveListener<JSONNode>(ServerResponse.CheckLoginConnection, CheckLoginConnection);
                 Messenger.RemoveListener(GameEvent.LostConnection, OnLostConnection);

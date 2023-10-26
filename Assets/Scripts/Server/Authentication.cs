@@ -1,8 +1,6 @@
 using Framework;
-using Google;
 using Server;
 using SimpleJSON;
-using System;
 using UnityEngine;
 
 namespace Authentication
@@ -15,13 +13,12 @@ namespace Authentication
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
         public static void Init()
         {
-            Debug.Log("Authentication Init");
             HTTPClientAuth.HandleLoginAccountResponse += HandleLoginAccountResponse;
             HTTPClientAuth.HandleCheckLinkAccoutResponse += HandleCheckLinkAccoutResponse;
             HTTPClientAuth.HandleLogoutResponse += HandleLogoutResponse;
             HTTPClientAuth.HandleDisableAccountResponse += HandleDisableAccountResponse;
             HTTPClientAuth.HandleDeleteAccountResponse += HandleDeleteAccountResponse;
-        } 
+        }
 
         protected void Awake()
         {
@@ -31,7 +28,7 @@ namespace Authentication
         void SetUpLoginScreen()
         {
 #if PLATFORM_ANDROID
-            if(ButtonAppleLogin != null)
+            if (ButtonAppleLogin != null)
             {
                 ButtonAppleLogin?.SetActive(false);
             }
@@ -75,7 +72,7 @@ namespace Authentication
         {
             PopupHelper.CreateConfirm(PrefabFactory.PopupDeleteAccount, null, null, null, (ok) =>
             {
-                if(ok)
+                if (ok)
                 {
                     PopupHelper.Create(PrefabFactory.PopupDeleteConfirm);
                 }
