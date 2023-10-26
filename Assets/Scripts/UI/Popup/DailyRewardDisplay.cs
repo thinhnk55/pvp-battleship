@@ -177,6 +177,7 @@ public class DailyRewardDisplay : MonoBehaviour
         HighLightRewards();
         ToggleButton();
         DisplayReward();
+        //Debug.Log(Timer<Gift>.Instance.RemainTime_Sec.Hour_Minute_Second_1());
     }
 
     private void OnElapse()
@@ -185,6 +186,7 @@ public class DailyRewardDisplay : MonoBehaviour
         HighLightRewards();
         ToggleButton();
         DisplayReward();
+        //Debug.Log(Timer<Gift>.Instance.RemainTime_Sec.Hour_Minute_Second_1());
     }
 
     public void OnGetAdsGift(JSONNode data)
