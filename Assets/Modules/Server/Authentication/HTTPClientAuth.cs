@@ -1,7 +1,6 @@
 using Framework;
 using Server;
 using SimpleJSON;
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -146,9 +145,11 @@ namespace Authentication
         #region GEN_HEADER
         public static List<KeyValuePair<string, string>> GenHeaderUseridAndToken()
         {
-            List<KeyValuePair<string, string>> header = new List<KeyValuePair<string, string>>();
-            header.Add(new KeyValuePair<string, string>("userid", DataAuth.AuthData.userId.ToString()));
-            header.Add(new KeyValuePair<string, string>("token", DataAuth.AuthData.token.ToString()));
+            List<KeyValuePair<string, string>> header = new List<KeyValuePair<string, string>>
+            {
+                new KeyValuePair<string, string>("userid", DataAuth.AuthData.userId.ToString()),
+                new KeyValuePair<string, string>("token", DataAuth.AuthData.token.ToString())
+            };
             return header;
         }
         #endregion
