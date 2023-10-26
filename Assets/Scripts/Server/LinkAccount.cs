@@ -119,17 +119,17 @@ namespace Server
             switch (int.Parse(jsonParse["error"]))
             {
                 case 0:
-                    PopupHelper.CreateMessage(PrefabFactory.PopupMessage, "Message", "Apple account linking successful", null);
+                    PopupHelper.CreateMessage(PrefabFactory.PopupLinkAccountMessage, "Message", "Apple account linking successful", null);
                     DataAuth.IsLinkedAppleAccount.Data = true;
                     break;
                 case 1:
-                    PopupHelper.CreateMessage(PrefabFactory.PopupMessage, "Message", "System error!", null);
+                    PopupHelper.CreateMessage(PrefabFactory.PopupLinkAccountMessage, "Message", "System error!", null);
                     break;
                 case 10:
-                    PopupHelper.CreateMessage(PrefabFactory.PopupMessage, "Message", "Invalid token!", null);
+                    PopupHelper.CreateMessage(PrefabFactory.PopupLinkAccountMessage, "Message", "Invalid token!", null);
                     break;
                 case 11:
-                    PopupHelper.CreateMessage(PrefabFactory.PopupMessage, "Message", "Account linked!", null);
+                    PopupHelper.CreateMessage(PrefabFactory.PopupLinkAccountMessage, "Message", "Account linked!", null);
                     break;
             }
         }
@@ -140,17 +140,17 @@ namespace Server
             switch (int.Parse(jsonParse["error"]))
             {
                 case 0:
-                    PopupHelper.CreateMessage(PrefabFactory.PopupMessage, "Message", "Google account linking successful", null);
+                    PopupHelper.CreateMessage(PrefabFactory.PopupLinkAccountMessage, "Message", "Google account linking successful", null);
                     DataAuth.IsLinkedGoogleAccount.Data = true;
                     break;
                 case 1:
-                    PopupHelper.CreateMessage(PrefabFactory.PopupMessage, "Message", "System error!", null);
+                    PopupHelper.CreateMessage(PrefabFactory.PopupLinkAccountMessage, "Message", "System error!", null);
                     break;
                 case 10:
-                    PopupHelper.CreateMessage(PrefabFactory.PopupMessage, "Message", "Invalid token!", null);
+                    PopupHelper.CreateMessage(PrefabFactory.PopupLinkAccountMessage, "Message", "Invalid token!", null);
                     break;
                 case 11:
-                    PopupHelper.CreateMessage(PrefabFactory.PopupMessage, "Message", "Account linked!", null);
+                    PopupHelper.CreateMessage(PrefabFactory.PopupLinkAccountMessage, "Message", "Account linked!", null);
                     break;
             }
             #endregion

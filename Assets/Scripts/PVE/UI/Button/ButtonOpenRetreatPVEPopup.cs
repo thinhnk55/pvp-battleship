@@ -14,9 +14,10 @@ public class ButtonOpenRetreatPVEPopup : ButtonBase
         ServerMessenger.AddListener<JSONNode>(ServerResponse._END_GAME_TREASURE, EndGameTreasure);
     }
 
-    private void OnDestroy()
+    private void OnDisable()
     {
         ServerMessenger.RemoveListener<JSONNode>(ServerResponse._END_GAME_TREASURE, EndGameTreasure);
+        
     }
 
     protected override void Button_OnClicked()
@@ -29,7 +30,7 @@ public class ButtonOpenRetreatPVEPopup : ButtonBase
             {
                 if (confirm)
                 {
-                    EndGameTreasure();
+                    PVE.Instance.EndGameTreasure();
                 }
                 else
                 {
@@ -38,15 +39,6 @@ public class ButtonOpenRetreatPVEPopup : ButtonBase
             });
     }
 
-
-    public void EndGameTreasure()
-    {
-        new JSONClass()
-        {
-            {"id" , ServerRequest._END_GAME_TREASURE.ToJson() },
-            {"t", PVEData.TypeBoard.Value.ToJson()}
-        }.RequestServer();
-    }
 
     public void EndGameTreasure(JSONNode data)
     {

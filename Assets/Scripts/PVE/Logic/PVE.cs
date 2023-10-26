@@ -32,6 +32,7 @@ public class PVE : SingletonMono<PVE>
 
     private void Start()
     {
+        //EndGameTreasure();
         NewGameTreasure();
         player.leanSelectable.enabled = false;
         shipPVEs = new List<ShipPVE>();
@@ -145,6 +146,15 @@ public class PVE : SingletonMono<PVE>
             StartCoroutine(Lose());
         }
     }
+
+    public void EndGameTreasure()
+    {
+        new JSONClass()
+        {
+            {"id" , ServerRequest._END_GAME_TREASURE.ToJson() },
+            {"t", PVEData.TypeBoard.Value.ToJson()}
+        }.RequestServer();
+    }
     #endregion 
 
     private void DestroyEnemyShip()
@@ -194,18 +204,21 @@ public class PVE : SingletonMono<PVE>
         }
         else // pha dao
         {
+            Retreat.gameObject.SetActive(false);
+            EndGameTreasure();
+
             popupComplete = PopupHelper.CreateConfirm(PrefabFactory.PopupReceiveRewardCompletePVE, null,
                 "+" + (PVEData.Bets[PVEData.TypeBoard.Value] * PVEData.StageMulReward[PVEData.TypeBoard.Value][CurrentStep.Data]).ToString(), null, (confirm) =>
             {
                 if (confirm)
                 {
-                    StartCoroutine(OnPressConfirmInCompletePopup());
+                    StartCoroutine(OnCompletePopup());
                 }
             });
         }
     }
 
-    private IEnumerator OnPressConfirmInCompletePopup()
+    private IEnumerator OnCompletePopup()
     {
         PopupBehaviour popupResource = PopupHelper.Create(PrefabFactory.PopupResourcePVE);
         CoinVFX.CoinVfx(popupResource.transform.GetChild(0).transform, Position, Position);

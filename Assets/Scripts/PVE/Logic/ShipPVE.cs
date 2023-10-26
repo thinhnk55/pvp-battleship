@@ -26,14 +26,11 @@ public class ShipPVE : MonoBehaviour
                 tweenPoint = DOTween.To(() => int.Parse(pointTxt.text), (value) => pointTxt.text = value.ToString(), n, 1)
                                             .OnComplete(() => pointTxt.text = n.ToString());
             }
-            //else
-            //{
-            //    pointTxt.text = n.ToString();
-            //}
         };
     }
     public void HidePoint()
     {
+        pointTxt.color = Color.white;
         pointTxt.text = "????";
     }
     public void ShowPoint(bool isRedColor)
