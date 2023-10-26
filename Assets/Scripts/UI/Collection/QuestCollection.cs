@@ -92,10 +92,6 @@ public class QuestCollection : CardCollectionBase<QuestInfo>
         }
         BuildUIs(infos);
     }
-    public override void BuildUIs(List<QuestInfo> infos)
-    {
-        base.BuildUIs(infos);
-    }
 
     private void RequestChangeQuest(int index)
     {
