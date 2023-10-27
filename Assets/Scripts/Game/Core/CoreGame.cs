@@ -94,7 +94,7 @@ public class CoreGame : SingletonMono<CoreGame>
     {
         for (int i = 0; i < shipsOpponent.Count; i++)
         {
-            shipsOpponent[i].renderer.enabled = reveal;
+            shipsOpponent[i].shipRenderer.enabled = reveal;
         }
         foreach (var os in player.octiles)
         {

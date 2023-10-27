@@ -1,7 +1,5 @@
-using Authentication;
 using Framework;
 using Server;
-using Auth = Authentication.AuthenticationBase;
 
 public class ButtonLogout : ButtonBase
 {

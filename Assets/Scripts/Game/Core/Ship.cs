@@ -10,7 +10,7 @@ using UnityEngine;
 public class Ship : CacheMonoBehaviour
 {
     public Board board;
-    public SpriteRenderer renderer;
+    public SpriteRenderer shipRenderer;
     [SerializeField] SpriteRenderer occupyRenderer;
     [SerializeField] Sprite destroyedSprite;
     [SerializeField] List<GameObject> smokeVFXs;
@@ -198,7 +198,7 @@ public class Ship : CacheMonoBehaviour
     {
         Messenger.Broadcast(GameEvent.SHIP_DESTROY, this);
         isDestroyed = true;
-        renderer.sprite = destroyedSprite;
+        shipRenderer.sprite = destroyedSprite;
         board.ships.Remove(this);
         board.destroyedShips.Add(this);
         SoundType.SHIP_EXPLOSION.PlaySound();
