@@ -251,7 +251,7 @@ public class CoreGame : SingletonMono<CoreGame>
             Instance.currentCounterRematch = 0;
         }
         Instance.counterRematchObj.SetText(Instance.currentCounterRematch.ToString("F1"));
-        if (Instance.currentCounterRematch <= 1 && Instance.currentCounterRematch + Time.deltaTime >= 1)
+        if (Instance.currentCounterRematch <= 5 && Instance.currentCounterRematch + Time.deltaTime >= 5)
         {
             if (Instance.player.ships.Count < 10)
             {
@@ -259,7 +259,7 @@ public class CoreGame : SingletonMono<CoreGame>
                 Instance.buttonAuto.enabled = false;
                 Instance.buttonAuto.GetComponent<Image>().color = Color.gray;
             }
-            DOVirtual.DelayedCall(1, () => Instance.Ready());
+            DOVirtual.DelayedCall(0, () => Instance.Ready());
         }
     }
     void EndPregameRematch()
