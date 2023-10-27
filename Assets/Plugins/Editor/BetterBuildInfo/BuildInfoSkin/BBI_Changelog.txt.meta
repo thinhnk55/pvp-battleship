@@ -1,8 +1,14 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Plugins/Editor/BetterBuildInfo/BuildInfoSkin/BBI_Changelog.txt.meta
 guid: 3862ae02fbb75aa43ae94c6d201c6502
 timeCreated: 1468445072
 licenseType: Store
 TextScriptImporter:
+========
+guid: 03d3b172f4e783d4b9f2dbb140158913
+PrefabImporter:
+  externalObjects: {}
+>>>>>>>> origin/Thinh:Assets/Prefabs/DontDestroyOnLoad.prefab.meta
   userData: 
   assetBundleName: 
   assetBundleVariant: 

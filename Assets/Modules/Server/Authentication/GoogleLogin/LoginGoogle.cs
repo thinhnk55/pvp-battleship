@@ -106,6 +106,7 @@ namespace Authentication
 
         public void Update()
         {
+
         }
         public void SignOut()
         {

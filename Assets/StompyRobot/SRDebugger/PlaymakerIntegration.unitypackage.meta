@@ -1,7 +1,13 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Plugins/Editor/BetterBuildInfo/Internal.meta
+guid: 3fbe1700a5ae73148a5ada90856ce748
+folderAsset: yes
+timeCreated: 1495752074
+licenseType: Store
+========
 guid: 40e8c6b2d0509f444ae890398fbdd3c9
+>>>>>>>> origin/Thinh:Assets/StompyRobot/SRDebugger/PlaymakerIntegration.unitypackage.meta
 DefaultImporter:
-  externalObjects: {}
   userData: 
   assetBundleName: 
   assetBundleVariant: 

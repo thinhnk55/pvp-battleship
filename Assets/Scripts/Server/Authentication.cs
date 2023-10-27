@@ -18,7 +18,8 @@ namespace Authentication
             HTTPClientAuth.HandleLogoutResponse += HandleLogoutResponse;
             HTTPClientAuth.HandleDisableAccountResponse += HandleDisableAccountResponse;
             HTTPClientAuth.HandleDeleteAccountResponse += HandleDeleteAccountResponse;
-        }
+            WSClient.Instance.OnDisconnect += () => { HTTPClientAuth.Logout(); };
+        } 
 
         protected void Awake()
         {

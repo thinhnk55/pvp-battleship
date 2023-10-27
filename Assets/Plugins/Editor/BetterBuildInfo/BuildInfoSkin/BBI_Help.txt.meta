@@ -1,6 +1,11 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Plugins/Editor/BetterBuildInfo/BuildInfoSkin/BBI_Help.txt.meta
 guid: 79643227dc42e524d8cb7323a71b070a
 timeCreated: 1468528392
+========
+guid: 3862ae02fbb75aa43ae94c6d201c6502
+timeCreated: 1468445072
+>>>>>>>> origin/Thinh:Assets/Plugins/Editor/BetterBuildInfo/BuildInfoSkin/BBI_Changelog.txt.meta
 licenseType: Store
 TextScriptImporter:
   userData: 

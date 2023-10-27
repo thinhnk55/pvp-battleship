@@ -28,6 +28,7 @@ public class PVEBetCollection : CardCollectionBase<PVEBetInfo>
                 cost = PVEData.Bets[i],
                 onclick = () =>
                 {
+                    isQualified = PConsumableType.BERRY.GetValue() < PVEData.Bets[_i] ? false : true;
                     if (isQualified)
                     {
                         PVEData.TypeBoard = _i;
@@ -59,7 +60,7 @@ public class PVEBetCollection : CardCollectionBase<PVEBetInfo>
     {
         UpdateUIs();
         SnapScrollView.Init();
-        if (PVEData.TypeBoard != -1 || PVEData.IsDeadPlayer.Data == false) // Old game
+        if (PVEData.TypeBoard != -1 && PVEData.IsDeadPlayer.Data == false) // Old game
         {
             highestAvalableBet = PVEData.TypeBoard.Value;
         }
