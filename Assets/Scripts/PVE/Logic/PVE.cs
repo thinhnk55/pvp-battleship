@@ -9,6 +9,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.UI;
 
 public class PVE : SingletonMono<PVE>
@@ -42,6 +43,7 @@ public class PVE : SingletonMono<PVE>
     }
     protected override void OnDestroy()
     {
+        Debug.LogWarning("PVE ONDestroy");
         ServerMessenger.RemoveListener<JSONNode>(ServerResponse._FIRE_TREASURE, Attack);
         ServerMessenger.RemoveListener<JSONNode>(ServerResponse._DATA_TREASURE, GetData);
         ServerMessenger.RemoveListener<JSONNode>(ServerResponse._NEWGAME_TREASURE, NewGameTreasure);
@@ -297,6 +299,7 @@ public class PVE : SingletonMono<PVE>
 
     private void PlayerRevival(bool o, bool n)
     {
+        Debug.Log("PlayerRevival: "+o+"-"+n);
         if (o == true)
         {
             Debug.Log("Revival");

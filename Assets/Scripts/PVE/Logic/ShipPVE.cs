@@ -62,7 +62,8 @@ public class ShipPVE : MonoBehaviour
         {
             Destroy(destroyedVFX.gameObject);
         }
-        destroyedVFX.transform.parent = null;
+
+        //destroyedVFX.transform.parent = null;
     }
 
     Tween scaleTargetTween;

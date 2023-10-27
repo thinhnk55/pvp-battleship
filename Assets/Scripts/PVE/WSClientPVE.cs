@@ -10,13 +10,17 @@ public class WSClientPVE : Singleton<WSClientPVE>
         WSClient.Instance.OnConnect += () =>
         {
             GetConfigTreasure();
+            GetData();
             ServerMessenger.AddListener<JSONNode>(ServerResponse._CONFIG_TREASURE, GetConfigTreasure);
+            ServerMessenger.AddListener<JSONNode>(ServerResponse._DATA_TREASURE, GetData);
         };
         WSClient.Instance.OnDisconnect += () =>
         {
             ServerMessenger.RemoveListener<JSONNode>(ServerResponse._CONFIG_TREASURE, GetConfigTreasure);
+            ServerMessenger.AddListener<JSONNode>(ServerResponse._DATA_TREASURE, GetData);
         };
     }
+
     static void GetConfigTreasure()
     {
         new JSONClass()
@@ -40,6 +44,20 @@ public class WSClientPVE : Singleton<WSClientPVE>
             PVEData.Bets.Add(int.Parse(data["d"]["treasure"][i]["ticket"]));
             PVEData.StageMulReward.Add(data["d"]["treasure"][i]["gift"].ToListInt());
         }
+    }
+
+    static void GetData()
+    {
+        new JSONClass()
+        {
+            { "id", ServerRequest._DATA_TREASURE.ToJson() }
+        }.RequestServer();
+    }
+
+    static void GetData(JSONNode data)
+    {
+        PVEData.TypeBoard = int.Parse(data["d"]["t"]);
+        PVEData.IsDeadPlayer.Data = int.Parse(data["d"]["d"]) == 1 ? true : false;
     }
 }
 

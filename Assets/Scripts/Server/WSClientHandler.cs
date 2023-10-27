@@ -441,9 +441,8 @@ public class WSClientHandler : Singleton<WSClientHandler>
         {
             PVEData.TypeBoard = int.Parse(data["d"]["t"]["t"]);
             PVE.Instance.CurrentStep.Data = int.Parse(data["d"]["t"]["s"]);
-            PVEData.IsDeadPlayer.Data = int.Parse(data["d"]["t"]["s"]) == 1 ? true : false;
+            PVEData.IsDeadPlayer.Data = int.Parse(data["d"]["t"]["d"]) == 1 ? true : false;
             PVE.Instance.IsRevived = int.Parse(data["d"]["t"]["s"]) == 1 ? true : false;
-
         }
     }
     #endregion

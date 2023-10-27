@@ -28,6 +28,7 @@ public class PVEBetCollection : CardCollectionBase<PVEBetInfo>
                 cost = PVEData.Bets[i],
                 onclick = () =>
                 {
+                    isQualified = PConsumableType.BERRY.GetValue() < PVEData.Bets[_i] ? false : true;
                     if (isQualified)
                     {
                         PVEData.TypeBoard = _i;

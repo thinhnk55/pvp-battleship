@@ -58,4 +58,3 @@ public class CoinVFX : CacheMonoBehaviour
         coin2.target = target;
     }
 }
-    
