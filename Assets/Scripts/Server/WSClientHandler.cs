@@ -155,7 +155,6 @@ public class WSClientHandler : Singleton<WSClientHandler>
         GameData.Starter = data["d"]["a"]["s"].AsInt == 1;
         GameData.StarterShow = false;
         GameData.ProgressGift = data["d"]["a"]["d"]["i"].AsInt;
-
     }
     #region Rank
     private static void GetCheckRank()
