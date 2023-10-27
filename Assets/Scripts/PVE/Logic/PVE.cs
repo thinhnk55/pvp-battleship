@@ -133,7 +133,6 @@ public class PVE : SingletonMono<PVE>
                 Instance.shipPVEs[selectedEnemy].point.Data = shipPVEs[shipListCount - 1].point.Data;
                 shipPVEs[shipListCount - 1].point.Data = tmp;
             }
-
         }
 
         PVEData.IsDeadPlayer.Data = int.Parse(data["d"]["d"]["d"]) == 1 ? true : false;

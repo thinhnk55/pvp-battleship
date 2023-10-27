@@ -60,7 +60,7 @@ public class PVEBetCollection : CardCollectionBase<PVEBetInfo>
     {
         UpdateUIs();
         SnapScrollView.Init();
-        if (PVEData.TypeBoard != -1 || PVEData.IsDeadPlayer.Data == false) // Old game
+        if (PVEData.TypeBoard != -1 && PVEData.IsDeadPlayer.Data == false) // Old game
         {
             highestAvalableBet = PVEData.TypeBoard.Value;
         }
