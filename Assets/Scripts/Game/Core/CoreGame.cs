@@ -94,7 +94,7 @@ public class CoreGame : SingletonMono<CoreGame>
     {
         for (int i = 0; i < shipsOpponent.Count; i++)
         {
-            shipsOpponent[i].renderer.enabled = reveal;
+            shipsOpponent[i].shipRenderer.enabled = reveal;
         }
         foreach (var os in player.octiles)
         {
@@ -165,7 +165,10 @@ public class CoreGame : SingletonMono<CoreGame>
     }
     protected override void OnDestroy()
     {
-        AudioHelper.StopMusic();
+        if (AudioManager.Instance)
+        {
+            AudioHelper.StopMusic();
+        }
         LeanTouch.OnFingerUp -= Instance.opponent.BeingAttacked;
         LeanTouch.OnFingerUpdate -= Instance.opponent.SelectingTarget;
         Instance.opponent.horzLine.SetActive(false);
@@ -662,7 +665,7 @@ public class CoreGame : SingletonMono<CoreGame>
                 }
             }
         }
-        Debug.Log("Consecutive :" + consecutiveKill + "Max " + consecutiveKillMax.Data);
+        //Debug.Log("Consecutive :" + consecutiveKill + "Max " + consecutiveKillMax.Data);
 
         Instance.searchUI.opponentProfile.UpdateUIs();
         Instance.opponent.battleFieldSprite.sprite = SpriteFactory.BattleFields[GameData.Opponent.BattleField.Data];

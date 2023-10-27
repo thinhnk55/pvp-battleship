@@ -1,4 +1,5 @@
 using Framework;
+using Server;
 using SimpleJSON;
 using System;
 using System.Collections.Generic;
@@ -49,6 +50,7 @@ public static class StatisticTracker
         PNonConsumableType.AVATAR_FRAME.GetData().OnDataChanged += OnAvatarFrameChange;
         PNonConsumableType.BATTLE_FIELD.GetData().OnDataChanged += OnBattleFieldChange;
         Messenger.AddListener(GameEvent.LostConnection, LostConnection);
+        WSClient.Instance.OnDisconnect += LostConnection;
     }
     public static void AddQuest(this StatisticType statisticTypes)
     {

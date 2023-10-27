@@ -1,6 +1,7 @@
 ﻿using FirebaseIntegration;
 using Server;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 public class LoadingScene : SingletonMono<LoadingScene>
@@ -9,6 +10,7 @@ public class LoadingScene : SingletonMono<LoadingScene>
     float currentLoadingTime = 0;
     [SerializeField] Slider loadingBar;
     AudioListener[] aL;
+    EventSystem[] eS;
     AsyncOperation asynScene;
     private void Start()
     {
@@ -20,7 +22,7 @@ public class LoadingScene : SingletonMono<LoadingScene>
                 SceneManager.UnloadSceneAsync(SceneManager.GetSceneAt(0));
             }
         });
-        InvokeRepeating("CheckMultipleAudioListener", 0, 0.1f);
+        InvokeRepeating("CheckMultipleAudioListenerAndEventSystem", 0, 0.1f);
         FirebaseInitialization.OnInitialized += AutoLogin;
         if (FirebaseInitialization.initialized == true)
         {
@@ -30,12 +32,15 @@ public class LoadingScene : SingletonMono<LoadingScene>
         {
             FirebaseInitialization.Initialize();
         }
+        if (Application.internetReachability == NetworkReachability.NotReachable)
+        {
+            WSClientHandler.PopupReconnect();
+        }
     }
 
     private void Update()
     {
         if (asynScene == null) { return; }
-
         currentLoadingTime += Time.deltaTime;
         loadingBar.value = (asynScene.progress + (FirebaseInitialization.initialized ? 1 : 0)) / 2 * 100 * Mathf.Clamp01(currentLoadingTime / loadingDuration);
     }
@@ -45,12 +50,17 @@ public class LoadingScene : SingletonMono<LoadingScene>
         base.OnDestroy();
         FirebaseIntegration.FirebaseInitialization.OnInitialized -= AutoLogin;
     }
-    void CheckMultipleAudioListener()
+    void CheckMultipleAudioListenerAndEventSystem()
     {
         aL = FindObjectsOfType<AudioListener>();
+        eS = FindObjectsOfType<EventSystem>();
         if (aL.Length >= 2)
         {
-            DestroyImmediate(aL[0]);
+            DestroyImmediate(aL[0].gameObject);
+        }
+        if (eS.Length >= 2)
+        {
+            DestroyImmediate(eS[0].gameObject);
         }
     }
 
@@ -59,7 +69,14 @@ public class LoadingScene : SingletonMono<LoadingScene>
         Debug.Log("Load " + sceneName);
         if (SceneManager.sceneCount >= 2)
         {
-            SceneManager.UnloadSceneAsync("Home");
+            try
+            {
+                SceneManager.UnloadSceneAsync("Home");
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
         }
         asynScene = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
         asynScene.allowSceneActivation = true;

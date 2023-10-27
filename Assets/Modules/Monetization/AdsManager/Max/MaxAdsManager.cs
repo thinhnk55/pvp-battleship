@@ -6,13 +6,15 @@ namespace Monetization
 {
     public class MaxAdsManager : MaxAdsManagerBase
     {
-        public override void Initialize(string userId)
+        public override void Initialize()
         {
-            Debug.Log("Initialize");
             MaxSdk.SetSdkKey(MonetizationConfig.SdkKey);
-            Debug.Log("SetSdkKey");
-            MaxSdk.SetUserId(userId);
-            Debug.Log("SetUserId");
+            MaxSdk.InitializeSdk();
+            Debug.Log("Initialize SDK");
+        }
+
+        public override void InitializeSDKEventOnInitialized()
+        {
             MaxSdkCallbacks.OnSdkInitializedEvent += (MaxSdkBase.SdkConfiguration sdkConfiguration) =>
             {
                 // AppLovin SDK is initialized, start loading ads
@@ -26,12 +28,7 @@ namespace Monetization
                 }
                 Debug.Log("LoadAds");
             };
-            MaxSdk.InitializeSdk();
-            Debug.Log("InitializeSdk");
-
-
         }
-
 
         protected override void OnRewardedAdRevenuePaidEvent(string adUnitId, MaxSdkBase.AdInfo adInfo)
         {

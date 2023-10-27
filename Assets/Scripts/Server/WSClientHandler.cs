@@ -111,7 +111,7 @@ public class WSClientHandler : Singleton<WSClientHandler>
                 }
                 else
                 {
-                    SceneManager.LoadScene("Reconnect");
+                    SceneManager.LoadScene("Loading");
                 }
             }
         });
@@ -398,7 +398,7 @@ public class WSClientHandler : Singleton<WSClientHandler>
 
         }
 
-        AdsManager.adsManager.Initialize(DataAuth.AuthData.userId.ToString());
+        AdsManager.adsManager.Initialize();
     }
 
     public static void ReceiveRewardAds(JSONNode data)

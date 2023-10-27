@@ -1,6 +1,11 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Plugins/Editor/BetterBuildInfo/README.txt.meta
 guid: 9e8c614a7ed0d724e9f421ae3fa70077
 timeCreated: 1472397900
+========
+guid: bbbea1a3e79862b4f98c398226a6a64a
+timeCreated: 1468445072
+>>>>>>>> origin/Thinh:Assets/Plugins/Editor/BetterBuildInfo/BuildInfoSkin/BBI_Tips.txt.meta
 licenseType: Store
 TextScriptImporter:
   userData: 

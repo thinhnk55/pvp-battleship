@@ -29,7 +29,4 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/TreasureHunt.unity
     guid: 4ebbc6718da66c1499dd18092389b10c
-  - enabled: 1
-    path: Assets/Scenes/Reconnect.unity
-    guid: 9281e6dc8407aab4f92ea9693d5267af
   m_configObjects: {}
