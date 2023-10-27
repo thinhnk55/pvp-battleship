@@ -595,6 +595,7 @@ public class CoreGame : SingletonMono<CoreGame>
     }
     void EnemyOutGame(JSONNode json)
     {
+        Instance.opponent.DestroyTutorIngame();
         Instance.buttonRematch.GetComponent<Image>().sprite = SpriteFactory.DisableButton;
         Instance.buttonRematch.enabled = false;
         if (rematch)

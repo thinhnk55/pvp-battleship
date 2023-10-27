@@ -7,6 +7,7 @@ public class BetCollection : CardCollectionBase<BetInfo>
 {
     [SerializeField] SnapScrollView SnapScrollView;
     [SerializeField] int highestAvalableBet;
+    Tween tutor;
     public override void UpdateUIs()
     {
         List<BetInfo> infos = new List<BetInfo>();
@@ -57,10 +58,14 @@ public class BetCollection : CardCollectionBase<BetInfo>
         if (GameData.Tutorial[1] == 0)
         {
             SnapScrollView.SetToChildPosition(0);
-            DOVirtual.DelayedCall(1f, () =>
+            tutor = DOVirtual.DelayedCall(0.5f, () =>
             {
                 PopupHelper.Create(PrefabFactory.PopupTuTorBet);
             });
         }
+    }
+    private void OnDestroy()
+    {
+        tutor.Kill();
     }
 }
