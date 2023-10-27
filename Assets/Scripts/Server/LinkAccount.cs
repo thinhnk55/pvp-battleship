@@ -124,12 +124,18 @@ namespace Server
                     break;
                 case 1:
                     PopupHelper.CreateMessage(PrefabFactory.PopupLinkAccountMessage, "Message", "System error!", null);
+                    buttonLinkAppleAccount.interactable = true;
+                    AuthenticationBase.Instance.auths[SocialAuthType.Apple].SignOut();
                     break;
                 case 10:
                     PopupHelper.CreateMessage(PrefabFactory.PopupLinkAccountMessage, "Message", "Invalid token!", null);
+                    buttonLinkAppleAccount.interactable = true;
+                    AuthenticationBase.Instance.auths[SocialAuthType.Apple].SignOut();
                     break;
                 case 11:
-                    PopupHelper.CreateMessage(PrefabFactory.PopupLinkAccountMessage, "Message", "Account linked!", null);
+                    PopupHelper.CreateMessage(PrefabFactory.PopupLinkAccountMessage, "Message", "Apple account has been used. Please use a different apple account to link", null);
+                    buttonLinkAppleAccount.interactable = true;
+                    AuthenticationBase.Instance.auths[SocialAuthType.Apple].SignOut();
                     break;
             }
         }
@@ -145,12 +151,18 @@ namespace Server
                     break;
                 case 1:
                     PopupHelper.CreateMessage(PrefabFactory.PopupLinkAccountMessage, "Message", "System error!", null);
+                    buttonLinkGoogleAccount.interactable = true;
+                    AuthenticationBase.Instance.auths[SocialAuthType.Google].SignOut();
                     break;
                 case 10:
                     PopupHelper.CreateMessage(PrefabFactory.PopupLinkAccountMessage, "Message", "Invalid token!", null);
+                    buttonLinkGoogleAccount.interactable = true;
+                    AuthenticationBase.Instance.auths[SocialAuthType.Google].SignOut();
                     break;
                 case 11:
-                    PopupHelper.CreateMessage(PrefabFactory.PopupLinkAccountMessage, "Message", "Account linked!", null);
+                    PopupHelper.CreateMessage(PrefabFactory.PopupLinkAccountMessage, "Message", "Email has been used. Please use a different email address to link", null);
+                    buttonLinkGoogleAccount.interactable = true;
+                    AuthenticationBase.Instance.auths[SocialAuthType.Google].SignOut();
                     break;
             }
             #endregion

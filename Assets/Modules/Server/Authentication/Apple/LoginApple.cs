@@ -4,10 +4,9 @@ using AppleAuth.Enums;
 using AppleAuth.Extensions;
 using AppleAuth.Interfaces;
 using AppleAuth.Native;
-using UnityEngine;
 using System;
 using System.Text;
-using Server;
+using UnityEngine;
 namespace Authentication
 {
     public class LoginApple : ISocialAuth

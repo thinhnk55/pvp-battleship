@@ -8,8 +8,9 @@ using UnityEngine;
 public class ButtonOpenRetreatPVEPopup : ButtonBase
 {
     private PopupConfirm popupRetreatPVE;
+    [SerializeField] GameObject Resource;
 
-    private void Start()
+    private void OnEnable()
     {
         ServerMessenger.AddListener<JSONNode>(ServerResponse._END_GAME_TREASURE, EndGameTreasure);
     }
@@ -46,15 +47,29 @@ public class ButtonOpenRetreatPVEPopup : ButtonBase
         PVEData.TypeBoard = int.Parse(data["d"]["d"]["t"]);
     }
 
+    //IEnumerator GetBeri(int beri)
+    //{
+    //    PopupBehaviour popupResource = PopupHelper.Create(PrefabFactory.PopupResourcePVE);
+    //    CoinVFX.CoinVfx(popupResource.transform.GetChild(0).transform, Position, Position);
+    //    popupRetreatPVE?.ForceClose();
+    //    yield return new WaitForSeconds(1);
+    //    PConsumableType.BERRY.SetValue(beri);
+    //    yield return new WaitForSeconds(1.5f);
+    //    popupResource.ForceClose();
+    //    SceneTransitionHelper.Load(ESceneName.Home);
+    //}
+
     IEnumerator GetBeri(int beri)
     {
-        PopupBehaviour popupResource = PopupHelper.Create(PrefabFactory.PopupResourcePVE);
-        CoinVFX.CoinVfx(popupResource.transform.GetChild(0).transform, Position, Position);
-        popupRetreatPVE?.ForceClose();
+        Resource.SetActive(true);
+        CoinVFX.CoinVfx(Resource.transform.GetChild(0).transform, popupRetreatPVE.transform.position, popupRetreatPVE.transform.position);
         yield return new WaitForSeconds(1);
         PConsumableType.BERRY.SetValue(beri);
         yield return new WaitForSeconds(1.5f);
-        popupResource.ForceClose();
+        Resource.SetActive(false);
+        popupRetreatPVE?.ForceClose();
         SceneTransitionHelper.Load(ESceneName.Home);
     }
+
+
 }

@@ -1,13 +1,8 @@
 ﻿using DG.Tweening;
 using Framework;
-using Lean.Common;
 using Lean.Touch;
 using SimpleJSON;
-using Spine;
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 
@@ -158,7 +153,7 @@ public class Ship : CacheMonoBehaviour
     private void Start()
     {
         initRot = Dir;
-        initPos = Position;   
+        initPos = Position;
         leanDrag = GetComponent<LeanDragTranslate>();
         previousPos = Position;
     }
@@ -183,7 +178,7 @@ public class Ship : CacheMonoBehaviour
             }
             if (octilesComposition[i].attackedAnim != null)
                 octilesComposition[i].attackedAnim.gameObject.SetActive(false);
-            
+
         }
     }
     public void BeingAttacked(Octile octile)
@@ -193,7 +188,7 @@ public class Ship : CacheMonoBehaviour
         {
             if (!octilesComposition[i].Attacked)
             {
-                return ;
+                return;
             }
         }
         BeingDestroyed();
@@ -218,7 +213,7 @@ public class Ship : CacheMonoBehaviour
             if (octilesComposition[i].attackedAnim != null)
                 octilesComposition[i].attackedAnim.gameObject.SetActive(false);
             ObjectPoolManager.SpawnObject<ParticleSystem>(VFXFactory.Explosion, octilesComposition[i].Position);
-            if (i==0 || i == 2)
+            if (i == 0 || i == 2)
             {
                 smokeVFXs.Add(ObjectPoolManager.SpawnObject<ParticleSystem>(VFXFactory.Smoke, octilesComposition[i].Position, transform).gameObject);
             }
@@ -226,7 +221,7 @@ public class Ship : CacheMonoBehaviour
         GetComponent<LeanSelectableByFinger>().enabled = false;
     }
 
-    public void OnSelected(LeanSelectByFinger leanSelectByFinger,LeanFinger leanFinger)
+    public void OnSelected(LeanSelectByFinger leanSelectByFinger, LeanFinger leanFinger)
     {
         if (CoreGame.Instance.stateMachine.CurrentState != GameState.Pre && (CoreGame.Instance.stateMachine.CurrentState != GameState.PreRematch || !CoreGame.rematch))
             return;
@@ -239,7 +234,7 @@ public class Ship : CacheMonoBehaviour
             Position = leanFinger.GetLastWorldPosition(-CoreGame.Instance.cam.transform.position.z);
             onSelecting = true;
         }
-        if (octilesOccupy.Count>0)
+        if (octilesOccupy.Count > 0)
         {
             List<Vector2Int> curPoses = currentPoses;
             for (int i = 0; i < curPoses.Count; i++)
@@ -304,7 +299,7 @@ public class Ship : CacheMonoBehaviour
         Debug.Log("fingerup");
         CheckAndAssignShip(CoreGame.Instance.player, x, y, true);
     }
-    public bool CheckAndAssignShip(Board board,int x, int y, bool assignBackup, bool isRotate = false)
+    public bool CheckAndAssignShip(Board board, int x, int y, bool assignBackup, bool isRotate = false)
     {
         if (CoreGame.Instance.stateMachine.CurrentState != GameState.Pre && CoreGame.Instance.stateMachine.CurrentState != GameState.Search
             && CoreGame.Instance.stateMachine.CurrentState != GameState.PreRematch && CoreGame.Instance.stateMachine.CurrentState != GameState.SearchRematch)
@@ -313,7 +308,7 @@ public class Ship : CacheMonoBehaviour
         // valid
         if (CheckShip(board, x, y, out int _x, out int _y, out bool inside))
         {
-            Debug.LogWarning("CheckShip");
+            //Debug.LogWarning("CheckShip");
             board.AssignShip(this, _x, _y);
             occupyRenderer.enabled = false;
             transform.parent = board.shipRoot.transform;
@@ -335,7 +330,7 @@ public class Ship : CacheMonoBehaviour
                 return false;
             }
             // inside or rotate with back up condition
-            if (previousIndex!=null && assignBackup)
+            if (previousIndex != null && assignBackup)
             {
                 board.AssignShip(this, previousIndex.x, previousIndex.y);
                 tweenMove = transform.DOMove(board.octiles[previousIndex.y][previousIndex.x].Position, tweenTime);
@@ -423,7 +418,7 @@ public class Ship : CacheMonoBehaviour
     {
         if (CoreGame.Instance.stateMachine.CurrentState != GameState.Pre && (CoreGame.Instance.stateMachine.CurrentState != GameState.PreRematch || !CoreGame.rematch))
             return;
-        if (leanFinger.Age< LeanTouch.CurrentTapThreshold)
+        if (leanFinger.Age < LeanTouch.CurrentTapThreshold)
         {
             var direct = Vector2Int.up;
             if (Dir == Vector2Int.left)
@@ -450,7 +445,7 @@ public class Ship : CacheMonoBehaviour
             {
 
             }
-            else if ( !CheckAndAssignShip(CoreGame.Instance.player, x, y, false, true))
+            else if (!CheckAndAssignShip(CoreGame.Instance.player, x, y, false, true))
             {
                 for (int i = 1; i < 10; i++)
                 {
@@ -460,7 +455,7 @@ public class Ship : CacheMonoBehaviour
 
                         if (CheckAndAssignShip(CoreGame.Instance.player, x + i, y + j, false, true))
                         {
-                            Debug.Log("Find" + i +"_"+ j);
+                            Debug.Log("Find" + i + "_" + j);
                             return;
                         }
                         OnSelected(null, leanFinger);
@@ -533,7 +528,8 @@ public class Ship : CacheMonoBehaviour
 
     }
 
-    public JSONNode ToJson() {
+    public JSONNode ToJson()
+    {
         int d = 0;
         if (dir == Vector2Int.right)
         {

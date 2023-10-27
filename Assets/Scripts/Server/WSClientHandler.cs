@@ -365,14 +365,14 @@ public class WSClientHandler : Singleton<WSClientHandler>
         new JSONClass()
         {
             { "id", ServerRequest._CONFIG_ADS.ToJson() },
-            { "v",  new JSONData(AdsData.VersionAdsConfig)}
+            { "v",  new JSONData(AdsData.VersionAds)}
         }.RequestServer();
     }
     public static void ReceiveAdsConfig(JSONNode data)
     {
-        if (int.Parse(data["d"]["version"]) != AdsData.VersionAdsConfig)
+        if (int.Parse(data["d"]["version"]) != AdsData.VersionAds)
         {
-            AdsData.VersionAdsConfig = int.Parse(data["d"]["version"]);
+            AdsData.VersionAds = int.Parse(data["d"]["version"]);
 
             int platform;
 #if PLATFORM_ANDROID || UNITY_ANDROID
@@ -394,6 +394,8 @@ public class WSClientHandler : Singleton<WSClientHandler>
                 value.rewardAdUnitId = data["d"]["ad_unit"][i]["ad_unit_id"];
                 AdsData.RewardTypeToConfigMap.Add(key, value);
             }
+            AdsData.VersionAds = int.Parse(data["d"]["version"]);
+
         }
 
         AdsManager.adsManager.Initialize(DataAuth.AuthData.userId.ToString());
@@ -869,12 +871,11 @@ public class WSClientHandler : Singleton<WSClientHandler>
     }
     public static void GetConfigGift(JSONNode data)
     {
-        if (data["d"]["version"].AsInt == GameData.VersionGiftConfig)
-            return;
+        if (data["d"]["version"].AsInt == GameData.VersionGiftConfig) return;
 
         GameData.GiftConfig = data["d"]["gold"].ToListInt();
         Timer<Gift>.Instance.TriggerInterval_Sec = data["d"]["bonus_period"].AsInt / 1000;
-
+        GameData.GiftCoolDown = Timer<Gift>.Instance.TriggerInterval_Sec;
         GameData.VersionGiftConfig = data["d"]["version"].AsInt;
     }
     public static void GetGift()
