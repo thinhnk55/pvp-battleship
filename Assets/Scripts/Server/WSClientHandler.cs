@@ -900,6 +900,7 @@ public class WSClientHandler : Singleton<WSClientHandler>
         if (data["d"]["version"].AsInt != GameData.VersionLeaderBoardConfig)
         {
             GameData.LeaderBoard.Period = data["d"]["leader_period"].AsInt / 1000;
+            Timer<LeaderBoard>.Instance.TriggerInterval_Sec = GameData.LeaderBoard.Period;
             GameData.LeaderBoard.goldReward = new List<int>();
             GameData.LeaderBoard.winReward = new List<int>();
             for (int i = 0; i < data["d"]["reward_gold"].Count; i++)
