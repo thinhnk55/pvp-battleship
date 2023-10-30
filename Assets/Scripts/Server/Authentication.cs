@@ -82,7 +82,6 @@ namespace Authentication
                     HTTPClientAuth.DisableAccount();
                 }
             });
-            //HTTPClientAuth.DeleteAccount();
         }
 
         public bool IsAllowedLogin()

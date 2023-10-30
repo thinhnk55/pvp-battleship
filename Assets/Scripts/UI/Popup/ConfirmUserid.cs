@@ -14,17 +14,25 @@ public class ConfirmUserid : MonoBehaviour
     {
         deleteButton.onClick.AddListener(DeleteButtonOnClink);
     }
+    private void OnDestroy()
+    {
+        deleteButton.onClick.RemoveListener(DeleteButtonOnClink);
+    }
 
     private void DeleteButtonOnClink()
     {
-        if(IsUserIdOfPlayer(inputField.text))
+        if(string.IsNullOrEmpty(inputField.text))
+        {
+            messageNoti.SetText("Please fill your userid");
+        }
+        else if(IsUserIdOfPlayer(inputField.text))
         {
             messageNoti.SetText("");
             HTTPClientAuth.DeleteAccount();
         }
         else
         {
-            messageNoti.SetText("User id isn't correct!!!");
+            messageNoti.SetText("User id isn't correct!");
         }
     }
 

@@ -28,15 +28,6 @@ public class PVEBetCard : CardBase<PVEBetInfo>
             info.onclick?.Invoke();
         });
 
-        //if (info.IsQualified)
-        //{
-        //    lockImgae.SetAlpha(0);
-        //}
-        //else
-        //{
-        //    lockImgae.SetAlpha(1);  
-        //}
-
         if (PVEData.TypeBoard != -1 && PVEData.IsDeadPlayer.Data == false) // Old game
         {
             if(info.id != PVEData.TypeBoard) // Not current bet pve
