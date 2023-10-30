@@ -383,7 +383,6 @@ public class CoreGame : SingletonMono<CoreGame>
     public void QuitGame()
     {
         WSClientHandler.QuitGame(roomId);
-        rematch = false;
     }
     public void GoHome()
     {
