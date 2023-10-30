@@ -690,15 +690,18 @@ public class WSClientHandler : Singleton<WSClientHandler>
     }
     public static void SeasonQuestReward(JSONNode json)
     {
-        PopupHelper.Create(PrefabFactory.PopupRPConfirm);
-        SoundType.RPCONFIRM.PlaySound();
+        if (json["d"]["e"].AsInt == 0)
+        {
+            PopupHelper.Create(PrefabFactory.PopupRPConfirm);
+            SoundType.RPCONFIRM.PlaySound();
 
-        GameData.RoyalPass.Point.Data += json["d"]["r"].AsInt;
-        HashSet<int> receive = new HashSet<int>();
-        receive.AddRange(GameData.RoyalPass.SeasonQuestsObtained.Data);
-        receive.Add(json["d"]["i"].AsInt);
-        GameData.RoyalPass.SeasonQuestsObtained.Data = receive;
-        ConditionalMono.UpdateObject(typeof(RoyalPassReminder));
+            GameData.RoyalPass.Point.Data += json["d"]["r"].AsInt;
+            HashSet<int> receive = new HashSet<int>();
+            receive.AddRange(GameData.RoyalPass.SeasonQuestsObtained.Data);
+            receive.Add(json["d"]["i"].AsInt);
+            GameData.RoyalPass.SeasonQuestsObtained.Data = receive;
+            ConditionalMono.UpdateObject(typeof(RoyalPassReminder));
+        }
     }
     public static void RoyalPassReward(int index, int elite)
     {

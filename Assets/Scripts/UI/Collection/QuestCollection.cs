@@ -41,15 +41,15 @@ public class QuestCollection : CardCollectionBase<QuestInfo>
         for (int i = 0; i < GameData.RoyalPass.CurrentQuests.Data.Length; i++)
         {
             int _i = i;
-            if (GameData.RoyalPass.CurrentQuests.Data[i] > -1)
+            if (GameData.RoyalPass.CurrentQuests.Data[_i] > -1)
             {
                 infos.Add(new QuestInfo()
                 {
-                    Id = GameData.RoyalPass.CurrentQuests.Data[i],
-                    Require = GameData.RoyalPass.Quests[GameData.RoyalPass.CurrentQuests.Data[i]].Require,
-                    Progress = GameData.RoyalPass.CurrentQuestsProgress[i],
-                    Reward = GameData.RoyalPass.Quests[GameData.RoyalPass.CurrentQuests.Data[i]].Reward,
-                    Description = RoyalPass.GetDescription((StatisticType)GameData.RoyalPass.Quests[GameData.RoyalPass.CurrentQuests.Data[i]].Type, GameData.RoyalPass.Quests[GameData.RoyalPass.CurrentQuests.Data[i]].Require),
+                    Id = GameData.RoyalPass.CurrentQuests.Data[_i],
+                    Require = GameData.RoyalPass.Quests[GameData.RoyalPass.CurrentQuests.Data[_i]].Require,
+                    Progress = GameData.RoyalPass.CurrentQuestsProgress[_i],
+                    Reward = GameData.RoyalPass.Quests[GameData.RoyalPass.CurrentQuests.Data[_i]].Reward,
+                    Description = RoyalPass.GetDescription((StatisticType)GameData.RoyalPass.Quests[GameData.RoyalPass.CurrentQuests.Data[_i]].Type, GameData.RoyalPass.Quests[GameData.RoyalPass.CurrentQuests.Data[_i]].Require),
                     Obtained = false,
                     OnCollect = (info) =>
                     {
@@ -110,7 +110,7 @@ public class QuestCollection : CardCollectionBase<QuestInfo>
             GameData.RoyalPass.CurrentQuestsProgress = data["d"]["q"]["p"].ToArrayInt(false);
             GameData.RoyalPass.CurrentQuests.Data = data["d"]["q"]["q"].ToArrayInt(false);
         }
-        else if(String.Equals(adsUnitId, AdsData.AdsUnitIdMap[RewardType.Change_Quest]))
+        else if (String.Equals(adsUnitId, AdsData.AdsUnitIdMap[RewardType.Change_Quest]))
         {
             int[] arr = new int[3];
             for (int i = 0; i < arr.Length; i++)
