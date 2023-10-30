@@ -89,7 +89,6 @@ public static class StatisticTracker
     private static void OnBattleFieldChange(HashSet<int> oValue, HashSet<int> nValue)
     {
         StatisticType.BATTLEFIELD.SetProgress(nValue.Count);
-        Debug.Log("123");
     }
     private static void OnGemChange(int oValue, int nValue)
     {

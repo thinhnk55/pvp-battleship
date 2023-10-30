@@ -305,6 +305,10 @@ public class WSClientHandler : Singleton<WSClientHandler>
         {
             GameData.AchievementConfig = new Dictionary<AchievementType, AchievementInfo>();
             GameData.VersionAchievementConfig = data["d"]["version"].AsInt;
+            for (int i = 0; i < data["d"]["achievements"].Count; i++)
+            {
+                GameData.AchievementConfig.Add((AchievementType)i, AchievementInfo.FromJson(data["d"]["achievements"][i], i));
+            }
         }
         for (int i = 0; i < GameData.AchievementConfig.Count; i++)
         {
@@ -332,6 +336,7 @@ public class WSClientHandler : Singleton<WSClientHandler>
                 }
             });
         }
+
     }
     public static void RequestObtainAchievemnt(int id)
     {
