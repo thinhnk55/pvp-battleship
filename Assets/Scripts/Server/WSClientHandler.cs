@@ -895,22 +895,25 @@ public class WSClientHandler : Singleton<WSClientHandler>
     }
     public static void LeaderBoardConfig(JSONNode data)
     {
-        if (data["d"]["version"].AsInt != GameData.VersionLeaderBoardConfig)
+        if (data["e"].AsInt == 0)
         {
-            GameData.LeaderBoard.Period = data["d"]["leader_period"].AsInt / 1000;
-            Timer<LeaderBoard>.Instance.TriggerInterval_Sec = GameData.LeaderBoard.Period;
-            GameData.LeaderBoard.goldReward = new List<int>();
-            GameData.LeaderBoard.winReward = new List<int>();
-            for (int i = 0; i < data["d"]["reward_gold"].Count; i++)
+            if (data["d"]["version"].AsInt != GameData.VersionLeaderBoardConfig)
             {
-                GameData.LeaderBoard.goldReward.Add(data["d"]["reward_gold"][i].AsInt);
-            }
-            for (int i = 0; i < data["d"]["reward_win"].Count; i++)
-            {
-                GameData.LeaderBoard.winReward.Add(data["d"]["reward_win"][i].AsInt);
-            }
+                GameData.LeaderBoard.Period = data["d"]["leader_period"].AsInt / 1000;
+                Timer<LeaderBoard>.Instance.TriggerInterval_Sec = GameData.LeaderBoard.Period;
+                GameData.LeaderBoard.goldReward = new List<int>();
+                GameData.LeaderBoard.winReward = new List<int>();
+                for (int i = 0; i < data["d"]["reward_gold"].Count; i++)
+                {
+                    GameData.LeaderBoard.goldReward.Add(data["d"]["reward_gold"][i].AsInt);
+                }
+                for (int i = 0; i < data["d"]["reward_win"].Count; i++)
+                {
+                    GameData.LeaderBoard.winReward.Add(data["d"]["reward_win"][i].AsInt);
+                }
 
-            GameData.VersionLeaderBoardConfig = data["d"]["version"].AsInt;
+                GameData.VersionLeaderBoardConfig = data["d"]["version"].AsInt;
+            }
         }
 
         if (CoreGame.reconnect == null)

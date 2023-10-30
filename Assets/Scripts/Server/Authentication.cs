@@ -18,8 +18,11 @@ namespace Authentication
             HTTPClientAuth.HandleLogoutResponse += HandleLogoutResponse;
             HTTPClientAuth.HandleDisableAccountResponse += HandleDisableAccountResponse;
             HTTPClientAuth.HandleDeleteAccountResponse += HandleDeleteAccountResponse;
-            WSClient.Instance.OnDisconnect += () => { HTTPClientAuth.Logout(); };
-        } 
+            WSClient.Instance.OnDisconnect += () =>
+            {
+                AuthenticationBase.Instance.auths[GameData.TypeLogin].SignOut();
+            };
+        }
 
         protected void Awake()
         {
@@ -144,7 +147,6 @@ namespace Authentication
             JSONNode jsonParse = JSONNode.Parse(res);
             if (int.Parse(jsonParse["error"]) == 0)
             {
-                AuthenticationBase.Instance.auths[GameData.TypeLogin].SignOut();
                 WSClient.Instance.Disconnect(true);
                 SceneTransitionHelper.Load(ESceneName.PreHome);
             }
