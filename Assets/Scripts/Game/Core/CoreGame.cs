@@ -64,6 +64,7 @@ public class CoreGame : SingletonMono<CoreGame>
     [SerializeField] Image turnImage;
 
     //rematch
+    public Ship SelectedShip;
     [SerializeField] TextMeshProUGUI counterRematchObj;
     static float counterRematch;
     float currentCounterRematch;
@@ -255,6 +256,7 @@ public class CoreGame : SingletonMono<CoreGame>
         {
             if (Instance.player.ships.Count < 10)
             {
+                Instance.SelectedShip.leanDrag.enabled = false;
                 Instance.RandomShip();
                 Instance.buttonAuto.enabled = false;
                 Instance.buttonAuto.GetComponent<Image>().color = Color.gray;
