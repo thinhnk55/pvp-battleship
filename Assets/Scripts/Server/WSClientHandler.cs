@@ -301,13 +301,13 @@ public class WSClientHandler : Singleton<WSClientHandler>
     }
     static void GetConfigAchievement(JSONNode data)
     {
-        if (data["d"]["version"].AsInt == GameData.VersionAchievementConfig)
-            return;
-
-        GameData.AchievementConfig = new Dictionary<AchievementType, AchievementInfo>();
-        for (int i = 0; i < data["d"]["achievements"].Count; i++)
+        if (data["d"]["version"].AsInt != GameData.VersionAchievementConfig)
         {
-            GameData.AchievementConfig.Add((AchievementType)i, AchievementInfo.FromJson(data["d"]["achievements"][i], i));
+            GameData.AchievementConfig = new Dictionary<AchievementType, AchievementInfo>();
+            GameData.VersionAchievementConfig = data["d"]["version"].AsInt;
+        }
+        for (int i = 0; i < GameData.AchievementConfig.Count; i++)
+        {
             int _i = i;
             ((StatisticType)_i).AddListenerOnProgress((oValue, nValue) =>
             {
@@ -332,8 +332,6 @@ public class WSClientHandler : Singleton<WSClientHandler>
                 }
             });
         }
-
-        GameData.VersionAchievementConfig = data["d"]["version"].AsInt;
     }
     public static void RequestObtainAchievemnt(int id)
     {
