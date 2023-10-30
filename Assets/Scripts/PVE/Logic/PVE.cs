@@ -174,7 +174,7 @@ public class PVE : SingletonMono<PVE>
     {
         for (int i = 0; i < 3; i++)
         {
-            Instance.shipPVEs[i].ShowPoint( Instance.shipPVEs[i].point.Data < player.point.Data ? false : true);
+            Instance.shipPVEs[i].ShowPoint( Instance.shipPVEs[i].point.Data <= player.point.Data ? false : true);
         }
     }
 
