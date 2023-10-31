@@ -130,7 +130,7 @@ public class CoreGame : SingletonMono<CoreGame>
         Instance.shipsOpponent = shipListOpponent.GetComponentsInChildren<Ship>().ToList();
         Instance.stateMachine = new StateMachine<GameState>();
         Instance.stateMachine.AddState(GameState.Pre, Instance.StartPregame, Instance.UpdatePregame, Instance.EndPregame);
-        Instance.stateMachine.AddState(GameState.PreRematch, Instance.StartPregameReMatch, Instance.UpdatePregameRematch, Instance.EndPregameRematch);
+        Instance.stateMachine.AddState(GameState.PreRematch, Instance.StartPregameRematch, Instance.UpdatePregameRematch, Instance.EndPregameRematch);
         Instance.stateMachine.AddState(GameState.Search, Instance.StartSearch, Instance.UpdateSearch, Instance.EndSearch);
         Instance.stateMachine.AddState(GameState.SearchRematch, Instance.StartSearchRematch, Instance.UpdateSearchRematch, Instance.EndSearchRematch);
         Instance.stateMachine.AddState(GameState.Turn, Instance.StartTurn, Instance.UpdateTurn, Instance.EndTurn);
@@ -195,7 +195,7 @@ public class CoreGame : SingletonMono<CoreGame>
     {
         if (GameData.Tutorial[2] == 0)
         {
-            btnBackPreGame.SetActive(false);
+            Instance.btnBackPreGame.SetActive(false);
         }
         AudioHelper.StopMusic();
         float sizeWidth = cam.orthographicSize * cam.aspect * 2;
@@ -222,7 +222,7 @@ public class CoreGame : SingletonMono<CoreGame>
     {
 
     }
-    void StartPregameReMatch()
+    void StartPregameRematch()
     {
         float sizeWidth = cam.orthographicSize * cam.aspect * 2;
         Instance.preUI.SetActive(true);
@@ -261,7 +261,7 @@ public class CoreGame : SingletonMono<CoreGame>
                 Instance.buttonAuto.enabled = false;
                 Instance.buttonAuto.GetComponent<Image>().color = Color.gray;
             }
-            DOVirtual.DelayedCall(0, () => Instance.Ready());
+            Instance.Ready();
         }
     }
     void EndPregameRematch()
@@ -273,7 +273,7 @@ public class CoreGame : SingletonMono<CoreGame>
     {
         if (GameData.Tutorial[2] == 0)
         {
-            btnBackSearchGame.SetActive(false);
+            Instance.btnBackSearchGame.SetActive(false);
             GameData.Tutorial[2] = 1;
         }
         Instance.opponent.gameObject.SetActive(true);
@@ -411,16 +411,16 @@ public class CoreGame : SingletonMono<CoreGame>
     }
     public void Ready()
     {
-        if (shipListPlayer.transform.childCount == 0)
+        if (Instance.shipListPlayer.transform.childCount == 0)
         {
             rematch = false;
             Instance.searchUI.amount.text = (GameData.Bets[bet].Bet * 1.95f).ToString();
             CoinVFX.CoinVfx(Instance.searchUI.tresure.transform, Instance.searchUI.avatar1.transform.position, Instance.searchUI.avatar2.transform.position);
             WSClientHandler.SubmitShip(roomId, player.ships);
-            btnReady.GetComponent<Button>().enabled = false;
-            btnReady.GetComponent<Image>().color = Color.gray;
-            buttonAuto.enabled = false;
-            buttonAuto.GetComponent<Image>().color = Color.gray;
+            Instance.btnReady.GetComponent<Button>().enabled = false;
+            Instance.btnReady.GetComponent<Image>().color = Color.gray;
+            Instance.buttonAuto.enabled = false;
+            Instance.buttonAuto.GetComponent<Image>().color = Color.gray;
         }
     }
     #endregion
