@@ -14,7 +14,7 @@ public class Ship : CacheMonoBehaviour
     [SerializeField] SpriteRenderer occupyRenderer;
     [SerializeField] Sprite destroyedSprite;
     [SerializeField] List<GameObject> smokeVFXs;
-    LeanDragTranslate leanDrag;
+    public LeanDragTranslate leanDrag;
     public bool onSelecting;
     public float timeSelecting;
     public Vector2Int initRot;
@@ -225,6 +225,7 @@ public class Ship : CacheMonoBehaviour
     {
         if (CoreGame.Instance.stateMachine.CurrentState != GameState.Pre && (CoreGame.Instance.stateMachine.CurrentState != GameState.PreRematch || !CoreGame.rematch))
             return;
+        CoreGame.Instance.SelectedShip = this;
         timeSelecting = 0;
         if (octilesOccupy.Count > 0)
             previousIndex = octilesOccupy[0].pos;
@@ -301,6 +302,7 @@ public class Ship : CacheMonoBehaviour
     }
     public bool CheckAndAssignShip(Board board, int x, int y, bool assignBackup, bool isRotate = false)
     {
+        onSelecting = false;
         if (CoreGame.Instance.stateMachine.CurrentState != GameState.Pre && CoreGame.Instance.stateMachine.CurrentState != GameState.Search
             && CoreGame.Instance.stateMachine.CurrentState != GameState.PreRematch && CoreGame.Instance.stateMachine.CurrentState != GameState.SearchRematch)
             return false;

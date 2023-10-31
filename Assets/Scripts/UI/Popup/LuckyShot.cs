@@ -99,6 +99,7 @@ public class LuckyShot : SingletonMono<LuckyShot>
                 {
                     indexShot = _i;
                     WSClientHandler.RequestShot();
+                    StartCoroutine(Instance.Door());
                 }
             });
         }
@@ -108,6 +109,7 @@ public class LuckyShot : SingletonMono<LuckyShot>
     {
         if (node["e"].AsInt == 0)
         {
+            Instance.shots[indexShot].image.SetAlpha(1f);
             GameData.RocketCount.Data = node["d"]["l"]["r"].AsInt;
             int amount = int.Parse(node["d"]["b"]);
             PConsumableType.BERRY.AddValue(amount);
@@ -146,7 +148,6 @@ public class LuckyShot : SingletonMono<LuckyShot>
                 DOVirtual.DelayedCall(0.5f, () => CoinVFX.CoinVfx(Instance.resourceUI.transform, Instance.shots[indexShot].transform.position, Instance.shots[indexShot].transform.position));
             }
             ConditionalMono.conditionalEvents[typeof(LuckyShotReminder)].ForEach((con) => con.UpdateObject());
-            StartCoroutine(Instance.Door());
         }
 
     }
@@ -252,7 +253,6 @@ public class LuckyShot : SingletonMono<LuckyShot>
             Instance.sequence.Append(Instance.shots[indexShot].transform.DOScale(initScale * 0.9f, 0.25f))
                 .Append(Instance.shots[indexShot].transform.DOScale(initScale * 1.1f, 0.25f))
                 .SetLoops(6);
-            Instance.shots[indexShot].image.SetAlpha(1f);
         }
         for (int i = 0; i < Instance.shots.Count; i++)
         {
@@ -268,7 +268,7 @@ public class LuckyShot : SingletonMono<LuckyShot>
         yield return new WaitForSeconds(anim.GetDuration("animation") * 1 / 2);
         for (int i = 0; i < Instance.shots.Count; i++)
         {
-            Instance.shots[i].GetComponent<Image>().sprite = SpriteFactory.Unknown;
+            //Instance.shots[i].GetComponent<Image>().sprite = null;
             Instance.shots[i].enabled = true;
         }
     }

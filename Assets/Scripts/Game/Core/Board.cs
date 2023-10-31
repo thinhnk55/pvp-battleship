@@ -20,7 +20,6 @@ public class Board : CacheMonoBehaviour
     public SpriteRenderer battleFieldSprite;
     public int skinShip;
     Camera cam;
-
     GameObject tutorFormation;
     GameObject tutorIngame;
     private void Awake()
