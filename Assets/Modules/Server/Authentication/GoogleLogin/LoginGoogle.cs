@@ -92,7 +92,7 @@ namespace Authentication
             GoogleSignIn.Configuration.UseGameSignIn = false;
             GoogleSignIn.Configuration.RequestIdToken = true;
 
-            GoogleSignIn.DefaultInstance.SignIn().ContinueWith(OnAuthenticationFinished);
+            GoogleSignIn.DefaultInstance.SignIn().ContinueWith(OnAuthenticationFinished, TaskScheduler.FromCurrentSynchronizationContext());
         }
 
         public void LinkAccount()

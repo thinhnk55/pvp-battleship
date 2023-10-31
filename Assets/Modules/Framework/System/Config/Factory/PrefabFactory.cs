@@ -27,6 +27,7 @@ namespace Framework
         [SerializeField] private GameObject[] shipsPVE; public static GameObject[] ShipsPVE { get { return Instance.shipsPVE; } }
         [SerializeField] private GameObject plane; public static GameObject Plane { get { return Instance.plane; } }
         [SerializeField] private GameObject missle; public static GameObject Missle { get { return Instance.missle; } }
+        [SerializeField] private GameObject loadingUI; public static GameObject LoadingUI { get { return Instance.loadingUI; } }
         [SerializeField] private GameObject popupAchie; public static GameObject PopupAchie { get { return Instance.popupAchie; } }
         [SerializeField] private GameObject popupConfirm; public static GameObject PopupConfirm { get { return Instance.popupConfirm; } }
         [SerializeField] private GameObject popupOutOfResource; public static GameObject PopupOutOfResource { get { return Instance.popupOutOfResource; } }
