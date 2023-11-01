@@ -932,7 +932,7 @@ public class WSClientHandler : Singleton<WSClientHandler>
             {
                 SceneTransitionHelper.Load(ESceneName.Home);
             }
-            else
+            else if (SceneManager.GetActiveScene().name == "Loading")
             {
                 LoadingScene.Instance.LoadScene("Home");
             }

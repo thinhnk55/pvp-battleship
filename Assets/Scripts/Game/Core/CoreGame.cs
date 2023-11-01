@@ -411,7 +411,7 @@ public class CoreGame : SingletonMono<CoreGame>
     }
     public void Ready()
     {
-        if (Instance.shipListPlayer.transform.childCount == 0)
+        if (Instance.shipListPlayer.transform.childCount == 0 && rematch)
         {
             rematch = false;
             Instance.searchUI.amount.text = (GameData.Bets[bet].Bet * 1.95f).ToString();
