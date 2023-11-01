@@ -7,7 +7,7 @@ namespace Authentication
 {
     public class Authentication : MonoBehaviour
     {
-        [SerializeField] GameObject LoadingUI;
+        [SerializeField] static GameObject LoadingUI;
         [SerializeField] GameObject ButtonAppleLogin;
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
@@ -59,7 +59,6 @@ namespace Authentication
 
             AuthenticationBase.Instance.auths[(SocialAuthType)type].SignIn();
             GameData.TypeLogin = (SocialAuthType)type;
-            LoadingUI.SetActive(true);
         }
 
         public void Logout()
@@ -114,6 +113,7 @@ namespace Authentication
             JSONNode jsonRes = JSONNode.Parse(res);
             if (int.Parse(jsonRes["error"]) == 0)
             {
+                LoadingUI.SetActive(true);
                 DataAuth.AuthData = new AuthData();
                 DataAuth.AuthData.userId = int.Parse(jsonRes["data"]["id"]);
                 DataAuth.AuthData.username = jsonRes["data"]["username"];

@@ -13,6 +13,8 @@ namespace Authentication
 
         private GoogleSignInConfiguration configuration;
 
+        private string idToken = null; 
+
         public void OnDisconnect()
         {
             GoogleSignIn.DefaultInstance.Disconnect();
@@ -41,7 +43,7 @@ namespace Authentication
             }
             else
             {
-                Debug.Log("Login google Done");
+                idToken = task.Result.IdToken;
                 Debug.Log(task.Result.IdToken);
                 HTTPClientAuth.LoginGoogle(task.Result.IdToken);
             }
@@ -88,6 +90,12 @@ namespace Authentication
 
         public void SignIn()
         {
+            if(idToken != null)
+            {
+                return;
+            }
+
+
             GoogleSignIn.Configuration = configuration;
             GoogleSignIn.Configuration.UseGameSignIn = false;
             GoogleSignIn.Configuration.RequestIdToken = true;
@@ -110,16 +118,22 @@ namespace Authentication
         }
         public void SignOut()
         {
+            idToken = null;
+
             GoogleSignIn.DefaultInstance.SignOut();
         }
 
         public void DisableAccount()
         {
+            idToken = null;
+
             GoogleSignIn.DefaultInstance.SignOut();
         }
 
         public void DeleteAccount()
         {
+            idToken = null;
+
             GoogleSignIn.DefaultInstance.SignOut();
         }
     }
