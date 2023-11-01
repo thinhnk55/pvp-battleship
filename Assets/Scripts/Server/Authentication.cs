@@ -1,13 +1,13 @@
 using Framework;
 using Server;
 using SimpleJSON;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Authentication
 {
     public class Authentication : MonoBehaviour
     {
-        [SerializeField] static GameObject LoadingUI;
         [SerializeField] GameObject ButtonAppleLogin;
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
@@ -113,7 +113,6 @@ namespace Authentication
             JSONNode jsonRes = JSONNode.Parse(res);
             if (int.Parse(jsonRes["error"]) == 0)
             {
-                LoadingUI.SetActive(true);
                 DataAuth.AuthData = new AuthData();
                 DataAuth.AuthData.userId = int.Parse(jsonRes["data"]["id"]);
                 DataAuth.AuthData.username = jsonRes["data"]["username"];
