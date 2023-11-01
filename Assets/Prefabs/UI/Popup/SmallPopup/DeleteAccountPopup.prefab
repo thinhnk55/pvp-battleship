@@ -1286,6 +1286,7 @@ GameObject:
   - component: {fileID: 3413227408228123846}
   - component: {fileID: 357471824015169664}
   - component: {fileID: 136186072323610316}
+  - component: {fileID: 1293703635052628898}
   m_Layer: 5
   m_Name: Disable
   m_TagString: Untagged
@@ -1419,3 +1420,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c844f41006a8e5847be97a9b8fb3ae12, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1293703635052628898
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8539777919724714232}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aaf372802082afd459e93d7db45ecd34, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _popup: {fileID: 5382667754483627258, guid: c0ec16b296888704cb81f73af0dfff9f, type: 3}
+  OnSpawnPopup:
+    m_PersistentCalls:
+      m_Calls: []

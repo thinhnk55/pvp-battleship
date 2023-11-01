@@ -1,4 +1,5 @@
 using Authentication;
+using Framework;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -28,6 +29,7 @@ public class ConfirmUserid : MonoBehaviour
         else if(IsUserIdOfPlayer(inputField.text))
         {
             messageNoti.SetText("");
+            PopupHelper.Create(PrefabFactory.LoadingUI);
             HTTPClientAuth.DeleteAccount();
         }
         else

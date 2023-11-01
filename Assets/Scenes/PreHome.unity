@@ -135,6 +135,7 @@ GameObject:
   - component: {fileID: 126316259}
   - component: {fileID: 126316258}
   - component: {fileID: 126316257}
+  - component: {fileID: 126316260}
   m_Layer: 5
   m_Name: GG
   m_TagString: Untagged
@@ -256,6 +257,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 126316255}
   m_CullTransparentMesh: 1
+--- !u!114 &126316260
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 126316255}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aaf372802082afd459e93d7db45ecd34, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _popup: {fileID: 5382667754483627258, guid: c0ec16b296888704cb81f73af0dfff9f, type: 3}
+  OnSpawnPopup:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &169162645
 GameObject:
   m_ObjectHideFlags: 0
@@ -956,6 +973,7 @@ GameObject:
   - component: {fileID: 586407903}
   - component: {fileID: 586407902}
   - component: {fileID: 586407901}
+  - component: {fileID: 586407904}
   m_Layer: 5
   m_Name: Guest
   m_TagString: Untagged
@@ -1077,6 +1095,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 586407899}
   m_CullTransparentMesh: 1
+--- !u!114 &586407904
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 586407899}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aaf372802082afd459e93d7db45ecd34, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _popup: {fileID: 5382667754483627258, guid: c0ec16b296888704cb81f73af0dfff9f, type: 3}
+  OnSpawnPopup:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &667268842
 GameObject:
   m_ObjectHideFlags: 0
@@ -1552,6 +1586,7 @@ GameObject:
   - component: {fileID: 954905611}
   - component: {fileID: 954905610}
   - component: {fileID: 954905609}
+  - component: {fileID: 954905612}
   m_Layer: 5
   m_Name: Apple
   m_TagString: Untagged
@@ -1673,6 +1708,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 954905607}
   m_CullTransparentMesh: 1
+--- !u!114 &954905612
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 954905607}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aaf372802082afd459e93d7db45ecd34, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _popup: {fileID: 5382667754483627258, guid: c0ec16b296888704cb81f73af0dfff9f, type: 3}
+  OnSpawnPopup:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1013137957
 GameObject:
   m_ObjectHideFlags: 0

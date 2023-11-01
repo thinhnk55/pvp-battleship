@@ -22,7 +22,6 @@ namespace Authentication
         private static void HTTPPostLogin(JSONNode json, string loginRoute)
         {
             Debug.Log("HTTPPostLogin");
-            PopupHelper.Create(PrefabFactory.LoadingUI);
             PCoroutine.PStartCoroutine(HTTPClientBase.Post(ServerConfig.HttpURL + loginRoute, json.ToString()
                 , (res) =>
                 {

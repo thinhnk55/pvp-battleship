@@ -422,7 +422,7 @@ GameObject:
   - component: {fileID: 2293651447978369632}
   - component: {fileID: 8531070579682889274}
   - component: {fileID: 2691032764576858723}
-  - component: {fileID: 3956925665060581665}
+  - component: {fileID: 3373672812719573040}
   m_Layer: 5
   m_Name: Logout
   m_TagString: Untagged
@@ -514,7 +514,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &3956925665060581665
+--- !u!114 &3373672812719573040
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -523,9 +523,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1703013315362854510}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c844f41006a8e5847be97a9b8fb3ae12, type: 3}
+  m_Script: {fileID: 11500000, guid: aaf372802082afd459e93d7db45ecd34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _popup: {fileID: 5382667754483627258, guid: c0ec16b296888704cb81f73af0dfff9f, type: 3}
+  OnSpawnPopup:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &2330979917267120265
 GameObject:
   m_ObjectHideFlags: 0
@@ -3558,7 +3562,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9830346114aada4fa9ba6c1e329609a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LoadingUI: {fileID: 0}
   ButtonAppleLogin: {fileID: 0}
 --- !u!1 &7695708134152986417
 GameObject:
@@ -4436,7 +4439,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9830346114aada4fa9ba6c1e329609a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LoadingUI: {fileID: 0}
   ButtonAppleLogin: {fileID: 0}
 --- !u!1 &9066880466823666081
 GameObject:
