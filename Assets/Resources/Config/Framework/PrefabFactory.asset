@@ -34,6 +34,7 @@ MonoBehaviour:
   - {fileID: 382335289173443890, guid: 50467e36a705d02449ff78aaa71d3330, type: 3}
   plane: {fileID: 6600590414406574911, guid: 40ce0eee36307e346b29abaa9a7d766d, type: 3}
   missle: {fileID: 7686018857752636236, guid: 11f31e1d1a80eb44faa46b7919c00416, type: 3}
+  loadingUI: {fileID: 0}
   popupAchie: {fileID: 511421639699701364, guid: 645d239a64a3ab645979da31ec4451d6, type: 3}
   popupConfirm: {fileID: 1263694249909426757, guid: 037e100d5ef88104895e907dad0fa137, type: 3}
   popupOutOfResource: {fileID: 721933510132650832, guid: eae43ef42fb253e4eb67c922ad60de6f, type: 3}
