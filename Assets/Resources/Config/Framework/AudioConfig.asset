@@ -33,14 +33,14 @@ MonoBehaviour:
         volumn: 1
       spatial: 0
       isFollow: 0
-      maxActiveSound: 2
+      maxActiveSound: 3
     - type: 4
       clipConfigs:
       - clip: {fileID: 8300000, guid: 477ea8146566b3943ab890b6e7a866de, type: 3}
         volumn: 1
       spatial: 1
       isFollow: 0
-      maxActiveSound: 2
+      maxActiveSound: 3
     - type: 0
       clipConfigs:
       - clip: {fileID: 8300000, guid: 5d2eed75ce0a8e6429bf4269ff851a68, type: 3}
@@ -54,14 +54,14 @@ MonoBehaviour:
         volumn: 1
       spatial: 0
       isFollow: 0
-      maxActiveSound: 1
+      maxActiveSound: 3
     - type: 5
       clipConfigs:
       - clip: {fileID: 8300000, guid: db16f13aa50ec60428097c158a830ab4, type: 3}
         volumn: 1
       spatial: 0
       isFollow: 0
-      maxActiveSound: 1
+      maxActiveSound: 5
     - type: 6
       clipConfigs:
       - clip: {fileID: 8300000, guid: f7b7d01b9be19bb4fbe2197a2bce34a7, type: 3}
@@ -89,11 +89,11 @@ MonoBehaviour:
         volumn: 1
       spatial: 0
       isFollow: 0
-      maxActiveSound: 1
+      maxActiveSound: 2
     - type: 11
       clipConfigs:
       - clip: {fileID: 8300000, guid: 8e89a8b65caf47f47a5f33bcf64a5b8d, type: 3}
         volumn: 1
       spatial: 0
       isFollow: 0
-      maxActiveSound: 1
+      maxActiveSound: 5
