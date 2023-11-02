@@ -143,7 +143,7 @@ public class ProfileData
     }
     [SerializeField] private int losts; public int Losts { get { return losts; } set { losts = value; } }
     public int Battles { get => Wins + Losts; }
-    [SerializeField] private float winRate; public float WinRate { get { return Battles == 0 ? 0 : Wins / (Battles); } }
+    [SerializeField] private float winRate; public float WinRate { get { return Battles == 0 ? 0 : ((float)Wins / Battles); } }
     public int[] AchievementSelected;
     public List<int> AchievementObtained;
     public List<int> AchievementProgress;
@@ -178,7 +178,6 @@ public class ProfileData
             data["d"]["s"]["f"].AsInt,
             data["d"]["s"]["b"].AsInt,
         };
-        profileData.Wins = data["d"]["s"]["w"].AsInt;
         profileData.Losts = data["d"]["s"]["l"].AsInt;
         profileData.WinStreak = data["d"]["s"]["ws"].AsInt;
         //
