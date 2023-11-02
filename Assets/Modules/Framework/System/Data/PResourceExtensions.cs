@@ -1,5 +1,5 @@
 using SimpleJSON;
-using Sirenix.Utilities;
+//using Sirenix.Utilities;
 using System.Collections.Generic;
 
 namespace Framework
@@ -46,14 +46,20 @@ namespace Framework
         public static void AddValue(this PNonConsumableType type, int value)
         {
             var set = new HashSet<int>();
-            set.AddRange(type.GetData().Data);
+            foreach (int item in type.GetData().Data)
+            {
+                set.Add(item);
+            }
             set.Add(value);
             type.GetData().Data = set;
         }
 
         public static void SetValue(this PNonConsumableType type, List<int> value)
         {
-            type.GetData().Data.AddRange(value);
+            foreach (int item in type.GetData().Data)
+            {
+                type.GetData().Data.Add(item);
+            }
         }
 
         public static void FromJson(this PNonConsumableType type, JSONNode data)

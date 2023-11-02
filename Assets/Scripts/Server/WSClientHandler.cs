@@ -4,13 +4,14 @@ using Framework;
 using Monetization;
 using Server;
 using SimpleJSON;
-using Sirenix.Utilities;
+//using Sirenix.Utilities;
 using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class WSClientHandler : Singleton<WSClientHandler>
+public class WSClientHandler : Framework.Singleton<WSClientHandler>
 {
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
     public static void Init()
@@ -704,6 +705,7 @@ public class WSClientHandler : Singleton<WSClientHandler>
 
             GameData.RoyalPass.Point.Data += json["d"]["r"].AsInt;
             HashSet<int> receive = new HashSet<int>();
+
             receive.AddRange(GameData.RoyalPass.SeasonQuestsObtained.Data);
             receive.Add(json["d"]["i"].AsInt);
             GameData.RoyalPass.SeasonQuestsObtained.Data = receive;
