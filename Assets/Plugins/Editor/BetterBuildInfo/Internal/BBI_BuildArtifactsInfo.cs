@@ -66,7 +66,7 @@ namespace Better.BuildInfo.Internal
                     return CreateForStandaloneWin(buildPath, standaloneWinDataDirectoryOverride);
 
                 case BuildTarget.Android:
-                    return CreateForAndroid(buildPath, PlayerSettings.Android.useAPKExpansionFiles);
+                    return CreateForAndroid(buildPath, PlayerSettings.Android.splitApplicationBinary);
 
                 case UnityVersionAgnostic.iOSBuildTarget:
                     return CreateForIOS(buildPath);
