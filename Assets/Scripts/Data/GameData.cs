@@ -166,7 +166,7 @@ public class ProfileData
         profileData.AchievementProgress = new List<int>() { data["d"]["s"]["t"].AsInt,
             data["d"]["s"]["a"].AsInt,
             data["d"]["s"]["w"].AsInt,
-            data["d"]["s"]["wm"].AsInt,
+            data["d"]["s"]["mw"].AsInt,
             data["d"]["s"]["k"].AsInt,
             data["d"]["s"]["s"][0].AsInt,
             data["d"]["s"]["s"][1].AsInt,
@@ -181,7 +181,6 @@ public class ProfileData
         profileData.Wins = data["d"]["s"]["w"].AsInt;
         profileData.Losts = data["d"]["s"]["l"].AsInt;
         profileData.WinStreak = data["d"]["s"]["ws"].AsInt;
-        profileData.WinStreakMax = data["d"]["s"]["ml"].AsInt;
         //
 
         profileData.AchievementObtained = new List<int>(data["d"]["a"]["a"]["r"].Count);
@@ -230,7 +229,7 @@ public class ProfileData
         profileData.Wins = data["s"]["w"].AsInt;
         profileData.Losts = data["s"]["l"].AsInt;
         profileData.WinStreak = data["s"]["ws"].AsInt;
-        profileData.WinStreakMax = data["s"]["ml"].AsInt;
+        profileData.WinStreakMax = data["s"]["mw"].AsInt;
 
         profileData.AchievementObtained = new List<int>(data["a"]["a"]["r"].Count);
         for (int i = 0; i < Enum.GetValues(typeof(AchievementType)).Length; i++)

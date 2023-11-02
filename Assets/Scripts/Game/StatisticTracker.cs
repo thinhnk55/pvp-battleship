@@ -118,16 +118,17 @@ public static class StatisticTracker
         if (win)
         {
             StatisticType.WIN_COUNT.AddProgress(1);
-            int countDestroy = CoreGame.Instance.player.ships.Count;
-            if (countDestroy == 0)
+            int countRemain = CoreGame.Instance.player.ships.Count;
+            if (countRemain == 10)
             {
                 StatisticType.PERFECT_GAME.AddProgress(1);
             }
-            if (countDestroy == 9)
+            if (countRemain == 1)
             {
                 StatisticType.ALIVE_1_SHIP.AddProgress(1);
             }
-            GameData.Player.WinStreak++;
+            GameData.Player.WinStreak = GameData.Player.WinStreak + 1;
+            StatisticType.WIN_STREAK.SetProgress(GameData.Player.WinStreakMax);
         }
         else
         {
