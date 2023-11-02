@@ -38,6 +38,7 @@ namespace Framework
         [SerializeField] private Sprite x; public static Sprite X { get { return Instance.x; } }
         [SerializeField] private Sprite questionMark; public static Sprite QuestionMark { get { return Instance.questionMark; } }
         [SerializeField] private Sprite disableButton; public static Sprite DisableButton { get { return Instance.disableButton; } }
+        [SerializeField] private Sprite enableGreenButton; public static Sprite EnableGreenButton { get { return Instance.enableGreenButton; } }
         [SerializeField] private Sprite win; public static Sprite Win { get { return Instance.win; } }
         [SerializeField] private Sprite lose; public static Sprite Lose { get { return Instance.lose; } }
         [SerializeField] private Sprite selectedAchievementBG; public static Sprite SelectedAchievementBG { get { return Instance.selectedAchievementBG; } }
