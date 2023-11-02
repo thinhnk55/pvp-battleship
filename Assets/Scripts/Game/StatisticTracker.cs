@@ -127,7 +127,8 @@ public static class StatisticTracker
             {
                 StatisticType.ALIVE_1_SHIP.AddProgress(1);
             }
-            GameData.Player.WinStreak++;
+            GameData.Player.WinStreak = GameData.Player.WinStreak + 1;
+            StatisticType.WIN_STREAK.SetProgress(GameData.Player.WinStreakMax);
         }
         else
         {

@@ -316,8 +316,15 @@ public class WSClientHandler : Singleton<WSClientHandler>
             ((StatisticType)_i).AddListenerOnProgress((oValue, nValue) =>
             {
                 int oProgress = GameData.Player.AchievementProgress[_i];
-                GameData.Player.AchievementProgress[_i] += (nValue - oValue);
                 AchievementType type = (AchievementType)_i;
+                if (type == AchievementType.WIN_STREAK_MAX)
+                {
+                    GameData.Player.AchievementProgress[_i] = (nValue);
+                }
+                else
+                {
+                    GameData.Player.AchievementProgress[_i] += (nValue - oValue);
+                }
                 Debug.Log("Achievement Progress _ " + type + "_" + GameData.Player.AchievementProgress[_i]);
                 int nextMilestone = 0;
                 for (int j = 0; j < GameData.AchievementConfig[type].AchivementUnits.Length; j++)
