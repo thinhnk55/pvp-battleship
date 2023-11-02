@@ -1,7 +1,8 @@
-﻿using Sirenix.Serialization;
-using System;
+﻿using System;
 using System.IO;
 using UnityEngine;
+using Newtonsoft.Json;
+using System.Text;
 
 namespace Framework
 {
@@ -9,9 +10,11 @@ namespace Framework
     {
         public static void Save<T>(T data, string filePath)
         {
-            byte[] bytes = SerializationUtility.SerializeValue(data, DataFormat.Binary);
-
-            File.WriteAllBytes(Path.Combine(Application.persistentDataPath, filePath), bytes);
+            //byte[] bytes = SerializationUtility.SerializeValue(data, DataFormat.Binary);
+            var json = JsonConvert.SerializeObject(data);
+            var path = Path.Combine(Application.persistentDataPath, filePath);
+            var bytes = Encoding.UTF8.GetBytes(json);
+            File.WriteAllBytes(path, bytes);
         }
 
         public static T Load<T>(string filePath) where T : class
@@ -24,7 +27,8 @@ namespace Framework
 
                 byte[] bytes = File.ReadAllBytes(path);
 
-                return SerializationUtility.DeserializeValue<T>(bytes, DataFormat.Binary);
+                //return SerializationUtility.DeserializeValue<T>(bytes, DataFormat.Binary);
+                return JsonConvert.DeserializeObject<T>(Encoding.UTF8.GetString(bytes));
             }
             catch (Exception e)
             {

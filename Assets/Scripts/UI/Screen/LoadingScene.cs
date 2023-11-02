@@ -23,6 +23,7 @@ public class LoadingScene : SingletonMono<LoadingScene>
             }
         });
         InvokeRepeating("CheckMultipleAudioListenerAndEventSystem", 0, 0.1f);
+
         FirebaseInitialization.OnInitialized += AutoLogin;
         if (FirebaseInitialization.initialized == true)
         {
@@ -32,6 +33,7 @@ public class LoadingScene : SingletonMono<LoadingScene>
         {
             FirebaseInitialization.Initialize();
         }
+
         if (Application.internetReachability == NetworkReachability.NotReachable)
         {
             WSClientHandler.PopupReconnect();
