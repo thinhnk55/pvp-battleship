@@ -178,11 +178,20 @@ public class AchievementCard : CardBase<AchievementInfo>
         if (Button)
         {
             Button.gameObject.SetActive(info.Upgradable);
-            if (info.Upgradable && info.Progress < info.AchivementUnits.GetClamp(info.Obtained).Task && info.IsPreview)
+            if (info.IsPreview)
             {
-                Button.interactable = false;
-                Button.GetComponent<Image>().sprite = SpriteFactory.DisableButton;
+                if (info.Upgradable && info.Progress < info.AchivementUnits.GetClamp(info.Obtained).Task)
+                {
+                    Button.interactable = false;
+                    Button.GetComponent<Image>().sprite = SpriteFactory.DisableButton;
+                }
+                else
+                {
+                    Button.interactable = true;
+                    Button.GetComponent<Image>().sprite = SpriteFactory.EnableGreenButton;
+                }
             }
+
             Button.onClick.RemoveAllListeners();
             Button.onClick.AddListener(() =>
             {
