@@ -3,6 +3,7 @@ using System.IO;
 using UnityEngine;
 using Newtonsoft.Json;
 using System.Text;
+using SimpleJSON;
 
 namespace Framework
 {
@@ -12,6 +13,8 @@ namespace Framework
         {
             //byte[] bytes = SerializationUtility.SerializeValue(data, DataFormat.Binary);
             var json = JsonConvert.SerializeObject(data);
+            //var json = JSON.Parse(data.ToString());
+            //var json = JsonUtility.ToJson(data);
             var path = Path.Combine(Application.persistentDataPath, filePath);
             var bytes = Encoding.UTF8.GetBytes(json);
             File.WriteAllBytes(path, bytes);

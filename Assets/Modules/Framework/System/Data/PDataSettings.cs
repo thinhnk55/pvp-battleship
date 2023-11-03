@@ -4,9 +4,9 @@ namespace Framework
 {
     public class PDataSettings : PDataBlock<PDataSettings>
     {
-        [SerializeField] PDataUnit<bool> _soundEnabled;
-        [SerializeField] PDataUnit<bool> _musicEnabled;
-        [SerializeField] PDataUnit<bool> _vibrationEnabled;
+        public PDataUnit<bool> _soundEnabled;
+        public PDataUnit<bool> _musicEnabled;
+        public PDataUnit<bool> _vibrationEnabled;
 
         public static bool SoundEnabled { get { return Instance._soundEnabled.Data; } set { Instance._soundEnabled.Data = value; } }
         public static bool MusicEnabled { get { return Instance._musicEnabled.Data; } set { Instance._musicEnabled.Data = value; } }

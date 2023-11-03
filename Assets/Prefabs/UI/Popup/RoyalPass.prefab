@@ -427,6 +427,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardPrefab: {fileID: 241602196051926850, guid: 6d9a0d7446d144245bc2b8dddb4dd040, type: 3}
   contentRoot: {fileID: 2435825334428776308}
+  popupRoyalPass: {fileID: 5110939313747258166}
 --- !u!114 &2673264681995809385
 MonoBehaviour:
   m_ObjectHideFlags: 0
