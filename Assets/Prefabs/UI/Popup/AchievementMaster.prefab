@@ -3457,6 +3457,62 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4566016810895152794, guid: 33c887efe9e2d4f4792183fce278ad1a, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4566016810895152794, guid: 33c887efe9e2d4f4792183fce278ad1a, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4566016810895152794, guid: 33c887efe9e2d4f4792183fce278ad1a, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 970453811562805637}
+    - target: {fileID: 4566016810895152794, guid: 33c887efe9e2d4f4792183fce278ad1a, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4566016810895152794, guid: 33c887efe9e2d4f4792183fce278ad1a, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ForceClose
+      objectReference: {fileID: 0}
+    - target: {fileID: 4566016810895152794, guid: 33c887efe9e2d4f4792183fce278ad1a, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Framework.PopupBehaviour, Framework
+      objectReference: {fileID: 0}
+    - target: {fileID: 4566016810895152794, guid: 33c887efe9e2d4f4792183fce278ad1a, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 4566016811514662322, guid: 33c887efe9e2d4f4792183fce278ad1a, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4566016811514662322, guid: 33c887efe9e2d4f4792183fce278ad1a, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4566016811514662322, guid: 33c887efe9e2d4f4792183fce278ad1a, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 970453811562805637}
+    - target: {fileID: 4566016811514662322, guid: 33c887efe9e2d4f4792183fce278ad1a, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4566016811514662322, guid: 33c887efe9e2d4f4792183fce278ad1a, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ForceClose
+      objectReference: {fileID: 0}
+    - target: {fileID: 4566016811514662322, guid: 33c887efe9e2d4f4792183fce278ad1a, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Framework.PopupBehaviour, Framework
+      objectReference: {fileID: 0}
+    - target: {fileID: 4566016811514662322, guid: 33c887efe9e2d4f4792183fce278ad1a, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 6775675615939780166, guid: 33c887efe9e2d4f4792183fce278ad1a, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -64
