@@ -101,21 +101,24 @@ public class WSClientHandler : Framework.Singleton<WSClientHandler>
 
     public static void PopupReconnect()
     {
-        PopupHelper.CreateConfirm(PrefabFactory.PopupDisconnect, "Disconnect", "Please reconnect", null, (confirm) =>
+        if (!PopupDisconnect.Instance)
         {
-            if (confirm)
+            PopupHelper.CreateConfirm(PrefabFactory.PopupDisconnect, "Disconnect", "Please reconnect", null, (confirm) =>
             {
-                if (Application.internetReachability == NetworkReachability.NotReachable)
+                if (confirm)
                 {
-                    SceneTransitionHelper.Load(ESceneName.PreHome);
-                    DOVirtual.DelayedCall(1.5f, () => PopupReconnect());
+                    if (Application.internetReachability == NetworkReachability.NotReachable)
+                    {
+                        SceneTransitionHelper.Load(ESceneName.PreHome);
+                        DOVirtual.DelayedCall(1.5f, () => PopupReconnect());
+                    }
+                    else
+                    {
+                        SceneManager.LoadScene("Loading");
+                    }
                 }
-                else
-                {
-                    SceneManager.LoadScene("Loading");
-                }
-            }
-        });
+            });
+        }
     }
     public static void GetData(JSONNode data)
     {

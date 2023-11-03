@@ -170,6 +170,7 @@ public class CoreGame : SingletonMono<CoreGame>
         {
             AudioHelper.StopMusic();
         }
+        rematch = false;
         LeanTouch.OnFingerUp -= Instance.opponent.BeingAttacked;
         LeanTouch.OnFingerUpdate -= Instance.opponent.SelectingTarget;
         Instance.opponent.horzLine.SetActive(false);
