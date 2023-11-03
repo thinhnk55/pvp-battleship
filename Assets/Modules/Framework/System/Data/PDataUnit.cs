@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Newtonsoft.Json;
+using UnityEngine;
 
 namespace Framework
 {
@@ -20,7 +21,7 @@ namespace Framework
                 }
             }
         }
-
+        [JsonIgnore]
         public Callback<T, T> OnDataChanged;
 
         public PDataUnit(T defaultValue)

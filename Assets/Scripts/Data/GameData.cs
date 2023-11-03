@@ -9,22 +9,22 @@ using UnityEngine;
 public class GameData : PDataBlock<GameData>
 {
     #region VERSION_CONFIG
-    [SerializeField] private int versionConfig; public static int VersionConfig { get { return Instance.versionConfig; } set { Instance.versionConfig = value; } }
-    [SerializeField] private int versionShopConfig; public static int VersionShopConfig { get { return Instance.versionShopConfig; } set { Instance.versionShopConfig = value; } }
-    [SerializeField] private int versionAchievementConfig; public static int VersionAchievementConfig { get { return Instance.versionAchievementConfig; } set { Instance.versionAchievementConfig = value; } }
-    [SerializeField] private int versionRoyalPassConfig; public static int VersionRoyalPassConfig { get { return Instance.versionRoyalPassConfig; } set { Instance.versionRoyalPassConfig = value; } }
-    [SerializeField] private int versionGiftConfig; public static int VersionGiftConfig { get { return Instance.versionGiftConfig; } set { Instance.versionGiftConfig = value; } }
-    [SerializeField] private int versionLeaderBoardConfig; public static int VersionLeaderBoardConfig { get { return Instance.versionLeaderBoardConfig; } set { Instance.versionLeaderBoardConfig = value; } }
+    [SerializeField] public int versionConfig; public static int VersionConfig { get { return Instance.versionConfig; } set { Instance.versionConfig = value; } }
+    [SerializeField] public int versionShopConfig; public static int VersionShopConfig { get { return Instance.versionShopConfig; } set { Instance.versionShopConfig = value; } }
+    [SerializeField] public int versionAchievementConfig; public static int VersionAchievementConfig { get { return Instance.versionAchievementConfig; } set { Instance.versionAchievementConfig = value; } }
+    [SerializeField] public int versionRoyalPassConfig; public static int VersionRoyalPassConfig { get { return Instance.versionRoyalPassConfig; } set { Instance.versionRoyalPassConfig = value; } }
+    [SerializeField] public int versionGiftConfig; public static int VersionGiftConfig { get { return Instance.versionGiftConfig; } set { Instance.versionGiftConfig = value; } }
+    [SerializeField] public int versionLeaderBoardConfig; public static int VersionLeaderBoardConfig { get { return Instance.versionLeaderBoardConfig; } set { Instance.versionLeaderBoardConfig = value; } }
     #endregion
-    [SerializeField] private BetData[] bets; public static BetData[] Bets { get { return Instance.bets; } set { Instance.bets = value; } }
-    [SerializeField] private int progressGift; public static int ProgressGift { get { return Instance.progressGift; } set { Instance.progressGift = value % 6; } }
-    [SerializeField] private int beriBonusAmount; public static int BeriBonusAmount { get { return Instance.beriBonusAmount; } set { Instance.beriBonusAmount = value; } }
-    [SerializeField] private string text; public static string Text { get { return Instance.text; } set { Instance.text = value; } }
-    [SerializeField] private int isBuyDiamondFirst; public static int IsBuyDiamondFirst { get { return Instance.isBuyDiamondFirst; } set { Instance.isBuyDiamondFirst = value; } }
-    [SerializeField] private ProfileData player; public static ProfileData Player { get { return Instance.player; } set { Instance.player = value; } }
-    [SerializeField] private ProfileData opponent; public static ProfileData Opponent { get { return Instance.opponent; } set { Instance.opponent = value; } }
-    [SerializeField] private List<int> giftConfig; public static List<int> GiftConfig { get { return Instance.giftConfig; } set { Instance.giftConfig = value; } }
-    [SerializeField] private List<int> rankMilestone; public static List<int> RankMilestone
+    [SerializeField] public BetData[] bets; public static BetData[] Bets { get { return Instance.bets; } set { Instance.bets = value; } }
+    [SerializeField] public int progressGift; public static int ProgressGift { get { return Instance.progressGift; } set { Instance.progressGift = value % 6; } }
+    [SerializeField] public int beriBonusAmount; public static int BeriBonusAmount { get { return Instance.beriBonusAmount; } set { Instance.beriBonusAmount = value; } }
+    [SerializeField] public string text; public static string Text { get { return Instance.text; } set { Instance.text = value; } }
+    [SerializeField] public int isBuyDiamondFirst; public static int IsBuyDiamondFirst { get { return Instance.isBuyDiamondFirst; } set { Instance.isBuyDiamondFirst = value; } }
+    [SerializeField] public ProfileData player; public static ProfileData Player { get { return Instance.player; } set { Instance.player = value; } }
+    [SerializeField] public ProfileData opponent; public static ProfileData Opponent { get { return Instance.opponent; } set { Instance.opponent = value; } }
+    [SerializeField] public List<int> giftConfig; public static List<int> GiftConfig { get { return Instance.giftConfig; } set { Instance.giftConfig = value; } }
+    [SerializeField] public List<int> rankMilestone; public static List<int> RankMilestone
     {
         get
         {
@@ -40,24 +40,24 @@ public class GameData : PDataBlock<GameData>
         }
         set { Instance.rankMilestone = value; }
     }
-    [SerializeField] private Dictionary<TransactionType, List<TransactionInfo>> transactionConfigs; public static Dictionary<TransactionType, List<TransactionInfo>> TransactionConfigs { get { return Instance.transactionConfigs; } set { Instance.transactionConfigs = value; } }
-    [SerializeField] private List<RankConfig> rankConfigs; public static List<RankConfig> RankConfigs { get { return Instance.rankConfigs; } set { Instance.rankConfigs = value; } }
-    [SerializeField] private PDataUnit<int> rocketCount; public static PDataUnit<int> RocketCount { get { return Instance.rocketCount; } set { Instance.rocketCount = value; } }
-    [SerializeField] private List<TreasureConfig> treasureConfigs; public static List<TreasureConfig> TreasureConfigs { get { return Instance.treasureConfigs; } set { Instance.treasureConfigs = value; } }
-    [SerializeField] private JoinTreasureRoom joinTreasureRoom; public static JoinTreasureRoom JoinTreasureRoom { get { return Instance.joinTreasureRoom; } set { Instance.joinTreasureRoom = value; } }
-    [SerializeField] private Dictionary<AchievementType, AchievementInfo> achievementConfig; public static Dictionary<AchievementType, AchievementInfo> AchievementConfig { get { return Instance.achievementConfig; } set { Instance.achievementConfig = value; } }
-    [SerializeField] private int luckyShotCoolDown; public static int LuckyShotCoolDown { get { return Instance.luckyShotCoolDown; } set { Instance.luckyShotCoolDown = value; } }
-    [SerializeField] private int rankReceiveCoolDown; public static int RankReceiveCoolDown { get { return Instance.rankReceiveCoolDown; } set { Instance.rankReceiveCoolDown = value; } }
-    [SerializeField] private int giftCoolDown; public static int GiftCoolDown { get { return Instance.giftCoolDown; } set { Instance.giftCoolDown = value; } }
-    [SerializeField] private int changeQuestCoolDown; public static int ChangeQuestCoolDown { get { return Instance.changeQuestCoolDown; } set { Instance.changeQuestCoolDown = value; } }
-    [SerializeField] private RoyalPass royalPass; public static RoyalPass RoyalPass { get { return Instance.royalPass; } set { Instance.royalPass = value; } }
-    [SerializeField] private List<BoardInfo> listBoard; public static List<BoardInfo> ListBoard { get { return Instance.listBoard; } set { Instance.listBoard = value; } }
-    [SerializeField] private bool[] acceptLoginTerm; public static bool[] AcceptLoginTerm { get { return Instance.acceptLoginTerm; } set { Instance.acceptLoginTerm = value; } }
-    [SerializeField] private bool starter; public static bool Starter { get { return Instance.starter; } set { Instance.starter = value; } }
-    [SerializeField] private bool starterShow; public static bool StarterShow { get { return Instance.starterShow; } set { Instance.starterShow = value; } }
-    [SerializeField] private int[] tutorial; public static int[] Tutorial { get { return Instance.tutorial; } set { Instance.tutorial = value; } }
-    [SerializeField] private LeaderBoard leaderBoard; public static LeaderBoard LeaderBoard { get { return Instance.leaderBoard; } set { Instance.leaderBoard = value; } }
-    [SerializeField] private SocialAuthType typeLogin; public static SocialAuthType TypeLogin { get { return Instance.typeLogin; } set { Instance.typeLogin = value; } }
+    [SerializeField] public Dictionary<TransactionType, List<TransactionInfo>> transactionConfigs; public static Dictionary<TransactionType, List<TransactionInfo>> TransactionConfigs { get { return Instance.transactionConfigs; } set { Instance.transactionConfigs = value; } }
+    [SerializeField] public List<RankConfig> rankConfigs; public static List<RankConfig> RankConfigs { get { return Instance.rankConfigs; } set { Instance.rankConfigs = value; } }
+    [SerializeField] public PDataUnit<int> rocketCount; public static PDataUnit<int> RocketCount { get { return Instance.rocketCount; } set { Instance.rocketCount = value; } }
+    [SerializeField] public List<TreasureConfig> treasureConfigs; public static List<TreasureConfig> TreasureConfigs { get { return Instance.treasureConfigs; } set { Instance.treasureConfigs = value; } }
+    [SerializeField] public JoinTreasureRoom joinTreasureRoom; public static JoinTreasureRoom JoinTreasureRoom { get { return Instance.joinTreasureRoom; } set { Instance.joinTreasureRoom = value; } }
+    [SerializeField] public Dictionary<AchievementType, AchievementInfo> achievementConfig; public static Dictionary<AchievementType, AchievementInfo> AchievementConfig { get { return Instance.achievementConfig; } set { Instance.achievementConfig = value; } }
+    [SerializeField] public int luckyShotCoolDown; public static int LuckyShotCoolDown { get { return Instance.luckyShotCoolDown; } set { Instance.luckyShotCoolDown = value; } }
+    [SerializeField] public int rankReceiveCoolDown; public static int RankReceiveCoolDown { get { return Instance.rankReceiveCoolDown; } set { Instance.rankReceiveCoolDown = value; } }
+    [SerializeField] public int giftCoolDown; public static int GiftCoolDown { get { return Instance.giftCoolDown; } set { Instance.giftCoolDown = value; } }
+    [SerializeField] public int changeQuestCoolDown; public static int ChangeQuestCoolDown { get { return Instance.changeQuestCoolDown; } set { Instance.changeQuestCoolDown = value; } }
+    [SerializeField] public RoyalPass royalPass; public static RoyalPass RoyalPass { get { return Instance.royalPass; } set { Instance.royalPass = value; } }
+    [SerializeField] public List<BoardInfo> listBoard; public static List<BoardInfo> ListBoard { get { return Instance.listBoard; } set { Instance.listBoard = value; } }
+    [SerializeField] public bool[] acceptLoginTerm; public static bool[] AcceptLoginTerm { get { return Instance.acceptLoginTerm; } set { Instance.acceptLoginTerm = value; } }
+    [SerializeField] public bool starter; public static bool Starter { get { return Instance.starter; } set { Instance.starter = value; } }
+    [SerializeField] public bool starterShow; public static bool StarterShow { get { return Instance.starterShow; } set { Instance.starterShow = value; } }
+    [SerializeField] public int[] tutorial; public static int[] Tutorial { get { return Instance.tutorial; } set { Instance.tutorial = value; } }
+    [SerializeField] public LeaderBoard leaderBoard; public static LeaderBoard LeaderBoard { get { return Instance.leaderBoard; } set { Instance.leaderBoard = value; } }
+    [SerializeField] public SocialAuthType typeLogin; public static SocialAuthType TypeLogin { get { return Instance.typeLogin; } set { Instance.typeLogin = value; } }
     protected override void Init()
     {
         base.Init();
@@ -96,8 +96,8 @@ public class ProfileData
     public PDataUnit<int> FrameAvatar;
     public PDataUnit<int> BattleField;
     public PDataUnit<int> SkinShip;
-    [SerializeField] private int point; public int Point { get { return point; } set { point = value; } }
-    [SerializeField] private int rank;
+    [SerializeField] public int point; public int Point { get { return point; } set { point = value; } }
+    [SerializeField] public int rank;
     public int Rank
     {
         get
@@ -115,9 +115,9 @@ public class ProfileData
             else return 0;
         }
     }
-    [SerializeField] private int winStreak; public int WinStreak { get { return winStreak; } set { winStreak = value; if (winStreakMax.HasValue && winStreak > winStreakMax.Value) WinStreakMax = winStreak; } }
+    [SerializeField] public int winStreak; public int WinStreak { get { return winStreak; } set { winStreak = value; if (winStreakMax.HasValue && winStreak > winStreakMax.Value) WinStreakMax = winStreak; } }
 
-    [SerializeField] private int? winStreakMax = null;
+    [SerializeField] public int? winStreakMax = null;
     public int WinStreakMax
     {
         get
@@ -134,16 +134,16 @@ public class ProfileData
         }
         set { AchievementProgress[(int)AchievementType.WIN_STREAK_MAX] = value; }
     }
-    [SerializeField] private int loseStreak; public int LoseStreak { get; set; }
-    [SerializeField] private int loseStreakMax; public int LoseStreakMax { get; set; }
-    [SerializeField] private int wins; public int Wins
+    [SerializeField] public int loseStreak; public int LoseStreak { get; set; }
+    [SerializeField] public int loseStreakMax; public int LoseStreakMax { get; set; }
+    [SerializeField] public int wins; public int Wins
     {
         get { return (!AchievementProgress.IsNullOrEmpty()) ? AchievementProgress[(int)AchievementType.WIN] : 0; }
         set { AchievementProgress[(int)AchievementType.WIN] = value; }
     }
-    [SerializeField] private int losts; public int Losts { get { return losts; } set { losts = value; } }
+    [SerializeField] public int losts; public int Losts { get { return losts; } set { losts = value; } }
     public int Battles { get => Wins + Losts; }
-    [SerializeField] private float winRate; public float WinRate { get { return Battles == 0 ? 0 : ((float)Wins / Battles); } }
+    [SerializeField] public float winRate; public float WinRate { get { return Battles == 0 ? 0 : ((float)Wins / Battles); } }
     public int[] AchievementSelected;
     public List<int> AchievementObtained;
     public List<int> AchievementProgress;

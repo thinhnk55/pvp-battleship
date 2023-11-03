@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.VisualScripting;
+using Newtonsoft.Json;
 
 public enum RoyalPassQuestIndex
 {
@@ -46,8 +47,8 @@ public class RoyalPass
     public int Season;
     public int Version;
     public PDataUnit<int> Point = new PDataUnit<int>(0);
-    public int PointPerLevel;
-    public int Level { get => Mathf.Clamp(Point.Data / PointPerLevel, 0, RewardElites.Length - 1); }
+    public int PointPerLevel = 1;
+    [JsonIgnore]public int Level { get => Mathf.Clamp(Point.Data / PointPerLevel, 0, RewardElites.Length - 1); set { } }
     public PDataUnit<HashSet<int>> NormalObtains = new PDataUnit<HashSet<int>>(new HashSet<int>());
     public int[] NormalProgresses;
     public List<Framework.GoodInfo>[] RewardNormals;

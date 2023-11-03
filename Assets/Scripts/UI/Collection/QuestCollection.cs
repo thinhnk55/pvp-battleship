@@ -5,9 +5,11 @@ using Server;
 using SimpleJSON;
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class QuestCollection : CardCollectionBase<QuestInfo>
 {
+    [SerializeField] PopupBehaviour popupRoyalPass;
     private void Awake()
     {
         UpdateUIs();
@@ -61,6 +63,7 @@ public class QuestCollection : CardCollectionBase<QuestInfo>
                         {
                             if (GameData.RoyalPass.Quests[GameData.RoyalPass.CurrentQuests.Data[_i]].Type == StatisticType.LUCKY_SHOT_COUNT)
                             {
+                                popupRoyalPass.ForceClose();
                                 PopupHelper.Create(PrefabFactory.PopupLuckyshot);
                             }
                             else
