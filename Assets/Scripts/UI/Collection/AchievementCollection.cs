@@ -64,7 +64,7 @@ public class AchievementCollection : CardCollectionBase<AchievementInfo>
                 {
                     Debug.Log("previewCard.Button null");
                 }
-                throw e;
+                Debug.Log(e);
             }
             AchievementInfo info = GameData.AchievementConfig[(AchievementType)int.Parse(json["d"]["a"])];
             GameData.Player.AchievementObtained[int.Parse(json["d"]["a"])] = int.Parse(json["d"]["l"]) + 1;
