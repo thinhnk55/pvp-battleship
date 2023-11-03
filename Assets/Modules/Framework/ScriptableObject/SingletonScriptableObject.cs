@@ -1,5 +1,4 @@
-﻿using UnityEditor;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Framework
 {
@@ -16,8 +15,7 @@ namespace Framework
                 if (_instance == null)
                 {
                     string resourcePath = string.Format("{0}", SOSFolderName);
-                    if (typeof(T).Namespace != null)
-                        resourcePath += "/" + typeof(T).Namespace;
+                    if (typeof(T).Namespace != null) resourcePath += "/" + typeof(T).Namespace;
                     resourcePath += "/" + typeof(T).Name;
                     _instance = Resources.Load<T>(resourcePath);
 #if UNITY_EDITOR
