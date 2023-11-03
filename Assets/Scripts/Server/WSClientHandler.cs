@@ -292,6 +292,8 @@ public class WSClientHandler : Framework.Singleton<WSClientHandler>
         int index = data["d"]["p"].AsInt;
         GameData.TransactionConfigs[id][index].Transact();
         FirebaseIntegration.AnalyticsHelper.Transaction(id.ToString() + index.ToString());
+
+        SoundType.RPCONFIRM.PlaySound();
     }
     #endregion
     #region Achievement
@@ -728,6 +730,9 @@ public class WSClientHandler : Framework.Singleton<WSClientHandler>
     {
         if (json["e"].AsInt != 0 || json["d"]["m"].AsInt == -1)
             return;
+
+        SoundType.RPCONFIRM.PlaySound();
+
         if (json["d"]["t"].AsInt == 0)
         {
             HashSet<int> receive = new HashSet<int>();

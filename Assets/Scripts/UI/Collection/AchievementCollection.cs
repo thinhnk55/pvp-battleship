@@ -119,7 +119,7 @@ public class AchievementCollection : CardCollectionBase<AchievementInfo>
     }
     private void OnDestroy()
     {
-        if (previewCard != null && !isSelection)
+        if (previewCard && !isSelection)
         {
             ServerMessenger.RemoveListener<JSONNode>(ServerResponse._ACHIEVEMENT_REWARD, RecieveObtainAchievemnt);
         }

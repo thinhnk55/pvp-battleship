@@ -358,7 +358,7 @@ public class CoreGame : SingletonMono<CoreGame>
         }
         else
         {
-            PopupHelper.CreateMessage(PrefabFactory.PopupInvalidFormation, "Invalid Formation", "Please get all your ship in position", null);
+            PopupHelper.Create(PrefabFactory.PopupInvalidFormation);
         }
     }
     public void RandomShip()
