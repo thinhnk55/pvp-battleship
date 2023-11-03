@@ -1,10 +1,12 @@
 using Framework;
+using System;
 using System.Collections.Generic;
 //using Unity.Android.Types;
 using UnityEngine;
 using UnityEngine.UI;
 
-public struct ShipInfo
+[Serializable]
+public class ShipInfo
 {
     public int type;
     public int dir;
@@ -39,7 +41,9 @@ public struct ShipInfo
         return info;
     }
 }
-public struct BoardInfo
+
+[Serializable]
+public class BoardInfo
 {
     public int Id;
     public int row, column;
@@ -110,7 +114,7 @@ public class BoardCard : CardBase<BoardInfo>
             {
                 Button.onClick.AddListener(() =>
                 {
-                    PopupHelper.CreateConfirm(PrefabFactory.PopupInvalidFormation, "Invalid Formation", "Please get all your ship in position", null, null);
+                    PopupHelper.Create(PrefabFactory.PopupInvalidFormation);
 
                 });
 

@@ -44,7 +44,28 @@ public class AchievementCollection : CardCollectionBase<AchievementInfo>
     {
         if (json["e"].AsInt == 0)
         {
-            CoinVFX.CoinVfx(resource.transform, previewCard.Button.transform.position, previewCard.Button.transform.position);
+            try
+            {
+
+                CoinVFX.CoinVfx(resource.transform, previewCard.Button.transform.position, previewCard.Button.transform.position);
+            }
+            catch (System.Exception e)
+            {
+                if (!resource)
+                {
+                    Debug.Log("Resource null");
+                }
+                else if (!previewCard)
+                {
+                    Debug.Log("previewCard null");
+
+                }
+                else if (previewCard.Button)
+                {
+                    Debug.Log("previewCard.Button null");
+                }
+                throw e;
+            }
             AchievementInfo info = GameData.AchievementConfig[(AchievementType)int.Parse(json["d"]["a"])];
             GameData.Player.AchievementObtained[int.Parse(json["d"]["a"])] = int.Parse(json["d"]["l"]) + 1;
             info.Progress = GameData.Player.AchievementProgress[int.Parse(json["d"]["a"])];
@@ -98,7 +119,7 @@ public class AchievementCollection : CardCollectionBase<AchievementInfo>
     }
     private void OnDestroy()
     {
-        if (previewCard != null && !isSelection)
+        if (previewCard && !isSelection)
         {
             ServerMessenger.RemoveListener<JSONNode>(ServerResponse._ACHIEVEMENT_REWARD, RecieveObtainAchievemnt);
         }

@@ -33,67 +33,67 @@ MonoBehaviour:
         volumn: 1
       spatial: 0
       isFollow: 0
-      maxActiveSound: 2
+      maxActiveSound: 5
     - type: 4
       clipConfigs:
       - clip: {fileID: 8300000, guid: 477ea8146566b3943ab890b6e7a866de, type: 3}
         volumn: 1
       spatial: 1
       isFollow: 0
-      maxActiveSound: 2
+      maxActiveSound: 5
     - type: 0
       clipConfigs:
       - clip: {fileID: 8300000, guid: 5d2eed75ce0a8e6429bf4269ff851a68, type: 3}
         volumn: 1
       spatial: 0
       isFollow: 0
-      maxActiveSound: 1
+      maxActiveSound: 5
     - type: 2
       clipConfigs:
       - clip: {fileID: 8300000, guid: f7b7d01b9be19bb4fbe2197a2bce34a7, type: 3}
         volumn: 1
       spatial: 0
       isFollow: 0
-      maxActiveSound: 1
+      maxActiveSound: 5
     - type: 5
       clipConfigs:
       - clip: {fileID: 8300000, guid: db16f13aa50ec60428097c158a830ab4, type: 3}
         volumn: 1
       spatial: 0
       isFollow: 0
-      maxActiveSound: 1
+      maxActiveSound: 5
     - type: 6
       clipConfigs:
       - clip: {fileID: 8300000, guid: f7b7d01b9be19bb4fbe2197a2bce34a7, type: 3}
         volumn: 0.64
       spatial: 0
       isFollow: 0
-      maxActiveSound: 3
+      maxActiveSound: 5
     - type: 8
       clipConfigs:
       - clip: {fileID: 8300000, guid: 7a6ceb4bc7ebf964a9e141bae5065ce7, type: 3}
         volumn: 1
       spatial: 0
       isFollow: 0
-      maxActiveSound: 3
+      maxActiveSound: 5
     - type: 9
       clipConfigs:
       - clip: {fileID: 8300000, guid: 0ceb53bcec7d20c4ebc025c1eb5f259e, type: 3}
         volumn: 1
       spatial: 0
       isFollow: 0
-      maxActiveSound: 1
+      maxActiveSound: 5
     - type: 10
       clipConfigs:
       - clip: {fileID: 8300000, guid: 20ead430a763b3546a8231d8f10eb334, type: 3}
         volumn: 1
       spatial: 0
       isFollow: 0
-      maxActiveSound: 1
+      maxActiveSound: 5
     - type: 11
       clipConfigs:
       - clip: {fileID: 8300000, guid: 8e89a8b65caf47f47a5f33bcf64a5b8d, type: 3}
         volumn: 1
       spatial: 0
       isFollow: 0
-      maxActiveSound: 1
+      maxActiveSound: 10

@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Framework
 {
-    public abstract class CardCollectionBase<T> : CacheMonoBehaviour where T : struct
+    public abstract class CardCollectionBase<T> : CacheMonoBehaviour
     {
         protected List<CardBase<T>> cards;
         private CardBase<T> selectedCard; public CardBase<T> SelectedCard { get { return selectedCard; } set { OnSelectedCard?.Invoke(selectedCard, value); selectedCard = value;} }

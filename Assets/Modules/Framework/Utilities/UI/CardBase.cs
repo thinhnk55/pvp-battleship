@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 namespace Framework
 {
-    public abstract class CardBase<T> : CacheMonoBehaviour where T : struct
+    public abstract class CardBase<T> : CacheMonoBehaviour
     {
         public T Info;
         public Button Button;
