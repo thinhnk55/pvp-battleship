@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 namespace Framework
@@ -11,7 +9,6 @@ namespace Framework
 #if UNITY_EDITOR
             EditorUtility.SetDirty(scriptableObject);
 #endif
-
         }
     }
 }
