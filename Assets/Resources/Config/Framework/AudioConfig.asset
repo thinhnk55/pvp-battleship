@@ -61,7 +61,7 @@ MonoBehaviour:
         volumn: 1
       spatial: 0
       isFollow: 0
-      maxActiveSound: 5
+      maxActiveSound: 1
     - type: 6
       clipConfigs:
       - clip: {fileID: 8300000, guid: f7b7d01b9be19bb4fbe2197a2bce34a7, type: 3}

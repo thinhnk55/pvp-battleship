@@ -73,11 +73,14 @@ public class LoadingScene : SingletonMono<LoadingScene>
         {
             try
             {
-                SceneManager.UnloadSceneAsync("Home");
+                if (SceneManager.GetSceneByName("Home").isLoaded)
+                {
+                    SceneManager.UnloadSceneAsync("Home");
+                }
             }
-            catch (System.Exception)
+            catch (System.Exception e)
             {
-                throw;
+                Debug.Log(e.Message);
             }
         }
         asynScene = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
