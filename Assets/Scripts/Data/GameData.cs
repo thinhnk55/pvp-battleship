@@ -1,5 +1,6 @@
 using Authentication;
 using Framework;
+using Newtonsoft.Json;
 using SimpleJSON;
 using System;
 using System.Collections.Generic;
@@ -21,8 +22,8 @@ public class GameData : PDataBlock<GameData>
     [SerializeField] public int beriBonusAmount; public static int BeriBonusAmount { get { return Instance.beriBonusAmount; } set { Instance.beriBonusAmount = value; } }
     [SerializeField] public string text; public static string Text { get { return Instance.text; } set { Instance.text = value; } }
     [SerializeField] public int isBuyDiamondFirst; public static int IsBuyDiamondFirst { get { return Instance.isBuyDiamondFirst; } set { Instance.isBuyDiamondFirst = value; } }
-    [SerializeField] public ProfileData player; public static ProfileData Player { get { return Instance.player; } set { Instance.player = value; } }
-    [SerializeField] public ProfileData opponent; public static ProfileData Opponent { get { return Instance.opponent; } set { Instance.opponent = value; } }
+    [JsonIgnore][SerializeField] public ProfileData player; public static ProfileData Player { get { return Instance.player; } set { Instance.player = value; } }
+    [JsonIgnore][SerializeField] public ProfileData opponent; public static ProfileData Opponent { get { return Instance.opponent; } set { Instance.opponent = value; } }
     [SerializeField] public List<int> giftConfig; public static List<int> GiftConfig { get { return Instance.giftConfig; } set { Instance.giftConfig = value; } }
     [SerializeField] public List<int> rankMilestone; public static List<int> RankMilestone
     {
@@ -42,7 +43,9 @@ public class GameData : PDataBlock<GameData>
     }
     [SerializeField] public Dictionary<TransactionType, List<TransactionInfo>> transactionConfigs; public static Dictionary<TransactionType, List<TransactionInfo>> TransactionConfigs { get { return Instance.transactionConfigs; } set { Instance.transactionConfigs = value; } }
     [SerializeField] public List<RankConfig> rankConfigs; public static List<RankConfig> RankConfigs { get { return Instance.rankConfigs; } set { Instance.rankConfigs = value; } }
-    [SerializeField] public PDataUnit<int> rocketCount; public static PDataUnit<int> RocketCount { get { return Instance.rocketCount; } set { Instance.rocketCount = value; } }
+    [SerializeField]
+    [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+    public PDataUnit<int> rocketCount; public static PDataUnit<int> RocketCount { get { return Instance.rocketCount; } set { Instance.rocketCount = value; } }
     [SerializeField] public List<TreasureConfig> treasureConfigs; public static List<TreasureConfig> TreasureConfigs { get { return Instance.treasureConfigs; } set { Instance.treasureConfigs = value; } }
     [SerializeField] public JoinTreasureRoom joinTreasureRoom; public static JoinTreasureRoom JoinTreasureRoom { get { return Instance.joinTreasureRoom; } set { Instance.joinTreasureRoom = value; } }
     [SerializeField] public Dictionary<AchievementType, AchievementInfo> achievementConfig; public static Dictionary<AchievementType, AchievementInfo> AchievementConfig { get { return Instance.achievementConfig; } set { Instance.achievementConfig = value; } }
@@ -91,10 +94,15 @@ public class GameData : PDataBlock<GameData>
 public class ProfileData
 {
     public int UserId;
+    [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
     public PDataUnit<string> Username;
+    [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
     public PDataUnit<int> Avatar;
+    [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
     public PDataUnit<int> FrameAvatar;
+    [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
     public PDataUnit<int> BattleField;
+    [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
     public PDataUnit<int> SkinShip;
     [SerializeField] public int point; public int Point { get { return point; } set { point = value; } }
     [SerializeField] public int rank;

@@ -13,7 +13,7 @@ namespace Framework
             get { return _data; }
             set
             {
-                if (!_data.Equals(value))
+                if (_data != null && !_data.Equals(value))
                 {
                     T oldValue = _data;
                     _data = value;
