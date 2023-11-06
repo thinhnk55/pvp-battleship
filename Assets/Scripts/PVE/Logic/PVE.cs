@@ -228,7 +228,7 @@ public class PVE : SingletonMono<PVE>
         PVEData.TypeBoard = -1;
         resource.SetActive(false);
         popupComplete.ForceClose();
-        SceneTransitionHelper.Load(ESceneName.Home);
+        SceneTransitionHelper.Load(ESceneName.PVEBet);
     }
 
     private IEnumerator Lose()
@@ -246,7 +246,7 @@ public class PVE : SingletonMono<PVE>
                 if (IsRevived)
                 {
                     PVEData.TypeBoard = -1;
-                    SceneTransitionHelper.Load(ESceneName.Home);
+                    SceneTransitionHelper.Load(ESceneName.PVEBet);
                 }
                 else
                 {
@@ -256,7 +256,7 @@ public class PVE : SingletonMono<PVE>
             else
             {
                 PVEData.TypeBoard = -1;
-                SceneTransitionHelper.Load(ESceneName.Home);
+                SceneTransitionHelper.Load(ESceneName.PVEBet);
             }
         });
     }
@@ -264,7 +264,7 @@ public class PVE : SingletonMono<PVE>
     IEnumerator InitTurn()
     {
         DestroyEnemyShip();
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(1f);
         if (CurrentStep.Data > 4)
         {
             Retreat.interactable = true;
