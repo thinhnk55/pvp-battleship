@@ -42,7 +42,6 @@ public class BoardCard : CardBase<BoardInfo>
     public override void BuildUI(BoardInfo info)
     {
         base.BuildUI(info);
-        Debug.Log(info.Id + "_" + info.boardInfo.Count);
         rootOctiles.DestroyChildrenImmediate();
         rootShips.DestroyChildrenImmediate();
         octiles = new List<List<Octile>>();

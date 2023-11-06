@@ -17,8 +17,8 @@ public class Gift : CacheMonoBehaviour
     [SerializeField] GiftReminder reminder;
     void Start()
     {
-        
-        
+
+
 
 
         progress?.SetText($"{GameData.ProgressGift}/5");
@@ -67,7 +67,7 @@ public class Gift : CacheMonoBehaviour
         Timer<Gift>.Instance.OnTrigger -= OnTrigger;
         Timer<Gift>.Instance.OnElapse -= OnElapse;
         ServerMessenger.RemoveListener<JSONNode>(ServerResponse._GIFT, GetGift);
-        
+
     }
     private void OnTrigger()
     {
@@ -140,6 +140,6 @@ public class Gift : CacheMonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Timer<Gift>.Instance.Elasping();
-    }  
+        //Timer<Gift>.Instance.Elasping();
+    }
 }

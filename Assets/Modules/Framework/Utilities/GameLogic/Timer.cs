@@ -1,8 +1,4 @@
-using DG.Tweening;
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 
 namespace Framework
@@ -20,9 +16,10 @@ namespace Framework
                 MarkedPoint = value;
             }
         }
-        private long markedPoint; public long MarkedPoint { 
-            get { return markedPoint; } 
-            set { markedPoint = value; } 
+        private long markedPoint; public long MarkedPoint
+        {
+            get { return markedPoint; }
+            set { markedPoint = value; }
         }
 
         private float elapse; public float ELaspe
@@ -50,9 +47,10 @@ namespace Framework
         public Callback OnTrigger;
         public Callback OnElapse;
 
-        public void Init(Callback onTrigger, Callback onElapse){
-            OnTrigger = onTrigger;
-            OnElapse = onElapse;
+        public void Init(Callback onTrigger, Callback onElapse)
+        {
+            OnTrigger += onTrigger;
+            OnElapse += onElapse;
         }
         public void Elasping()
         {

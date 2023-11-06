@@ -466,7 +466,7 @@ public class WSClientHandler : Framework.Singleton<WSClientHandler>
     {
         GameData.RocketCount.Data = data["d"]["l"]["r"].AsInt;
         Timer<LuckyShot>.Instance.Begin(); //= data["d"]["l"]["t"].AsLong.NowFrom0001From1970();
-        ConditionalMono.conditionalEvents[typeof(LuckyShotReminder)].ForEach((con) => con.UpdateObject());
+        ConditionalMono.UpdateObject(typeof(LuckyShotReminder));
     }
     public static void LuckyShotEarn()
     {
