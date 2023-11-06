@@ -64,10 +64,6 @@ public class LuckyShot : SingletonMono<LuckyShot>
 
 
     }
-    private void Update()
-    {
-        Timer<LuckyShot>.Instance.Elasping();
-    }
     protected override void OnDestroy()
     {
         //ServerMessenger.RemoveListener<JSONNode>(ServerResponse.RECIEVE_REWARD_ROCKET, RewardAds);
@@ -147,7 +143,7 @@ public class LuckyShot : SingletonMono<LuckyShot>
                 }
                 DOVirtual.DelayedCall(0.5f, () => CoinVFX.CoinVfx(Instance.resourceUI.transform, Instance.shots[indexShot].transform.position, Instance.shots[indexShot].transform.position));
             }
-            ConditionalMono.conditionalEvents[typeof(LuckyShotReminder)].ForEach((con) => con.UpdateObject());
+            ConditionalMono.UpdateObject(typeof(LuckyShotReminder));
         }
 
     }
@@ -184,7 +180,7 @@ public class LuckyShot : SingletonMono<LuckyShot>
     }
     public void OnTriggerTimer()
     {
-        ConditionalMono.conditionalEvents[typeof(LuckyShotReminder)].ForEach((con) => con.UpdateObject());
+        ConditionalMono.UpdateObject(typeof(LuckyShotReminder));
     }
     public void OnElapseTimer()
     {

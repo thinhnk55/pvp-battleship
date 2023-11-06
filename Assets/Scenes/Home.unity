@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44402185, g: 0.49316472, b: 0.57223153, a: 1}
+  m_IndirectSpecularColor: {r: 0.44402242, g: 0.49316543, b: 0.5722324, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -67,9 +67,6 @@ LightmapSettings:
     m_LightmapParameters: {fileID: 0}
     m_LightmapsBakeMode: 1
     m_TextureCompression: 1
-    m_FinalGather: 0
-    m_FinalGatherFiltering: 1
-    m_FinalGatherRayCount: 256
     m_ReflectionCompression: 2
     m_MixedBakeMode: 2
     m_BakeBackend: 1
@@ -461,6 +458,7 @@ GameObject:
   - component: {fileID: 96408336}
   - component: {fileID: 96408335}
   - component: {fileID: 96408338}
+  - component: {fileID: 96408339}
   m_Layer: 5
   m_Name: LuckyShot
   m_TagString: Untagged
@@ -588,6 +586,21 @@ MonoBehaviour:
   OnSpawnPopup:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &96408339
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 96408333}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c371bef2d87ef841be09315b400a15e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  conditionalObject: {fileID: 1388446450}
+  isAffectObject: 1
+  isHome: 1
 --- !u!1 &97683791
 GameObject:
   m_ObjectHideFlags: 0
@@ -4378,7 +4391,6 @@ GameObject:
   - component: {fileID: 1388446451}
   - component: {fileID: 1388446454}
   - component: {fileID: 1388446453}
-  - component: {fileID: 1388446455}
   m_Layer: 5
   m_Name: Reminder
   m_TagString: Untagged
@@ -4443,21 +4455,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1388446450}
   m_CullTransparentMesh: 1
---- !u!114 &1388446455
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1388446450}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2c371bef2d87ef841be09315b400a15e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  conditionalObject: {fileID: 0}
-  isAffectObject: 1
-  isHome: 1
 --- !u!1 &1388644919
 GameObject:
   m_ObjectHideFlags: 0

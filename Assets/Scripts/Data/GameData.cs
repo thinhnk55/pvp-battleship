@@ -43,9 +43,7 @@ public class GameData : PDataBlock<GameData>
     }
     [SerializeField] public Dictionary<TransactionType, List<TransactionInfo>> transactionConfigs; public static Dictionary<TransactionType, List<TransactionInfo>> TransactionConfigs { get { return Instance.transactionConfigs; } set { Instance.transactionConfigs = value; } }
     [SerializeField] public List<RankConfig> rankConfigs; public static List<RankConfig> RankConfigs { get { return Instance.rankConfigs; } set { Instance.rankConfigs = value; } }
-    [SerializeField]
-    [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-    public PDataUnit<int> rocketCount; public static PDataUnit<int> RocketCount { get { return Instance.rocketCount; } set { Instance.rocketCount = value; } }
+    [SerializeField] public PDataUnit<int> rocketCount; public static PDataUnit<int> RocketCount { get { return Instance.rocketCount; } set { Instance.rocketCount = value; } }
     [SerializeField] public List<TreasureConfig> treasureConfigs; public static List<TreasureConfig> TreasureConfigs { get { return Instance.treasureConfigs; } set { Instance.treasureConfigs = value; } }
     [SerializeField] public JoinTreasureRoom joinTreasureRoom; public static JoinTreasureRoom JoinTreasureRoom { get { return Instance.joinTreasureRoom; } set { Instance.joinTreasureRoom = value; } }
     [SerializeField] public Dictionary<AchievementType, AchievementInfo> achievementConfig; public static Dictionary<AchievementType, AchievementInfo> AchievementConfig { get { return Instance.achievementConfig; } set { Instance.achievementConfig = value; } }
@@ -94,15 +92,10 @@ public class GameData : PDataBlock<GameData>
 public class ProfileData
 {
     public int UserId;
-    [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
     public PDataUnit<string> Username;
-    [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
     public PDataUnit<int> Avatar;
-    [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
     public PDataUnit<int> FrameAvatar;
-    [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
     public PDataUnit<int> BattleField;
-    [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
     public PDataUnit<int> SkinShip;
     [SerializeField] public int point; public int Point { get { return point; } set { point = value; } }
     [SerializeField] public int rank;

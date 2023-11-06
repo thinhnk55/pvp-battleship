@@ -364,7 +364,11 @@ public class TransactionCard : CardBase<TransactionInfo>
         {
             action = () =>
             {
+#if UNITY_ANDROID
                 RequestTransaction((int)Info.TransactionType, Info.Index, product.receipt.Replace("\\", "").Replace("\"{", "{").Replace("}\"", "}"));
+#elif UNITY_IOS
+                RequestTransaction((int)Info.TransactionType, Info.Index, product.transactionID.Replace("\\", "").Replace("\"{", "{").Replace("}\"", "}"));
+#endif
             };
         }
         else

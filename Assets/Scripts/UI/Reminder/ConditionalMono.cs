@@ -18,7 +18,7 @@ public abstract class ConditionalMono : MonoBehaviour
         conditionalEvents[GetType()].Add(this);
         if (conditionalObject == null)
             conditionalObject = gameObject;
-        condition += SetCondition();
+        condition = SetCondition();
     }
     protected virtual void OnDestroy()
     {
