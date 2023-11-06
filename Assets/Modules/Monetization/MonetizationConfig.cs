@@ -1,12 +1,10 @@
- using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Monetization
 {
     public class MonetizationConfig : Framework.SingletonScriptableObjectModulized<MonetizationConfig>
     {
-  
+#if UNITY_EDITOR
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         static void Init()
         {
@@ -15,6 +13,7 @@ namespace Monetization
                 Instance.ToString();
             }
         }
+#endif
         [SerializeField] private string sdkKey; public static string SdkKey { get { return Instance.sdkKey; } }
         [SerializeField] private string bannerAdsIdAndroid; public static string BannerAdsIdAndroid { get { return Instance.bannerAdsIdAndroid; } }
         [SerializeField] private string bannerAdsIdIOS; public static string BannerAdsIdIOS { get { return Instance.bannerAdsIdIOS; } }

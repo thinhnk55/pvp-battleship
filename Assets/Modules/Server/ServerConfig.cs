@@ -10,6 +10,7 @@ namespace Server
         [SerializeField] private string webSocketURL; public static string WebSocketURL { get { return Instance.webSocketURL; } }
         [SerializeField] private string httpURL; public static string HttpURL { get { return Instance.httpURL; } }
 
+#if UNITY_EDITOR
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         static void Init()
         {
@@ -18,5 +19,6 @@ namespace Server
                 Instance.ToString();
             }
         }
+#endif
     }
 }

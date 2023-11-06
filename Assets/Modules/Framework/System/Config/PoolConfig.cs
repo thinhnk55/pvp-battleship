@@ -7,6 +7,7 @@ namespace Framework
     [Serializable]
     public class PoolConfig : SingletonScriptableObject<PoolConfig>
     {
+#if UNITY_EDITOR
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         static void Init()
         {
@@ -15,6 +16,7 @@ namespace Framework
                 Instance.ToString();
             }
         }
+#endif
         [SerializeField] private int defaultInitPoolGO; public static int DefaultInitPoolGO { get { return Instance.defaultInitPoolGO; } }
         [SerializeField] private int defaultInitPoolSound; public static int DefaultInitPoolSound { get { return Instance.defaultInitPoolSound; } }
         [SerializeField] private PoolConfigDictionary initPoolGO; public static PoolConfigDictionary InitPool { get { return Instance.initPoolGO; } }

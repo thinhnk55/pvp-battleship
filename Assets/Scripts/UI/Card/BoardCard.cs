@@ -8,38 +8,10 @@ using UnityEngine.UI;
 [Serializable]
 public class ShipInfo
 {
-    public int type;
-    public int dir;
     public int x;
     public int y;
-
-    public static ShipInfo FromShip(Ship ship)
-    {
-        ShipInfo info = new ShipInfo();
-        info.x = ship.octilesComposition[0].pos.x;
-        info.y = ship.octilesComposition[0].pos.y;
-        info.type = ship.octilesComposition.Count - 1;
-        //Debug.LogError(info.x + " ; " + info.y + "=>>>>" + info.type);
-        int d = 0;
-        if (ship.Dir == Vector2Int.right)
-        {
-            d = 2;
-        }
-        else if (ship.Dir == Vector2Int.left)
-        {
-            d = 0;
-        }
-        else if (ship.Dir == Vector2Int.down)
-        {
-            d = 3;
-        }
-        else if (ship.Dir == Vector2Int.up)
-        {
-            d = 1;
-        }
-        info.dir = d;
-        return info;
-    }
+    public int type;
+    public int dir;
 }
 
 [Serializable]
@@ -161,7 +133,7 @@ public class BoardCard : CardBase<BoardInfo>
         info.boardInfo = new List<ShipInfo>();
         for (int i = 0; i < CoreGame.Instance.player.ships.Count; i++)
         {
-            info.boardInfo.Add(ShipInfo.FromShip(CoreGame.Instance.player.ships[i]));
+            info.boardInfo.Add(FromShip(CoreGame.Instance.player.ships[i]));
         }
         info.boardInfo.Sort((ship1, ship2) =>
         {
@@ -215,4 +187,31 @@ public class BoardCard : CardBase<BoardInfo>
         Collection.ModifyUIAt(Info.Id, info);
     }
 
+    public static ShipInfo FromShip(Ship ship)
+    {
+        ShipInfo info = new ShipInfo();
+        info.x = ship.octilesComposition[0].pos.x;
+        info.y = ship.octilesComposition[0].pos.y;
+        info.type = ship.octilesComposition.Count - 1;
+        //Debug.LogError(info.x + " ; " + info.y + "=>>>>" + info.type);
+        int d = 0;
+        if (ship.Dir == Vector2Int.right)
+        {
+            d = 2;
+        }
+        else if (ship.Dir == Vector2Int.left)
+        {
+            d = 0;
+        }
+        else if (ship.Dir == Vector2Int.down)
+        {
+            d = 3;
+        }
+        else if (ship.Dir == Vector2Int.up)
+        {
+            d = 1;
+        }
+        info.dir = d;
+        return info;
+    }
 }

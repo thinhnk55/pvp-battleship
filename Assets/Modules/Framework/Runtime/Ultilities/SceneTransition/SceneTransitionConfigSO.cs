@@ -5,6 +5,16 @@ namespace Framework
     [Serializable]
     public class SceneTransitionConfigSO : SingletonScriptableObject<SceneTransitionConfigSO>
     {
+#if UNITY_EDITOR
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+        static void Init()
+        {
+            if (_instance == null)
+            {
+                Instance.ToString();
+            }
+        }
+#endif
         [Header("Config")]
         [SerializeField] float _fadeInDuration = 0.2f;
         [SerializeField] float _loadDuration = 0.1f;
