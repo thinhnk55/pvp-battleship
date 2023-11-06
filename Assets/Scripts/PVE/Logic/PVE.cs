@@ -73,7 +73,7 @@ public class PVE : SingletonMono<PVE>
     }
 
 
-    private void NewGameTreasure()
+    public void NewGameTreasure()
     {
         new JSONClass()
         {
@@ -158,9 +158,9 @@ public class PVE : SingletonMono<PVE>
     }
     #endregion 
 
-    private void DestroyEnemyShip()
+    public void DestroyEnemyShip()
     {
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < shipPVEs.Count; i++)
         {
             int _i = i;
             Instance.shipPVEs[_i].transform.DOScale(0, 0.5f).OnComplete(() =>
@@ -193,8 +193,6 @@ public class PVE : SingletonMono<PVE>
         yield return new WaitForSeconds(1.5f);
         yield return StartCoroutine(Instance.shipPVEs[selectedEnemy].BeingDestroyed());
         player.point.Data = point;
-
-        DestroyEnemyShip();
 
         yield return new WaitForSeconds(1f);
 
@@ -236,7 +234,6 @@ public class PVE : SingletonMono<PVE>
     private IEnumerator Lose()
     {
         ShowEnemyPoint();
-        PVEData.TypeBoard = -1;
         PVEData.IsDeadPlayer.Data = true;
         yield return StartCoroutine(player.BeingDestroyed());
         yield return new WaitForSeconds(1);
@@ -248,6 +245,7 @@ public class PVE : SingletonMono<PVE>
             {
                 if (IsRevived)
                 {
+                    PVEData.TypeBoard = -1;
                     SceneTransitionHelper.Load(ESceneName.Home);
                 }
                 else
@@ -257,6 +255,7 @@ public class PVE : SingletonMono<PVE>
             }
             else
             {
+                PVEData.TypeBoard = -1;
                 SceneTransitionHelper.Load(ESceneName.Home);
             }
         });
@@ -264,6 +263,8 @@ public class PVE : SingletonMono<PVE>
 
     IEnumerator InitTurn()
     {
+        DestroyEnemyShip();
+        yield return new WaitForSeconds(1.5f);
         if (CurrentStep.Data > 4)
         {
             Retreat.interactable = true;

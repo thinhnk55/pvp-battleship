@@ -27,6 +27,7 @@ public class PVEStageCollection : CardCollectionBase<StageInfo>
     {
         if(n<1)
         {
+            //currentStageIndicator.gameObject.SetActive(false);
             return;
         }
 
