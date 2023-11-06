@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 namespace Framework
 {
@@ -52,15 +51,6 @@ namespace Framework
             return "Script not found in namespace.";
         }
 #endif
-
-        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
-        static void Init()
-        {
-            if (_instance == null)
-            {
-                Instance.ToString();
-            }
-        }
     }
 
 }

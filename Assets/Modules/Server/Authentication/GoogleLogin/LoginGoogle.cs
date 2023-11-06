@@ -1,10 +1,8 @@
-﻿using System;
+﻿using Google;
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.UI;
-using Google;
 namespace Authentication
 {
     public class LoginGoogle : ISocialAuth
@@ -13,7 +11,7 @@ namespace Authentication
 
         private GoogleSignInConfiguration configuration;
 
-        private string idToken = null; 
+        private string idToken = null;
 
         public void OnDisconnect()
         {
@@ -90,7 +88,7 @@ namespace Authentication
 
         public void SignIn()
         {
-            if(idToken != null)
+            if (idToken != null)
             {
                 return;
             }
@@ -118,9 +116,11 @@ namespace Authentication
         }
         public void SignOut()
         {
-            idToken = null;
-
-            GoogleSignIn.DefaultInstance.SignOut();
+            if (idToken != null)
+            {
+                idToken = null;
+                GoogleSignIn.DefaultInstance.SignOut();
+            }
         }
 
         public void DisableAccount()

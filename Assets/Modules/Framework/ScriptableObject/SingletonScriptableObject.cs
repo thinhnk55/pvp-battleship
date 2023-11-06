@@ -38,14 +38,6 @@ namespace Framework
                 return _instance;
             }
         }
-        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
-        static void Init()
-        {
-            if (_instance == null)
-            {
-                Instance.ToString();
-            }
-        }
     }
 
 }

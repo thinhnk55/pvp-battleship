@@ -54,8 +54,8 @@ public class LoadingScene : SingletonMono<LoadingScene>
     }
     void CheckMultipleAudioListenerAndEventSystem()
     {
-        aL = FindObjectsOfType<AudioListener>();
-        eS = FindObjectsOfType<EventSystem>();
+        aL = FindObjectsByType<AudioListener>(FindObjectsSortMode.InstanceID);
+        eS = FindObjectsByType<EventSystem>(FindObjectsSortMode.InstanceID);
         if (aL.Length >= 2)
         {
             DestroyImmediate(aL[0].gameObject);

@@ -1,11 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Framework
 {
     public class InitializationConfig : SingletonScriptableObject<InitializationConfig>
     {
+#if UNITY_EDITOR
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         static void Init()
         {
@@ -14,6 +13,7 @@ namespace Framework
                 Instance.ToString();
             }
         }
+#endif
         [SerializeField] private int initCoin; public static int InitCoin { get { return Instance.initCoin; } }
         [SerializeField] private int initGem; public static int InitGem { get { return Instance.initGem; } }
 
