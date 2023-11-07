@@ -367,7 +367,7 @@ public class TransactionCard : CardBase<TransactionInfo>
 #if UNITY_ANDROID
                 RequestTransaction((int)Info.TransactionType, Info.Index, product.receipt.Replace("\\", "").Replace("\"{", "{").Replace("}\"", "}"), product);
 #elif UNITY_IOS
-                RequestTransaction((int)Info.TransactionType, Info.Index, new JSONClass() { { "TransactionID", product.transactionID }, { "Store", "AppleAppStore" } }, product);
+                RequestTransaction((int)Info.TransactionType, Info.Index, new JSONClass() { { "TransactionID", product.transactionID }, { "Store", "AppleAppStore" } }.ToString(), product);
 #endif
             };
         }
