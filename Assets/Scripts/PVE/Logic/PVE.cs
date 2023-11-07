@@ -52,6 +52,11 @@ public class PVE : SingletonMono<PVE>
         base.OnDestroy();
     }
 
+    public void RemoveListener()
+    {
+        PVEData.IsDeadPlayer.OnDataChanged -= PlayerRevival;
+    }
+
     #region Server_Request_Response
     public void GetData()
     {
@@ -73,7 +78,7 @@ public class PVE : SingletonMono<PVE>
     }
 
 
-    private void NewGameTreasure()
+    public void NewGameTreasure()
     {
         new JSONClass()
         {
@@ -158,9 +163,9 @@ public class PVE : SingletonMono<PVE>
     }
     #endregion 
 
-    private void DestroyEnemyShip()
+    public void DestroyEnemyShip()
     {
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < shipPVEs.Count; i++)
         {
             int _i = i;
             Instance.shipPVEs[_i].transform.DOScale(0, 0.5f).OnComplete(() =>
@@ -190,11 +195,9 @@ public class PVE : SingletonMono<PVE>
     private IEnumerator Win(int point)
     {
         ShowEnemyPoint();
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(1f);
         yield return StartCoroutine(Instance.shipPVEs[selectedEnemy].BeingDestroyed());
         player.point.Data = point;
-
-        DestroyEnemyShip();
 
         yield return new WaitForSeconds(1f);
 
@@ -230,13 +233,12 @@ public class PVE : SingletonMono<PVE>
         PVEData.TypeBoard = -1;
         resource.SetActive(false);
         popupComplete.ForceClose();
-        SceneTransitionHelper.Load(ESceneName.Home);
+        SceneTransitionHelper.Load(ESceneName.PVEBet);
     }
 
     private IEnumerator Lose()
     {
         ShowEnemyPoint();
-        PVEData.TypeBoard = -1;
         PVEData.IsDeadPlayer.Data = true;
         yield return StartCoroutine(player.BeingDestroyed());
         yield return new WaitForSeconds(1);
@@ -248,7 +250,8 @@ public class PVE : SingletonMono<PVE>
             {
                 if (IsRevived)
                 {
-                    SceneTransitionHelper.Load(ESceneName.Home);
+                    PVEData.TypeBoard = -1;
+                    SceneTransitionHelper.Load(ESceneName.PVEBet);
                 }
                 else
                 {
@@ -257,13 +260,16 @@ public class PVE : SingletonMono<PVE>
             }
             else
             {
-                SceneTransitionHelper.Load(ESceneName.Home);
+                PVEData.TypeBoard = -1;
+                SceneTransitionHelper.Load(ESceneName.PVEBet);
             }
         });
     }
 
     IEnumerator InitTurn()
     {
+        DestroyEnemyShip();
+        yield return new WaitForSeconds(1f);
         if (CurrentStep.Data > 4)
         {
             Retreat.interactable = true;
@@ -308,7 +314,6 @@ public class PVE : SingletonMono<PVE>
             }
             HideEnemyPoint();
             SetDisableLeanSelectableShipEnemy(true);
-            Debug.Log("Revival Done");
         }
     }
 

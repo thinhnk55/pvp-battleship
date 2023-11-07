@@ -27,9 +27,14 @@ public class PVEStageCollection : CardCollectionBase<StageInfo>
     {
         if(n<1)
         {
+            if(n<o) // replay
+            {
+                ((PVEStageCard)cards[o - 1]).id.color = Color.white;
+            }
+            currentStageIndicator.gameObject.SetActive(false);
             return;
         }
-
+        currentStageIndicator.gameObject.SetActive(true);
         Debug.Log("Move to card " + n);
         currentStageIndicator.transform.parent = cards[n-1].transform;
         currentStageIndicator.anchoredPosition3D = new Vector3(0, 0, 0);
