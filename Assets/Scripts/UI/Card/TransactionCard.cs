@@ -365,9 +365,9 @@ public class TransactionCard : CardBase<TransactionInfo>
             action = () =>
             {
 #if UNITY_ANDROID
-                RequestTransaction((int)Info.TransactionType, Info.Index, product.receipt.Replace("\\", "").Replace("\"{", "{").Replace("}\"", "}"));
+                RequestTransaction((int)Info.TransactionType, Info.Index, product.receipt.Replace("\\", "").Replace("\"{", "{").Replace("}\"", "}"), product);
 #elif UNITY_IOS
-                RequestTransaction((int)Info.TransactionType, Info.Index, product.transactionID.Replace("\\", "").Replace("\"{", "{").Replace("}\"", "}"));
+                RequestTransaction((int)Info.TransactionType, Info.Index, new JSONClass() { { "TransactionID", product.transactionID }, { "Store", "AppleAppStore" } });
 #endif
             };
         }
@@ -410,7 +410,7 @@ public class TransactionCard : CardBase<TransactionInfo>
         }
         return action;
     }
-    public static void RequestTransaction(int id, int index, string data = null)
+    public static void RequestTransaction(int id, int index, string data = null, Product product = null)
     {
         JSONNode jsonNode = new JSONClass()
             {
@@ -422,6 +422,9 @@ public class TransactionCard : CardBase<TransactionInfo>
         {
             jsonNode.Add("r", JSON.Parse(data));
         }
+
+        if (product != null)
+            IAP.Instance.pendingProducts.TryAdd(product, jsonNode);
         WSClient.Instance.Send(jsonNode);
     }
 
