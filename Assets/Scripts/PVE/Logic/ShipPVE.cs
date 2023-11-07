@@ -23,7 +23,7 @@ public class ShipPVE : MonoBehaviour
         {
             if (index == -1) // Tau player
             {
-                tweenPoint = DOTween.To(() => int.Parse(pointTxt.text), (value) => pointTxt.text = value.ToString(), n, 1)
+                tweenPoint = DOTween.To(() => int.Parse(pointTxt.text), (value) => pointTxt.text = value.ToString(), n, 0.7f)
                                             .OnComplete(() => pointTxt.text = n.ToString());
             }
         };
@@ -62,8 +62,6 @@ public class ShipPVE : MonoBehaviour
         {
             Destroy(destroyedVFX.gameObject);
         }
-
-        //destroyedVFX.transform.parent = null;
     }
 
     Tween scaleTargetTween;

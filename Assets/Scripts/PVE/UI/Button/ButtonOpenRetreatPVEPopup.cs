@@ -68,7 +68,7 @@ public class ButtonOpenRetreatPVEPopup : ButtonBase
         yield return new WaitForSeconds(1.5f);
         Resource.SetActive(false);
         popupRetreatPVE?.ForceClose();
-        SceneTransitionHelper.Load(ESceneName.Home);
+        SceneTransitionHelper.Load(ESceneName.PVEBet);
     }
 
 

@@ -30,6 +30,7 @@ public class LossPVEPopup : MonoBehaviour
 
     private void NewGame()
     {
+        PVE.Instance.RemoveListener();
         PVE.Instance.NewGameTreasure();
         popupConfirm.ForceClose();
     }

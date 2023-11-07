@@ -140,6 +140,6 @@ public class Gift : CacheMonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //Timer<Gift>.Instance.Elasping();
+        Timer<Gift>.Instance.Elasping();
     }
 }

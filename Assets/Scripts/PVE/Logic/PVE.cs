@@ -52,6 +52,11 @@ public class PVE : SingletonMono<PVE>
         base.OnDestroy();
     }
 
+    public void RemoveListener()
+    {
+        PVEData.IsDeadPlayer.OnDataChanged -= PlayerRevival;
+    }
+
     #region Server_Request_Response
     public void GetData()
     {
@@ -190,7 +195,7 @@ public class PVE : SingletonMono<PVE>
     private IEnumerator Win(int point)
     {
         ShowEnemyPoint();
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(1f);
         yield return StartCoroutine(Instance.shipPVEs[selectedEnemy].BeingDestroyed());
         player.point.Data = point;
 
@@ -309,7 +314,6 @@ public class PVE : SingletonMono<PVE>
             }
             HideEnemyPoint();
             SetDisableLeanSelectableShipEnemy(true);
-            Debug.Log("Revival Done");
         }
     }
 
