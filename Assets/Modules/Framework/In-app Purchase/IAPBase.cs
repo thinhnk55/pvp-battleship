@@ -1,11 +1,10 @@
+using SimpleJSON;
 using System;
-using UnityEngine;
-using UnityEngine.Purchasing ;
-using System.Linq;
 using System.Collections.Generic;
-using UnityEngine.Purchasing.Extension;
 using Unity.Services.Core;
-using System.Threading.Tasks;
+using UnityEngine;
+using UnityEngine.Purchasing;
+using UnityEngine.Purchasing.Extension;
 
 namespace Framework
 {
@@ -15,6 +14,7 @@ namespace Framework
         protected IExtensionProvider m_StoreExtensionProvider; // The store-specific Purchasing subsystems.
         protected Action<bool, Product> purchaseAction;
         protected string _currentBundleId;
+        public Dictionary<Product, JSONNode> pendingProducts = new();
 
         protected override async void Awake()
         {
@@ -76,6 +76,7 @@ namespace Framework
                 {
                     Debug.Log(string.Format("Purchased product successfully: '{0}'", product.definition.id));
                     Instance.m_StoreController.ConfirmPendingPurchase(product);
+                    Instance.pendingProducts.Remove(product);
                 }
                 else
                 {
