@@ -20,6 +20,7 @@ namespace FirebaseIntegration
                 if(isNewTokenCloudMessage)
                 {
                     FirebaseUpdateToken(FirebaseData.TokenCloudMessage);
+                    isNewTokenCloudMessage = false;
                 }
 #endif
             };
