@@ -16,8 +16,8 @@ public class IAP : IAPBase
         builder.AddProduct($"{ApplicationConfig.BundleId}.gem.5", ProductType.Consumable);
         builder.AddProduct($"{ApplicationConfig.BundleId}.gem.6", ProductType.Consumable);
         builder.AddProduct($"{ApplicationConfig.BundleId}.gem.7", ProductType.Consumable);
-        builder.AddProduct($"{ApplicationConfig.BundleId}.starter", ProductType.Consumable);
-        builder.AddProduct($"{ApplicationConfig.BundleId}.elite", ProductType.Consumable);
+        builder.AddProduct($"{ApplicationConfig.BundleId}.starter2", ProductType.Consumable);
+        builder.AddProduct($"{ApplicationConfig.BundleId}.elite2", ProductType.Consumable);
         UnityPurchasing.Initialize(this, builder);
     }
 
