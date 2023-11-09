@@ -171,7 +171,6 @@ public class CoreGame : SingletonMono<CoreGame>
         {
             AudioHelper.StopMusic();
         }
-        reconnect = null;
         rematch = false;
         LeanTouch.OnFingerUp -= Instance.opponent.BeingAttacked;
         LeanTouch.OnFingerUpdate -= Instance.opponent.SelectingTarget;
@@ -604,6 +603,7 @@ public class CoreGame : SingletonMono<CoreGame>
     }
     void EnemyOutGame(JSONNode json)
     {
+        reconnect = null;
         Instance.opponent.DestroyTutorIngame();
         Instance.buttonRematch.GetComponent<Image>().sprite = SpriteFactory.DisableButton;
         Instance.buttonRematch.enabled = false;
@@ -628,14 +628,12 @@ public class CoreGame : SingletonMono<CoreGame>
             Instance.rematchChatB.text = "SORRY I HAVE TO GO!";
 
         }
-
     }
     public void Reconnect(JSONNode data)
     {
         try
         {
             Analytics.Log("reconnect", new List<KeyValuePair<string, object>>());
-            reconnect = null;
             int[,] arr = new int[Instance.player.octiles.Count, Instance.player.octiles.Count];
             Instance.opponent.gameObject.SetActive(true);
             Instance.opponent.InitBoard(10, 10);
