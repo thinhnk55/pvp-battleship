@@ -32,7 +32,7 @@ public struct TransactionInfo
         List<int> product_type = new List<int>();
         switch ((TransactionType)id)
         {
-            case TransactionType.starter:
+            case TransactionType.starter2:
                 cost_type.Add(0);
                 cost_value.Add(data["price"].AsFloat);
                 for (int i = 0; i < data["code"].Count; i++)
@@ -90,7 +90,7 @@ public struct TransactionInfo
                 break;
             case TransactionType.gold_skinship:
                 break;
-            case TransactionType.elite:
+            case TransactionType.elite2:
                 cost_type.Add(0);
                 cost_value.Add(data["price"].AsFloat);
                 product_value.Add(1);
@@ -293,7 +293,7 @@ public class TransactionCard : CardBase<TransactionInfo>
                 }
                 else
                 {
-                    if (info.Product.Length == 1 && info.TransactionType != TransactionType.elite)
+                    if (info.Product.Length == 1 && info.TransactionType != TransactionType.elite2)
                     {
                         Button.onClick.AddListener(() =>
                         {

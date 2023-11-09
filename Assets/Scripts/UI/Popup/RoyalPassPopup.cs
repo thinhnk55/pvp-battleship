@@ -29,7 +29,7 @@ public class RoyalPassPopup : MonoBehaviour
         {
             Product = new GoodInfo[1] { new GoodInfo() { Type = (int)PNonConsumableType.ELITE, Value = 0 } },
             Cost = new GoodInfo[1] { new GoodInfo() { Type = 0 } },
-            TransactionType = TransactionType.elite,
+            TransactionType = TransactionType.elite2,
             Index = 0,
         };
 
