@@ -425,7 +425,7 @@ public class TransactionCard : CardBase<TransactionInfo>
 
         if (product != null)
             IAPData.PendingProducts.TryAdd(product, jsonNode);
-        WSClient.Instance.Send(jsonNode);
+        jsonNode.RequestServer();
     }
 
     public static string GetStringNumber(long number)

@@ -77,15 +77,29 @@ namespace Server
         {
             try
             {
-                ws.Send(json.ToString());
-                Debug.Log($"<color=#FFA500>{(ServerRequest)json["id"].AsInt} - {json}</color>");
+                if (ws != null)
+                {
+                    if (json != null)
+                    {
+                        ws.Send(json.ToString());
+                        Debug.Log($"<color=#FFA500>{(ServerRequest)json["id"].AsInt} - {json}</color>");
+                    }
+                    else
+                    {
+                        Debug.LogError("Json null");
+                    }
+                }
+                else
+                {
+                    Messenger.Broadcast(GameEvent.LostConnection);
+                    Instance.Disconnect(true);
+                }
             }
             catch (Exception e)
             {
-                Messenger.Broadcast(GameEvent.LostConnection);
-                Instance.Disconnect(true);
                 Debug.Log(e);
             }
+
         }
 
         public void OnMessage(object sender, MessageEventArgs e)
