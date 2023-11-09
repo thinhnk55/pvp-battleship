@@ -8,6 +8,6 @@ public class StarterCard : DealCard
 {
     private void Awake()
     {
-        BuildUI(GameData.TransactionConfigs[TransactionType.starter][0]);
+        BuildUI(GameData.TransactionConfigs[TransactionType.starter2][0]);
     }
 }

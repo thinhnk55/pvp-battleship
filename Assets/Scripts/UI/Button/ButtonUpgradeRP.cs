@@ -9,14 +9,14 @@ public class ButtonUpgradeRP : ButtonBase
     {
         base.Button_OnClicked();
 
-        IAP.PurchaseProduct($"{ApplicationConfig.BundleId}.elite", (success, product) =>
+        IAP.PurchaseProduct($"{ApplicationConfig.BundleId}.elite2", (success, product) =>
         {
             if (success)
             {
 #if UNITY_ANDROID
                 RequestUpgradeRP(product.receipt.Replace("\\", "").Replace("\"{", "{").Replace("}\"", "}"), product);
 #elif UNITY_IOS
-                RequestUpgradeRP(new JSONClass() { { "TransactionID", product.transactionID }, { "Store", "AppleAppStore" } });
+                RequestUpgradeRP(new JSONClass() { { "TransactionID", product.transactionID }, { "Store", "AppleAppStore" } }.ToString());
 #endif
             }
         });
@@ -29,7 +29,7 @@ public class ButtonUpgradeRP : ButtonBase
         {
             { "id", ServerResponse._RP_UPGRADE.ToJson() },
         };
-        if (data != null)
+        if (data != null && data != "")
         {
             jsonNode.Add("r", JSON.Parse(data));
         }

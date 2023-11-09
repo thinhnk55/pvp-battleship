@@ -22,11 +22,11 @@ public class DealCollection : TransactionCollection
     public override void UpdateUIs()
     {
         base.UpdateUIs();
-        transactionType = TransactionType.starter;
+        transactionType = TransactionType.starter2;
         List<TransactionInfo> transactionInfos = new List<TransactionInfo>();
         if (!GameData.Starter)
         {
-            transactionInfos.AddRange(GameData.TransactionConfigs[TransactionType.starter]);
+            transactionInfos.AddRange(GameData.TransactionConfigs[TransactionType.starter2]);
         }
         if (transactionInfos.Count == 0)
         {
@@ -38,7 +38,7 @@ public class DealCollection : TransactionCollection
     public void UpdateUIs(JSONNode data)
     {
         TransactionType id = data["d"]["s"].ToEnum<TransactionType>();
-        if (id == TransactionType.starter)
+        if (id == TransactionType.starter2)
         {
             GameData.Starter = true;
             UpdateUIs();

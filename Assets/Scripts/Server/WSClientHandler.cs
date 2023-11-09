@@ -270,15 +270,16 @@ public class WSClientHandler : Framework.Singleton<WSClientHandler>
         Array @enum = Enum.GetValues(typeof(TransactionType));
         for (int i = 0; i < @enum.Length; i++)
         {
+            string name = ((TransactionType)i == TransactionType.starter2 || (TransactionType)i == TransactionType.elite2) ? @enum.GetValue(i).ToString()[..^1] : @enum.GetValue(i).ToString();
             if (i > 0)
             {
-                GameData.TransactionConfigs.Add((TransactionType)i, TransactionInfo.ListFromJson(data["d"]["shops"][@enum.GetValue(i).ToString()], i));
+                GameData.TransactionConfigs.Add((TransactionType)i, TransactionInfo.ListFromJson(data["d"]["shops"][name], i));
             }
             else
             {
                 List<TransactionInfo> infos = new List<TransactionInfo>
                 {
-                    TransactionInfo.FromJson(data["d"]["shops"][@enum.GetValue(i).ToString()], i, 0)
+                    TransactionInfo.FromJson(data["d"]["shops"][name], i, 0)
                 };
                 GameData.TransactionConfigs.Add((TransactionType)i, infos);
             }
