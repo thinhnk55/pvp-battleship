@@ -9,7 +9,7 @@ public class ButtonUpgradeRP : ButtonBase
     {
         base.Button_OnClicked();
 
-        IAP.PurchaseProduct($"{ApplicationConfig.BundleId}.elite", (success, product) =>
+        IAP.PurchaseProduct($"{ApplicationConfig.BundleId}.elite2", (success, product) =>
         {
             if (success)
             {
