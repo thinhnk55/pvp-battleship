@@ -289,6 +289,11 @@ public class WSClientHandler : Framework.Singleton<WSClientHandler>
     }
     public static void Transaction(JSONNode data)
     {
+        if (data["e"].AsInt != 0)
+        {
+            return;
+        }
+
         TransactionType id = data["d"]["s"].ToEnum<TransactionType>();
         int index = data["d"]["p"].AsInt;
         GameData.TransactionConfigs[id][index].Transact();
