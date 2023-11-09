@@ -75,16 +75,15 @@ namespace Server
 
         public void Send(JSONNode json)
         {
-            try
+            if (json != null && ws != null && ws.IsAlive)
             {
                 ws.Send(json.ToString());
                 Debug.Log($"<color=#FFA500>{(ServerRequest)json["id"].AsInt} - {json}</color>");
             }
-            catch (Exception e)
+            else
             {
                 Messenger.Broadcast(GameEvent.LostConnection);
                 Instance.Disconnect(true);
-                Debug.Log(e);
             }
         }
 
