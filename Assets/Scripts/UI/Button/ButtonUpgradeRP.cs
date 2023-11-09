@@ -1,6 +1,7 @@
 using Framework;
 using Server;
 using SimpleJSON;
+using UnityEngine.Purchasing;
 
 public class ButtonUpgradeRP : ButtonBase
 {
@@ -12,14 +13,29 @@ public class ButtonUpgradeRP : ButtonBase
         {
             if (success)
             {
-                JSONNode jsonNode = new JSONClass
-            {
-                { "id", ServerResponse._RP_UPGRADE.ToJson() },
-                { "r", JSON.Parse(product.receipt.Replace("\\", "").Replace("\"{", "{").Replace("}\"", "}")) }
-            };
-                WSClient.Instance.Send(jsonNode);
+#if UNITY_ANDROID
+                RequestUpgradeRP(product.receipt.Replace("\\", "").Replace("\"{", "{").Replace("}\"", "}"), product);
+#elif UNITY_IOS
+                RequestUpgradeRP(new JSONClass() { { "TransactionID", product.transactionID }, { "Store", "AppleAppStore" } });
+#endif
             }
         });
 
+    }
+
+    public static void RequestUpgradeRP(string data = null, Product product = null)
+    {
+        JSONNode jsonNode = new JSONClass
+        {
+            { "id", ServerResponse._RP_UPGRADE.ToJson() },
+        };
+        if (data != null)
+        {
+            jsonNode.Add("r", JSON.Parse(data));
+        }
+
+        if (product != null)
+            IAPData.PendingProducts.TryAdd(product, jsonNode);
+        WSClient.Instance.Send(jsonNode);
     }
 }

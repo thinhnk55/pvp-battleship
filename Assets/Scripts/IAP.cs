@@ -16,8 +16,8 @@ public class IAP : IAPBase
         builder.AddProduct($"{ApplicationConfig.BundleId}.gem.5", ProductType.Consumable);
         builder.AddProduct($"{ApplicationConfig.BundleId}.gem.6", ProductType.Consumable);
         builder.AddProduct($"{ApplicationConfig.BundleId}.gem.7", ProductType.Consumable);
-        builder.AddProduct($"{ApplicationConfig.BundleId}.starter", ProductType.NonConsumable);
-        builder.AddProduct($"{ApplicationConfig.BundleId}.elite", ProductType.NonConsumable);
+        builder.AddProduct($"{ApplicationConfig.BundleId}.starter", ProductType.Consumable);
+        builder.AddProduct($"{ApplicationConfig.BundleId}.elite", ProductType.Consumable);
         UnityPurchasing.Initialize(this, builder);
     }
 
@@ -29,9 +29,9 @@ public class IAP : IAPBase
 
     public void OnGetProfile(JSONNode json)
     {
-        if (pendingProducts.Count > 0)
+        if (IAPData.PendingProducts.Count > 0)
         {
-            foreach (var pendingProduct in pendingProducts)
+            foreach (var pendingProduct in IAPData.PendingProducts)
             {
                 pendingProduct.Value.RequestServer();
             }
