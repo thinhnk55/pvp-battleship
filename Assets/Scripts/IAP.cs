@@ -29,9 +29,9 @@ public class IAP : IAPBase
 
     public void OnGetProfile(JSONNode json)
     {
-        if (pendingProducts.Count > 0)
+        if (IAPData.PendingProducts.Count > 0)
         {
-            foreach (var pendingProduct in pendingProducts)
+            foreach (var pendingProduct in IAPData.PendingProducts)
             {
                 pendingProduct.Value.RequestServer();
             }

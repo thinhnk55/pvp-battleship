@@ -418,13 +418,13 @@ public class TransactionCard : CardBase<TransactionInfo>
                 { "s", id.ToJson() },
                 { "p", index.ToJson() },
             };
-        if (data != null && data!= "")
+        if (data != null && data != "")
         {
             jsonNode.Add("r", JSON.Parse(data));
         }
 
         if (product != null)
-            IAP.Instance.pendingProducts.TryAdd(product, jsonNode);
+            IAPData.PendingProducts.TryAdd(product, jsonNode);
         WSClient.Instance.Send(jsonNode);
     }
 

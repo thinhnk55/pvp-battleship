@@ -102705,7 +102705,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!222 &85143335185214237
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -102782,6 +102782,7 @@ MonoBehaviour:
   playerProfile: {fileID: 85143335972934692}
   opponentProfile: {fileID: 85143335067800872}
   tresure: {fileID: 85143336645495529}
+  icon: {fileID: 85143335077829919}
   amount: {fileID: 85143336692072036}
 --- !u!224 &85143335223581137
 RectTransform:
@@ -105408,6 +105409,7 @@ MonoBehaviour:
   betAmountSearch: {fileID: 85143336692072036}
   turnTimeText: {fileID: 85143336911838860}
   turnImage: {fileID: 85143336208364161}
+  SelectedShip: {fileID: 0}
   counterRematchObj: {fileID: 38294325}
   btnBackPreGame: {fileID: 85143336264282274}
   btnBackSearchGame: {fileID: 1703799317}

@@ -35,7 +35,7 @@ public class ButtonUpgradeRP : ButtonBase
         }
 
         if (product != null)
-            IAP.Instance.pendingProducts.TryAdd(product, jsonNode);
+            IAPData.PendingProducts.TryAdd(product, jsonNode);
         WSClient.Instance.Send(jsonNode);
     }
 }

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,5 +9,6 @@ public class SearchUI : MonoBehaviour
     public ProfileCollection playerProfile;
     public ProfileCollection opponentProfile;
     public Image tresure;
+    public Image icon;
     public TextMeshProUGUI amount;
 }
