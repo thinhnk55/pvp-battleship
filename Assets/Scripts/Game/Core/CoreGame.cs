@@ -171,6 +171,7 @@ public class CoreGame : SingletonMono<CoreGame>
         {
             AudioHelper.StopMusic();
         }
+        reconnect = null;
         rematch = false;
         LeanTouch.OnFingerUp -= Instance.opponent.BeingAttacked;
         LeanTouch.OnFingerUpdate -= Instance.opponent.SelectingTarget;
@@ -608,6 +609,7 @@ public class CoreGame : SingletonMono<CoreGame>
         Instance.buttonRematch.enabled = false;
         if (rematch)
         {
+            Debug.Log("out rematch");
             rematch = false;
             if (Instance.stateMachine.CurrentState == GameState.PreRematch || Instance.stateMachine.CurrentState == GameState.SearchRematch)
             {
