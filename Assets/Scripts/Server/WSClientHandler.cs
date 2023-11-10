@@ -42,6 +42,7 @@ public class WSClientHandler : Framework.Singleton<WSClientHandler>
             ServerMessenger.AddListener<JSONNode>(ServerResponse._GAME_RECONNECT, RecieveReconnect);
             ServerMessenger.AddListener<JSONNode>(ServerResponse.RECIEVE_TREASURE_CONFIG, ReceiveTreasureConfig);
             ServerMessenger.AddListener<JSONNode>(ServerResponse.RECIEVE_JOIN_TREASURE_ROOM, ReceiveJoinTreasureRoom);
+            ServerMessenger.AddListener<JSONNode>(ServerResponse._OPERATION_CONFIG, OperationConfig);
 
         };
         WSClient.Instance.OnDisconnect += () =>
@@ -69,6 +70,7 @@ public class WSClientHandler : Framework.Singleton<WSClientHandler>
             ServerMessenger.RemoveListener<JSONNode>(ServerResponse._GAME_RECONNECT, RecieveReconnect);
             ServerMessenger.RemoveListener<JSONNode>(ServerResponse.RECIEVE_TREASURE_CONFIG, ReceiveTreasureConfig);
             ServerMessenger.RemoveListener<JSONNode>(ServerResponse.RECIEVE_JOIN_TREASURE_ROOM, ReceiveJoinTreasureRoom);
+            ServerMessenger.RemoveListener<JSONNode>(ServerResponse._OPERATION_CONFIG, OperationConfig);
         };
         WSClient.Instance.OnSystemError += () =>
         {
@@ -1025,6 +1027,15 @@ public class WSClientHandler : Framework.Singleton<WSClientHandler>
             GameData.LeaderBoard.rankWinPreviousAvailable = data["d"]["t"]["w"]["t"].AsInt == 1;
         }
 
+    }
+    #endregion
+    #region OPERATION CONFIG
+    public static void OperationConfig(JSONNode data)
+    {
+        if (data["d"]["is_maintain"].AsBool == false)
+            return;
+
+        SceneManager.LoadScene("SystemMaintenance");
     }
     #endregion
 }

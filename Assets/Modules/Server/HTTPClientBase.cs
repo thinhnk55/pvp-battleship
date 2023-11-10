@@ -22,6 +22,8 @@ public class HTTPClientBase
             }
         }
 
+        Debug.Log(url);
+
         yield return webRequest.SendWebRequest();
 
         if (webRequest.result == UnityWebRequest.Result.Success)

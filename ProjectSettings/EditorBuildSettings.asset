@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/SystemMaintenance.unity
+    guid: 35df4bd0797ffed48a068ef2cfa9abab
+  - enabled: 1
     path: Assets/Scenes/Loading.unity
     guid: 4959d9a08936ad44797b090c9bfd6e4f
   - enabled: 1
@@ -30,3 +33,4 @@ EditorBuildSettings:
     path: Assets/Scenes/TreasureHunt.unity
     guid: 4ebbc6718da66c1499dd18092389b10c
   m_configObjects: {}
+  m_UseUCBPForAssetBundles: 0

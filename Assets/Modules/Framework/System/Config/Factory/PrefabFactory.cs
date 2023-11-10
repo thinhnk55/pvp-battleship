@@ -58,6 +58,9 @@ namespace Framework
         [SerializeField] private GameObject popupDeleteConfirm; public static GameObject PopupDeleteConfirm { get { return Instance.popupDeleteConfirm; } }
 
         [SerializeField] private GameObject popupRPConfirm; public static GameObject PopupRPConfirm { get { return Instance.popupRPConfirm; } }
+
+        [SerializeField] private GameObject popupMaintain; public static GameObject PopupMaintain { get {  return Instance.popupMaintain; } }
+        [SerializeField] private GameObject popupUpgradeVersion; public static GameObject PopupUpgradeVersion { get {  return Instance.popupUpgradeVersion; } }
     }
 }
 

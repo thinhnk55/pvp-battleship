@@ -54,7 +54,7 @@
         Pong = 2,
         //---------
 
-
+        _OPERATION_CONFIG = 3,
         _PROFILE = 4001,
         _CONFIG = 4002,
         _CHECK_RANK = 4003,
