@@ -760,6 +760,7 @@ public class CoreGame : SingletonMono<CoreGame>
     }
     void Rematch(JSONNode data)
     {
+        rematch = true;
         Instance.rematchChatB.transform.parent.gameObject.SetActive(true);
         Instance.rematchChatB.text = "I WANT TO PLAY AGAINN";
         Instance.buttonRematch.GetComponentInChildren<TextMeshProUGUI>().text = "Ready";
