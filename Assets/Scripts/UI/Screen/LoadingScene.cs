@@ -19,7 +19,7 @@ public class LoadingScene : SingletonMono<LoadingScene>
         {
             if (loadingBar.value == 100)
             {
-                SceneManager.UnloadSceneAsync(SceneManager.GetSceneAt(0));
+                SceneManager.UnloadSceneAsync("Loading");
             }
         });
         InvokeRepeating("CheckMultipleAudioListenerAndEventSystem", 0, 0.1f);
@@ -34,17 +34,20 @@ public class LoadingScene : SingletonMono<LoadingScene>
             FirebaseInitialization.Initialize();
         }
 
-        if (Application.internetReachability == NetworkReachability.NotReachable)
-        {
-            WSClientHandler.PopupReconnect();
-        }
     }
 
     private void Update()
     {
-        if (asynScene == null) { return; }
+        if (Application.internetReachability == NetworkReachability.NotReachable)
+        {
+            WSClientHandler.PopupReconnect();
+            return;
+        }
         currentLoadingTime += Time.deltaTime;
-        loadingBar.value = (asynScene.progress + (FirebaseInitialization.initialized ? 1 : 0)) / 2 * 100 * Mathf.Clamp01(currentLoadingTime / loadingDuration);
+        if (asynScene != null)
+        {
+            loadingBar.value = (asynScene.progress + (FirebaseInitialization.initialized ? 1 : 0)) / 2 * 100 * Mathf.Clamp01(currentLoadingTime / loadingDuration);
+        }
     }
 
     protected override void OnDestroy()
