@@ -145,6 +145,8 @@ public class CoreGame : SingletonMono<CoreGame>
         {
             Instance.stateMachine.CurrentState = GameState.Pre;
         }
+
+        ServerMessenger.AddListener<JSONNode>(ServerResponse._OPERATION_CONFIG, OperationConfig);
         ServerMessenger.AddListener<JSONNode>(ServerResponse._MATCH, Instance.Match);
         ServerMessenger.AddListener<JSONNode>(ServerResponse._GAME_START, Instance.GameStart);
         ServerMessenger.AddListener<JSONNode>(ServerResponse._GAME_DESTROY, Instance.GameDestroy);
@@ -177,6 +179,8 @@ public class CoreGame : SingletonMono<CoreGame>
         Instance.opponent.horzLine.SetActive(false);
         Instance.opponent.vertLine.SetActive(false);
         Instance.stateMachine.CurrentState = GameState.Out;
+
+        ServerMessenger.RemoveListener<JSONNode>(ServerResponse._OPERATION_CONFIG, OperationConfig);
         ServerMessenger.RemoveListener<JSONNode>(ServerResponse._MATCH, Instance.Match);
         ServerMessenger.RemoveListener<JSONNode>(ServerResponse._GAME_START, Instance.GameStart);
         ServerMessenger.RemoveListener<JSONNode>(ServerResponse._GAME_DESTROY, Instance.GameDestroy);
@@ -448,7 +452,6 @@ public class CoreGame : SingletonMono<CoreGame>
     }
     void GameStart(JSONNode json)
     {
-        ServerMessenger.AddListener<JSONNode>(ServerResponse._OPERATION_CONFIG, OperationConfig);
         Analytics.Log("startgame", new List<KeyValuePair<string, object>>());
         timeInit = json["d"]["c"].AsInt;
         Instance.playerTurn = int.Parse(json["d"]["f"]) == playerChair;
@@ -555,12 +558,6 @@ public class CoreGame : SingletonMono<CoreGame>
     }
     void EndGame(JSONNode json)
     {
-        ServerMessenger.RemoveListener<JSONNode>(ServerResponse._OPERATION_CONFIG, OperationConfig);
-        if (isSystemMaintenace == true)
-        {
-            SceneManager.LoadScene("SystemMaintenance");
-        }
-
         Instance.opponent.DestroyTutorIngame();
         Instance.rematchChatB.transform.parent.gameObject.SetActive(false);
         Instance.rematchChatA.transform.parent.gameObject.SetActive(false);
@@ -602,6 +599,14 @@ public class CoreGame : SingletonMono<CoreGame>
                 Instance.postUI.ResultPlayer.sprite = SpriteFactory.Lose;
                 Instance.postUI.ResultOpponent.sprite = SpriteFactory.Win;
                 CoinVFX.CoinVfx(postUI.avatar2.transform, postUI.treasure.transform.position, postUI.treasure.transform.position);
+            }
+        });
+
+        DOVirtual.DelayedCall(5, () =>
+        {
+            if (isSystemMaintenace == true)
+            {
+                SceneManager.LoadScene("SystemMaintenance");
             }
         });
 
@@ -784,7 +789,17 @@ public class CoreGame : SingletonMono<CoreGame>
 
     private void OperationConfig(JSONNode data)
     {
-        isSystemMaintenace = true;
+        if (data["d"]["is_maintain"].AsBool == false)
+            return;
+
+        if(stateMachine.CurrentState == GameState.Turn) 
+        {
+            isSystemMaintenace = true;
+        }
+        else
+        {
+            SceneManager.LoadScene("SystemMaintenance");
+        }
     }
     #endregion
 }
