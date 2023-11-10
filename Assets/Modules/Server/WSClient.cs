@@ -25,11 +25,6 @@ namespace Server
             ws.OnOpen += OnOpen;
             //ws = new WebSocket(ServerConfig.WebSocketURL + "?id="+ 12 + "&token=" + "7lnyeclvtjlk49en9b63dsx8e6q5tqyi");
             ws.Connect();
-            if (ws.IsAlive)
-            {
-                ServerMessenger.AddListener<JSONNode>(ServerResponse.CheckLoginConnection, CheckLoginConnection);
-                Messenger.AddListener(GameEvent.LostConnection, OnLostConnection);
-            }
         }
         public void Disconnect(bool unlisten)
         {
@@ -43,6 +38,8 @@ namespace Server
         public void OnOpen(object sender, EventArgs e)
         {
             Debug.Log("Open " + ((WebSocket)sender).Url);
+            ServerMessenger.AddListener<JSONNode>(ServerResponse.CheckLoginConnection, CheckLoginConnection);
+            Messenger.AddListener(GameEvent.LostConnection, OnLostConnection);
             ws.OnMessage += OnMessage;
             ws.OnError += OnError;
             ws.OnClose += OnClose;

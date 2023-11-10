@@ -4,7 +4,6 @@ using Newtonsoft.Json;
 using SimpleJSON;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class GameData : PDataBlock<GameData>
@@ -80,7 +79,7 @@ public class GameData : PDataBlock<GameData>
             new BoardInfo(){ boardInfo = new List<ShipInfo>()} , new BoardInfo(){ boardInfo = new List<ShipInfo>()} , new BoardInfo(){ boardInfo = new List<ShipInfo>()} };
         Instance.leaderBoard = Instance.leaderBoard ?? new LeaderBoard();
         Instance.acceptLoginTerm = Instance.acceptLoginTerm ?? new bool[2] { true, true };
-        if (Instance.tutorial.IsNullOrEmpty() || Instance.tutorial.Contains(0))
+        if (Instance.tutorial.IsNullOrEmpty() || Instance.tutorial[3] == 0)
         {
             Instance.tutorial = new int[4] { 0, 0, 0, 0 };
         }

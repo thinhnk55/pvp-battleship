@@ -9,7 +9,7 @@ namespace Server
     /// </summary>
     public class WSPingPong : SingletonMono<WSPingPong>
     {
-        [SerializeField] float interval = 5;
+        [SerializeField] float interval = 1;
         private float currentPingPongTime = 0;
         private float pingPongTime = 0; public float PingPongTime { get { return pingPongTime; } }
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
@@ -39,6 +39,7 @@ namespace Server
             }
             currentPingPongTime = Time.time;
             WSClient.Instance.Send(new JSONClass() { { "id", ServerRequest.Ping.ToJson() } });
+
         }
         static void Pong(JSONNode data)
         {

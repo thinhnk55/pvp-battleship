@@ -77,7 +77,6 @@ public class Board : CacheMonoBehaviour
     }
     public void InitBoardInvert(int row, int column)
     {
-
         destroyedShips = new List<Ship>();
         octileRoot.DestroyChildrenImmediate();
         octiles = new List<List<Octile>>();
@@ -98,32 +97,14 @@ public class Board : CacheMonoBehaviour
                 octiles[iRow].Add(octile);
             }
         }
-        // turorial
-        if (GameData.Tutorial[2] == 0 && this == CoreGame.Instance.player)
-        {
-            tutorFormation = PopupHelper.Create(PrefabFactory.PopupTuTorFormation).gameObject;
-        }
-        else if (GameData.Tutorial[3] == 0 && this != CoreGame.Instance.player)
-        {
-            DOVirtual.DelayedCall(5, () =>
-            {
-                if (GameData.Tutorial[3] == 0)
-                {
-                    tutorIngame = PopupHelper.Create(PrefabFactory.PopupTuTorPlay).gameObject;
-                    int r = Random.Range(3, 7);
-                    int c = Random.Range(3, 7);
-                    tutorIngame.transform.position = octiles[r][c].transform.position;
-                }
-            });
-        }
     }
     public void BeingAttacked(LeanFinger leanFinger)
     {
         // tutorial
         if (GameData.Tutorial[3] == 0 && this != CoreGame.Instance.player)
         {
-            DestroyTutorIngame();
             GameData.Tutorial = new int[4] { 1, 1, 1, 1 };
+            DestroyTutorIngame();
         }
 
         //

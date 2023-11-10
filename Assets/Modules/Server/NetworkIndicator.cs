@@ -1,6 +1,8 @@
 using Framework;
 using SimpleJSON;
+using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace Server
@@ -10,6 +12,7 @@ namespace Server
         [SerializeField] Sprite[] wifiIcon;
         [SerializeField] Sprite[] internetIcon;
         [SerializeField] Image networkIcon;
+        [SerializeField] TextMeshProUGUI scenes;
 
         protected override void Awake()
         {
@@ -40,6 +43,12 @@ namespace Server
             {
                 networkIcon.sprite = images[2];
             }
+            string n = "";
+            foreach (var scene in SceneManager.GetAllScenes())
+            {
+                n += scene.name;
+            }
+            scenes.text = n;
         }
     }
 }

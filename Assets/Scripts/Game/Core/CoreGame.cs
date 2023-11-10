@@ -32,7 +32,6 @@ public class CoreGame : SingletonMono<CoreGame>
     public static int playerChair;
     public bool isSystemMaintenace;
     public int missturn;
-    public bool isQuitting = false;
 
     public static List<List<Vector2Int>> shipConfigs = new List<List<Vector2Int>>()
     {
@@ -148,7 +147,7 @@ public class CoreGame : SingletonMono<CoreGame>
         }
         ServerMessenger.AddListener<JSONNode>(ServerResponse._MATCH, Instance.Match);
         ServerMessenger.AddListener<JSONNode>(ServerResponse._GAME_START, Instance.GameStart);
-        ServerMessenger.AddListener<JSONNode>(ServerResponse._GAME_DESTROY, Instance.EnemyOutGame);
+        ServerMessenger.AddListener<JSONNode>(ServerResponse._GAME_DESTROY, Instance.GameDestroy);
         ServerMessenger.AddListener<JSONNode>(ServerResponse._END_TURN, Instance.EndTurn);
         ServerMessenger.AddListener<JSONNode>(ServerResponse._TURN_MISS, Instance.TurnMiss);
         ServerMessenger.AddListener<JSONNode>(ServerResponse._REMATCH, Instance.Rematch);
@@ -173,8 +172,6 @@ public class CoreGame : SingletonMono<CoreGame>
         {
             AudioHelper.StopMusic();
         }
-        reconnect = null;
-        rematch = false;
         LeanTouch.OnFingerUp -= Instance.opponent.BeingAttacked;
         LeanTouch.OnFingerUpdate -= Instance.opponent.SelectingTarget;
         Instance.opponent.horzLine.SetActive(false);
@@ -182,7 +179,7 @@ public class CoreGame : SingletonMono<CoreGame>
         Instance.stateMachine.CurrentState = GameState.Out;
         ServerMessenger.RemoveListener<JSONNode>(ServerResponse._MATCH, Instance.Match);
         ServerMessenger.RemoveListener<JSONNode>(ServerResponse._GAME_START, Instance.GameStart);
-        ServerMessenger.RemoveListener<JSONNode>(ServerResponse._GAME_DESTROY, Instance.EnemyOutGame);
+        ServerMessenger.RemoveListener<JSONNode>(ServerResponse._GAME_DESTROY, Instance.GameDestroy);
         ServerMessenger.RemoveListener<JSONNode>(ServerResponse._END_TURN, Instance.EndTurn);
         ServerMessenger.RemoveListener<JSONNode>(ServerResponse._TURN_MISS, Instance.TurnMiss);
         ServerMessenger.RemoveListener<JSONNode>(ServerResponse._REMATCH, Instance.Rematch);
@@ -414,8 +411,7 @@ public class CoreGame : SingletonMono<CoreGame>
     {
         rematch = false;
         WSClientHandler.QuitGame(roomId);
-        SceneTransitionHelper.Reload();
-        isQuitting = false;
+        DOVirtual.DelayedCall(0.1f, () => SceneTransitionHelper.Reload());
     }
     public void Ready()
     {
@@ -483,8 +479,8 @@ public class CoreGame : SingletonMono<CoreGame>
         }
         LeanTouch.OnFingerUp -= Instance.opponent.BeingAttacked;
         LeanTouch.OnFingerUpdate -= Instance.opponent.SelectingTarget;
-        Instance.opponent.horzLine.gameObject.SetActive(false);
-        Instance.opponent.vertLine.gameObject.SetActive(false);
+        Instance.opponent.horzLine.SetActive(false);
+        Instance.opponent.vertLine.SetActive(false);
         DOVirtual.DelayedCall(Octile.timeAttackAnim, () =>
         {
             int x = int.Parse(json["d"]["x"]);
@@ -611,8 +607,9 @@ public class CoreGame : SingletonMono<CoreGame>
 
 
     }
-    void EnemyOutGame(JSONNode json)
+    void GameDestroy(JSONNode json)
     {
+        reconnect = null;
         Instance.opponent.DestroyTutorIngame();
         Instance.buttonRematch.GetComponent<Image>().sprite = SpriteFactory.DisableButton;
         Instance.buttonRematch.enabled = false;
@@ -637,14 +634,12 @@ public class CoreGame : SingletonMono<CoreGame>
             Instance.rematchChatB.text = "SORRY I HAVE TO GO!";
 
         }
-
     }
     public void Reconnect(JSONNode data)
     {
         try
         {
             Analytics.Log("reconnect", new List<KeyValuePair<string, object>>());
-            reconnect = null;
             int[,] arr = new int[Instance.player.octiles.Count, Instance.player.octiles.Count];
             Instance.opponent.gameObject.SetActive(true);
             Instance.opponent.InitBoard(10, 10);
@@ -692,6 +687,7 @@ public class CoreGame : SingletonMono<CoreGame>
 
             Instance.searchUI.opponentProfile.UpdateUIs();
             Instance.opponent.battleFieldSprite.sprite = SpriteFactory.BattleFields[GameData.Opponent.BattleField.Data];
+            Debug.Log("OpponentProfile");
             for (int i = 0; i < data["s"].Count; i++)
             {
                 Ship ship = Instance.shipsPlayer.Find((ship) =>
@@ -744,9 +740,9 @@ public class CoreGame : SingletonMono<CoreGame>
             {
                 for (int j = 0; j < boardOpponent[i].Count; j++)
                 {
-                    if (int.Parse(boardOpponent[j][i]) == 2)
+                    if (int.Parse(boardOpponent[i][j]) == 2)
                     {
-                        Instance.opponent.octiles[i][j].BeingAttacked(false);
+                        Instance.opponent.octiles[j][i].BeingAttacked(false);
                     }
                     else if (int.Parse(boardOpponent[i][j]) == 1)
                     {
