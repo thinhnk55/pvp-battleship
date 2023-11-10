@@ -171,7 +171,7 @@ public class ProfileCollection : CardCollectionBase<ProfileInfo>
 
     public override void UpdateUIs()
     {
-        var profile = new ProfileData();
+        ProfileData profile = null;
         if (isPlayer)
         {
             profile = GameData.Player;
