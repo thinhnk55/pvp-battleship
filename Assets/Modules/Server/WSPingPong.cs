@@ -1,7 +1,6 @@
 using Framework;
 using SimpleJSON;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace Server
 {
@@ -40,12 +39,7 @@ namespace Server
             }
             currentPingPongTime = Time.time;
             WSClient.Instance.Send(new JSONClass() { { "id", ServerRequest.Ping.ToJson() } });
-            string n = "";
-            foreach (var scene in SceneManager.GetAllScenes())
-            {
-                n += scene.name;
-            }
-            Debug.Log(n);
+
         }
         static void Pong(JSONNode data)
         {
