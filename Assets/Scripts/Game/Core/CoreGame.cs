@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public enum GameState
@@ -29,6 +30,7 @@ public class CoreGame : SingletonMono<CoreGame>
     public static bool rematch = false;
     public static int roomId;
     public static int playerChair;
+    public bool isSystemMaintenace;
     public int missturn;
     public bool isQuitting = false;
 
@@ -450,6 +452,7 @@ public class CoreGame : SingletonMono<CoreGame>
     }
     void GameStart(JSONNode json)
     {
+        ServerMessenger.AddListener<JSONNode>(ServerResponse._OPERATION_CONFIG, OperationConfig);
         Analytics.Log("startgame", new List<KeyValuePair<string, object>>());
         timeInit = json["d"]["c"].AsInt;
         Instance.playerTurn = int.Parse(json["d"]["f"]) == playerChair;
@@ -556,6 +559,12 @@ public class CoreGame : SingletonMono<CoreGame>
     }
     void EndGame(JSONNode json)
     {
+        ServerMessenger.RemoveListener<JSONNode>(ServerResponse._OPERATION_CONFIG, OperationConfig);
+        if (isSystemMaintenace == true)
+        {
+            SceneManager.LoadScene("SystemMaintenance");
+        }
+
         Instance.opponent.DestroyTutorIngame();
         Instance.rematchChatB.transform.parent.gameObject.SetActive(false);
         Instance.rematchChatA.transform.parent.gameObject.SetActive(false);
@@ -775,6 +784,11 @@ public class CoreGame : SingletonMono<CoreGame>
         counterRematch = data["d"]["c"].AsFloat;
         SceneTransitionHelper.Reload();
         Analytics.Log("rematch", new List<KeyValuePair<string, object>>());
+    }
+
+    private void OperationConfig(JSONNode data)
+    {
+        isSystemMaintenace = true;
     }
     #endregion
 }

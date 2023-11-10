@@ -1035,7 +1035,10 @@ public class WSClientHandler : Framework.Singleton<WSClientHandler>
         if (data["d"]["is_maintain"].AsBool == false)
             return;
 
-        SceneManager.LoadScene("SystemMaintenance");
+        if(SceneManager.GetActiveScene().ToString() != "MainGame")
+        {
+            SceneManager.LoadScene("SystemMaintenance");
+        }
     }
     #endregion
 }
