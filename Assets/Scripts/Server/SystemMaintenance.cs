@@ -91,8 +91,13 @@ public class SystemMaintenance : SingletonMono<SystemMaintenance>
 
             if (part2 > part1)
                 return true;
+            else if (part2 == part1)
+                continue;
+            else
+                return false;
         }
 
         return false;
+
     }
 }

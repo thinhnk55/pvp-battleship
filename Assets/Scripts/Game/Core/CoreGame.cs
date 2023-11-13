@@ -615,6 +615,7 @@ public class CoreGame : SingletonMono<CoreGame>
     }
     void GameDestroy(JSONNode json)
     {
+        reconnect = null;
         Instance.opponent.DestroyTutorIngame();
         Instance.buttonRematch.GetComponent<Image>().sprite = SpriteFactory.DisableButton;
         Instance.buttonRematch.enabled = false;
@@ -765,7 +766,6 @@ public class CoreGame : SingletonMono<CoreGame>
             Instance.ingameUI.SetActive(true);
             Instance.preUI.SetActive(false);
             Instance.stateMachine.CurrentState = GameState.Turn;
-            reconnect = null;
         }
         catch (System.Exception e)
         {
