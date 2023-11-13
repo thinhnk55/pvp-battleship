@@ -1,19 +1,12 @@
-﻿using AppLovinMax.Scripts.IntegrationManager.Editor;
-using Framework;
+﻿using Framework;
 using Server;
 using SimpleJSON;
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Security.Cryptography;
-using Unity.VisualScripting.FullSerializer;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using static UnityEngine.Rendering.HDROutputUtils;
 
 public class SystemMaintenance : SingletonMono<SystemMaintenance>
-{   
+{
     public bool forceUpdate = false;
     public string linkGame;
     private void HTTPGetCheckOperation()
@@ -45,7 +38,7 @@ public class SystemMaintenance : SingletonMono<SystemMaintenance>
         JSONNode jsonRes = JSONNode.Parse(data);
         if (jsonRes["data"]["maintain"]["is_maintain"].AsBool == false) // 
         {
-            if(IsOldVersion(Application.version, jsonRes["data"]["update"][platform]["version"]))
+            if (IsOldVersion(Application.version, jsonRes["data"]["update"][platform]["version"]))
             {
                 HandleOldVersion(jsonRes, platform);
                 return;
@@ -59,7 +52,7 @@ public class SystemMaintenance : SingletonMono<SystemMaintenance>
             DateTime endMaintain = TimeStampToDateTime(jsonRes["data"]["maintain"]["to"].AsLong);
             string from = startMaintain.ToString();
             string to = endMaintain.ToString();
-            string message = "Our Game is maintaining for an update from ["+from+"] to ["+to+"]. We apologize for any inconvenience this may cause. Thank you for your understanding and patience!";
+            string message = "Our Game is maintaining for an update from [" + from + "] to [" + to + "]. We apologize for any inconvenience this may cause. Thank you for your understanding and patience!";
             PopupHelper.CreateConfirm(PrefabFactory.PopupMaintain, null, message, null, (success) =>
             {
                 if (success)
@@ -75,7 +68,7 @@ public class SystemMaintenance : SingletonMono<SystemMaintenance>
     {
         forceUpdate = jsonRes["data"]["update"][platform]["force"].AsBool;
         linkGame = jsonRes["data"]["update"][platform]["url"].ToString();
-        string message = "Version {"+ jsonRes["data"]["update"][platform]["version"] +"} is ready!\nUpgrade now to experience the latest features.";
+        string message = "Version {" + jsonRes["data"]["update"][platform]["version"] + "} is ready!\nUpgrade now to experience the latest features.";
         PopupHelper.CreateMessage(PrefabFactory.PopupUpgradeVersion, null, message, null);
     }
 

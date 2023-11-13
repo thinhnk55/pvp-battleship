@@ -643,9 +643,8 @@ public class WSClientHandler : Framework.Singleton<WSClientHandler>
         if (data["e"].AsInt == 0)
         {
             CoreGame.reconnect = data["d"];
-            LoadingScene.Instance.LoadScene("MainGame");
+            SceneTransitionHelper.Load(ESceneName.MainGame);
         }
-        //SceneTransitionHelper.Load(ESceneName.MainGame);
     }
     #endregion
     #region Royal Pass
@@ -1035,7 +1034,7 @@ public class WSClientHandler : Framework.Singleton<WSClientHandler>
         if (data["d"]["is_maintain"].AsBool == false)
             return;
 
-        if(SceneManager.GetActiveScene().name != "MainGame" && SceneManager.GetActiveScene().name != "SystemMaintenance")
+        if (SceneManager.GetActiveScene().name != "MainGame" && SceneManager.GetActiveScene().name != "SystemMaintenance")
         {
             SceneManager.LoadScene("SystemMaintenance");
         }

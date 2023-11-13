@@ -203,7 +203,6 @@ public class CoreGame : SingletonMono<CoreGame>
         {
             Instance.btnBackPreGame.SetActive(false);
         }
-        AudioHelper.StopMusic();
         float sizeWidth = cam.orthographicSize * cam.aspect * 2;
         Instance.preUI.SetActive(true);
         Instance.postUI.gameObject.SetActive(false);
@@ -452,6 +451,7 @@ public class CoreGame : SingletonMono<CoreGame>
     }
     void GameStart(JSONNode json)
     {
+        reconnect = null;
         Analytics.Log("startgame", new List<KeyValuePair<string, object>>());
         timeInit = json["d"]["c"].AsInt;
         Instance.playerTurn = int.Parse(json["d"]["f"]) == playerChair;
@@ -558,6 +558,7 @@ public class CoreGame : SingletonMono<CoreGame>
     }
     void EndGame(JSONNode json)
     {
+        reconnect = null;
         Instance.opponent.DestroyTutorIngame();
         Instance.rematchChatB.transform.parent.gameObject.SetActive(false);
         Instance.rematchChatA.transform.parent.gameObject.SetActive(false);
@@ -792,7 +793,7 @@ public class CoreGame : SingletonMono<CoreGame>
         if (data["d"]["is_maintain"].AsBool == false)
             return;
 
-        if(stateMachine.CurrentState == GameState.Turn) 
+        if (stateMachine.CurrentState == GameState.Turn)
         {
             isSystemMaintenace = true;
         }
