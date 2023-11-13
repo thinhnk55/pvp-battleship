@@ -9,7 +9,7 @@ namespace Server
     /// </summary>
     public class WSPingPong : SingletonMono<WSPingPong>
     {
-        [SerializeField] float interval = 1;
+        [SerializeField] float interval = 2;
         private float currentPingPongTime = 0;
         private float pingPongTime = 0; public float PingPongTime { get { return pingPongTime; } }
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
