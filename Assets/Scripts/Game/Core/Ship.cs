@@ -5,8 +5,6 @@ using SimpleJSON;
 using System.Collections.Generic;
 using UnityEngine;
 
-
-
 public class Ship : CacheMonoBehaviour
 {
     public Board board;
