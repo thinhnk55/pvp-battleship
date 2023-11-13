@@ -8,7 +8,7 @@ public class IAP : IAPBase
     protected override void InitializePurchasing()
     {
         var builder = ConfigurationBuilder.Instance(StandardPurchasingModule.Instance());
-        builder.AddProduct($"{ApplicationConfig.BundleId}.gem.0", ProductType.Consumable); //,new IDs{{"100_gold_coins_google", GooglePlay.Name},{"100_gold_coins_mac", MacAppStore.Name},}
+        builder.AddProduct($"{ApplicationConfig.BundleId}.gem.0", ProductType.Consumable);
         builder.AddProduct($"{ApplicationConfig.BundleId}.gem.1", ProductType.Consumable);
         builder.AddProduct($"{ApplicationConfig.BundleId}.gem.2", ProductType.Consumable);
         builder.AddProduct($"{ApplicationConfig.BundleId}.gem.3", ProductType.Consumable);
