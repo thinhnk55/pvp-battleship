@@ -55,7 +55,7 @@ public class GameData : PDataBlock<GameData>
     [SerializeField] public bool[] acceptLoginTerm; public static bool[] AcceptLoginTerm { get { return Instance.acceptLoginTerm; } set { Instance.acceptLoginTerm = value; } }
     [SerializeField] public bool starter; public static bool Starter { get { return Instance.starter; } set { Instance.starter = value; } }
     [SerializeField] public bool starterShow; public static bool StarterShow { get { return Instance.starterShow; } set { Instance.starterShow = value; } }
-    [SerializeField] public int[] tutorial; public static int[] Tutorial { get { return Instance.tutorial; } set { Instance.tutorial = value; } }
+    [SerializeField] public List<int> tutorial; public static List<int> Tutorial { get { return Instance.tutorial; } set { Instance.tutorial = value; } }
     [SerializeField] public LeaderBoard leaderBoard; public static LeaderBoard LeaderBoard { get { return Instance.leaderBoard; } set { Instance.leaderBoard = value; } }
     [SerializeField] public SocialAuthType typeLogin; public static SocialAuthType TypeLogin { get { return Instance.typeLogin; } set { Instance.typeLogin = value; } }
     protected override void Init()
@@ -81,7 +81,7 @@ public class GameData : PDataBlock<GameData>
         Instance.acceptLoginTerm = Instance.acceptLoginTerm ?? new bool[2] { true, true };
         if (Instance.tutorial.IsNullOrEmpty() || Instance.tutorial[3] == 0)
         {
-            Instance.tutorial = new int[4] { 0, 0, 0, 0 };
+            Instance.tutorial = new List<int>() { 0, 0, 0, 0 };
         }
     }
 }

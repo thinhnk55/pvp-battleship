@@ -61,7 +61,7 @@ public class Board : CacheMonoBehaviour
         {
             tutorFormation = PopupHelper.Create(PrefabFactory.PopupTuTorFormation).gameObject;
         }
-        else if (GameData.Tutorial[3] == 0 && this != CoreGame.Instance.player)
+        else if (GameData.Tutorial[3] == 0 && this != CoreGame.Instance.player && CoreGame.Instance.playerTurn)
         {
             DOVirtual.DelayedCall(5, () =>
             {
@@ -103,7 +103,7 @@ public class Board : CacheMonoBehaviour
         // tutorial
         if (GameData.Tutorial[3] == 0 && this != CoreGame.Instance.player)
         {
-            GameData.Tutorial = new int[4] { 1, 1, 1, 1 };
+            GameData.Tutorial = new List<int>() { 1, 1, 1, 1 };
             DestroyTutorIngame();
         }
 

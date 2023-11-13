@@ -60,7 +60,7 @@ public class CoreGame : SingletonMono<CoreGame>
     [SerializeField] TextMeshProUGUI betAmountSearch;
     public StateMachine<GameState> stateMachine;
 
-    bool playerTurn;
+    public bool playerTurn;
     float turnTime; float TurnTime { get { return turnTime; } set { turnTime = Mathf.Clamp(value, 0, timeInit); turnTimeText.text = ((int)turnTime).ToString(); } }
     [SerializeField] TextMeshProUGUI turnTimeText;
     [SerializeField] Image turnImage;
