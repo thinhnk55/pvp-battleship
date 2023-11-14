@@ -91,13 +91,13 @@ public class ProfileCollection : CardCollectionBase<ProfileInfo>
             Debug.Log("userId");
             if (avatar)
             {
-                if (infos.Avatar == -1)
+                if (infos.Avatar < 0)
                 {
                     avatar.sprite = SpriteFactory.Unknown;
                 }
                 else
                 {
-                    avatar.sprite = SpriteFactory.ResourceIcons[(int)PNonConsumableType.AVATAR].sprites[infos.Avatar];
+                    avatar.sprite = SpriteFactory.ResourceIcons[(int)PNonConsumableType.AVATAR].sprites.GetLoop(infos.Avatar);
                 }
             }
             Debug.Log("Avatar");
@@ -142,7 +142,7 @@ public class ProfileCollection : CardCollectionBase<ProfileInfo>
                 rankIcon.sprite = SpriteFactory.Ranks[infos.Rank];
             }
             Debug.Log("rankIcon");
-            if (rankProgress)
+            if (rankProgress && !GameData.RankConfigs.IsNullOrEmpty())
             {
                 rankProgress.maxValue = GameData.RankConfigs.GetClamp(infos.Rank + 1).Point;
                 rankProgress.value = infos.Point;
@@ -188,7 +188,7 @@ public class ProfileCollection : CardCollectionBase<ProfileInfo>
         }
         catch (Exception e)
         {
-            Debug.Log(e.Message);
+            Debug.LogError(e.Message);
         }
     }
 
