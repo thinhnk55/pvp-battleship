@@ -82,114 +82,93 @@ public class ProfileCollection : CardCollectionBase<ProfileInfo>
     }
     public void BuildUI(ProfileInfo infos)
     {
-        try
+        if (userId)
         {
-            if (userId)
-            {
-                userId.text = "#" + infos.UserId.ToString();
-            }
-            Debug.Log("userId");
-            if (avatar)
-            {
-                if (infos.Avatar < 0)
-                {
-                    avatar.sprite = SpriteFactory.Unknown;
-                }
-                else
-                {
-                    avatar.sprite = SpriteFactory.ResourceIcons[(int)PNonConsumableType.AVATAR].sprites.GetLoop(infos.Avatar);
-                }
-            }
-            Debug.Log("Avatar");
-            if (frame)
-            {
-                if (infos.Frame >= 0)
-                {
-                    frame.sprite = SpriteFactory.ResourceIcons[(int)PNonConsumableType.AVATAR_FRAME].sprites.GetLoop(infos.Frame);
-                    frame.SetAlpha(1);
-                }
-                else
-                {
-                    frame.SetAlpha(0);
-                }
-            }
-            Debug.Log("Frame");
-            if (frameTail)
-            {
-                if (infos.Avatar == -1)
-                {
-                    avatar.SetAlpha(0);
-                }
-                else
-                {
-                    avatar.SetAlpha(1);
-                    frameTail.sprite = SpriteFactory.Tailframes.GetLoop(infos.Frame);
-                }
-            }
-            Debug.Log("frameTail");
-            if (username)
-            {
-                username.text = infos.Username;
-            }
-            Debug.Log("username");
-            if (rank)
-            {
-                rank.text = GameData.RankConfigs[infos.Rank].Title;
-            }
-            Debug.Log("rank");
-            if (rankIcon)
-            {
-                rankIcon.sprite = SpriteFactory.Ranks[infos.Rank];
-            }
-            Debug.Log("rankIcon");
-            if (rankProgress && !GameData.RankConfigs.IsNullOrEmpty())
-            {
-                rankProgress.maxValue = GameData.RankConfigs.GetClamp(infos.Rank + 1).Point;
-                rankProgress.value = infos.Point;
-                pointRank?.SetText(rankProgress.value + "/" + rankProgress.maxValue);
-            }
-            Debug.Log("rankProgress");
-            if (battles && !infos.Achievement.IsNullOrEmpty())
-            {
-                battles.text = (infos.Wins + infos.Losts).ToString();
-            }
-            Debug.Log("battles");
-            if (shipDestroyed && !infos.Achievement.IsNullOrEmpty())
-            {
-                shipDestroyed.text = infos.Achievement[(int)AchievementType.DESTROY_SHIP].ToString();
-            }
-            Debug.Log("shipDestroyed");
-            if (perfectGame && !infos.Achievement.IsNullOrEmpty())
-            {
-                perfectGame.text = infos.Achievement[(int)AchievementType.PERFECT_GAME].ToString();
-            }
-            Debug.Log("perfectGame");
-            if (winStreak && !infos.Achievement.IsNullOrEmpty())
-            {
-                winStreak.text = infos.Achievement[(int)AchievementType.WIN_STREAK_MAX].ToString();
-            }
-            Debug.Log("winStreak");
-            winStreakMax?.SetText(infos.WinStreakMax.ToString());
-            Debug.Log("winStreakMax");
-            if (wins)
-            {
-                wins.text = infos.Achievement[(int)AchievementType.WIN].ToString();
-            }
-            Debug.Log("wins");
-            if (losts)
-            {
-                //losts.text = infos.Achievement[(int)AchievementType.].ToString() - infos.Achievement[(int)AchievementType.WIN].ToString();
-            }
-            if (winRate && !infos.Achievement.IsNullOrEmpty())
-            {
-                winRate.text = (infos.WinRate * 100).ToString("F1") + "%";
-            }
-            Debug.Log("Winrate");
+            userId.text = "#" + infos.UserId.ToString();
         }
-        catch (Exception e)
+        if (avatar)
         {
-            Debug.LogError(e.Message);
+            if (infos.Avatar < 0)
+            {
+                avatar.sprite = SpriteFactory.Unknown;
+            }
+            else
+            {
+                avatar.sprite = SpriteFactory.ResourceIcons[(int)PNonConsumableType.AVATAR].sprites.GetLoop(infos.Avatar);
+            }
         }
+        if (frame)
+        {
+            if (infos.Frame >= 0)
+            {
+                frame.sprite = SpriteFactory.ResourceIcons[(int)PNonConsumableType.AVATAR_FRAME].sprites.GetLoop(infos.Frame);
+                frame.SetAlpha(1);
+            }
+            else
+            {
+                frame.SetAlpha(0);
+            }
+        }
+        if (frameTail)
+        {
+            if (infos.Avatar == -1)
+            {
+                avatar.SetAlpha(0);
+            }
+            else
+            {
+                avatar.SetAlpha(1);
+                frameTail.sprite = SpriteFactory.Tailframes.GetLoop(infos.Frame);
+            }
+        }
+        if (username)
+        {
+            username.text = infos.Username;
+        }
+        if (rank)
+        {
+            rank.text = GameData.RankConfigs[infos.Rank].Title;
+        }
+        if (rankIcon)
+        {
+            rankIcon.sprite = SpriteFactory.Ranks[infos.Rank];
+        }
+        if (rankProgress && !GameData.RankConfigs.IsNullOrEmpty())
+        {
+            rankProgress.maxValue = GameData.RankConfigs.GetClamp(infos.Rank + 1).Point;
+            rankProgress.value = infos.Point;
+            pointRank?.SetText(rankProgress.value + "/" + rankProgress.maxValue);
+        }
+        if (battles && !infos.Achievement.IsNullOrEmpty())
+        {
+            battles.text = (infos.Wins + infos.Losts).ToString();
+        }
+        if (shipDestroyed && !infos.Achievement.IsNullOrEmpty())
+        {
+            shipDestroyed.text = infos.Achievement[(int)AchievementType.DESTROY_SHIP].ToString();
+        }
+        if (perfectGame && !infos.Achievement.IsNullOrEmpty())
+        {
+            perfectGame.text = infos.Achievement[(int)AchievementType.PERFECT_GAME].ToString();
+        }
+        if (winStreak && !infos.Achievement.IsNullOrEmpty())
+        {
+            winStreak.text = infos.Achievement[(int)AchievementType.WIN_STREAK_MAX].ToString();
+        }
+        winStreakMax?.SetText(infos.WinStreakMax.ToString());
+        if (wins)
+        {
+            wins.text = infos.Achievement[(int)AchievementType.WIN].ToString();
+        }
+        if (losts)
+        {
+            //losts.text = infos.Achievement[(int)AchievementType.].ToString() - infos.Achievement[(int)AchievementType.WIN].ToString();
+        }
+        if (winRate && !infos.Achievement.IsNullOrEmpty())
+        {
+            winRate.text = (infos.WinRate * 100).ToString("F1") + "%";
+        }
+    
     }
 
     public override void UpdateUIs()

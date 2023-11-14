@@ -759,7 +759,7 @@ public class CoreGame : SingletonMono<CoreGame>
             roomId = int.Parse(data["r"]);
             playerChair = int.Parse(data["p1"]["u"]) == DataAuth.AuthData.userId ? int.Parse(data["p1"]["c"]) : int.Parse(data["p2"]["c"]);
             Instance.playerTurn = int.Parse(data["n"]) == playerChair;
-            Instance.turnTime = int.Parse(data["c"]);
+            Instance.TurnTime = int.Parse(data["c"]);
             timeInit = int.Parse(data["a"]);
             Instance.ingameUI.SetActive(true);
             Instance.preUI.SetActive(false);
