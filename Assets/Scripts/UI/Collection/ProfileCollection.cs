@@ -91,7 +91,14 @@ public class ProfileCollection : CardCollectionBase<ProfileInfo>
             Debug.Log("userId");
             if (avatar)
             {
-                avatar.sprite = SpriteFactory.ResourceIcons[(int)PNonConsumableType.AVATAR].sprites.GetLoop(infos.Avatar);
+                if (infos.Avatar < 0)
+                {
+                    avatar.sprite = SpriteFactory.Unknown;
+                }
+                else
+                {
+                    avatar.sprite = SpriteFactory.ResourceIcons[(int)PNonConsumableType.AVATAR].sprites.GetLoop(infos.Avatar);
+                }
             }
             Debug.Log("Avatar");
             if (frame)
@@ -135,7 +142,7 @@ public class ProfileCollection : CardCollectionBase<ProfileInfo>
                 rankIcon.sprite = SpriteFactory.Ranks[infos.Rank];
             }
             Debug.Log("rankIcon");
-            if (rankProgress)
+            if (rankProgress && !GameData.RankConfigs.IsNullOrEmpty())
             {
                 rankProgress.maxValue = GameData.RankConfigs.GetClamp(infos.Rank + 1).Point;
                 rankProgress.value = infos.Point;
@@ -181,7 +188,7 @@ public class ProfileCollection : CardCollectionBase<ProfileInfo>
         }
         catch (Exception e)
         {
-            Debug.Log(e.Message);
+            Debug.LogError(e.Message);
         }
     }
 
@@ -198,9 +205,18 @@ public class ProfileCollection : CardCollectionBase<ProfileInfo>
         }
         if (profile != null)
         {
-            profile.Avatar ??= new PDataUnit<int>(-1);
-            profile.FrameAvatar ??= new PDataUnit<int>(-1);
-            profile.Username ??= new PDataUnit<string>("");
+            if (profile.Avatar == null)
+            {
+                profile.Avatar = new PDataUnit<int>(-1);
+            }
+            if (profile.FrameAvatar == null)
+            {
+                profile.FrameAvatar = new PDataUnit<int>(-1);
+            }
+            if (profile.Username == null)
+            {
+                profile.Username = new PDataUnit<string>("");
+            }
             ProfileInfo info = new ProfileInfo()
             {
                 UserId = profile.UserId,
