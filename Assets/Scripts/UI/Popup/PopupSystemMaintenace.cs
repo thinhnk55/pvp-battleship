@@ -1,3 +1,3 @@
-public class PopupSystemMaintenance  : SingletonMono<PopupSystemMaintenance >
+public class PopupSystemMaintenanceNoti  : SingletonMono<PopupSystemMaintenanceNoti >
 {
 }

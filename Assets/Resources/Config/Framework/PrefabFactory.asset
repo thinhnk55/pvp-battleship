@@ -64,5 +64,6 @@ MonoBehaviour:
   popupDeleteAccount: {fileID: 1263694249909426757, guid: 13e564b6918defe40aaa71b3823e8fad, type: 3}
   popupDeleteConfirm: {fileID: 1323272560515455195, guid: ee6e83e7813d1634797a6a140fd7130f, type: 3}
   popupRPConfirm: {fileID: 464522290596212629, guid: 4c065b40359dcde408a5ceb8984f0faa, type: 3}
-  popupMaintain: {fileID: 721933510132650832, guid: 01043c7366b5fe5459e61be46dcac682, type: 3}
+  popupMaintenance: {fileID: 721933510132650832, guid: 01043c7366b5fe5459e61be46dcac682, type: 3}
+  popupMaintenanceSmall: {fileID: 2654862994088543119, guid: 368fe97e55735f84ca163062cb0a80d9, type: 3}
   popupUpgradeVersion: {fileID: 721933510132650832, guid: 23f4735cacb4c924eba3eb626ae60669, type: 3}

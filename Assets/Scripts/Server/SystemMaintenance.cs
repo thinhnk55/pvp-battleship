@@ -53,7 +53,7 @@ public class SystemMaintenance : SingletonMono<SystemMaintenance>
             string from = startMaintain.ToString();
             string to = endMaintain.ToString();
             string message = "Our Game is maintaining for an update from [" + from + "] to [" + to + "]. We apologize for any inconvenience this may cause. Thank you for your understanding and patience!";
-            PopupHelper.CreateConfirm(PrefabFactory.PopupMaintain, null, message, null, (success) =>
+            PopupHelper.CreateConfirm(PrefabFactory.PopupMaintenance, null, message, null, (success) =>
             {
                 if (success)
                 {

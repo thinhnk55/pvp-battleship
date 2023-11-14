@@ -5,6 +5,7 @@ using Framework;
 using Lean.Touch;
 using SimpleJSON;
 using Sirenix.OdinInspector;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
@@ -794,6 +795,16 @@ public class CoreGame : SingletonMono<CoreGame>
         if (stateMachine.CurrentState == GameState.Turn)
         {
             isSystemMaintenace = true;
+
+            if(PopupSystemMaintenanceNoti.Instance == null)
+            {
+                DateTime startMaintain = SystemMaintenance.TimeStampToDateTime(data["d"]["from"].AsLong);
+                DateTime endMaintain = SystemMaintenance.TimeStampToDateTime(data["d"]["to"].AsLong);
+                string from = startMaintain.ToString();
+                string to = endMaintain.ToString();
+                string message = "Our Game is maintaining for an update from [" + from + "] to [" + to + "].";
+                PopupHelper.CreateMessage(PrefabFactory.PopupMaintenanceSmall, null, message, null);
+            }
         }
         else
         {

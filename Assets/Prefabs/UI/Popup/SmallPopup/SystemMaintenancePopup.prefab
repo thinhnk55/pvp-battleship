@@ -242,7 +242,7 @@ GameObject:
   - component: {fileID: 471908426503224650}
   - component: {fileID: 243872294062140575}
   m_Layer: 5
-  m_Name: SystemMaintainPopup
+  m_Name: SystemMaintenancePopup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
