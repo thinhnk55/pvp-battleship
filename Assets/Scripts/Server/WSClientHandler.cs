@@ -109,6 +109,7 @@ public class WSClientHandler : Framework.Singleton<WSClientHandler>
             {
                 if (confirm)
                 {
+                    CoreGame.reconnect = null;
                     if (Application.internetReachability == NetworkReachability.NotReachable)
                     {
                         SceneTransitionHelper.Load(ESceneName.PreHome);

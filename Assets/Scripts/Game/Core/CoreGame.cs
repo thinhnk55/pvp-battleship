@@ -325,7 +325,6 @@ public class CoreGame : SingletonMono<CoreGame>
     void StartTurn()
     {
         Instance.ingameUI.SetActive(true);
-        Instance.TurnTime = timeInit;
         if (Instance.playerTurn)
         {
             Debug.Log("Player Turn");
@@ -341,7 +340,7 @@ public class CoreGame : SingletonMono<CoreGame>
     }
     void UpdateTurn()
     {
-        Instance.TurnTime -= Time.deltaTime;
+        Instance.TurnTime = Instance.TurnTime - Time.deltaTime;
     }
     void EndTurn()
     {
@@ -349,6 +348,7 @@ public class CoreGame : SingletonMono<CoreGame>
         LeanTouch.OnFingerUpdate -= Instance.opponent.SelectingTarget;
         Instance.opponent.horzLine.gameObject.SetActive(false);
         Instance.opponent.vertLine.gameObject.SetActive(false);
+        Instance.TurnTime = timeInit;
     }
     #endregion
 
@@ -455,6 +455,7 @@ public class CoreGame : SingletonMono<CoreGame>
         reconnect = null;
         Analytics.Log("startgame", new List<KeyValuePair<string, object>>());
         timeInit = json["d"]["c"].AsInt;
+        Instance.TurnTime = timeInit;
         Instance.playerTurn = int.Parse(json["d"]["f"]) == playerChair;
         Debug.Log(json["d"]["f"].AsInt + "_" + playerChair);
         if (Instance.stateMachine.CurrentState == GameState.PreRematch)
@@ -760,8 +761,9 @@ public class CoreGame : SingletonMono<CoreGame>
             roomId = int.Parse(data["r"]);
             playerChair = int.Parse(data["p1"]["u"]) == DataAuth.AuthData.userId ? int.Parse(data["p1"]["c"]) : int.Parse(data["p2"]["c"]);
             Instance.playerTurn = int.Parse(data["n"]) == playerChair;
-            Instance.TurnTime = int.Parse(data["c"]);
             timeInit = int.Parse(data["a"]);
+            Instance.TurnTime = data["c"].AsInt - 0.5f;
+            turnTimeText.text = ((int)turnTime).ToString();
             Instance.ingameUI.SetActive(true);
             Instance.preUI.SetActive(false);
             Instance.stateMachine.CurrentState = GameState.Turn;
@@ -796,7 +798,7 @@ public class CoreGame : SingletonMono<CoreGame>
         {
             isSystemMaintenace = true;
 
-            if(PopupSystemMaintenanceNoti.Instance == null)
+            if (PopupSystemMaintenanceNoti.Instance == null)
             {
                 DateTime startMaintain = SystemMaintenance.TimeStampToDateTime(data["d"]["from"].AsLong);
                 DateTime endMaintain = SystemMaintenance.TimeStampToDateTime(data["d"]["to"].AsLong);
