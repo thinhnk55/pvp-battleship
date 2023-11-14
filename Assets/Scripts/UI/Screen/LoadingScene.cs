@@ -38,7 +38,7 @@ public class LoadingScene : SingletonMono<LoadingScene>
 
     private void Update()
     {
-        if (Application.internetReachability == NetworkReachability.NotReachable || (!WSClient.Instance.ws.IsAlive && currentLoadingTime > 5))
+        if (Application.internetReachability == NetworkReachability.NotReachable || (WSClient.Instance.ws != null && !WSClient.Instance.ws.IsAlive && currentLoadingTime > 5))
         {
             WSClientHandler.PopupReconnect();
             return;
