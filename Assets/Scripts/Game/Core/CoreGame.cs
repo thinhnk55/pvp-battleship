@@ -690,10 +690,8 @@ public class CoreGame : SingletonMono<CoreGame>
                 }
             }
             //Debug.Log("Consecutive :" + consecutiveKill + "Max " + consecutiveKillMax.Data);
-
             Instance.searchUI.opponentProfile.UpdateUIs();
             Instance.opponent.battleFieldSprite.sprite = SpriteFactory.BattleFields[GameData.Opponent.BattleField.Data];
-            Debug.Log("OpponentProfile");
             for (int i = 0; i < data["s"].Count; i++)
             {
                 Ship ship = Instance.shipsPlayer.Find((ship) =>
@@ -769,7 +767,7 @@ public class CoreGame : SingletonMono<CoreGame>
         }
         catch (System.Exception e)
         {
-            Debug.LogError(e);
+            Debug.Log(e);
         }
 
     }

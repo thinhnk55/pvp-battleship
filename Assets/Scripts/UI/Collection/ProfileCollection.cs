@@ -93,7 +93,7 @@ public class ProfileCollection : CardCollectionBase<ProfileInfo>
             }
             else
             {
-                avatar.sprite = SpriteFactory.ResourceIcons[(int)PNonConsumableType.AVATAR].sprites[infos.Avatar];
+                avatar.sprite = SpriteFactory.ResourceIcons[(int)PNonConsumableType.AVATAR].sprites.GetLoop(infos.Avatar);
             }
         }
         if (frame)
@@ -182,18 +182,9 @@ public class ProfileCollection : CardCollectionBase<ProfileInfo>
         }
         if (profile != null)
         {
-            if (profile.Avatar == null)
-            {
-                profile.Avatar = new PDataUnit<int>(-1);
-            }
-            if (profile.FrameAvatar == null)
-            {
-                profile.FrameAvatar = new PDataUnit<int>(-1);
-            }
-            if (profile.Username == null)
-            {
-                profile.Username = new PDataUnit<string>("");
-            }
+            profile.Avatar ??= new PDataUnit<int>(-1);
+            profile.FrameAvatar ??= new PDataUnit<int>(-1);
+            profile.Username ??= new PDataUnit<string>("");
             ProfileInfo info = new ProfileInfo()
             {
                 UserId = profile.UserId,

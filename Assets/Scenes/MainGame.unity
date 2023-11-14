@@ -56885,11 +56885,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3695346601795316402, guid: 2e62c3c71f73e3248a31b8d21131fb34, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3695346601795316402, guid: 2e62c3c71f73e3248a31b8d21131fb34, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4686618898609714572, guid: 2e62c3c71f73e3248a31b8d21131fb34, type: 3}
       propertyPath: m_Name
@@ -97473,11 +97473,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3695346601795316402, guid: 2e62c3c71f73e3248a31b8d21131fb34, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3695346601795316402, guid: 2e62c3c71f73e3248a31b8d21131fb34, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4686618898609714572, guid: 2e62c3c71f73e3248a31b8d21131fb34, type: 3}
       propertyPath: m_Name
@@ -102705,7 +102705,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!222 &85143335185214237
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -103341,7 +103341,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &85143335780749956
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -105391,6 +105391,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dontDestroyOnLoad: 0
+  isSystemMaintenace: 0
   missturn: 0
   player: {fileID: 9189260556183900041}
   opponent: {fileID: 9189260556100836970}
@@ -105407,6 +105408,7 @@ MonoBehaviour:
   searchUI: {fileID: 85143335185214240}
   postUI: {fileID: 1704242417}
   betAmountSearch: {fileID: 85143336692072036}
+  playerTurn: 0
   turnTimeText: {fileID: 85143336911838860}
   turnImage: {fileID: 85143336208364161}
   SelectedShip: {fileID: 0}
