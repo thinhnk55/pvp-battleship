@@ -40,8 +40,8 @@ public class WSClientHandler : Framework.Singleton<WSClientHandler>
             ServerMessenger.AddListener<JSONNode>(ServerResponse._REWARD_ADS, ReceiveRewardAds);
             //ServerMessenger.AddListener<JSONNode>(ServerResponse.RECIEVE_CLAIM_ALL_ROYALPASS, ReceiveClaimAllRoyalPass);
             ServerMessenger.AddListener<JSONNode>(ServerResponse._GAME_RECONNECT, RecieveReconnect);
-            ServerMessenger.AddListener<JSONNode>(ServerResponse.RECIEVE_TREASURE_CONFIG, ReceiveTreasureConfig);
-            ServerMessenger.AddListener<JSONNode>(ServerResponse.RECIEVE_JOIN_TREASURE_ROOM, ReceiveJoinTreasureRoom);
+            //ServerMessenger.AddListener<JSONNode>(ServerResponse.RECIEVE_TREASURE_CONFIG, ReceiveTreasureConfig);
+            //ServerMessenger.AddListener<JSONNode>(ServerResponse.RECIEVE_JOIN_TREASURE_ROOM, ReceiveJoinTreasureRoom);
             ServerMessenger.AddListener<JSONNode>(ServerResponse._OPERATION_CONFIG, OperationConfig);
 
         };
@@ -68,8 +68,8 @@ public class WSClientHandler : Framework.Singleton<WSClientHandler>
             ServerMessenger.RemoveListener<JSONNode>(ServerResponse._REWARD_ADS, ReceiveRewardAds);
             //ServerMessenger.RemoveListener<JSONNode>(ServerResponse.RECIEVE_CLAIM_ALL_ROYALPASS, ReceiveClaimAllRoyalPass);
             ServerMessenger.RemoveListener<JSONNode>(ServerResponse._GAME_RECONNECT, RecieveReconnect);
-            ServerMessenger.RemoveListener<JSONNode>(ServerResponse.RECIEVE_TREASURE_CONFIG, ReceiveTreasureConfig);
-            ServerMessenger.RemoveListener<JSONNode>(ServerResponse.RECIEVE_JOIN_TREASURE_ROOM, ReceiveJoinTreasureRoom);
+            //ServerMessenger.RemoveListener<JSONNode>(ServerResponse.RECIEVE_TREASURE_CONFIG, ReceiveTreasureConfig);
+            //ServerMessenger.RemoveListener<JSONNode>(ServerResponse.RECIEVE_JOIN_TREASURE_ROOM, ReceiveJoinTreasureRoom);
             ServerMessenger.RemoveListener<JSONNode>(ServerResponse._OPERATION_CONFIG, OperationConfig);
         };
         WSClient.Instance.OnSystemError += () =>
@@ -493,7 +493,9 @@ public class WSClientHandler : Framework.Singleton<WSClientHandler>
     }
     #endregion
     #region TREASUREHUNT
+
     #region Old
+    /*
     private static bool waitingJoinTreasureRoom = false;
 
 
@@ -581,7 +583,9 @@ public class WSClientHandler : Framework.Singleton<WSClientHandler>
             {"id", ServerResponse.REQUEST_EXIT_TREASURE_ROOM.ToJson() },
         }.RequestServer();
     }
+    */
     #endregion
+
     #endregion
     #region CoreGame
     public static void SearchOpponent(int bet, List<Ship> ships)

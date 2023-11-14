@@ -1,9 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using Framework;
-using TMPro;
-
+/*
 public struct TreasureHuntInfo
 {
     public int Id;
@@ -46,3 +41,4 @@ public class TreasureHuntCard : CardBase<TreasureHuntInfo>
         transform.localScale = scale * Vector3.one;
     }
 }
+*/

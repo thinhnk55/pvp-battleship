@@ -1,9 +1,4 @@
-using Framework;
-using SimpleJSON;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
+/*
 public class TreasureHuntCollection : CardCollectionBase<TreasureHuntInfo>
 {
     [SerializeField] GameObject treasureHuntPopup;
@@ -76,3 +71,4 @@ public class TreasureHuntCollection : CardCollectionBase<TreasureHuntInfo>
         }
     }
 }
+*/

@@ -1,9 +1,4 @@
-using System.Collections;
-using UnityEngine;
-using UnityEngine.UI;
-using DG.Tweening;
-using Framework;
-
+/*
 public class TreasureBoardCell : MonoBehaviour
 {
     [SerializeField] Image cellImage;
@@ -111,3 +106,4 @@ public class TreasureBoardCell : MonoBehaviour
             TreasureHuntManager.Instance.TryShootCell(x, y);
     }
 }
+*/

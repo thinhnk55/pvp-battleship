@@ -1,16 +1,5 @@
-using DG.Tweening;
-using Framework;
-using SimpleJSON;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using TMPro;
-using UnityEngine;
-using UnityEngine.UI;
-using Lean.Touch;
-using Authentication;
 
+/*
 public class TreasureHuntManager : SingletonMono<TreasureHuntManager>
 {
     [SerializeField] TreasureBoardCell cellPrefab;
@@ -306,3 +295,4 @@ public class TreasureHuntManager : SingletonMono<TreasureHuntManager>
         verticalLine.SetActive(false);
     }
 }
+*/

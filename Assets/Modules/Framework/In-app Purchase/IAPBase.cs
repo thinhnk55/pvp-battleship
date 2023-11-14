@@ -133,14 +133,15 @@ namespace Framework
             {
                 Debug.Log(string.Format("ProcessPurchase: PASS. Product: '{0}'", args.purchasedProduct.definition.id));
                 purchaseAction?.Invoke(true, args.purchasedProduct);
+                return PurchaseProcessingResult.Pending;
             }
             else
             {
                 purchaseAction?.Invoke(false, args.purchasedProduct);
                 IAPData.PendingProducts.Remove(args.purchasedProduct);
                 Debug.Log(string.Format("ProcessPurchase: FAIL. Unrecognized product: '{0}'", args.purchasedProduct.definition.id));
+                return PurchaseProcessingResult.Complete;
             }
-            return PurchaseProcessingResult.Pending;
         }
         public void OnInitializeFailed(InitializationFailureReason error)
         {
