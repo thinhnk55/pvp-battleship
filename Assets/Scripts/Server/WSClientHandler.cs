@@ -1052,20 +1052,25 @@ public class WSClientHandler : Framework.Singleton<WSClientHandler>
             return;
         }
 
-        ServeData.IsTutorialComplete = data["d"]["t"].AsBool;
+        ServerData.IsTutorialComplete = !data["d"]["t"].IsNull && data["d"]["t"].AsBool;
+        if (ServerData.IsTutorialComplete)
+        {
+            GameData.Tutorial = new List<int>() { 0, 0, 0, 0 };
+
+        }
         JSONNode json = data["d"]["b"];
 
 
-        for (int i=0; i < json.Count; i++)
+        for (int i = 0; i < json.Count; i++)
         {
-            for(int j=0; j< json[i].Count; j++)
+            for (int j = 0; j < json[i].Count; j++)
             {
                 ShipInfo shipInfo = new ShipInfo();
                 shipInfo.x = int.Parse(json[i][j]["x"]);
                 shipInfo.y = json[i][j]["y"].AsInt;
                 shipInfo.type = json[i][j]["t"].AsInt;
                 shipInfo.dir = json[i][j]["d"].AsInt;
-                ServeData.ListBoard[i].boardInfo.Add(shipInfo);
+                ServerData.ListBoard[i].boardInfo.Add(shipInfo);
             }
         }
 
@@ -1073,10 +1078,11 @@ public class WSClientHandler : Framework.Singleton<WSClientHandler>
 
     public static void SetData()
     {
-        JSONNode data = new JSONClass();
-
-        data.Add("t", new JSONData(ServeData.IsTutorialComplete));
-        data.Add("b", ServeData.ConvertDataOfListBoardToJson());
+        JSONNode data = new JSONClass
+        {
+            { "t", new JSONData(ServerData.IsTutorialComplete) },
+            { "b", ServerData.ConvertDataOfListBoardToJson() }
+        };
 
         new JSONClass
         {

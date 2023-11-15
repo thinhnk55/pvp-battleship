@@ -79,7 +79,7 @@ public class GameData : PDataBlock<GameData>
             new BoardInfo(){ boardInfo = new List<ShipInfo>()} , new BoardInfo(){ boardInfo = new List<ShipInfo>()} , new BoardInfo(){ boardInfo = new List<ShipInfo>()} };
         Instance.leaderBoard = Instance.leaderBoard ?? new LeaderBoard();
         Instance.acceptLoginTerm = Instance.acceptLoginTerm ?? new bool[2] { true, true };
-        if (ServeData.IsTutorialComplete == false)
+        if (ServerData.IsTutorialComplete == false)
         {
             Instance.tutorial = new List<int>() { 0, 0, 0, 0 };
         }

@@ -164,18 +164,18 @@ public class BoardCard : CardBase<BoardInfo>
         //}
         //GameData.ListBoard = list;
 
-        for(int i = 0; i < ServeData.ListBoard.Count; i++)
+        for(int i = 0; i < ServerData.ListBoard.Count; i++)
         {
             if (info.Id != i)
             {
-                list.Add(ServeData.ListBoard[i]);
+                list.Add(ServerData.ListBoard[i]);
             }
             else
             {
                 list.Add(info);
             }
         }
-        ServeData.ListBoard = list;
+        ServerData.ListBoard = list;
         WSClientHandler.SetData();
         Collection.ModifyUIAt(Info.Id, info);
     }
@@ -201,18 +201,18 @@ public class BoardCard : CardBase<BoardInfo>
         //}
         //GameData.ListBoard = list;
 
-        for (int i = 0; i < ServeData.ListBoard.Count; i++)
+        for (int i = 0; i < ServerData.ListBoard.Count; i++)
         {
             if (info.Id != i)
             {
-                list.Add(ServeData.ListBoard[i]);
+                list.Add(ServerData.ListBoard[i]);
             }
             else
             {
                 list.Add(info);
             }
         }
-        ServeData.ListBoard = list;
+        ServerData.ListBoard = list;
         Collection.ModifyUIAt(Info.Id, info);
     }
 

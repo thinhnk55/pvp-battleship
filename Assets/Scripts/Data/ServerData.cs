@@ -1,28 +1,23 @@
 using SimpleJSON;
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.ShaderGraph.Serialization;
-using UnityEngine;
 
-public class ServeData
+public class ServerData
 {
-    public static bool IsTutorialComplete;
-    public static List<BoardInfo> ListBoard;
-
-    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
-    public static void Init()
+    private static bool isTutorialComplete = false;
+    public static bool IsTutorialComplete
     {
-        IsTutorialComplete = false;
-        ListBoard = new List<BoardInfo>() { new BoardInfo() { boardInfo = new List<ShipInfo>()}, new BoardInfo() { boardInfo = new List<ShipInfo>() }, new BoardInfo() { boardInfo = new List<ShipInfo>() },
+        get => isTutorialComplete;
+        set { isTutorialComplete = value; isTutorialCompleteOnChange?.Invoke(value); }
+    }
+    public static Callback<bool> isTutorialCompleteOnChange;
+    public static List<BoardInfo> ListBoard = new List<BoardInfo>() { new BoardInfo() { boardInfo = new List<ShipInfo>()}, new BoardInfo() { boardInfo = new List<ShipInfo>() }, new BoardInfo() { boardInfo = new List<ShipInfo>() },
             new BoardInfo() { boardInfo = new List<ShipInfo>()} , new BoardInfo() { boardInfo = new List<ShipInfo>()} , new BoardInfo() { boardInfo = new List<ShipInfo>()} };
-    } 
 
     public static JSONClass ConvertToJson()
     {
         return new JSONClass
         {
-            "t", IsTutorialComplete.ToString(),
+            "t", new JSONData(IsTutorialComplete),
             "l", ConvertDataOfListBoardToJson()
         };
     }
@@ -31,12 +26,12 @@ public class ServeData
     {
         JSONNode json = new JSONClass();
         JSONArray listBoardInfo = new JSONArray();
-        for(int i = 0; i<ListBoard.Count; i++)
+        for (int i = 0; i < ListBoard.Count; i++)
         {
             JSONArray listShipInfo = new JSONArray();
-            for(int j = 0; j < ListBoard[i].boardInfo.Count; j++)
+            for (int j = 0; j < ListBoard[i].boardInfo.Count; j++)
             {
-                JSONNode shipInfoJson= new JSONClass();
+                JSONNode shipInfoJson = new JSONClass();
                 ShipInfo shipInfo = ListBoard[i].boardInfo[j];
                 shipInfoJson.Add("x", ((short)shipInfo.x).ToJson());
                 shipInfoJson.Add("y", ((short)shipInfo.y).ToJson());

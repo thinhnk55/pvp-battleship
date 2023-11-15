@@ -13,9 +13,9 @@ public class BoardCollection : CardCollectionBase<BoardInfo>
     public override void UpdateUIs()
     {
         List<BoardInfo> infos = new List<BoardInfo>();
-        for (int i = 0; i < ServeData.ListBoard.Count; i++)
+        for (int i = 0; i < ServerData.ListBoard.Count; i++)
         {
-            BoardInfo info = ServeData.ListBoard[i];
+            BoardInfo info = ServerData.ListBoard[i];
             info.Id = i;
             info.row = CoreGame.Instance.player.row;
             info.column = CoreGame.Instance.player.column;
