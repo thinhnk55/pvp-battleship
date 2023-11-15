@@ -1048,8 +1048,10 @@ public class WSClientHandler : Framework.Singleton<WSClientHandler>
             return;
         }
 
-        ServeData.IsTutorialComplete = data["d"]["t"].AsInt == 1 ? true : false;
+        ServeData.IsTutorialComplete = data["d"]["t"].AsBool;
         JSONNode json = data["d"]["b"];
+
+
         for (int i=0; i < json.Count; i++)
         {
             for(int j=0; j< json[i].Count; j++)
@@ -1062,6 +1064,7 @@ public class WSClientHandler : Framework.Singleton<WSClientHandler>
                 ServeData.ListBoard[i].boardInfo.Add(shipInfo);
             }
         }
+
     }
 
     public static void SetData()

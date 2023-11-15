@@ -104,6 +104,8 @@ public class Board : CacheMonoBehaviour
         if (GameData.Tutorial[3] == 0 && this != CoreGame.Instance.player)
         {
             GameData.Tutorial = new List<int>() { 1, 1, 1, 1 };
+            ServeData.IsTutorialComplete = true;
+            WSClientHandler.SetData();
             DestroyTutorIngame();
         }
 
