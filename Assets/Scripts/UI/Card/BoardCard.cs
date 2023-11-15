@@ -1,4 +1,5 @@
 using Framework;
+using Server;
 using System;
 using System.Collections.Generic;
 //using Unity.Android.Types;
@@ -148,18 +149,34 @@ public class BoardCard : CardBase<BoardInfo>
                 return 0;
         });
         List<BoardInfo> list = new List<BoardInfo>();
-        for (int i = 0; i < GameData.ListBoard.Count; i++)
+
+
+        //for (int i = 0; i < GameData.ListBoard.Count; i++)
+        //{
+        //    if (info.Id != i)
+        //    {
+        //        list.Add(GameData.ListBoard[i]);
+        //    }
+        //    else
+        //    {
+        //        list.Add(info);
+        //    }
+        //}
+        //GameData.ListBoard = list;
+
+        for(int i = 0; i < ServeData.ListBoard.Count; i++)
         {
             if (info.Id != i)
             {
-                list.Add(GameData.ListBoard[i]);
+                list.Add(ServeData.ListBoard[i]);
             }
             else
             {
                 list.Add(info);
             }
         }
-        GameData.ListBoard = list;
+        ServeData.ListBoard = list;
+        WSClientHandler.SetData();
         Collection.ModifyUIAt(Info.Id, info);
     }
     public void Delete()
@@ -171,18 +188,31 @@ public class BoardCard : CardBase<BoardInfo>
         info.column = CoreGame.Instance.player.column;
         info.boardInfo = new List<ShipInfo>();
         List<BoardInfo> list = new List<BoardInfo>();
-        for (int i = 0; i < GameData.ListBoard.Count; i++)
+        //for (int i = 0; i < GameData.ListBoard.Count; i++)
+        //{
+        //    if (info.Id != i)
+        //    {
+        //        list.Add(GameData.ListBoard[i]);
+        //    }
+        //    else
+        //    {
+        //        list.Add(info);
+        //    }
+        //}
+        //GameData.ListBoard = list;
+
+        for (int i = 0; i < ServeData.ListBoard.Count; i++)
         {
             if (info.Id != i)
             {
-                list.Add(GameData.ListBoard[i]);
+                list.Add(ServeData.ListBoard[i]);
             }
             else
             {
                 list.Add(info);
             }
         }
-        GameData.ListBoard = list;
+        ServeData.ListBoard = list;
         Collection.ModifyUIAt(Info.Id, info);
     }
 

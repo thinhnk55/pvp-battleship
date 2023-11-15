@@ -27,7 +27,7 @@ public class WSClientHandler : Framework.Singleton<WSClientHandler>
             ServerMessenger.AddListener<JSONNode>(ServerResponse._GIFT_CONFIG, GetConfigGift);
             ServerMessenger.AddListener<JSONNode>(ServerResponse._LEADERBOARD_CONFIG, LeaderBoardConfig);
             //not config
-            ServerMessenger.AddListener<JSONNode>(ServerResponse._PROFILE, GetData);
+            ServerMessenger.AddListener<JSONNode>(ServerResponse._PROFILE, GetDataProfile);
 
             ServerMessenger.AddListener<JSONNode>(ServerResponse._CHECK_RANK, GetCheckRank);
             ServerMessenger.AddListener<JSONNode>(ServerResponse._TRANSACTION, Transaction);
@@ -43,6 +43,7 @@ public class WSClientHandler : Framework.Singleton<WSClientHandler>
             ServerMessenger.AddListener<JSONNode>(ServerResponse.RECIEVE_TREASURE_CONFIG, ReceiveTreasureConfig);
             ServerMessenger.AddListener<JSONNode>(ServerResponse.RECIEVE_JOIN_TREASURE_ROOM, ReceiveJoinTreasureRoom);
             ServerMessenger.AddListener<JSONNode>(ServerResponse._OPERATION_CONFIG, OperationConfig);
+            ServerMessenger.AddListener<JSONNode>(ServerResponse._GET_DATA, GetData);
 
         };
         WSClient.Instance.OnDisconnect += () =>
@@ -55,7 +56,7 @@ public class WSClientHandler : Framework.Singleton<WSClientHandler>
             ServerMessenger.RemoveListener<JSONNode>(ServerResponse._LEADERBOARD_CONFIG, LeaderBoardConfig);
 
             //not config
-            ServerMessenger.RemoveListener<JSONNode>(ServerResponse._PROFILE, GetData);
+            ServerMessenger.RemoveListener<JSONNode>(ServerResponse._PROFILE, GetDataProfile);
 
             ServerMessenger.RemoveListener<JSONNode>(ServerResponse._CHECK_RANK, GetCheckRank);
             ServerMessenger.RemoveListener<JSONNode>(ServerResponse._TRANSACTION, Transaction);
@@ -71,6 +72,7 @@ public class WSClientHandler : Framework.Singleton<WSClientHandler>
             ServerMessenger.RemoveListener<JSONNode>(ServerResponse.RECIEVE_TREASURE_CONFIG, ReceiveTreasureConfig);
             ServerMessenger.RemoveListener<JSONNode>(ServerResponse.RECIEVE_JOIN_TREASURE_ROOM, ReceiveJoinTreasureRoom);
             ServerMessenger.RemoveListener<JSONNode>(ServerResponse._OPERATION_CONFIG, OperationConfig);
+            ServerMessenger.RemoveListener<JSONNode>(ServerResponse._GET_DATA, GetData);
         };
         WSClient.Instance.OnSystemError += () =>
         {
@@ -123,7 +125,7 @@ public class WSClientHandler : Framework.Singleton<WSClientHandler>
             });
         }
     }
-    public static void GetData(JSONNode data)
+    public static void GetDataProfile(JSONNode data)
     {
         MusicType.MAINMENU.PlayMusic();
         Firebase.Crashlytics.Crashlytics.SetUserId(DataAuth.AuthData.userId.ToString());
@@ -137,6 +139,7 @@ public class WSClientHandler : Framework.Singleton<WSClientHandler>
         GetConfigRoyalPass();
         RequestAdsConfig();
         GetConfigGift();
+        GetData();
         LeaderBoardConfig(); //You need to place this configuration retrieval command after other configuration retrieval commands to ensure that the load home scene command is called after the configuration has been successfully retrieved.
 
         GetCheckRank();
@@ -1027,6 +1030,52 @@ public class WSClientHandler : Framework.Singleton<WSClientHandler>
             GameData.LeaderBoard.rankWinPreviousAvailable = data["d"]["t"]["w"]["t"].AsInt == 1;
         }
 
+    }
+    #endregion
+    #region SAVE&LOAD DATA TO SERVER
+    public static void GetData()
+    {
+        new JSONClass
+        {
+            { "id", ServerRequest._GET_DATA.ToJson() },
+        }.RequestServer();
+    }
+
+    public static void GetData(JSONNode data)
+    {
+        if (data["e"].AsInt != 0)
+        {
+            return;
+        }
+
+        ServeData.IsTutorialComplete = data["d"]["t"].AsInt == 1 ? true : false;
+        JSONNode json = data["d"]["b"];
+        for (int i=0; i < json.Count; i++)
+        {
+            for(int j=0; j< json[i].Count; j++)
+            {
+                ShipInfo shipInfo = new ShipInfo();
+                shipInfo.x = int.Parse(json[i][j]["x"]);
+                shipInfo.y = json[i][j]["y"].AsInt;
+                shipInfo.type = json[i][j]["t"].AsInt;
+                shipInfo.dir = json[i][j]["d"].AsInt;
+                ServeData.ListBoard[i].boardInfo.Add(shipInfo);
+            }
+        }
+    }
+
+    public static void SetData()
+    {
+        JSONNode data = new JSONClass();
+
+        data.Add("t", new JSONData(ServeData.IsTutorialComplete));
+        data.Add("b", ServeData.ConvertDataOfListBoardToJson());
+
+        new JSONClass
+        {
+            { "id", ServerRequest._SET_DATA.ToJson() },
+            { "d", data },
+        }.RequestServer();
     }
     #endregion
     #region OPERATION CONFIG
