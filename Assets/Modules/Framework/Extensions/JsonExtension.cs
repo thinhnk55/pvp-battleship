@@ -10,6 +10,11 @@ public static class JsonExtension
     {
         return new JSONData(integer);
     }
+
+    public static JSONData ToJson(this short shortType)
+    {
+        return new JSONData(shortType);
+    }
     public static JSONData ToJson(this ServerRequest @event)
     {
         return new JSONData((int)@event);
