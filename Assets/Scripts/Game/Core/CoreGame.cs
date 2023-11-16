@@ -282,11 +282,13 @@ public class CoreGame : SingletonMono<CoreGame>
             Instance.btnBackSearchGame.SetActive(false);
             GameData.Tutorial[2] = 1;
         }
+        Instance.searchUI.gameObject.SetActive(true);
+        Instance.searchUI.icon.gameObject.SetActive(false);
+        Instance.searchUI.amount.gameObject.SetActive(false);
         Instance.opponent.gameObject.SetActive(true);
         Instance.preUI.SetActive(false);
         Instance.searchUI.gameObject.SetActive(true);
         Instance.shipListPlayer.SetActive(false);
-        WSClientHandler.SearchOpponent(bet, player.ships);
         var profile = new ProfileInfo()
         {
             Avatar = -1,
@@ -358,10 +360,8 @@ public class CoreGame : SingletonMono<CoreGame>
         if (shipListPlayer.transform.childCount == 0)
         {
             Instance.searchUI.amount.text = (GameData.Bets[bet].Bet * 1.95f).ToString();
-            Instance.searchUI.gameObject.SetActive(true);
-            Instance.searchUI.icon.gameObject.SetActive(false);
-            Instance.searchUI.amount.gameObject.SetActive(false);
             Instance.stateMachine.CurrentState = GameState.Search;
+            WSClientHandler.SearchOpponent(bet, player.ships);
         }
         else
         {
@@ -640,7 +640,10 @@ public class CoreGame : SingletonMono<CoreGame>
         {
             Instance.rematchChatB.transform.parent.gameObject.SetActive(true);
             Instance.rematchChatB.text = "SORRY I HAVE TO GO!";
-
+            if (Instance.stateMachine.CurrentState == GameState.Search)
+            {
+                StartSearchGame();
+            }
         }
     }
     public void Reconnect(JSONNode data)
