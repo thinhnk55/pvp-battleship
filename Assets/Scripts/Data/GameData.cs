@@ -81,11 +81,11 @@ public class GameData : PDataBlock<GameData>
         Instance.acceptLoginTerm = Instance.acceptLoginTerm ?? new bool[2] { true, true };
         if (ServerData.IsTutorialComplete == false)
         {
-            Instance.tutorial = new List<int>() { 0, 0, 0, 0 };
+            Instance.tutorial = new List<int>() { 0, 0, 0, 0, 0};
         }
         else
         {
-            Instance.tutorial = new List<int>() { 1, 1, 1, 1 };
+            Instance.tutorial = new List<int>() { 1, 1, 1, 1, 0};
         }
     }
 }

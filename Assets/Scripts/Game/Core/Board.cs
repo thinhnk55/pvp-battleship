@@ -103,7 +103,7 @@ public class Board : CacheMonoBehaviour
         // tutorial
         if (GameData.Tutorial[3] == 0 && this != CoreGame.Instance.player)
         {
-            GameData.Tutorial = new List<int>() { 1, 1, 1, 1 };
+            GameData.Tutorial = new List<int>() { 1, 1, 1, 1, 0};
             ServerData.IsTutorialComplete = true;
             WSClientHandler.SetData();
             DestroyTutorIngame();
@@ -116,14 +116,7 @@ public class Board : CacheMonoBehaviour
             int y = (int)((leanFinger.GetLastWorldPosition(0).y - transform.position.y + height / 2) / cellHieght);
             if (Octile.Check(this, x, y, out int _x, out int _y) && !octiles[_y][_x].Attacked)
             {
-                if(ServerData.IsTutorialComplete)
-                {
-                    WSClientHandler.AttackOpponent(CoreGame.roomId, _x, _y);
-                }
-                else
-                {
-                    WSClientHandleFake.AttackOpponent();
-                }
+                WSClientHandler.AttackOpponent(CoreGame.roomId, _x, _y);
             }
             horzLine.SetActive(false);
             vertLine.SetActive(false);

@@ -498,6 +498,26 @@ public class CoreGame : SingletonMono<CoreGame>
         }
         if (status == 1)
         {
+            if (GameData.Tutorial[4] == 0)
+            {
+                if(Instance.playerTurn == true)
+                {
+                    DOVirtual.DelayedCall(3f, () =>
+                    {
+                        int x = 0, y = 0;
+                        for(int i=0; i<10; i++)
+                        {
+                            if (Instance.player.octiles[5][i].ship == null)
+                            {
+                                x = Instance.player.octiles[5][i].pos.x;
+                                y = Instance.player.octiles[5][i].pos.y;
+                                break;
+                            }
+                        }
+                        WSClientHandleFake.OppenentAttack(roomId, x, y);
+                    });
+                }
+            }
             Instance.playerTurn = !Instance.playerTurn;
         }
         LeanTouch.OnFingerUp -= Instance.opponent.BeingAttacked;
@@ -508,6 +528,10 @@ public class CoreGame : SingletonMono<CoreGame>
         {
             int x = int.Parse(json["d"]["x"]);
             int y = int.Parse(json["d"]["y"]);
+
+
+
+
             Ship ship;
             int type;
             switch (status)

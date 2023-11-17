@@ -614,13 +614,20 @@ public class WSClientHandler : Framework.Singleton<WSClientHandler>
     }
     public static void AttackOpponent(int room, int x, int y)
     {
-        new JSONClass
+        if (GameData.Tutorial[4] == 1)
         {
-            { "id", ServerResponse._ATTACK.ToJson() },
-            { "r",  room.ToJson() },
-            { "x",  x.ToJson() },
-            { "y",  y.ToJson() },
-        }.RequestServer();
+            new JSONClass
+            {
+                { "id", ServerResponse._ATTACK.ToJson() },
+                { "r",  room.ToJson() },
+                { "x",  x.ToJson() },
+                { "y",  y.ToJson() },
+            }.RequestServer();
+        }
+        else
+        {
+            WSClientHandleFake.AttackOpponent(room, x, y);
+        }
     }
     public static void QuitSearch(int bet)
     {
@@ -1056,7 +1063,7 @@ public class WSClientHandler : Framework.Singleton<WSClientHandler>
         ServerData.IsTutorialComplete = false;
         if (ServerData.IsTutorialComplete)
         {
-            GameData.Tutorial = new List<int>() { 0, 0, 0, 0 };
+            GameData.Tutorial = new List<int>() { 0, 0, 0, 0, 0};
 
         }
         JSONNode json = data["d"]["b"];

@@ -24,6 +24,4 @@ public class GameConfig : SingletonScriptableObject<GameConfig>
     [SerializeField] private string[] listShotPlayerJsonTuto; public static string[] ListShotPlayerJsonTuto { get { return Instance.listShotPlayerJsonTuto; } set { Instance.listShotPlayerJsonTuto = value; } }
     [SerializeField] private string[] listShotBotJsonTuto; public static string[] ListShotBotJsonTuto { get { return Instance.listShotBotJsonTuto; } set { Instance.listShotBotJsonTuto = value; } }
     [SerializeField] private string[] listEndTurnJsonTuto; public static string[] ListEndTurnJsonTuto { get { return Instance.listEndTurnJsonTuto; } set { Instance.listEndTurnJsonTuto = value; } }
-
-
 }

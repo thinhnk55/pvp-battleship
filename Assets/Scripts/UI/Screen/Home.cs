@@ -8,13 +8,13 @@ public class Home : MonoBehaviour
     {
         if (!GameData.Starter && !GameData.StarterShow && ServerData.IsTutorialComplete)
         {
-            GameData.Tutorial = new List<int> { 1, 1, 1, 1 };
+            GameData.Tutorial = new List<int> { 1, 1, 1, 1, 1};
             PopupHelper.Create(PrefabFactory.PopupStarter);
             GameData.StarterShow = true;
         }
         else if (!ServerData.IsTutorialComplete)
         {
-            GameData.Tutorial = new List<int>() { 1, 0, 0, 0 };
+            GameData.Tutorial = new List<int>() { 1, 0, 0, 0, 0};
             PopupHelper.Create(PrefabFactory.PopupTuTorHome);
         }
         ServerData.isTutorialCompleteOnChange += IsTutorialCompleteOnDataChanged;
@@ -27,13 +27,13 @@ public class Home : MonoBehaviour
     {
         if (!GameData.Starter && !GameData.StarterShow && isTutorialComplete)
         {
-            GameData.Tutorial = new List<int> { 1, 1, 1, 1 };
+            GameData.Tutorial = new List<int> { 1, 1, 1, 1, 1};
             PopupHelper.Create(PrefabFactory.PopupStarter);
             GameData.StarterShow = true;
         }
         else if (!isTutorialComplete)
         {
-            GameData.Tutorial = new List<int>() { 1, 0, 0, 0 };
+            GameData.Tutorial = new List<int>() { 1, 0, 0, 0, 0};
             PopupHelper.Create(PrefabFactory.PopupTuTorHome);
         }
     }

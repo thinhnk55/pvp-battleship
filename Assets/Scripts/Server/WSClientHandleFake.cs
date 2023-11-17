@@ -23,8 +23,27 @@ public class WSClientHandleFake : Framework.Singleton<WSClientHandler>
         Debug.Log(jsonNode);
     }
 
-    public static void AttackOpponent()
+    public static void AttackOpponent(int room, int x, int y)
     {
-        ServerMessengerFake.Broadcast<JSONNode>(ServerRequest._ATTACK, GameConfig.ListShotPlayerJsonTuto[0]);
+        JSONNode json = new JSONClass
+            {
+                { "id", ServerResponse._ATTACK.ToJson() },
+                { "r",  room.ToJson() },
+                { "x",  x.ToJson() },
+                { "y",  y.ToJson() },
+            };
+        ServerMessengerFake.Broadcast<JSONNode>(ServerRequest._ATTACK, json);
+    }
+
+    public static void OppenentAttack(int room, int x, int y)
+    {
+        JSONNode json = new JSONClass
+            {
+                { "id", ServerResponse._ATTACK.ToJson() },
+                { "r",  room.ToJson() },
+                { "x",  x.ToJson() },
+                { "y",  y.ToJson() },
+            };
+        ServerMessengerFake.Broadcast<JSONNode>(ServerRequest._ATTACK, json); ;
     }
 }
