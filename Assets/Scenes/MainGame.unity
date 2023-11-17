@@ -105423,6 +105423,7 @@ MonoBehaviour:
   rematchChatB: {fileID: 1918109708}
   buttonAuto: {fileID: 85143336219046624}
   buttonRematch: {fileID: 1938529104}
+  bot: {fileID: 4346564552096639476, guid: 5feb83a5bb61faf468ccc41809f3a409, type: 3}
   consecutiveKill: 0
   reveal: 0
 --- !u!4 &9189260555875155045
@@ -105699,5 +105700,5 @@ SceneRoots:
   - {fileID: 85143336059104390}
   - {fileID: 85143336969697196}
   - {fileID: 85143335544883893}
-  - {fileID: 9189260555875155045}
   - {fileID: 1281263382}
+  - {fileID: 9189260555875155045}

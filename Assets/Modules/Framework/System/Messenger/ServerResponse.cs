@@ -39,6 +39,7 @@
 
         _FIND_MATCH = 4101,
         _SUBMIT_SHIP = 4110,
+        _ATTACK = 4111, 
         _REMATCH = 4114,
 
         _CONFIG_TREASURE = 4201,

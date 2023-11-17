@@ -80,6 +80,7 @@ public class CoreGame : SingletonMono<CoreGame>
     [SerializeField] Button buttonAuto;
     [SerializeField] Button buttonRematch;
 
+    [SerializeField] Bot bot;
     //
     public int consecutiveKill;
     static public PDataUnit<int> consecutiveKillMax = new(0);
@@ -361,7 +362,15 @@ public class CoreGame : SingletonMono<CoreGame>
         {
             Instance.searchUI.amount.text = (GameData.Bets[bet].Bet * 1.95f).ToString();
             Instance.stateMachine.CurrentState = GameState.Search;
-            WSClientHandler.SearchOpponent(bet, player.ships);
+
+            if (ServerData.IsTutorialComplete)
+            {
+                WSClientHandler.SearchOpponent(bet, player.ships);
+            }
+            else
+            {
+                Instantiate(bot, transform);
+            }
         }
         else
         {
@@ -440,7 +449,16 @@ public class CoreGame : SingletonMono<CoreGame>
         playerChair = int.Parse(json["d"]["p1"]["u"]) == DataAuth.AuthData.userId ? int.Parse(json["d"]["p1"]["c"]) : int.Parse(json["d"]["p2"]["c"]);
         Debug.Log(DataAuth.AuthData.userId + "_" + int.Parse(json["d"]["p1"]["u"]) + "_" + int.Parse(json["d"]["p2"]["u"]));
         bet = int.Parse(json["d"]["t"]);
-        WSClientHandler.SubmitShip(roomId, player.ships);
+
+        if(ServerData.IsTutorialComplete)
+        {
+            WSClientHandler.SubmitShip(roomId, player.ships);
+        }
+        else
+        {
+            WSClientHandleFake.RequestSubmitShip(roomId, player.ships);
+        }
+
         GameData.Opponent = int.Parse(json["d"]["p1"]["u"]) == DataAuth.AuthData.userId ? ProfileData.FromJsonOpponent(GameData.Opponent, json["d"]["p2"]["p"]) : ProfileData.FromJsonOpponent(GameData.Opponent, json["d"]["p1"]["p"]);
         Instance.searchUI.opponentProfile.UpdateUIs();
         Instance.searchUI.icon.gameObject.SetActive(true);

@@ -1053,6 +1053,7 @@ public class WSClientHandler : Framework.Singleton<WSClientHandler>
         }
 
         ServerData.IsTutorialComplete = !data["d"]["t"].IsNull && data["d"]["t"].AsBool;
+        ServerData.IsTutorialComplete = false;
         if (ServerData.IsTutorialComplete)
         {
             GameData.Tutorial = new List<int>() { 0, 0, 0, 0 };
