@@ -361,6 +361,7 @@ public class CoreGame : SingletonMono<CoreGame>
         {
             Instance.searchUI.amount.text = (GameData.Bets[bet].Bet * 1.95f).ToString();
             Instance.stateMachine.CurrentState = GameState.Search;
+
             WSClientHandler.SearchOpponent(bet, player.ships);
         }
         else
