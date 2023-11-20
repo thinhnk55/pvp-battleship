@@ -42,13 +42,13 @@ public class Bot : MonoBehaviour
         if(CoreGame.Instance.playerTurn == true)
         {
             ServerMessenger.Broadcast<JSONNode>(ServerResponse._END_TURN, JSONNode.Parse(GameConfig.ListEndTurnJsonTuto[CountShotPlayer++]));
-            if(CountShotPlayer == 4) 
-            {
-                DOVirtual.DelayedCall(4, () =>
-                {
-                    ServerMessenger.Broadcast<JSONNode>(ServerResponse._END_TURN, JSONNode.Parse(GameConfig.ListEndTurnJsonTuto[CountShotPlayer++]));
-                });
-            }
+            //if(CountShotPlayer == 4) 
+            //{
+            //    DOVirtual.DelayedCall(0, () =>
+            //    {
+            //        ServerMessenger.Broadcast<JSONNode>(ServerResponse._END_TURN, JSONNode.Parse(GameConfig.ListEndTurnJsonTuto[CountShotPlayer++]));
+            //    });
+            //}
         }
         else
         {

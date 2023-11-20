@@ -363,7 +363,7 @@ public class CoreGame : SingletonMono<CoreGame>
             Instance.searchUI.amount.text = (GameData.Bets[bet].Bet * 1.95f).ToString();
             Instance.stateMachine.CurrentState = GameState.Search;
 
-            if (ServerData.IsTutorialComplete)
+            if (GameData.Tutorial[4] == 1) 
             {
                 WSClientHandler.SearchOpponent(bet, player.ships);
             }
@@ -446,7 +446,14 @@ public class CoreGame : SingletonMono<CoreGame>
     public void Match(JSONNode json)
     {
         roomId = int.Parse(json["d"]["r"]);
-        playerChair = int.Parse(json["d"]["p1"]["u"]) == DataAuth.AuthData.userId ? int.Parse(json["d"]["p1"]["c"]) : int.Parse(json["d"]["p2"]["c"]);
+        if(GameData.Tutorial[4]==1)
+        {
+            playerChair = int.Parse(json["d"]["p1"]["u"]) == DataAuth.AuthData.userId ? int.Parse(json["d"]["p1"]["c"]) : int.Parse(json["d"]["p2"]["c"]);
+        }
+        else
+        {
+            playerChair = 0;
+        }
         Debug.Log(DataAuth.AuthData.userId + "_" + int.Parse(json["d"]["p1"]["u"]) + "_" + int.Parse(json["d"]["p2"]["u"]));
         bet = int.Parse(json["d"]["t"]);
 
@@ -653,9 +660,11 @@ public class CoreGame : SingletonMono<CoreGame>
             {
                 SceneManager.LoadScene("SystemMaintenance");
             }
-        });
-
-
+        }); 
+        if(GameData.Tutorial[4] == 0)
+        {
+            GameData.Tutorial[4] = 1;
+        }
     }
     void GameDestroy(JSONNode json)
     {

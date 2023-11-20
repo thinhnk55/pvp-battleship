@@ -1061,10 +1061,10 @@ public class WSClientHandler : Framework.Singleton<WSClientHandler>
 
         ServerData.IsTutorialComplete = !data["d"]["t"].IsNull && data["d"]["t"].AsBool;
         ServerData.IsTutorialComplete = false;
+        SetData();
         if (ServerData.IsTutorialComplete)
         {
-            GameData.Tutorial = new List<int>() { 0, 0, 0, 0, 0};
-
+            GameData.Tutorial = new List<int>() { 0, 0, 0, 0, 1};
         }
         JSONNode json = data["d"]["b"];
 

@@ -13,15 +13,6 @@ public class ServerData
     public static List<BoardInfo> ListBoard = new List<BoardInfo>() { new BoardInfo() { boardInfo = new List<ShipInfo>()}, new BoardInfo() { boardInfo = new List<ShipInfo>() }, new BoardInfo() { boardInfo = new List<ShipInfo>() },
             new BoardInfo() { boardInfo = new List<ShipInfo>()} , new BoardInfo() { boardInfo = new List<ShipInfo>()} , new BoardInfo() { boardInfo = new List<ShipInfo>()} };
 
-    public static JSONClass ConvertToJson()
-    {
-        return new JSONClass
-        {
-            "t", new JSONData(IsTutorialComplete),
-            "l", ConvertDataOfListBoardToJson()
-        };
-    }
-
     public static JSONNode ConvertDataOfListBoardToJson()
     {
         JSONNode json = new JSONClass();
