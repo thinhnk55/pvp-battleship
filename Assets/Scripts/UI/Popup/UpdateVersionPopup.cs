@@ -28,8 +28,9 @@ public class UpdateVersionPopup : MonoBehaviour
 
     private void SetUpButton()
     {
-        if(SystemMaintenance.Instance.forceUpdate)
+        if (SystemMaintenance.Instance.forceUpdate)
         {
+            PGameMaster.ClearData();
             _btnM_Yes.gameObject.SetActive(true);
             _btnR_Yes.gameObject.SetActive(false);
             _btnL_No.gameObject.SetActive(false);

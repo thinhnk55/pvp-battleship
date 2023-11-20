@@ -99,6 +99,7 @@ public static class StatisticTracker
     }
     private static void OnConsecutiveKillShipChange(int oValue, int nValue)
     {
+        if (GameData.Tutorial[4] == 0) return;
         switch (nValue)
         {
             case 2:
@@ -115,6 +116,7 @@ public static class StatisticTracker
     }
     private static void GameEnd(bool win)
     {
+        if (GameData.Tutorial[4] == 0) return;
         if (win)
         {
             StatisticType.WIN_COUNT.AddProgress(1);
@@ -140,6 +142,7 @@ public static class StatisticTracker
 
     private static void ShipDestroyed(Ship ship)
     {
+        if (GameData.Tutorial[4] == 0) return;
         if (ship.board != CoreGame.Instance.player)
         {
             StatisticType.SHIP_DESTROY.AddProgress(1);
@@ -173,6 +176,7 @@ public static class StatisticTracker
     }
     private static void ShipHit(Ship ship)
     {
+        if (GameData.Tutorial[4] == 0) return;
         if (ship.board != CoreGame.Instance.player)
         {
 

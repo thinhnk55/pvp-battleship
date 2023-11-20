@@ -16,6 +16,7 @@ public class GameData : PDataBlock<GameData>
     [SerializeField] public int versionGiftConfig; public static int VersionGiftConfig { get { return Instance.versionGiftConfig; } set { Instance.versionGiftConfig = value; } }
     [SerializeField] public int versionLeaderBoardConfig; public static int VersionLeaderBoardConfig { get { return Instance.versionLeaderBoardConfig; } set { Instance.versionLeaderBoardConfig = value; } }
     #endregion
+    [SerializeField] public List<int> tutorial; public static List<int> Tutorial { get { return Instance.tutorial; } set { Instance.tutorial = value; } }
     [SerializeField] public BetData[] bets; public static BetData[] Bets { get { return Instance.bets; } set { Instance.bets = value; } }
     [SerializeField] public int progressGift; public static int ProgressGift { get { return Instance.progressGift; } set { Instance.progressGift = value % 6; } }
     [SerializeField] public int beriBonusAmount; public static int BeriBonusAmount { get { return Instance.beriBonusAmount; } set { Instance.beriBonusAmount = value; } }
@@ -43,8 +44,8 @@ public class GameData : PDataBlock<GameData>
     [SerializeField] public Dictionary<TransactionType, List<TransactionInfo>> transactionConfigs; public static Dictionary<TransactionType, List<TransactionInfo>> TransactionConfigs { get { return Instance.transactionConfigs; } set { Instance.transactionConfigs = value; } }
     [SerializeField] public List<RankConfig> rankConfigs; public static List<RankConfig> RankConfigs { get { return Instance.rankConfigs; } set { Instance.rankConfigs = value; } }
     [SerializeField] public PDataUnit<int> rocketCount; public static PDataUnit<int> RocketCount { get { return Instance.rocketCount; } set { Instance.rocketCount = value; } }
-    [SerializeField] public List<TreasureConfig> treasureConfigs; public static List<TreasureConfig> TreasureConfigs { get { return Instance.treasureConfigs; } set { Instance.treasureConfigs = value; } }
-    [SerializeField] public JoinTreasureRoom joinTreasureRoom; public static JoinTreasureRoom JoinTreasureRoom { get { return Instance.joinTreasureRoom; } set { Instance.joinTreasureRoom = value; } }
+    // [SerializeField] public List<TreasureConfig> treasureConfigs; public static List<TreasureConfig> TreasureConfigs { get { return Instance.treasureConfigs; } set { Instance.treasureConfigs = value; } }
+    // [SerializeField] public JoinTreasureRoom joinTreasureRoom; public static JoinTreasureRoom JoinTreasureRoom { get { return Instance.joinTreasureRoom; } set { Instance.joinTreasureRoom = value; } }
     [SerializeField] public Dictionary<AchievementType, AchievementInfo> achievementConfig; public static Dictionary<AchievementType, AchievementInfo> AchievementConfig { get { return Instance.achievementConfig; } set { Instance.achievementConfig = value; } }
     [SerializeField] public int luckyShotCoolDown; public static int LuckyShotCoolDown { get { return Instance.luckyShotCoolDown; } set { Instance.luckyShotCoolDown = value; } }
     [SerializeField] public int rankReceiveCoolDown; public static int RankReceiveCoolDown { get { return Instance.rankReceiveCoolDown; } set { Instance.rankReceiveCoolDown = value; } }
@@ -55,7 +56,6 @@ public class GameData : PDataBlock<GameData>
     [SerializeField] public bool[] acceptLoginTerm; public static bool[] AcceptLoginTerm { get { return Instance.acceptLoginTerm; } set { Instance.acceptLoginTerm = value; } }
     [SerializeField] public bool starter; public static bool Starter { get { return Instance.starter; } set { Instance.starter = value; } }
     [SerializeField] public bool starterShow; public static bool StarterShow { get { return Instance.starterShow; } set { Instance.starterShow = value; } }
-    [SerializeField] public List<int> tutorial; public static List<int> Tutorial { get { return Instance.tutorial; } set { Instance.tutorial = value; } }
     [SerializeField] public LeaderBoard leaderBoard; public static LeaderBoard LeaderBoard { get { return Instance.leaderBoard; } set { Instance.leaderBoard = value; } }
     [SerializeField] public SocialAuthType typeLogin; public static SocialAuthType TypeLogin { get { return Instance.typeLogin; } set { Instance.typeLogin = value; } }
     protected override void Init()
@@ -71,17 +71,21 @@ public class GameData : PDataBlock<GameData>
         Instance.transactionConfigs = Instance.transactionConfigs ?? new Dictionary<TransactionType, List<TransactionInfo>>();
         Instance.rankConfigs = Instance.rankConfigs ?? new List<RankConfig>();
         Instance.rocketCount = new PDataUnit<int>(0);
-        Instance.treasureConfigs = Instance.treasureConfigs ?? new List<TreasureConfig>();
-        Instance.joinTreasureRoom = Instance.joinTreasureRoom ?? new JoinTreasureRoom();
-        Instance.joinTreasureRoom.Board = Instance.joinTreasureRoom.Board ?? new List<List<int>>();
+        //Instance.treasureConfigs = Instance.treasureConfigs ?? new List<TreasureConfig>();
+        //Instance.joinTreasureRoom = Instance.joinTreasureRoom ?? new JoinTreasureRoom();
+        //Instance.joinTreasureRoom.Board = Instance.joinTreasureRoom.Board ?? new List<List<int>>();
         Instance.royalPass = Instance.royalPass ?? new RoyalPass();
         Instance.listBoard = Instance.listBoard ?? new List<BoardInfo>() { new BoardInfo() { boardInfo = new List<ShipInfo>()}, new BoardInfo() { boardInfo = new List<ShipInfo>() }, new BoardInfo() { boardInfo = new List<ShipInfo>() },
             new BoardInfo(){ boardInfo = new List<ShipInfo>()} , new BoardInfo(){ boardInfo = new List<ShipInfo>()} , new BoardInfo(){ boardInfo = new List<ShipInfo>()} };
         Instance.leaderBoard = Instance.leaderBoard ?? new LeaderBoard();
         Instance.acceptLoginTerm = Instance.acceptLoginTerm ?? new bool[2] { true, true };
-        if (Instance.tutorial.IsNullOrEmpty() || Instance.tutorial[3] == 0)
+        if (ServerData.IsTutorialComplete == false)
         {
-            Instance.tutorial = new List<int>() { 0, 0, 0, 0 };
+            Instance.tutorial = new List<int>() { 0, 0, 0, 0, 0};
+        }
+        else
+        {
+            Instance.tutorial = new List<int>() { 1, 1, 1, 1, 0};
         }
     }
 }

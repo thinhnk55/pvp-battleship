@@ -27,7 +27,7 @@ public class WSClientHandler : Framework.Singleton<WSClientHandler>
             ServerMessenger.AddListener<JSONNode>(ServerResponse._GIFT_CONFIG, GetConfigGift);
             ServerMessenger.AddListener<JSONNode>(ServerResponse._LEADERBOARD_CONFIG, LeaderBoardConfig);
             //not config
-            ServerMessenger.AddListener<JSONNode>(ServerResponse._PROFILE, GetData);
+            ServerMessenger.AddListener<JSONNode>(ServerResponse._PROFILE, GetDataProfile);
 
             ServerMessenger.AddListener<JSONNode>(ServerResponse._CHECK_RANK, GetCheckRank);
             ServerMessenger.AddListener<JSONNode>(ServerResponse._TRANSACTION, Transaction);
@@ -40,9 +40,10 @@ public class WSClientHandler : Framework.Singleton<WSClientHandler>
             ServerMessenger.AddListener<JSONNode>(ServerResponse._REWARD_ADS, ReceiveRewardAds);
             //ServerMessenger.AddListener<JSONNode>(ServerResponse.RECIEVE_CLAIM_ALL_ROYALPASS, ReceiveClaimAllRoyalPass);
             ServerMessenger.AddListener<JSONNode>(ServerResponse._GAME_RECONNECT, RecieveReconnect);
-            ServerMessenger.AddListener<JSONNode>(ServerResponse.RECIEVE_TREASURE_CONFIG, ReceiveTreasureConfig);
-            ServerMessenger.AddListener<JSONNode>(ServerResponse.RECIEVE_JOIN_TREASURE_ROOM, ReceiveJoinTreasureRoom);
+            //ServerMessenger.AddListener<JSONNode>(ServerResponse.RECIEVE_TREASURE_CONFIG, ReceiveTreasureConfig);
+            //ServerMessenger.AddListener<JSONNode>(ServerResponse.RECIEVE_JOIN_TREASURE_ROOM, ReceiveJoinTreasureRoom);
             ServerMessenger.AddListener<JSONNode>(ServerResponse._OPERATION_CONFIG, OperationConfig);
+            ServerMessenger.AddListener<JSONNode>(ServerResponse._GET_DATA, GetData);
 
         };
         WSClient.Instance.OnDisconnect += () =>
@@ -55,7 +56,7 @@ public class WSClientHandler : Framework.Singleton<WSClientHandler>
             ServerMessenger.RemoveListener<JSONNode>(ServerResponse._LEADERBOARD_CONFIG, LeaderBoardConfig);
 
             //not config
-            ServerMessenger.RemoveListener<JSONNode>(ServerResponse._PROFILE, GetData);
+            ServerMessenger.RemoveListener<JSONNode>(ServerResponse._PROFILE, GetDataProfile);
 
             ServerMessenger.RemoveListener<JSONNode>(ServerResponse._CHECK_RANK, GetCheckRank);
             ServerMessenger.RemoveListener<JSONNode>(ServerResponse._TRANSACTION, Transaction);
@@ -68,9 +69,10 @@ public class WSClientHandler : Framework.Singleton<WSClientHandler>
             ServerMessenger.RemoveListener<JSONNode>(ServerResponse._REWARD_ADS, ReceiveRewardAds);
             //ServerMessenger.RemoveListener<JSONNode>(ServerResponse.RECIEVE_CLAIM_ALL_ROYALPASS, ReceiveClaimAllRoyalPass);
             ServerMessenger.RemoveListener<JSONNode>(ServerResponse._GAME_RECONNECT, RecieveReconnect);
-            ServerMessenger.RemoveListener<JSONNode>(ServerResponse.RECIEVE_TREASURE_CONFIG, ReceiveTreasureConfig);
-            ServerMessenger.RemoveListener<JSONNode>(ServerResponse.RECIEVE_JOIN_TREASURE_ROOM, ReceiveJoinTreasureRoom);
+            //ServerMessenger.RemoveListener<JSONNode>(ServerResponse.RECIEVE_TREASURE_CONFIG, ReceiveTreasureConfig);
+            //ServerMessenger.RemoveListener<JSONNode>(ServerResponse.RECIEVE_JOIN_TREASURE_ROOM, ReceiveJoinTreasureRoom);
             ServerMessenger.RemoveListener<JSONNode>(ServerResponse._OPERATION_CONFIG, OperationConfig);
+            ServerMessenger.RemoveListener<JSONNode>(ServerResponse._GET_DATA, GetData);
         };
         WSClient.Instance.OnSystemError += () =>
         {
@@ -123,7 +125,7 @@ public class WSClientHandler : Framework.Singleton<WSClientHandler>
             });
         }
     }
-    public static void GetData(JSONNode data)
+    public static void GetDataProfile(JSONNode data)
     {
         MusicType.MAINMENU.PlayMusic();
         Firebase.Crashlytics.Crashlytics.SetUserId(DataAuth.AuthData.userId.ToString());
@@ -137,6 +139,7 @@ public class WSClientHandler : Framework.Singleton<WSClientHandler>
         GetConfigRoyalPass();
         RequestAdsConfig();
         GetConfigGift();
+        GetData();
         LeaderBoardConfig(); //You need to place this configuration retrieval command after other configuration retrieval commands to ensure that the load home scene command is called after the configuration has been successfully retrieved.
 
         GetCheckRank();
@@ -493,7 +496,9 @@ public class WSClientHandler : Framework.Singleton<WSClientHandler>
     }
     #endregion
     #region TREASUREHUNT
+
     #region Old
+    /*
     private static bool waitingJoinTreasureRoom = false;
 
 
@@ -581,7 +586,9 @@ public class WSClientHandler : Framework.Singleton<WSClientHandler>
             {"id", ServerResponse.REQUEST_EXIT_TREASURE_ROOM.ToJson() },
         }.RequestServer();
     }
+    */
     #endregion
+
     #endregion
     #region CoreGame
     public static void SearchOpponent(int bet, List<Ship> ships)
@@ -607,13 +614,20 @@ public class WSClientHandler : Framework.Singleton<WSClientHandler>
     }
     public static void AttackOpponent(int room, int x, int y)
     {
-        new JSONClass
+        if (GameData.Tutorial[4] == 1)
         {
-            { "id", ServerResponse._ATTACK.ToJson() },
-            { "r",  room.ToJson() },
-            { "x",  x.ToJson() },
-            { "y",  y.ToJson() },
-        }.RequestServer();
+            new JSONClass
+            {
+                { "id", ServerResponse._ATTACK.ToJson() },
+                { "r",  room.ToJson() },
+                { "x",  x.ToJson() },
+                { "y",  y.ToJson() },
+            }.RequestServer();
+        }
+        else
+        {
+            WSClientHandleFake.AttackOpponent(room, x, y);
+        }
     }
     public static void QuitSearch(int bet)
     {
@@ -1027,6 +1041,60 @@ public class WSClientHandler : Framework.Singleton<WSClientHandler>
             GameData.LeaderBoard.rankWinPreviousAvailable = data["d"]["t"]["w"]["t"].AsInt == 1;
         }
 
+    }
+    #endregion
+    #region SAVE&LOAD DATA TO SERVER
+    public static void GetData()
+    {
+        new JSONClass
+        {
+            { "id", ServerRequest._GET_DATA.ToJson() },
+        }.RequestServer();
+    }
+
+    public static void GetData(JSONNode data)
+    {
+        if (data["e"].AsInt != 0)
+        {
+            return;
+        }
+
+        ServerData.IsTutorialComplete = !data["d"]["t"].IsNull && data["d"]["t"].AsBool;
+        if (ServerData.IsTutorialComplete)
+        {
+            GameData.Tutorial = new List<int>() { 0, 0, 0, 0, 1};
+        }
+        JSONNode json = data["d"]["b"];
+
+
+        for (int i = 0; i < json.Count; i++)
+        {
+            for (int j = 0; j < json[i].Count; j++)
+            {
+                ShipInfo shipInfo = new ShipInfo();
+                shipInfo.x = int.Parse(json[i][j]["x"]);
+                shipInfo.y = json[i][j]["y"].AsInt;
+                shipInfo.type = json[i][j]["t"].AsInt;
+                shipInfo.dir = json[i][j]["d"].AsInt;
+                ServerData.ListBoard[i].boardInfo.Add(shipInfo);
+            }
+        }
+
+    }
+
+    public static void SetData()
+    {
+        JSONNode data = new JSONClass
+        {
+            { "t", new JSONData(ServerData.IsTutorialComplete) },
+            { "b", ServerData.ConvertDataOfListBoardToJson() }
+        };
+
+        new JSONClass
+        {
+            { "id", ServerRequest._SET_DATA.ToJson() },
+            { "d", data },
+        }.RequestServer();
     }
     #endregion
     #region OPERATION CONFIG

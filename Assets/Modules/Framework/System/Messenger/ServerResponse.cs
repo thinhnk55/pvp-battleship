@@ -39,6 +39,7 @@
 
         _FIND_MATCH = 4101,
         _SUBMIT_SHIP = 4110,
+        _ATTACK = 4111, 
         _REMATCH = 4114,
 
         _CONFIG_TREASURE = 4201,
@@ -46,6 +47,8 @@
         _NEWGAME_TREASURE = 4203,
         _FIRE_TREASURE = 4204,
         _END_GAME_TREASURE = 4205,
+        _GET_DATA = 4210,
+        _SET_DATA = 4211,
     }
     public enum ServerResponse
     {
@@ -107,6 +110,7 @@
         _NEWGAME_TREASURE = 4203,
         _FIRE_TREASURE = 4204,
         _END_GAME_TREASURE = 4205,
+        _GET_DATA = 4210,
 
         REQUEST_TREASURE_CONFIG,
         REQUEST_JOIN_TREASURE_ROOM,

@@ -44,7 +44,7 @@ public class LeaderBoardGoldCard : CardBase<LeaderBoardGoldInfo>
                 }
                 else
                 {
-                    order?.SetText(info.Order.ToString());
+                    order?.SetText((info.Order + 1).ToString());
                 }
                 orderIcon.SetAlpha(0);
             }

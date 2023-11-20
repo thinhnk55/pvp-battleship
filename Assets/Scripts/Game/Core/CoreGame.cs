@@ -43,7 +43,7 @@ public class CoreGame : SingletonMono<CoreGame>
     };
 
     [SerializeField] public Board player;
-    [SerializeField] Board opponent;
+    [SerializeField] public Board opponent;
     [SerializeField] ProfileCollection playerProfile;
     [SerializeField] ProfileCollection opponentProfile;
     [SerializeField] GameObject lineRoot;
@@ -80,6 +80,7 @@ public class CoreGame : SingletonMono<CoreGame>
     [SerializeField] Button buttonAuto;
     [SerializeField] Button buttonRematch;
 
+    [SerializeField] Bot bot;
     //
     public int consecutiveKill;
     static public PDataUnit<int> consecutiveKillMax = new(0);
@@ -282,11 +283,13 @@ public class CoreGame : SingletonMono<CoreGame>
             Instance.btnBackSearchGame.SetActive(false);
             GameData.Tutorial[2] = 1;
         }
+        Instance.searchUI.gameObject.SetActive(true);
+        Instance.searchUI.icon.gameObject.SetActive(false);
+        Instance.searchUI.amount.gameObject.SetActive(false);
         Instance.opponent.gameObject.SetActive(true);
         Instance.preUI.SetActive(false);
         Instance.searchUI.gameObject.SetActive(true);
         Instance.shipListPlayer.SetActive(false);
-        WSClientHandler.SearchOpponent(bet, player.ships);
         var profile = new ProfileInfo()
         {
             Avatar = -1,
@@ -331,6 +334,10 @@ public class CoreGame : SingletonMono<CoreGame>
             LeanTouch.OnFingerUp += Instance.opponent.BeingAttacked;
             LeanTouch.OnFingerUpdate += Instance.opponent.SelectingTarget;
             Instance.turnImage.sprite = SpriteFactory.PlayerTurn;
+            if (GameData.Tutorial[4] == 0)
+            {
+                Bot.Instance.CreatePopupTutoInGame();
+            }
         }
         else
         {
@@ -349,6 +356,11 @@ public class CoreGame : SingletonMono<CoreGame>
         Instance.opponent.horzLine.gameObject.SetActive(false);
         Instance.opponent.vertLine.gameObject.SetActive(false);
         Instance.TurnTime = timeInit;
+        if (GameData.Tutorial[4] == 0)
+        {
+            Bot.Instance.DestroyTutorialInGame();
+        }
+        
     }
     #endregion
 
@@ -358,10 +370,16 @@ public class CoreGame : SingletonMono<CoreGame>
         if (shipListPlayer.transform.childCount == 0)
         {
             Instance.searchUI.amount.text = (GameData.Bets[bet].Bet * 1.95f).ToString();
-            Instance.searchUI.gameObject.SetActive(true);
-            Instance.searchUI.icon.gameObject.SetActive(false);
-            Instance.searchUI.amount.gameObject.SetActive(false);
             Instance.stateMachine.CurrentState = GameState.Search;
+
+            if (GameData.Tutorial[4] == 1) 
+            {
+                WSClientHandler.SearchOpponent(bet, player.ships);
+            }
+            else
+            {
+                Instantiate(bot, transform);
+            }
         }
         else
         {
@@ -437,10 +455,26 @@ public class CoreGame : SingletonMono<CoreGame>
     public void Match(JSONNode json)
     {
         roomId = int.Parse(json["d"]["r"]);
-        playerChair = int.Parse(json["d"]["p1"]["u"]) == DataAuth.AuthData.userId ? int.Parse(json["d"]["p1"]["c"]) : int.Parse(json["d"]["p2"]["c"]);
+        if(GameData.Tutorial[4]==1)
+        {
+            playerChair = int.Parse(json["d"]["p1"]["u"]) == DataAuth.AuthData.userId ? int.Parse(json["d"]["p1"]["c"]) : int.Parse(json["d"]["p2"]["c"]);
+        }
+        else
+        {
+            playerChair = 0;
+        }
         Debug.Log(DataAuth.AuthData.userId + "_" + int.Parse(json["d"]["p1"]["u"]) + "_" + int.Parse(json["d"]["p2"]["u"]));
         bet = int.Parse(json["d"]["t"]);
-        WSClientHandler.SubmitShip(roomId, player.ships);
+
+        if (GameData.Tutorial[4] == 1)
+        {
+            WSClientHandler.SubmitShip(roomId, player.ships);
+        }
+        else
+        {
+            WSClientHandleFake.RequestSubmitShip(roomId, player.ships);
+        }
+
         GameData.Opponent = int.Parse(json["d"]["p1"]["u"]) == DataAuth.AuthData.userId ? ProfileData.FromJsonOpponent(GameData.Opponent, json["d"]["p2"]["p"]) : ProfileData.FromJsonOpponent(GameData.Opponent, json["d"]["p1"]["p"]);
         Instance.searchUI.opponentProfile.UpdateUIs();
         Instance.searchUI.icon.gameObject.SetActive(true);
@@ -480,6 +514,26 @@ public class CoreGame : SingletonMono<CoreGame>
         }
         if (status == 1)
         {
+            if (GameData.Tutorial[4] == 0)
+            {
+                if(Instance.playerTurn == true)
+                {
+                    DOVirtual.DelayedCall(3f, () =>
+                    {
+                        int x = 0, y = 0;
+                        for(int i=0; i<10; i++)
+                        {
+                            if (Instance.player.octiles[5][i].ship == null)
+                            {
+                                x = Instance.player.octiles[5][i].pos.x;
+                                y = Instance.player.octiles[5][i].pos.y;
+                                break;
+                            }
+                        }
+                        WSClientHandleFake.OppenentAttack(roomId, x, y);
+                    });
+                }
+            }
             Instance.playerTurn = !Instance.playerTurn;
         }
         LeanTouch.OnFingerUp -= Instance.opponent.BeingAttacked;
@@ -490,6 +544,10 @@ public class CoreGame : SingletonMono<CoreGame>
         {
             int x = int.Parse(json["d"]["x"]);
             int y = int.Parse(json["d"]["y"]);
+
+
+
+
             Ship ship;
             int type;
             switch (status)
@@ -561,7 +619,7 @@ public class CoreGame : SingletonMono<CoreGame>
     void EndGame(JSONNode json)
     {
         reconnect = null;
-        Instance.opponent.DestroyTutorIngame();
+        //Instance.opponent.DestroyTutorIngame();
         Instance.rematchChatB.transform.parent.gameObject.SetActive(false);
         Instance.rematchChatA.transform.parent.gameObject.SetActive(false);
         for (int i = 0; i < json["d"]["s"].Count; i++)
@@ -611,14 +669,19 @@ public class CoreGame : SingletonMono<CoreGame>
             {
                 SceneManager.LoadScene("SystemMaintenance");
             }
-        });
-
-
+        }); 
+        if(GameData.Tutorial[4] == 0)
+        {
+            GameData.Tutorial[4] = 1;
+        }
     }
     void GameDestroy(JSONNode json)
     {
         reconnect = null;
-        Instance.opponent.DestroyTutorIngame();
+        if (GameData.Tutorial[4] == 0)
+        {
+            Bot.Instance.DestroyTutorialInGame();
+        }
         Instance.buttonRematch.GetComponent<Image>().sprite = SpriteFactory.DisableButton;
         Instance.buttonRematch.enabled = false;
         if (rematch)
@@ -640,7 +703,10 @@ public class CoreGame : SingletonMono<CoreGame>
         {
             Instance.rematchChatB.transform.parent.gameObject.SetActive(true);
             Instance.rematchChatB.text = "SORRY I HAVE TO GO!";
-
+            if (Instance.stateMachine.CurrentState == GameState.Search)
+            {
+                StartSearchGame();
+            }
         }
     }
     public void Reconnect(JSONNode data)

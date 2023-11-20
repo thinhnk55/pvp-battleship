@@ -67,9 +67,6 @@ LightmapSettings:
     m_LightmapParameters: {fileID: 0}
     m_LightmapsBakeMode: 1
     m_TextureCompression: 1
-    m_FinalGather: 0
-    m_FinalGatherFiltering: 1
-    m_FinalGatherRayCount: 256
     m_ReflectionCompression: 2
     m_MixedBakeMode: 2
     m_BakeBackend: 1
@@ -14883,6 +14880,7 @@ BoxCollider2D:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 280348580}
   m_Enabled: 1
+  serializedVersion: 3
   m_Density: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -14906,7 +14904,8 @@ BoxCollider2D:
     m_Bits: 4294967295
   m_IsTrigger: 0
   m_UsedByEffector: 0
-  m_UsedByComposite: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
   m_Offset: {x: -0.26483154, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
@@ -14917,7 +14916,6 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  serializedVersion: 2
   m_Size: {x: 50.259888, y: 28.543152}
   m_EdgeRadius: 0
 --- !u!1 &287249383
@@ -28258,7 +28256,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8557655781839743677, guid: 33c887efe9e2d4f4792183fce278ad1a, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8557655781839743677, guid: 33c887efe9e2d4f4792183fce278ad1a, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -28266,11 +28264,15 @@ PrefabInstance:
       objectReference: {fileID: 9189260555875155044}
     - target: {fileID: 8557655781839743677, guid: 33c887efe9e2d4f4792183fce278ad1a, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: QuitSearch
+      value: QuitGame
       objectReference: {fileID: 0}
     - target: {fileID: 8557655781839743677, guid: 33c887efe9e2d4f4792183fce278ad1a, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: CoreGame, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 8557655781839743677, guid: 33c887efe9e2d4f4792183fce278ad1a, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -56885,11 +56887,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3695346601795316402, guid: 2e62c3c71f73e3248a31b8d21131fb34, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3695346601795316402, guid: 2e62c3c71f73e3248a31b8d21131fb34, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4686618898609714572, guid: 2e62c3c71f73e3248a31b8d21131fb34, type: 3}
       propertyPath: m_Name
@@ -57678,6 +57680,7 @@ BoxCollider2D:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1180374465}
   m_Enabled: 1
+  serializedVersion: 3
   m_Density: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -57701,7 +57704,8 @@ BoxCollider2D:
     m_Bits: 4294967295
   m_IsTrigger: 0
   m_UsedByEffector: 0
-  m_UsedByComposite: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
   m_Offset: {x: 0.26480103, y: 0.000042915344}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
@@ -57712,7 +57716,6 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  serializedVersion: 2
   m_Size: {x: 49.2005, y: 29.602575}
   m_EdgeRadius: 0
 --- !u!1 &1181590115
@@ -71946,6 +71949,7 @@ BoxCollider2D:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1483870464}
   m_Enabled: 1
+  serializedVersion: 3
   m_Density: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -71969,7 +71973,8 @@ BoxCollider2D:
     m_Bits: 4294967295
   m_IsTrigger: 0
   m_UsedByEffector: 0
-  m_UsedByComposite: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
   m_Offset: {x: -0.5296631, y: -0.52967834}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
@@ -71980,7 +71985,6 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  serializedVersion: 2
   m_Size: {x: 47.611572, y: 28.543182}
   m_EdgeRadius: 0
 --- !u!1 &1484013727
@@ -82301,7 +82305,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1704242413
 RectTransform:
   m_ObjectHideFlags: 0
@@ -97473,11 +97477,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3695346601795316402, guid: 2e62c3c71f73e3248a31b8d21131fb34, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3695346601795316402, guid: 2e62c3c71f73e3248a31b8d21131fb34, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4686618898609714572, guid: 2e62c3c71f73e3248a31b8d21131fb34, type: 3}
       propertyPath: m_Name
@@ -102686,7 +102690,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &85143335185214224
 GameObject:
   m_ObjectHideFlags: 0
@@ -103341,7 +103345,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &85143335780749956
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -104207,6 +104211,7 @@ PolygonCollider2D:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 85143336383497036}
   m_Enabled: 1
+  serializedVersion: 3
   m_Density: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -104230,7 +104235,8 @@ PolygonCollider2D:
     m_Bits: 4294967295
   m_IsTrigger: 1
   m_UsedByEffector: 0
-  m_UsedByComposite: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
@@ -105421,6 +105427,7 @@ MonoBehaviour:
   rematchChatB: {fileID: 1918109708}
   buttonAuto: {fileID: 85143336219046624}
   buttonRematch: {fileID: 1938529104}
+  bot: {fileID: 4346564552096639476, guid: 5feb83a5bb61faf468ccc41809f3a409, type: 3}
   consecutiveKill: 0
   reveal: 0
 --- !u!4 &9189260555875155045
@@ -105697,5 +105704,5 @@ SceneRoots:
   - {fileID: 85143336059104390}
   - {fileID: 85143336969697196}
   - {fileID: 85143335544883893}
-  - {fileID: 9189260555875155045}
   - {fileID: 1281263382}
+  - {fileID: 9189260555875155045}
