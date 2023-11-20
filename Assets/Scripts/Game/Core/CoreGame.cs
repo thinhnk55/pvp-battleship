@@ -457,7 +457,7 @@ public class CoreGame : SingletonMono<CoreGame>
         Debug.Log(DataAuth.AuthData.userId + "_" + int.Parse(json["d"]["p1"]["u"]) + "_" + int.Parse(json["d"]["p2"]["u"]));
         bet = int.Parse(json["d"]["t"]);
 
-        if(ServerData.IsTutorialComplete)
+        if (GameData.Tutorial[4] == 1)
         {
             WSClientHandler.SubmitShip(roomId, player.ships);
         }

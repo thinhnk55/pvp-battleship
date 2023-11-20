@@ -9,6 +9,10 @@ public class ButtonPlayTutorial : ButtonBase
     {
         base.Button_OnClicked();
         GameData.Tutorial[4] = 0;
-        SceneManager.LoadScene("MainGame");
+        GameData.Tutorial[3] = 0;
+        GameData.Tutorial[2] = 0;
+        GameData.Tutorial[1] = 0;
+
+        SceneManager.LoadScene("Bet");
     }
 }

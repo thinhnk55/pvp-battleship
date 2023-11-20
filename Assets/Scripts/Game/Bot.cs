@@ -17,6 +17,12 @@ public class Bot : MonoBehaviour
         Match();
     }
 
+    private void OnDestroy()
+    {
+        ServerMessengerFake.RemoveListener<JSONNode>(ServerRequest._SUBMIT_SHIP, RequestSubmitShip);
+        ServerMessengerFake.RemoveListener<JSONNode>(ServerRequest._ATTACK, EndTurn);
+    }
+
 
     #region ServerRequest
     private void RequestSubmitShip(JSONNode json)
@@ -41,14 +47,31 @@ public class Bot : MonoBehaviour
     {
         if(CoreGame.Instance.playerTurn == true)
         {
-            ServerMessenger.Broadcast<JSONNode>(ServerResponse._END_TURN, JSONNode.Parse(GameConfig.ListEndTurnJsonTuto[CountShotPlayer++]));
-            //if(CountShotPlayer == 4) 
-            //{
-            //    DOVirtual.DelayedCall(0, () =>
-            //    {
-            //        ServerMessenger.Broadcast<JSONNode>(ServerResponse._END_TURN, JSONNode.Parse(GameConfig.ListEndTurnJsonTuto[CountShotPlayer++]));
-            //    });
-            //}
+            JSONNode jsonNode = new JSONClass();
+            jsonNode = JSONNode.Parse(GameConfig.ListEndTurnJsonTuto[CountShotPlayer++]);
+
+            if(CountShotPlayer == 4)
+            {
+                if (ServerData.IsTutorialComplete == false)
+                {
+                    int earn = (int)((GameData.Bets[0].Bet / 0.95f) * 1.95f);
+                    int goldWiner = PConsumableType.BERRY.GetValue() + earn;
+                    jsonNode["d"]["e"] = earn.ToString();
+                    jsonNode["d"]["gw"] = goldWiner.ToString();
+                }
+                else
+                {
+                    int earn = 0;
+                    int goldWiner = PConsumableType.BERRY.GetValue();
+                    jsonNode["d"]["e"] = earn.ToString();
+                    jsonNode["d"]["gw"] = goldWiner.ToString();
+                }
+            }
+            ServerMessenger.Broadcast<JSONNode>(ServerResponse._END_TURN, jsonNode);
+            if(CountShotPlayer == 4)
+            {
+                ServerMessenger.Broadcast<JSONNode>(ServerResponse._GAME_DESTROY, GameConfig.GameDestroyTuto);
+            }
         }
         else
         {
