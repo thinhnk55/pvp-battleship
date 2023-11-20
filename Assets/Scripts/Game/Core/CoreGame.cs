@@ -43,7 +43,7 @@ public class CoreGame : SingletonMono<CoreGame>
     };
 
     [SerializeField] public Board player;
-    [SerializeField] Board opponent;
+    [SerializeField] public Board opponent;
     [SerializeField] ProfileCollection playerProfile;
     [SerializeField] ProfileCollection opponentProfile;
     [SerializeField] GameObject lineRoot;
@@ -334,6 +334,10 @@ public class CoreGame : SingletonMono<CoreGame>
             LeanTouch.OnFingerUp += Instance.opponent.BeingAttacked;
             LeanTouch.OnFingerUpdate += Instance.opponent.SelectingTarget;
             Instance.turnImage.sprite = SpriteFactory.PlayerTurn;
+            if (GameData.Tutorial[4] == 0)
+            {
+                Bot.Instance.CreatePopupTutoInGame();
+            }
         }
         else
         {
@@ -352,6 +356,11 @@ public class CoreGame : SingletonMono<CoreGame>
         Instance.opponent.horzLine.gameObject.SetActive(false);
         Instance.opponent.vertLine.gameObject.SetActive(false);
         Instance.TurnTime = timeInit;
+        if (GameData.Tutorial[4] == 0)
+        {
+            Bot.Instance.DestroyTutorialInGame();
+        }
+        
     }
     #endregion
 
@@ -610,7 +619,7 @@ public class CoreGame : SingletonMono<CoreGame>
     void EndGame(JSONNode json)
     {
         reconnect = null;
-        Instance.opponent.DestroyTutorIngame();
+        //Instance.opponent.DestroyTutorIngame();
         Instance.rematchChatB.transform.parent.gameObject.SetActive(false);
         Instance.rematchChatA.transform.parent.gameObject.SetActive(false);
         for (int i = 0; i < json["d"]["s"].Count; i++)
@@ -669,7 +678,10 @@ public class CoreGame : SingletonMono<CoreGame>
     void GameDestroy(JSONNode json)
     {
         reconnect = null;
-        Instance.opponent.DestroyTutorIngame();
+        if (GameData.Tutorial[4] == 0)
+        {
+            Bot.Instance.DestroyTutorialInGame();
+        }
         Instance.buttonRematch.GetComponent<Image>().sprite = SpriteFactory.DisableButton;
         Instance.buttonRematch.enabled = false;
         if (rematch)

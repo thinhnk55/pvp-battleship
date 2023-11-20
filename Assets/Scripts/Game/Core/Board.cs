@@ -63,16 +63,16 @@ public class Board : CacheMonoBehaviour
         }
         else if (GameData.Tutorial[3] == 0 && this != CoreGame.Instance.player && CoreGame.Instance.playerTurn)
         {
-            DOVirtual.DelayedCall(5, () =>
-            {
-                if (GameData.Tutorial[3] == 0)
-                {
-                    tutorIngame = PopupHelper.Create(PrefabFactory.PopupTuTorPlay).gameObject;
-                    int r = Random.Range(3, 7);
-                    int c = Random.Range(3, 7);
-                    tutorIngame.transform.position = octiles[r][c].transform.position;
-                }
-            });
+            //DOVirtual.DelayedCall(5, () =>
+            //{
+            //    if (GameData.Tutorial[3] == 0)
+            //    {
+            //        tutorIngame = PopupHelper.Create(PrefabFactory.PopupTuTorPlay).gameObject;
+            //        int r = Random.Range(3, 7);
+            //        int c = Random.Range(3, 7);
+            //        tutorIngame.transform.position = octiles[r][c].transform.position;
+            //    }
+            //});
         }
     }
     public void InitBoardInvert(int row, int column)
@@ -106,7 +106,8 @@ public class Board : CacheMonoBehaviour
             GameData.Tutorial = new List<int>() { 1, 1, 1, 1, 0};
             ServerData.IsTutorialComplete = true;
             WSClientHandler.SetData();
-            DestroyTutorIngame();
+            WSClientHandler.AttackOpponent(CoreGame.roomId, 0, 0);
+            return;
         }
 
         //
@@ -130,7 +131,7 @@ public class Board : CacheMonoBehaviour
         {
             int x = (int)((leanFinger.GetLastWorldPosition(0).x - transform.position.x + width / 2) / cellWidth);
             int y = (int)((leanFinger.GetLastWorldPosition(0).y - transform.position.y + height / 2) / cellHieght);
-            if (Octile.Check(this, x, y, out int _x, out int _y))
+            if (Octile.Check(this, x, y, out int _x, out int _y) && GameData.Tutorial[4] == 1)
             {
                 horzLine.SetActive(true);
                 vertLine.SetActive(true);

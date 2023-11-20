@@ -28256,7 +28256,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8557655781839743677, guid: 33c887efe9e2d4f4792183fce278ad1a, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8557655781839743677, guid: 33c887efe9e2d4f4792183fce278ad1a, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -28264,11 +28264,15 @@ PrefabInstance:
       objectReference: {fileID: 9189260555875155044}
     - target: {fileID: 8557655781839743677, guid: 33c887efe9e2d4f4792183fce278ad1a, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: QuitSearch
+      value: QuitGame
       objectReference: {fileID: 0}
     - target: {fileID: 8557655781839743677, guid: 33c887efe9e2d4f4792183fce278ad1a, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: CoreGame, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 8557655781839743677, guid: 33c887efe9e2d4f4792183fce278ad1a, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -82301,7 +82305,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1704242413
 RectTransform:
   m_ObjectHideFlags: 0
@@ -102686,7 +102690,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &85143335185214224
 GameObject:
   m_ObjectHideFlags: 0

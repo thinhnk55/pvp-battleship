@@ -5,9 +5,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Bot : MonoBehaviour
+public class Bot : SingletonMono<Bot>
 {
     private int CountShotPlayer = 0;
+    public static bool replayTutorial = false;
+    [SerializeField] GameObject tutorialInGame;
     // Start is called before the first frame update
     IEnumerator Start()
     {
@@ -52,11 +54,11 @@ public class Bot : MonoBehaviour
 
             if(CountShotPlayer == 4)
             {
-                if (ServerData.IsTutorialComplete == false)
+                if (replayTutorial == false)
                 {
-                    int earn = (int)((GameData.Bets[0].Bet / 0.95f) * 1.95f);
+                    int earn = (int)(GameData.Bets[0].Bet);
                     int goldWiner = PConsumableType.BERRY.GetValue() + earn;
-                    jsonNode["d"]["e"] = earn.ToString();
+                    //jsonNode["d"]["e"] = earn.ToString();
                     jsonNode["d"]["gw"] = goldWiner.ToString();
                 }
                 else
@@ -72,6 +74,12 @@ public class Bot : MonoBehaviour
             {
                 ServerMessenger.Broadcast<JSONNode>(ServerResponse._GAME_DESTROY, GameConfig.GameDestroyTuto);
             }
+            //else
+            //{
+            //    int row = jsonNode["d"]["x"].AsInt;
+            //    int collum = jsonNode["d"]["y"].AsInt;
+            //    CreatePopupTutoInGame(row, collum);
+            //}
         }
         else
         {
@@ -91,6 +99,24 @@ public class Bot : MonoBehaviour
             };
             Debug.Log(jsonEndTurn);
             ServerMessenger.Broadcast<JSONNode>(ServerResponse._END_TURN, jsonEndTurn);
+        }
+    }
+
+    public void CreatePopupTutoInGame()
+    {
+        JSONNode jsonNode = new JSONClass();
+        jsonNode = JSONNode.Parse(GameConfig.ListEndTurnJsonTuto[CountShotPlayer]);
+        int row = jsonNode["d"]["x"].AsInt;
+        int collum = jsonNode["d"]["y"].AsInt;
+        tutorialInGame = PopupHelper.Create(PrefabFactory.PopupTuTorPlay).gameObject;
+        tutorialInGame.transform.position = CoreGame.Instance.opponent.octiles[collum][row].transform.position;
+    }
+
+    public void DestroyTutorialInGame()
+    {
+        if (tutorialInGame)
+        {
+            Destroy(tutorialInGame);
         }
     }
     #endregion
