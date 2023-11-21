@@ -665,15 +665,16 @@ public class CoreGame : SingletonMono<CoreGame>
 
         DOVirtual.DelayedCall(5, () =>
         {
+            if (GameData.Tutorial[4] == 0)
+            {
+                GameData.Tutorial[4] = 1;
+            }
+
             if (isSystemMaintenace == true)
             {
                 SceneManager.LoadScene("SystemMaintenance");
             }
         }); 
-        if(GameData.Tutorial[4] == 0)
-        {
-            GameData.Tutorial[4] = 1;
-        }
     }
     void GameDestroy(JSONNode json)
     {
