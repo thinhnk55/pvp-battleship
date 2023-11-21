@@ -334,7 +334,7 @@ public class CoreGame : SingletonMono<CoreGame>
             LeanTouch.OnFingerUp += Instance.opponent.BeingAttacked;
             LeanTouch.OnFingerUpdate += Instance.opponent.SelectingTarget;
             Instance.turnImage.sprite = SpriteFactory.PlayerTurn;
-            if (GameData.Tutorial[4] == 0)
+            if (GameData.Tutorial[4] == 0 && Bot.Instance.CountShotPlayer < 4)
             {
                 Bot.Instance.CreatePopupTutoInGame();
             }

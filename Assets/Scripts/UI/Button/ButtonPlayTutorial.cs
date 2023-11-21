@@ -12,7 +12,7 @@ public class ButtonPlayTutorial : ButtonBase
         GameData.Tutorial[3] = 0;
         GameData.Tutorial[2] = 0;
         GameData.Tutorial[1] = 0;
-        Bot.replayTutorial = true;
+        Bot.ReplayTutorial = true;
 
         SceneManager.LoadScene("Bet");
     }

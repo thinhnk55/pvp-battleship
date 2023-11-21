@@ -7,8 +7,9 @@ using UnityEngine;
 
 public class Bot : SingletonMono<Bot>
 {
-    private int CountShotPlayer = 0;
-    public static bool replayTutorial = false;
+    private int countShotPlayer = 0;
+    public int CountShotPlayer { get { return countShotPlayer; } }
+    public static bool ReplayTutorial = false;
     [SerializeField] GameObject tutorialInGame;
     // Start is called before the first frame update
     IEnumerator Start()
@@ -47,17 +48,22 @@ public class Bot : SingletonMono<Bot>
 
     private void EndTurn(JSONNode json)
     {
+        if(countShotPlayer == 4)
+        {
+            return;
+        }
+
         if(CoreGame.Instance.playerTurn == true)
         {
             JSONNode jsonNode = new JSONClass();
-            jsonNode = JSONNode.Parse(GameConfig.ListEndTurnJsonTuto[CountShotPlayer++]);
+            jsonNode = JSONNode.Parse(GameConfig.ListEndTurnJsonTuto[countShotPlayer++]);
 
-            if(CountShotPlayer == 4)
+            if(countShotPlayer == 4)
             {
-                if (replayTutorial == false)
+                if (ReplayTutorial == false)
                 {
                     int earn = (int)(GameData.Bets[0].Bet);
-                    int goldWiner = PConsumableType.BERRY.GetValue() + earn;
+                    int goldWiner = PConsumableType.BERRY.GetValue();
                     //jsonNode["d"]["e"] = earn.ToString();
                     jsonNode["d"]["gw"] = goldWiner.ToString();
                 }
@@ -70,16 +76,10 @@ public class Bot : SingletonMono<Bot>
                 }
             }
             ServerMessenger.Broadcast<JSONNode>(ServerResponse._END_TURN, jsonNode);
-            if(CountShotPlayer == 4)
+            if(countShotPlayer == 4)
             {
                 ServerMessenger.Broadcast<JSONNode>(ServerResponse._GAME_DESTROY, GameConfig.GameDestroyTuto);
             }
-            //else
-            //{
-            //    int row = jsonNode["d"]["x"].AsInt;
-            //    int collum = jsonNode["d"]["y"].AsInt;
-            //    CreatePopupTutoInGame(row, collum);
-            //}
         }
         else
         {
@@ -105,7 +105,7 @@ public class Bot : SingletonMono<Bot>
     public void CreatePopupTutoInGame()
     {
         JSONNode jsonNode = new JSONClass();
-        jsonNode = JSONNode.Parse(GameConfig.ListEndTurnJsonTuto[CountShotPlayer]);
+        jsonNode = JSONNode.Parse(GameConfig.ListEndTurnJsonTuto[countShotPlayer]);
         int row = jsonNode["d"]["x"].AsInt;
         int collum = jsonNode["d"]["y"].AsInt;
         tutorialInGame = PopupHelper.Create(PrefabFactory.PopupTuTorPlay).gameObject;
