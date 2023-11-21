@@ -195,11 +195,11 @@ public class PVE : SingletonMono<PVE>
     private IEnumerator Win(int point)
     {
         ShowEnemyPoint();
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.5f);
         yield return StartCoroutine(Instance.shipPVEs[selectedEnemy].BeingDestroyed());
         player.point.Data = point;
 
-        yield return new WaitForSeconds(1f);
+        //yield return new WaitForSeconds(1f);
 
         CurrentStep.Data++;
         if (CurrentStep.Data < 10)

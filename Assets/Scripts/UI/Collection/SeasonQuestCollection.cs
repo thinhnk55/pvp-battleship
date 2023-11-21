@@ -60,16 +60,6 @@ public class SeasonQuestCollection : CardCollectionBase<QuestInfo>
 
             });
         }
-        infos.Sort((info1, info2) =>
-        {
-            int ratioOfProgressAndRequireComparison = info1.Progress/info1.Require > info2.Progress/info2.Require ? 1 : -1;
-            if(ratioOfProgressAndRequireComparison != 0)
-            {
-                return ratioOfProgressAndRequireComparison;
-            }
-
-            return 0; 
-        });
         BuildUIs(infos);
     }
     public override void BuildUIs(List<QuestInfo> infos)
