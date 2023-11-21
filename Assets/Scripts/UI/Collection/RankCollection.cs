@@ -90,6 +90,8 @@ public class RankCollection : CardCollectionBase<RankInfo>
 
     void ReceiveRank(JSONNode json)
     {
+        if (json["e"].AsInt != 0) { return; }
+
         PConsumableType.BERRY.SetValue(int.Parse(json["d"]["g"]));
         CoinVFX.CoinVfx(resource, previewCard.Position, previewCard.Position);
         Timer<RankCollection>.Instance.BeginPoint = DateTime.UtcNow.Ticks;
