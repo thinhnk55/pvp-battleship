@@ -1060,9 +1060,10 @@ public class WSClientHandler : Framework.Singleton<WSClientHandler>
         }
 
         ServerData.IsTutorialComplete = !data["d"]["t"].IsNull && data["d"]["t"].AsBool;
+
         if (ServerData.IsTutorialComplete)
         {
-            GameData.Tutorial = new List<int>() { 0, 0, 0, 0, 1};
+            GameData.Tutorial = new List<int>() { 1, 1, 1, 1, 1};
         }
         JSONNode json = data["d"]["b"];
 
