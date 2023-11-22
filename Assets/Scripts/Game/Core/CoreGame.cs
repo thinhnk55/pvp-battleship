@@ -81,9 +81,13 @@ public class CoreGame : SingletonMono<CoreGame>
     [SerializeField] Button buttonRematch;
 
     [SerializeField] Bot bot;
-    //
     public int consecutiveKill;
     static public PDataUnit<int> consecutiveKillMax = new(0);
+
+    #region Auto Fire Mode Variable
+    [SerializeField] GameObject ButtonAutoFire;
+    public bool IsAutoFireMode;
+    #endregion
 
     [OnValueChanged("OnRevealed")][SerializeField] private bool reveal;
     public bool Reveal
@@ -227,7 +231,10 @@ public class CoreGame : SingletonMono<CoreGame>
     }
     void EndPregame()
     {
-
+        if (GameData.Tutorial[4] == 0)
+        {
+            ButtonAutoFire.SetActive(false);
+        }
     }
     void StartPregameRematch()
     {
@@ -331,8 +338,18 @@ public class CoreGame : SingletonMono<CoreGame>
         if (Instance.playerTurn)
         {
             Debug.Log("Player Turn");
-            LeanTouch.OnFingerUp += Instance.opponent.BeingAttacked;
-            LeanTouch.OnFingerUpdate += Instance.opponent.SelectingTarget;
+            if (!IsAutoFireMode)
+            {
+                LeanTouch.OnFingerUp += Instance.opponent.BeingAttacked;
+                LeanTouch.OnFingerUpdate += Instance.opponent.SelectingTarget;
+
+            } 
+            else
+            {
+                LeanTouch.OnFingerUp += Instance.opponent.WarringPlayer;
+
+            }
+
             Instance.turnImage.sprite = SpriteFactory.PlayerTurn;
             if (GameData.Tutorial[4] == 0 && Bot.Instance.CountShotPlayer < 4)
             {
@@ -351,6 +368,7 @@ public class CoreGame : SingletonMono<CoreGame>
     }
     void EndTurn()
     {
+        LeanTouch.OnFingerUp += Instance.opponent.WarringPlayer;
         LeanTouch.OnFingerUp -= Instance.opponent.BeingAttacked;
         LeanTouch.OnFingerUpdate -= Instance.opponent.SelectingTarget;
         Instance.opponent.horzLine.gameObject.SetActive(false);
@@ -880,5 +898,9 @@ public class CoreGame : SingletonMono<CoreGame>
             SceneManager.LoadScene("SystemMaintenance");
         }
     }
+    #endregion
+
+    #region AUTOFIRE
+    
     #endregion
 }

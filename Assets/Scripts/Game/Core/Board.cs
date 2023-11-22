@@ -294,6 +294,11 @@ public class Board : CacheMonoBehaviour
         return true;
     }
 
+    public void WarringPlayer(LeanFinger leanFinger)
+    {
+        Debug.LogError("Not Touch");
+    }
+
     public void DestroyTutorIngame()
     {
         if (tutorIngame)
