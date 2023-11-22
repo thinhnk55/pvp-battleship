@@ -1,4 +1,3 @@
-using DG.Tweening;
 using Framework;
 using Lean.Touch;
 using System.Collections.Generic;
@@ -12,6 +11,7 @@ public class Board : CacheMonoBehaviour
     public List<Ship> ships;
     public List<Ship> destroyedShips;
     public List<List<Octile>> octiles;
+    public List<List<Vector2Int>> remainOctiles;
     [SerializeField] GameObject octileRoot;
     [SerializeField] public GameObject shipRoot;
     public GameObject horzLine;
@@ -56,6 +56,14 @@ public class Board : CacheMonoBehaviour
                 octiles[iRow].Add(octile);
             }
         }
+        remainOctiles = new();
+        int i = 0;
+        octiles.ForEach(octile =>
+        {
+            remainOctiles.Add(new List<Vector2Int>());
+            octile.ForEach(o => remainOctiles[i].Add(o.pos));
+            i++;
+        });
         // turorial
         if (GameData.Tutorial[2] == 0 && this == CoreGame.Instance.player)
         {
@@ -103,7 +111,7 @@ public class Board : CacheMonoBehaviour
         // tutorial
         if (GameData.Tutorial[3] == 0 && this != CoreGame.Instance.player)
         {
-            GameData.Tutorial = new List<int>() { 1, 1, 1, 1, 0};
+            GameData.Tutorial = new List<int>() { 1, 1, 1, 1, 0 };
             ServerData.IsTutorialComplete = true;
             WSClientHandler.SetData();
             WSClientHandler.AttackOpponent(CoreGame.roomId, 0, 0);

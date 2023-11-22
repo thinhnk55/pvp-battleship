@@ -84,6 +84,11 @@ public class CoreGame : SingletonMono<CoreGame>
     //
     public int consecutiveKill;
     static public PDataUnit<int> consecutiveKillMax = new(0);
+    // bot
+    public PDataUnit<bool> auto;
+    public Vector2Int? curHit;
+    public Vector2Int? curDirHit;
+
 
     [OnValueChanged("OnRevealed")][SerializeField] private bool reveal;
     public bool Reveal
@@ -123,6 +128,7 @@ public class CoreGame : SingletonMono<CoreGame>
         AudioHelper.StopMusic();
         consecutiveKill = 0;
         reveal = true;
+        auto = new PDataUnit<bool>(true);
         cam = Camera.main;
         lines = new List<List<GameObject>>();
         Instance.shipsPlayer = shipListPlayer.GetComponentsInChildren<Ship>().ToList();
@@ -157,6 +163,8 @@ public class CoreGame : SingletonMono<CoreGame>
         ServerMessenger.AddListener<JSONNode>(ServerResponse._REMATCH, Instance.Rematch);
         ServerMessenger.AddListener<JSONNode>(ServerResponse._REMATCH_ACCEPT, Instance.AcceptRematch);
         ServerMessenger.AddListener<JSONNode>(ServerResponse._QUIT_SEARCH, Instance.QuitSearch);
+        Messenger.AddListener<Ship>(GameEvent.SHIP_HIT, Instance.ShipHit);
+        Messenger.AddListener<Ship>(GameEvent.SHIP_DESTROY, Instance.ShipDestroy);
         if (reconnect != null)
         {
             Instance.Reconnect(reconnect);
@@ -191,6 +199,8 @@ public class CoreGame : SingletonMono<CoreGame>
         ServerMessenger.RemoveListener<JSONNode>(ServerResponse._REMATCH, Instance.Rematch);
         ServerMessenger.RemoveListener<JSONNode>(ServerResponse._REMATCH_ACCEPT, Instance.AcceptRematch);
         ServerMessenger.RemoveListener<JSONNode>(ServerResponse._QUIT_SEARCH, Instance.QuitSearch);
+        Messenger.RemoveListener<Ship>(GameEvent.SHIP_HIT, Instance.ShipHit);
+        Messenger.RemoveListener<Ship>(GameEvent.SHIP_DESTROY, Instance.ShipDestroy);
         Debug.Log("Destroyed");
         base.OnDestroy();
     }
@@ -331,12 +341,19 @@ public class CoreGame : SingletonMono<CoreGame>
         if (Instance.playerTurn)
         {
             Debug.Log("Player Turn");
-            LeanTouch.OnFingerUp += Instance.opponent.BeingAttacked;
-            LeanTouch.OnFingerUpdate += Instance.opponent.SelectingTarget;
             Instance.turnImage.sprite = SpriteFactory.PlayerTurn;
             if (GameData.Tutorial[4] == 0 && Bot.Instance.CountShotPlayer < 4)
             {
                 Bot.Instance.CreatePopupTutoInGame();
+            }
+            if (!auto.Data)
+            {
+                LeanTouch.OnFingerUp += Instance.opponent.BeingAttacked;
+                LeanTouch.OnFingerUpdate += Instance.opponent.SelectingTarget;
+            }
+            else
+            {
+                Debug.Log(AutoFire());
             }
         }
         else
@@ -351,8 +368,11 @@ public class CoreGame : SingletonMono<CoreGame>
     }
     void EndTurn()
     {
-        LeanTouch.OnFingerUp -= Instance.opponent.BeingAttacked;
-        LeanTouch.OnFingerUpdate -= Instance.opponent.SelectingTarget;
+        if (!auto.Data)
+        {
+            LeanTouch.OnFingerUp -= Instance.opponent.BeingAttacked;
+            LeanTouch.OnFingerUpdate -= Instance.opponent.SelectingTarget;
+        }
         Instance.opponent.horzLine.gameObject.SetActive(false);
         Instance.opponent.vertLine.gameObject.SetActive(false);
         Instance.TurnTime = timeInit;
@@ -360,7 +380,6 @@ public class CoreGame : SingletonMono<CoreGame>
         {
             Bot.Instance.DestroyTutorialInGame();
         }
-        
     }
     #endregion
 
@@ -372,7 +391,7 @@ public class CoreGame : SingletonMono<CoreGame>
             Instance.searchUI.amount.text = (GameData.Bets[bet].Bet * 1.95f).ToString();
             Instance.stateMachine.CurrentState = GameState.Search;
 
-            if (GameData.Tutorial[4] == 1) 
+            if (GameData.Tutorial[4] == 1)
             {
                 WSClientHandler.SearchOpponent(bet, player.ships);
             }
@@ -449,13 +468,136 @@ public class CoreGame : SingletonMono<CoreGame>
             Instance.buttonAuto.GetComponent<Image>().color = Color.gray;
         }
     }
+    public void ToggleAuto()
+    {
+        auto.Data = !auto.Data;
+    }
+    #endregion
+
+    #region Private
+    Vector2Int AutoFire()
+    {
+        if (curHit.HasValue)
+        {
+            if (curDirHit.HasValue)
+            {
+                return FindNear(curHit.Value.x, curHit.Value.y, curDirHit.Value).Value;
+            }
+            else
+            {
+                return FindNear(curHit.Value.x, curHit.Value.y).Value;
+            }
+        }
+        else
+        {
+            int yFire = UnityEngine.Random.Range(0, opponent.octiles.Count);
+            int xFire = UnityEngine.Random.Range(0, opponent.octiles[yFire].Count);
+            return new Vector2Int(xFire, yFire);
+        }
+    }
+    Vector2Int? FindNear(int x, int y, Vector2Int? curDirHit = null)
+    {
+        if (curDirHit.HasValue)
+        {
+            int sign = PRandom.SignInt();
+            for (int i = 0; i < 3; i++)
+            {
+                Vector2Int posFire = curHit.Value;
+                posFire = posFire + curDirHit.Value * sign * i;
+                if (posFire.x < 0 || posFire.y >= opponent.column)
+                {
+                    break;
+                }
+
+                if (opponent.octiles[posFire.y][posFire.x].Attacked)
+                {
+                    continue;
+                }
+                return posFire;
+            }
+            sign = -sign;
+            for (int i = 0; i < 3; i++)
+            {
+                Vector2Int posFire = curHit.Value;
+                posFire = posFire + curDirHit.Value * sign * i;
+                if (posFire.x < 0 || posFire.y >= opponent.column)
+                {
+                    break;
+                }
+
+                if (opponent.octiles[posFire.y][posFire.x].Attacked)
+                {
+                    continue;
+                }
+                return posFire;
+            }
+            return null;
+        }
+        else
+        {
+            Vector2Int? firePos = Vector2Int.zero;
+            int dir = PRandom.SignInt();
+            Vector2Int direc = Vector2Int.zero;
+            if (dir == -1)
+            {
+                direc = Vector2Int.right;
+            }
+            else
+            {
+                direc = Vector2Int.up;
+            }
+            firePos = FindNear(curHit.Value.x, curHit.Value.y, direc);
+            if (!firePos.HasValue)
+            {
+                dir = -dir;
+                if (dir == -1)
+                {
+                    direc = Vector2Int.right;
+                }
+                else
+                {
+                    direc = Vector2Int.up;
+                }
+                firePos = FindNear(curHit.Value.x, curHit.Value.y, direc);
+            }
+            return firePos;
+        }
+
+    }
+
+    void ShipHit(Ship ship)
+    {
+        if (ship.board == Instance.opponent)
+        {
+            if (curHit.HasValue)
+            {
+                if ((curHit.Value - ship.octilesComposition[0].pos).y == 0)
+                {
+                    curDirHit = Vector2Int.right;
+                }
+                else
+                {
+                    curDirHit = Vector2Int.up;
+                }
+            }
+            else
+            {
+                curHit = ship.octilesComposition[0].pos;
+            }
+        }
+    }
+    void ShipDestroy(Ship ship)
+    {
+        curHit = null;
+        curDirHit = null;
+    }
     #endregion
 
     #region CallBackServer
     public void Match(JSONNode json)
     {
         roomId = int.Parse(json["d"]["r"]);
-        if(GameData.Tutorial[4]==1)
+        if (GameData.Tutorial[4] == 1)
         {
             playerChair = int.Parse(json["d"]["p1"]["u"]) == DataAuth.AuthData.userId ? int.Parse(json["d"]["p1"]["c"]) : int.Parse(json["d"]["p2"]["c"]);
         }
@@ -516,12 +658,12 @@ public class CoreGame : SingletonMono<CoreGame>
         {
             if (GameData.Tutorial[4] == 0)
             {
-                if(Instance.playerTurn == true)
+                if (Instance.playerTurn == true)
                 {
                     DOVirtual.DelayedCall(3f, () =>
                     {
                         int x = 0, y = 0;
-                        for(int i=0; i<10; i++)
+                        for (int i = 0; i < 10; i++)
                         {
                             if (Instance.player.octiles[5][i].ship == null)
                             {
@@ -544,10 +686,6 @@ public class CoreGame : SingletonMono<CoreGame>
         {
             int x = int.Parse(json["d"]["x"]);
             int y = int.Parse(json["d"]["y"]);
-
-
-
-
             Ship ship;
             int type;
             switch (status)
@@ -674,7 +812,7 @@ public class CoreGame : SingletonMono<CoreGame>
             {
                 SceneManager.LoadScene("SystemMaintenance");
             }
-        }); 
+        });
     }
     void GameDestroy(JSONNode json)
     {
@@ -706,7 +844,7 @@ public class CoreGame : SingletonMono<CoreGame>
             Instance.rematchChatB.text = "SORRY I HAVE TO GO!";
             if (Instance.stateMachine.CurrentState == GameState.Search)
             {
-                StartSearchGame();
+                SceneTransitionHelper.Load(ESceneName.Home);
             }
         }
     }
