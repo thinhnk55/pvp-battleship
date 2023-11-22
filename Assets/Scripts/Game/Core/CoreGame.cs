@@ -605,7 +605,15 @@ public class CoreGame : SingletonMono<CoreGame>
             }
             else
             {
-                ship.board.remainOctiles[ship.octilesComposition[0].pos.y].Remove(ship.octilesComposition[0].pos);
+                ship.board.remainOctiles.GetClamp(ship.octilesComposition[0].pos.y).Remove(ship.octilesComposition[0].pos);
+                ship.board.remainOctiles.GetClamp(ship.octilesComposition[0].pos.y).Remove(ship.octilesComposition[0].pos + Vector2Int.right);
+                ship.board.remainOctiles.GetClamp(ship.octilesComposition[0].pos.y).Remove(ship.octilesComposition[0].pos + Vector2Int.left);
+                ship.board.remainOctiles.GetClamp(ship.octilesComposition[0].pos.y + 1).Remove(ship.octilesComposition[0].pos);
+                ship.board.remainOctiles.GetClamp(ship.octilesComposition[0].pos.y + 1).Remove(ship.octilesComposition[0].pos + Vector2Int.right);
+                ship.board.remainOctiles.GetClamp(ship.octilesComposition[0].pos.y + 1).Remove(ship.octilesComposition[0].pos + Vector2Int.left);
+                ship.board.remainOctiles.GetClamp(ship.octilesComposition[0].pos.y - 1).Remove(ship.octilesComposition[0].pos);
+                ship.board.remainOctiles.GetClamp(ship.octilesComposition[0].pos.y - 1).Remove(ship.octilesComposition[0].pos + Vector2Int.right);
+                ship.board.remainOctiles.GetClamp(ship.octilesComposition[0].pos.y - 1).Remove(ship.octilesComposition[0].pos + Vector2Int.left);
             }
         }
     }
@@ -1039,6 +1047,6 @@ public class CoreGame : SingletonMono<CoreGame>
     #endregion
 
     #region AUTOFIRE
-    
+
     #endregion
 }
