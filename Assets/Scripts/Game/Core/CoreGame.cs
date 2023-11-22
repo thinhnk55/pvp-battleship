@@ -89,6 +89,7 @@ public class CoreGame : SingletonMono<CoreGame>
     public PDataUnit<bool> auto;
     public Vector2Int? curHit;
     public Vector2Int? curDirHit;
+    public int? curSignHit;
     [SerializeField] GameObject ButtonAutoFire;
     public bool IsAutoFireMode;
     #endregion
@@ -360,9 +361,12 @@ public class CoreGame : SingletonMono<CoreGame>
             }
             else
             {
-                Vector2Int? vector2Int = AutoFire();
-                WSClientHandler.AttackOpponent(CoreGame.roomId, vector2Int.Value.x, vector2Int.Value.y);
-                Debug.Log(vector2Int);
+                if (opponent.remainOctiles.Count >= 0)
+                {
+                    Vector2Int? vector2Int = AutoFire();
+                    WSClientHandler.AttackOpponent(CoreGame.roomId, vector2Int.Value.x, vector2Int.Value.y);
+                    Debug.Log(vector2Int);
+                }
             }
         }
         else
@@ -490,7 +494,7 @@ public class CoreGame : SingletonMono<CoreGame>
         {
             if (curDirHit.HasValue)
             {
-                return FindNear(curHit.Value.x, curHit.Value.y, curDirHit.Value).Value;
+                return FindNear(curHit.Value.x, curHit.Value.y).Value;
             }
             else
             {
@@ -499,20 +503,21 @@ public class CoreGame : SingletonMono<CoreGame>
         }
         else
         {
-            int yFire = UnityEngine.Random.Range(0, opponent.octiles.Count);
-            int xFire = UnityEngine.Random.Range(0, opponent.octiles[yFire].Count);
-            return new Vector2Int(xFire, yFire);
+            return opponent.remainOctiles.GetRandom();
         }
     }
-    Vector2Int? FindNear(int x, int y, Vector2Int? curDirHit = null)
+    Vector2Int? FindNear(int x, int y)
     {
         if (curDirHit.HasValue)
         {
-            int sign = PRandom.SignInt();
-            for (int i = 0; i < 3; i++)
+            if (!curSignHit.HasValue)
+            {
+                curSignHit = PRandom.SignInt();
+            }
+            for (int i = 1; i <= 3; i++)
             {
                 Vector2Int posFire = curHit.Value;
-                posFire = posFire + curDirHit.Value * sign * i;
+                posFire = posFire + curDirHit.Value * curSignHit.Value * i;
                 if (posFire.x < 0 || posFire.y >= opponent.column)
                 {
                     break;
@@ -520,15 +525,15 @@ public class CoreGame : SingletonMono<CoreGame>
 
                 if (opponent.octiles[posFire.y][posFire.x].Attacked)
                 {
-                    continue;
+                    break;
                 }
                 return posFire;
             }
-            sign = -sign;
-            for (int i = 0; i < 3; i++)
+            curSignHit = -curSignHit.Value;
+            for (int i = 1; i <= 3; i++)
             {
                 Vector2Int posFire = curHit.Value;
-                posFire = posFire + curDirHit.Value * sign * i;
+                posFire = posFire + curDirHit.Value * curSignHit.Value * i;
                 if (posFire.x < 0 || posFire.y >= opponent.column)
                 {
                     break;
@@ -536,17 +541,25 @@ public class CoreGame : SingletonMono<CoreGame>
 
                 if (opponent.octiles[posFire.y][posFire.x].Attacked)
                 {
-                    continue;
+                    break;
                 }
                 return posFire;
             }
-            return null;
+            if (curDirHit == Vector2Int.right)
+            {
+                curDirHit = Vector2Int.up;
+            }
+            else
+            {
+                curDirHit = Vector2Int.right;
+            }
+            return FindNear(x, y);
         }
         else
         {
-            Vector2Int? firePos = Vector2Int.zero;
+            Vector2Int? firePos;
             int dir = PRandom.SignInt();
-            Vector2Int direc = Vector2Int.zero;
+            Vector2Int direc;
             if (dir == -1)
             {
                 direc = Vector2Int.right;
@@ -555,7 +568,8 @@ public class CoreGame : SingletonMono<CoreGame>
             {
                 direc = Vector2Int.up;
             }
-            firePos = FindNear(curHit.Value.x, curHit.Value.y, direc);
+            curDirHit = direc;
+            firePos = FindNear(curHit.Value.x, curHit.Value.y);
             if (!firePos.HasValue)
             {
                 dir = -dir;
@@ -567,7 +581,12 @@ public class CoreGame : SingletonMono<CoreGame>
                 {
                     direc = Vector2Int.up;
                 }
-                firePos = FindNear(curHit.Value.x, curHit.Value.y, direc);
+                curDirHit = direc;
+                firePos = FindNear(curHit.Value.x, curHit.Value.y);
+            }
+            if (firePos == null)
+            {
+
             }
             return firePos;
         }
@@ -589,10 +608,25 @@ public class CoreGame : SingletonMono<CoreGame>
                     curDirHit = Vector2Int.up;
                 }
             }
+            curHit = ship.octilesComposition[0].pos;
+        }
+    }
+    void ShipHit(Vector2Int pos)
+    {
+        if (curHit.HasValue)
+        {
+            if ((curHit.Value - pos).y == 0)
+            {
+                curDirHit = Vector2Int.right;
+            }
             else
             {
-                curHit = ship.octilesComposition[0].pos;
+                curDirHit = Vector2Int.up;
             }
+        }
+        else
+        {
+            curHit = pos;
         }
     }
     void ShipDestroy(Ship ship)
@@ -601,21 +635,10 @@ public class CoreGame : SingletonMono<CoreGame>
         {
             curHit = null;
             curDirHit = null;
-            if (ship.board.remainOctiles[ship.octilesComposition[0].pos.y].Count == 0)
+            curSignHit = null;
+            for (int i = 0; i < ship.octilesOccupy.Count; i++)
             {
-                ship.board.remainOctiles.RemoveAt(ship.octilesComposition[0].pos.y);
-            }
-            else
-            {
-                ship.board.remainOctiles.GetClamp(ship.octilesComposition[0].pos.y).Remove(ship.octilesComposition[0].pos);
-                ship.board.remainOctiles.GetClamp(ship.octilesComposition[0].pos.y).Remove(ship.octilesComposition[0].pos + Vector2Int.right);
-                ship.board.remainOctiles.GetClamp(ship.octilesComposition[0].pos.y).Remove(ship.octilesComposition[0].pos + Vector2Int.left);
-                ship.board.remainOctiles.GetClamp(ship.octilesComposition[0].pos.y + 1).Remove(ship.octilesComposition[0].pos);
-                ship.board.remainOctiles.GetClamp(ship.octilesComposition[0].pos.y + 1).Remove(ship.octilesComposition[0].pos + Vector2Int.right);
-                ship.board.remainOctiles.GetClamp(ship.octilesComposition[0].pos.y + 1).Remove(ship.octilesComposition[0].pos + Vector2Int.left);
-                ship.board.remainOctiles.GetClamp(ship.octilesComposition[0].pos.y - 1).Remove(ship.octilesComposition[0].pos);
-                ship.board.remainOctiles.GetClamp(ship.octilesComposition[0].pos.y - 1).Remove(ship.octilesComposition[0].pos + Vector2Int.right);
-                ship.board.remainOctiles.GetClamp(ship.octilesComposition[0].pos.y - 1).Remove(ship.octilesComposition[0].pos + Vector2Int.left);
+                ship.board.remainOctiles.Remove(ship.octilesOccupy[i].pos);
             }
         }
     }
@@ -710,10 +733,12 @@ public class CoreGame : SingletonMono<CoreGame>
         LeanTouch.OnFingerUpdate -= Instance.opponent.SelectingTarget;
         Instance.opponent.horzLine.SetActive(false);
         Instance.opponent.vertLine.SetActive(false);
+        int x = int.Parse(json["d"]["x"]);
+        int y = int.Parse(json["d"]["y"]);
+
         DOVirtual.DelayedCall(Octile.timeAttackAnim, () =>
         {
-            int x = int.Parse(json["d"]["x"]);
-            int y = int.Parse(json["d"]["y"]);
+
             Ship ship;
             int type;
             switch (status)
@@ -722,9 +747,22 @@ public class CoreGame : SingletonMono<CoreGame>
                     break;
                 case 1:
                     board.octiles[y][x].BeingAttacked(false);
+                    if (board == Instance.opponent)
+                    {
+                        board.remainOctiles.Remove(new Vector2Int(x, y));
+                        if (curDirHit.HasValue)
+                        {
+                            curSignHit = -curSignHit;
+                        }
+                    }
                     break;
                 case 2:
                     board.octiles[y][x].BeingAttacked(true);
+                    if (board == Instance.opponent)
+                    {
+                        board.remainOctiles.Remove(new Vector2Int(x, y));
+                        ShipHit(new Vector2Int(x, y));
+                    }
                     break;
                 case 3:
                     type = int.Parse(json["d"]["d"][0]);

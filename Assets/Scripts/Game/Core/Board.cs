@@ -11,7 +11,7 @@ public class Board : CacheMonoBehaviour
     public List<Ship> ships;
     public List<Ship> destroyedShips;
     public List<List<Octile>> octiles;
-    public List<List<Vector2Int>> remainOctiles;
+    public List<Vector2Int> remainOctiles;
     [SerializeField] GameObject octileRoot;
     [SerializeField] public GameObject shipRoot;
     public GameObject horzLine;
@@ -57,12 +57,9 @@ public class Board : CacheMonoBehaviour
             }
         }
         remainOctiles = new();
-        int i = 0;
         octiles.ForEach(octile =>
         {
-            remainOctiles.Add(new List<Vector2Int>());
-            octile.ForEach(o => remainOctiles[i].Add(o.pos));
-            i++;
+            octile.ForEach(o => remainOctiles.Add(o.pos));
         });
         // turorial
         if (GameData.Tutorial[2] == 0 && this == CoreGame.Instance.player)
