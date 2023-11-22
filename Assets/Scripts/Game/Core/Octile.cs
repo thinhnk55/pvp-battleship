@@ -1,9 +1,5 @@
 using DG.Tweening;
 using Framework;
-using Lean.Touch;
-using Spine.Unity;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
@@ -18,9 +14,9 @@ public class Octile : CacheMonoBehaviour
         {
             occupied = value;
             if (occupied < 0)
-                occupied= 0;
+                occupied = 0;
             textOccupied.text = occupied.ToString();
-            if (occupied>0)
+            if (occupied > 0)
             {
                 //spriteRenderer.sprite = SpriteFactory.Occupied;
             }
@@ -28,7 +24,7 @@ public class Octile : CacheMonoBehaviour
             {
                 //spriteRenderer.sprite = SpriteFactory.Octile;
             }
-        } 
+        }
     }
     [SerializeField] private bool attacked; public bool Attacked
     {
@@ -59,7 +55,7 @@ public class Octile : CacheMonoBehaviour
             attackedAnim = ObjectPoolManager.SpawnObject<Transform>(VFXFactory.AttackedAnim, Position, transform).gameObject;
             ObjectPoolManager.SpawnObject<ParticleSystem>(VFXFactory.Explosion, Position);
             SoundType.SHIP_HIT.PlaySound();
-            if(ship)
+            if (ship)
                 ship.BeingAttacked(this);
             return true;
         }
@@ -77,12 +73,12 @@ public class Octile : CacheMonoBehaviour
         bool inside = false;
 
         inside = true;
-        if (x  < 0 || x >= board.column)
+        if (x < 0 || x >= board.column)
         {
             inside = false;
         }
 
-        if (y  < 0 || y >= board.row)
+        if (y < 0 || y >= board.row)
         {
             inside = false;
         }
