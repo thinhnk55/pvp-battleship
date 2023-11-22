@@ -9,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -89,6 +88,7 @@ public class CoreGame : SingletonMono<CoreGame>
     public PDataUnit<bool> auto;
     public Vector2Int? curHit;
     public Vector2Int? curDirHit;
+    public List<Vector2Int> curDirHitList;
     public int? curSignHit;
     [SerializeField] GameObject ButtonAutoFire;
     public bool IsAutoFireMode;
@@ -525,6 +525,12 @@ public class CoreGame : SingletonMono<CoreGame>
 
                 if (opponent.octiles[posFire.y][posFire.x].Attacked)
                 {
+                    if (curDirHitList.Contains(new Vector2Int(posFire.x, posFire.y)))
+                    {
+                        Debug.Log("Attacked Ship");
+                        continue;
+                    }
+                    Debug.Log("Attacked Miss");
                     break;
                 }
                 return posFire;
@@ -541,6 +547,12 @@ public class CoreGame : SingletonMono<CoreGame>
 
                 if (opponent.octiles[posFire.y][posFire.x].Attacked)
                 {
+                    if (curDirHitList.Contains(new Vector2Int(posFire.x, posFire.y)))
+                    {
+                        Debug.Log("Attacked Ship");
+                        continue;
+                    }
+                    Debug.Log("Attacked Miss");
                     break;
                 }
                 return posFire;
@@ -586,7 +598,7 @@ public class CoreGame : SingletonMono<CoreGame>
             }
             if (firePos == null)
             {
-
+                Debug.Log("Not found");
             }
             return firePos;
         }
@@ -609,6 +621,7 @@ public class CoreGame : SingletonMono<CoreGame>
                 }
             }
             curHit = ship.octilesComposition[0].pos;
+            curDirHitList.Add(curHit.Value);
         }
     }
     void ShipHit(Vector2Int pos)
@@ -628,6 +641,7 @@ public class CoreGame : SingletonMono<CoreGame>
         {
             curHit = pos;
         }
+        curDirHitList.Add(pos);
     }
     void ShipDestroy(Ship ship)
     {
@@ -636,6 +650,7 @@ public class CoreGame : SingletonMono<CoreGame>
             curHit = null;
             curDirHit = null;
             curSignHit = null;
+            curDirHitList.Clear();
             for (int i = 0; i < ship.octilesOccupy.Count; i++)
             {
                 ship.board.remainOctiles.Remove(ship.octilesOccupy[i].pos);
@@ -1087,9 +1102,9 @@ public class CoreGame : SingletonMono<CoreGame>
     #endregion
 
     #region AUTOFIRE
-    private void OnButtonAutoFireClick(bool o, bool n) 
+    private void OnButtonAutoFireClick(bool o, bool n)
     {
-        if(Instance.playerTurn)
+        if (Instance.playerTurn)
         {
             if (n == true)
             {
