@@ -588,8 +588,19 @@ public class CoreGame : SingletonMono<CoreGame>
     }
     void ShipDestroy(Ship ship)
     {
-        curHit = null;
-        curDirHit = null;
+        if (ship.board == Instance.opponent)
+        {
+            curHit = null;
+            curDirHit = null;
+            if (ship.board.remainOctiles[ship.octilesComposition[0].pos.y].Count == 0)
+            {
+                ship.board.remainOctiles.RemoveAt(ship.octilesComposition[0].pos.y);
+            }
+            else
+            {
+                ship.board.remainOctiles[ship.octilesComposition[0].pos.y].Remove(ship.octilesComposition[0].pos);
+            }
+        }
     }
     #endregion
 
