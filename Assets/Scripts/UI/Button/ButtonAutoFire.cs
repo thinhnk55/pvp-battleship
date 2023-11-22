@@ -25,7 +25,7 @@ public class ButtonAutoFire : ButtonBase
     {
         TurnOn = !TurnOn;
         SetUpButton(TurnOn);
-        CoreGame.Instance.IsAutoFireMode = TurnOn;
+        CoreGame.Instance.auto.Data = TurnOn;
     }
 
 }

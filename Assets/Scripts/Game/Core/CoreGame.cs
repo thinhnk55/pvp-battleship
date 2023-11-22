@@ -83,13 +83,11 @@ public class CoreGame : SingletonMono<CoreGame>
     [SerializeField] Bot bot;
     public int consecutiveKill;
     static public PDataUnit<int> consecutiveKillMax = new(0);
-    // bot
+
+    #region Auto Fire Mode Variable
     public PDataUnit<bool> auto;
     public Vector2Int? curHit;
     public Vector2Int? curDirHit;
-
-
-    #region Auto Fire Mode Variable
     [SerializeField] GameObject ButtonAutoFire;
     public bool IsAutoFireMode;
     #endregion
@@ -348,18 +346,6 @@ public class CoreGame : SingletonMono<CoreGame>
         if (Instance.playerTurn)
         {
             Debug.Log("Player Turn");
-            if (!IsAutoFireMode)
-            {
-                LeanTouch.OnFingerUp += Instance.opponent.BeingAttacked;
-                LeanTouch.OnFingerUpdate += Instance.opponent.SelectingTarget;
-
-            } 
-            else
-            {
-                LeanTouch.OnFingerUp += Instance.opponent.WarringPlayer;
-
-            }
-
             Instance.turnImage.sprite = SpriteFactory.PlayerTurn;
             if (GameData.Tutorial[4] == 0 && Bot.Instance.CountShotPlayer < 4)
             {
@@ -372,7 +358,9 @@ public class CoreGame : SingletonMono<CoreGame>
             }
             else
             {
-                Debug.Log(AutoFire());
+                Vector2Int? vector2Int = AutoFire();
+                WSClientHandler.AttackOpponent(CoreGame.roomId, vector2Int.Value.x, vector2Int.Value.y);
+                Debug.Log(vector2Int);
             }
         }
         else
