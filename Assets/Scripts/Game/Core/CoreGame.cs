@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -130,7 +131,7 @@ public class CoreGame : SingletonMono<CoreGame>
         AudioHelper.StopMusic();
         consecutiveKill = 0;
         reveal = true;
-        auto = new PDataUnit<bool>(true);
+        auto = new PDataUnit<bool>(false);
         cam = Camera.main;
         lines = new List<List<GameObject>>();
         Instance.shipsPlayer = shipListPlayer.GetComponentsInChildren<Ship>().ToList();
@@ -174,6 +175,7 @@ public class CoreGame : SingletonMono<CoreGame>
     }
     void Start()
     {
+        auto.OnDataChanged += OnButtonAutoFireClick;
     }
 
     void Update()
@@ -1047,6 +1049,25 @@ public class CoreGame : SingletonMono<CoreGame>
     #endregion
 
     #region AUTOFIRE
+    private void OnButtonAutoFireClick(bool o, bool n) 
+    {
+        if(Instance.playerTurn)
+        {
+            if (n == true)
+            {
+                LeanTouch.OnFingerUp -= Instance.opponent.BeingAttacked;
+                LeanTouch.OnFingerUpdate -= Instance.opponent.SelectingTarget;
+                Vector2Int? vector2Int = AutoFire();
+                WSClientHandler.AttackOpponent(CoreGame.roomId, vector2Int.Value.x, vector2Int.Value.y);
+                Debug.Log(vector2Int);
 
+            }
+            else
+            {
+                LeanTouch.OnFingerUp += Instance.opponent.BeingAttacked;
+                LeanTouch.OnFingerUpdate += Instance.opponent.SelectingTarget;
+            }
+        }
+    }
     #endregion
 }

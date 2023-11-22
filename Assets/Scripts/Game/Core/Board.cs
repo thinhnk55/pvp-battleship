@@ -69,19 +69,6 @@ public class Board : CacheMonoBehaviour
         {
             tutorFormation = PopupHelper.Create(PrefabFactory.PopupTuTorFormation).gameObject;
         }
-        else if (GameData.Tutorial[3] == 0 && this != CoreGame.Instance.player && CoreGame.Instance.playerTurn)
-        {
-            //DOVirtual.DelayedCall(5, () =>
-            //{
-            //    if (GameData.Tutorial[3] == 0)
-            //    {
-            //        tutorIngame = PopupHelper.Create(PrefabFactory.PopupTuTorPlay).gameObject;
-            //        int r = Random.Range(3, 7);
-            //        int c = Random.Range(3, 7);
-            //        tutorIngame.transform.position = octiles[r][c].transform.position;
-            //    }
-            //});
-        }
     }
     public void InitBoardInvert(int row, int column)
     {
