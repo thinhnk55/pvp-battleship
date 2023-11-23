@@ -492,14 +492,7 @@ public class CoreGame : SingletonMono<CoreGame>
     {
         if (curHit.HasValue)
         {
-            if (curDirHit.HasValue)
-            {
                 return FindNear(curHit.Value.x, curHit.Value.y).Value;
-            }
-            else
-            {
-                return FindNear(curHit.Value.x, curHit.Value.y).Value;
-            }
         }
         else
         {
@@ -518,7 +511,7 @@ public class CoreGame : SingletonMono<CoreGame>
             {
                 Vector2Int posFire = curHit.Value;
                 posFire = posFire + curDirHit.Value * curSignHit.Value * i;
-                if (posFire.x < 0 || posFire.y >= opponent.column)
+                if (posFire.x < 0 || posFire.x >= opponent.column || posFire.y < 0 || posFire.y >= opponent.row)
                 {
                     break;
                 }
@@ -540,7 +533,7 @@ public class CoreGame : SingletonMono<CoreGame>
             {
                 Vector2Int posFire = curHit.Value;
                 posFire = posFire + curDirHit.Value * curSignHit.Value * i;
-                if (posFire.x < 0 || posFire.y >= opponent.column)
+                if (posFire.x < 0 || posFire.x >= opponent.column || posFire.y < 0 || posFire.y >= opponent.row)
                 {
                     break;
                 }

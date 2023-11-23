@@ -8,6 +8,7 @@ using SimpleJSON;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.UI;
@@ -33,7 +34,6 @@ public class PVE : SingletonMono<PVE>
 
     private void Start()
     {
-        //EndGameTreasure();
         NewGameTreasure();
         player.leanSelectable.enabled = false;
         shipPVEs = new List<ShipPVE>();
@@ -116,38 +116,50 @@ public class PVE : SingletonMono<PVE>
 
     void Attack(JSONNode data)
     {
+        bool isWin = int.Parse(data["d"]["w"]) == 1 ? true : false;
         int shipListCount = data["d"]["s"].Count;
         Retreat.interactable = false;
 
-
-        for (int i = 0; i < shipListCount; i++)
+        List<int> shipPointList = data["d"]["s"].ToListInt();
+        int selectShipPoint;
+        if (isWin)
         {
-            shipPVEs[i].point.Data = int.Parse(data["d"]["s"][i]);
+            selectShipPoint = int.Parse(data["d"]["d"]["p"]) - player.point.Data;
         }
-
-        if (Instance.shipPVEs[selectedEnemy].point.Data != int.Parse(data["d"]["d"]["p"]) - player.point.Data)
+        else
         {
-            int tmp = Instance.shipPVEs[selectedEnemy].point.Data;
-            if (int.Parse(data["d"]["w"]) == 1) // Win
+            if(CurrentStep.Data < 5)
             {
-                Instance.shipPVEs[selectedEnemy].point.Data = shipPVEs[0].point.Data;
-                shipPVEs[0].point.Data = tmp;
+                selectShipPoint = shipPointList[2];
             }
             else
             {
-                Instance.shipPVEs[selectedEnemy].point.Data = shipPVEs[shipListCount - 1].point.Data;
-                shipPVEs[shipListCount - 1].point.Data = tmp;
+                int random = Random.Range(1, shipListCount);
+                selectShipPoint = shipPointList[random];
             }
+        }
+        shipPVEs[selectedEnemy].point.Data = selectShipPoint;
+        shipPointList.Remove(selectShipPoint);
+
+        for (int i = 0; i < shipListCount; i++)
+        {
+            if (i == selectedEnemy)
+                continue;
+
+            int random = Random.Range(0, shipPointList.Count);
+
+            shipPVEs[i].point.Data = shipPointList[random];
+            shipPointList.RemoveAt(random);
         }
 
         PVEData.IsDeadPlayer.Data = int.Parse(data["d"]["d"]["d"]) == 1 ? true : false;
         IsRevived = int.Parse(data["d"]["d"]["r"]) == 1 ? true : false;
 
-        if (int.Parse(data["d"]["w"]) == 1) // Win
+        if (int.Parse(data["d"]["w"]) == 1)
         {
             StartCoroutine(Instance.Win(int.Parse(data["d"]["d"]["p"])));
         }
-        else // Lose
+        else
         {
             StartCoroutine(Lose());
         }
