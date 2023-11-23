@@ -1,5 +1,7 @@
 using Framework;
+using Sirenix.OdinInspector.Editor;
 using UnityEngine;
+using UnityEngine.Rendering.UI;
 
 public class AutoFireMode
 {
@@ -8,11 +10,7 @@ public class AutoFireMode
 
     private static int boardWidth = 10;
     private static int boardHeight = 10;
-    // Start is called before the first frame update
-    void Start()
-    {
 
-    }
 
     public static Vector2Int? GetFirePointNext()
     {
@@ -43,6 +41,49 @@ public class AutoFireMode
     }
 
     private static Vector2Int? FindPointWithCollum(Vector2Int point1)
+    {
+        int random = Random.Range(0, 2);
+        if(random == 0)
+        {
+            Vector2Int? result = FindPointLeft(point1);
+            if(result == null)
+                FindPointRight(point1);
+        }
+        else
+        {
+            Vector2Int? result = FindPointUp(point1);
+            if (result == null)
+                FindPointDown(point1);
+        }
+        return null;
+    }
+
+    private static void FindPointDown(Vector2Int point1)
+    {
+        for(int i = point1.x-1; i>=0; i--)
+        {
+            int x = point1.x;
+            int y = i;
+
+            if (Octile.Check(CoreGame.Instance.opponent, x, y, out int _x, out int _y)
+            && !CoreGame.Instance.opponent.octiles[x][y].Attacked)
+            {
+                //return new Vector2Int(x, y);
+            }
+        }
+    }
+
+    private static Vector2Int? FindPointUp(Vector2Int point1)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    private static void FindPointRight(Vector2Int point1)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    private static Vector2Int? FindPointLeft(Vector2Int point1)
     {
         throw new System.NotImplementedException();
     }
