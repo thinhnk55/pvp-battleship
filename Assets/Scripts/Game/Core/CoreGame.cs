@@ -815,7 +815,10 @@ public class CoreGame : SingletonMono<CoreGame>
                 default:
                     break;
             }
-            Instance.stateMachine.CurrentState = GameState.Turn;
+            if (status <=3 )
+            {
+                Instance.stateMachine.CurrentState = GameState.Turn;
+            }
         });
     }
     private void TurnMiss(JSONNode data)

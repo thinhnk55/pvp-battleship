@@ -1,20 +1,20 @@
 using Framework;
 using UnityEngine;
 
-public class AutoFire : SingletonMono<AutoFire>
+public class AutoFireMode
 {
-    private int[] D_COLUMN = new int[] { 1, -1, 0, 0 };
-    private int[] D_ROW = new int[] { 0, 0, 1, -1 };
+    private static int[] D_COLUMN = new int[] { 1, -1, 0, 0 };
+    private static int[] D_ROW = new int[] { 0, 0, 1, -1 };
 
-    private int boardWidth = 10;
-    private int boardHeight = 10;
+    private static int boardWidth = 10;
+    private static int boardHeight = 10;
     // Start is called before the first frame update
     void Start()
     {
 
     }
 
-    public Vector2Int? GetFirePointNext()
+    public static Vector2Int? GetFirePointNext()
     {
         if(CoreGame.Instance.curDirHitList.Count == 0) 
         {
@@ -42,17 +42,17 @@ public class AutoFire : SingletonMono<AutoFire>
         return null;
     }
 
-    private Vector2Int? FindPointWithCollum(Vector2Int point1)
+    private static Vector2Int? FindPointWithCollum(Vector2Int point1)
     {
         throw new System.NotImplementedException();
     }
 
-    private Vector2Int FindPointWithRow(Vector2Int point1)
+    private static Vector2Int FindPointWithRow(Vector2Int point1)
     {
         throw new System.NotImplementedException();
     }
 
-    private Vector2Int? FindNear(Vector2Int center)
+    private static Vector2Int? FindNear(Vector2Int center)
     {
         int random = Random.Range(0, D_COLUMN.Length);
         for (int i=random; i<random + D_COLUMN.Length; i++)
