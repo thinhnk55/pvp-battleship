@@ -288,9 +288,9 @@ MonoBehaviour:
   startJsonTuto: '{"id":4105,"e":0,"d":{"g":191,"f":0,"c":30}}'
   listShotPlayerJsonTuto:
   - '{"id":4111,"r":0,"x":5,"y":5}'
-  - '{"id":4111,"r":0,"x":5,"y":2}'
-  - '{"id":4111,"r":0,"3":,"y":3}'
-  - '{"id":4111,"r":0,"4":,"y":3}'
+  - '{"id":4111,"r":0,"x":2,"y":5}'
+  - '{"id":4111,"r":0,"x":0,"y":3}'
+  - '{"id":4111,"r":0,"x":0,"y":4}'
   gameDestroyTuto: '{"id":4116,"e":0}'
   listShotBotJsonTuto:
   - '{"id":4111,"r":0,"x":3,"y":4}'

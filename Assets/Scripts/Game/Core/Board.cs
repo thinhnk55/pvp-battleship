@@ -98,8 +98,8 @@ public class Board : CacheMonoBehaviour
             GameData.Tutorial = new List<int>() { 1, 1, 1, 1, 0 };
             ServerData.IsTutorialComplete = true;
             WSClientHandler.SetData();
-            WSClientHandler.AttackOpponent(CoreGame.roomId, 0, 0);
-            return;
+            //WSClientHandler.AttackOpponent(CoreGame.roomId, 0, 0);
+            //return;
         }
 
         //

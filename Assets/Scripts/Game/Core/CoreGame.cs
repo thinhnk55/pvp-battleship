@@ -323,6 +323,10 @@ public class CoreGame : SingletonMono<CoreGame>
     {
         Instance.opponent.InitBoard(10, 10);
         Instance.searchUI.gameObject.SetActive(false);
+        if (GameData.Tutorial[4] == 0)
+        {
+            turnTimeText.gameObject.SetActive(false);
+        }
     }
     void StartSearchRematch()
     {

@@ -626,7 +626,11 @@ public class WSClientHandler : Framework.Singleton<WSClientHandler>
         }
         else
         {
-            WSClientHandleFake.AttackOpponent(room, x, y);
+            JSONNode currShotPlayer = JSONNode.Parse(GameConfig.ListShotPlayerJsonTuto[Bot.Instance.CountShotPlayer]);
+            if (currShotPlayer["x"].AsInt == x && currShotPlayer["y"].AsInt == y)
+            {
+                WSClientHandleFake.AttackOpponent(room, x, y);
+            }
         }
     }
     public static void QuitSearch(int bet)
