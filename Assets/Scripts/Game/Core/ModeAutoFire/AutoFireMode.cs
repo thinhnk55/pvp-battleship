@@ -1,24 +1,37 @@
 using Framework;
-using Sirenix.OdinInspector.Editor;
 using UnityEngine;
 using UnityEngine.Rendering.UI;
 
-public class AutoFireMode
+public class AutoFireMode : MonoBehaviour
 {
-    private static int[] D_COLUMN = new int[] { 1, -1, 0, 0 };
-    private static int[] D_ROW = new int[] { 0, 0, 1, -1 };
+    private int[] D_COLUMN = new int[] { 1, -1, 0, 0 };
+    private int[] D_ROW = new int[] { 0, 0, 1, -1 };
 
-    private static int boardWidth = 10;
-    private static int boardHeight = 10;
+    private int boardWidth = 10;
+    private int boardHeight = 10;
 
-
-    public static Vector2Int? GetFirePointNext()
+    public void Fire()
     {
-        if(CoreGame.Instance.curDirHitList.Count == 0) 
+        Vector2Int? firePoint = GetFirePointNext();
+        if (firePoint != null)
         {
-            return CoreGame.Instance.opponent.remainOctiles.GetRandom();
+            WSClientHandler.AttackOpponent(CoreGame.roomId, firePoint.Value.x, firePoint.Value.y);
         }
-        else if(CoreGame.Instance.curDirHitList.Count == 1)
+        else
+        {
+            Debug.LogWarning("FirePoint not found!!!");
+        }
+
+    }
+
+    public Vector2Int? GetFirePointNext()
+    {
+        if (CoreGame.Instance.curDirHitList.Count == 0)
+        {
+            Vector2Int? randomPoint = CoreGame.Instance.opponent.remainOctiles.GetRandom();
+            return randomPoint;
+        }
+        else if (CoreGame.Instance.curDirHitList.Count == 1)
         {
             Vector2Int center = CoreGame.Instance.curDirHitList[0];
             return FindNear(center).Value;
@@ -28,7 +41,7 @@ public class AutoFireMode
             Vector2Int point1 = CoreGame.Instance.curDirHitList[0];
             Vector2Int point2 = CoreGame.Instance.curDirHitList[1];
 
-            if(point1.x == point2.x)
+            if (point1.x == point2.x)
             {
                 return FindPointWithCollum(point1);
             }
@@ -40,75 +53,144 @@ public class AutoFireMode
         return null;
     }
 
-    private static Vector2Int? FindPointWithCollum(Vector2Int point1)
+    private Vector2Int? FindPointWithRow(Vector2Int point1)
     {
-        int random = Random.Range(0, 2);
-        if(random == 0)
+        int random = 0;
+        if (random == 0)
         {
             Vector2Int? result = FindPointLeft(point1);
-            if(result == null)
-                FindPointRight(point1);
+            if (result == null)
+            {
+                result = FindPointRight(point1);
+            }
+            return result;
+        }
+        else
+        {
+            Vector2Int? result = FindPointRight(point1);
+            if (result == null)
+            {
+                result = FindPointLeft(point1);
+            }
+            return result;
+        }
+    }
+
+    private Vector2Int? FindPointWithCollum(Vector2Int point1)
+    {
+        int random = 0;
+        if (random == 0)
+        {
+            Vector2Int? result = FindPointDown(point1);
+            if (result == null)
+            {
+                result = FindPointUp(point1);
+            }
+            return result;
         }
         else
         {
             Vector2Int? result = FindPointUp(point1);
             if (result == null)
-                FindPointDown(point1);
-        }
-        return null;
-    }
-
-    private static void FindPointDown(Vector2Int point1)
-    {
-        for(int i = point1.x-1; i>=0; i--)
-        {
-            int x = point1.x;
-            int y = i;
-
-            if (Octile.Check(CoreGame.Instance.opponent, x, y, out int _x, out int _y)
-            && !CoreGame.Instance.opponent.octiles[x][y].Attacked)
             {
-                //return new Vector2Int(x, y);
+                result = FindPointDown(point1);
             }
+            return result;
         }
     }
 
-    private static Vector2Int? FindPointUp(Vector2Int point1)
+    private Vector2Int? FindPointLeft(Vector2Int point1)
     {
-        throw new System.NotImplementedException();
-    }
-
-    private static void FindPointRight(Vector2Int point1)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    private static Vector2Int? FindPointLeft(Vector2Int point1)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    private static Vector2Int FindPointWithRow(Vector2Int point1)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    private static Vector2Int? FindNear(Vector2Int center)
-    {
-        int random = Random.Range(0, D_COLUMN.Length);
-        for (int i=random; i<random + D_COLUMN.Length; i++)
+        for (int i = point1.x - 1; i >= 0; i--)
         {
-            int index = i % D_COLUMN.Length;
-            int x = center.x + D_COLUMN[index];
-            int y = center.y + D_ROW[index];
+            int x = i;
+            int y = point1.y;
 
-            if (Octile.Check(CoreGame.Instance.opponent, x, y, out int _x, out int _y) 
-                && !CoreGame.Instance.opponent.octiles[x][y].Attacked)
+            if (Check(x, y))
             {
                 return new Vector2Int(x, y);
             }
         }
 
         return null;
+    }
+
+    private Vector2Int? FindPointRight(Vector2Int point1)
+    {
+        for (int i = point1.x + 1; i < boardHeight; i++)
+        {
+            int x = i;
+            int y = point1.y;
+
+            if (Check(x, y))
+            {
+                return new Vector2Int(x, y);
+            }
+        }
+
+        return null;
+    }
+
+    private Vector2Int? FindPointUp(Vector2Int point1)
+    {
+        for (int i = point1.y + 1; i < boardWidth; i++)
+        {
+            int x = point1.x;
+            int y = i;
+
+            if (Check(x, y))
+            {
+                return new Vector2Int(x, y);
+            }
+        }
+
+        return null;
+    }
+
+    private Vector2Int? FindPointDown(Vector2Int point1)
+    {
+        for (int i = point1.y - 1; i >= 0; i--)
+        {
+            int x = point1.x;
+            int y = i;
+
+            if (Check(x, y))
+            {
+                return new Vector2Int(x, y);
+            }
+        }
+
+        return null;
+    }
+
+    private Vector2Int? FindNear(Vector2Int center)
+    {
+        int random = Random.Range(0, D_COLUMN.Length);
+        for (int i = random; i < random + D_COLUMN.Length; i++)
+        {
+            int index = i % D_COLUMN.Length;
+            int x = center.x + D_COLUMN[index];
+            int y = center.y + D_ROW[index];
+
+            if (Check(x, y))
+            {
+                return new Vector2Int(x, y);
+            }
+        }
+
+        return null;
+    }
+
+    private bool Check(int x, int y)
+    {
+        return IsInBoard(x, y)
+            && !CoreGame.Instance.opponent.octiles[y][x].Attacked;
+    }
+
+    private bool IsInBoard(int x, int y)
+    {
+        if(x < 0 || y < 0 || x >= boardWidth || y >= boardHeight)
+            return false;
+        return true;
     }
 }

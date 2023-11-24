@@ -91,6 +91,7 @@ public class CoreGame : SingletonMono<CoreGame>
     public List<Vector2Int> curDirHitList;
     public int? curSignHit;
     [SerializeField] GameObject ButtonAutoFire;
+    [SerializeField] AutoFireMode autoFireMode;
     public bool IsAutoFireMode;
     #endregion
 
@@ -367,9 +368,12 @@ public class CoreGame : SingletonMono<CoreGame>
             {
                 if (opponent.remainOctiles.Count >= 0)
                 {
-                    Vector2Int? vector2Int = AutoFire();
-                    WSClientHandler.AttackOpponent(CoreGame.roomId, vector2Int.Value.x, vector2Int.Value.y);
-                    Debug.Log(vector2Int);
+                    //Vector2Int? vector2Int = AutoFire();
+                    //WSClientHandler.AttackOpponent(CoreGame.roomId, vector2Int.Value.x, vector2Int.Value.y);
+
+                    //Debug.Log(vector2Int);
+
+                    autoFireMode.Fire();
                 }
             }
         }
@@ -1110,9 +1114,11 @@ public class CoreGame : SingletonMono<CoreGame>
             {
                 LeanTouch.OnFingerUp -= Instance.opponent.BeingAttacked;
                 LeanTouch.OnFingerUpdate -= Instance.opponent.SelectingTarget;
-                Vector2Int? vector2Int = AutoFire();
-                WSClientHandler.AttackOpponent(CoreGame.roomId, vector2Int.Value.x, vector2Int.Value.y);
-                Debug.Log(vector2Int);
+                //Vector2Int? vector2Int = AutoFire();
+                //WSClientHandler.AttackOpponent(CoreGame.roomId, vector2Int.Value.x, vector2Int.Value.y);
+                //Debug.Log(vector2Int);
+
+                autoFireMode.Fire();
 
             }
             else
