@@ -1,6 +1,5 @@
 using Framework;
 using UnityEngine;
-using UnityEngine.Rendering.UI;
 
 public class AutoFireMode : MonoBehaviour
 {
@@ -19,7 +18,7 @@ public class AutoFireMode : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("FirePoint not found!!!");
+
         }
 
     }
@@ -55,7 +54,7 @@ public class AutoFireMode : MonoBehaviour
 
     private Vector2Int? FindPointWithRow(Vector2Int point1)
     {
-        int random = 0;
+        int random = Random.Range(0, 2);
         if (random == 0)
         {
             Vector2Int? result = FindPointLeft(point1);
@@ -78,7 +77,7 @@ public class AutoFireMode : MonoBehaviour
 
     private Vector2Int? FindPointWithCollum(Vector2Int point1)
     {
-        int random = 0;
+        int random = Random.Range(0, 2);
         if (random == 0)
         {
             Vector2Int? result = FindPointDown(point1);
@@ -106,9 +105,16 @@ public class AutoFireMode : MonoBehaviour
             int x = i;
             int y = point1.y;
 
-            if (Check(x, y))
+            if(IsInBoard(x, y))
             {
-                return new Vector2Int(x, y);
+                if (!IsAttacked(x, y))
+                {
+                    return new Vector2Int(x, y);
+                }
+                if (IsBlock(x, y))
+                {
+                    return null;
+                }
             }
         }
 
@@ -122,9 +128,16 @@ public class AutoFireMode : MonoBehaviour
             int x = i;
             int y = point1.y;
 
-            if (Check(x, y))
+            if (IsInBoard(x, y))
             {
-                return new Vector2Int(x, y);
+                if (!IsAttacked(x, y))
+                {
+                    return new Vector2Int(x, y);
+                }
+                if (IsBlock(x, y))
+                {
+                    return null;
+                }
             }
         }
 
@@ -138,9 +151,16 @@ public class AutoFireMode : MonoBehaviour
             int x = point1.x;
             int y = i;
 
-            if (Check(x, y))
+            if (IsInBoard(x, y))
             {
-                return new Vector2Int(x, y);
+                if (!IsAttacked(x, y))
+                {
+                    return new Vector2Int(x, y);
+                }
+                if (IsBlock(x, y))
+                {
+                    return null;
+                }
             }
         }
 
@@ -154,9 +174,16 @@ public class AutoFireMode : MonoBehaviour
             int x = point1.x;
             int y = i;
 
-            if (Check(x, y))
+            if (IsInBoard(x, y))
             {
-                return new Vector2Int(x, y);
+                if(!IsAttacked(x, y))
+                {
+                    return new Vector2Int(x, y);
+                }
+                if (IsBlock(x, y))
+                {
+                    return null;
+                }
             }
         }
 
@@ -172,7 +199,7 @@ public class AutoFireMode : MonoBehaviour
             int x = center.x + D_COLUMN[index];
             int y = center.y + D_ROW[index];
 
-            if (Check(x, y))
+            if (IsInBoard(x, y) && !IsAttacked(x, y))
             {
                 return new Vector2Int(x, y);
             }
@@ -181,10 +208,14 @@ public class AutoFireMode : MonoBehaviour
         return null;
     }
 
-    private bool Check(int x, int y)
+    private bool IsAttacked(int x, int y)
     {
-        return IsInBoard(x, y)
-            && !CoreGame.Instance.opponent.octiles[y][x].Attacked;
+        return CoreGame.Instance.opponent.octiles[y][x].Attacked;
+    }
+
+    private bool IsBlock(int x, int y)
+    {
+        return !CoreGame.Instance.opponent.remainOctiles.Contains(new Vector2Int(y, x));
     }
 
     private bool IsInBoard(int x, int y)
