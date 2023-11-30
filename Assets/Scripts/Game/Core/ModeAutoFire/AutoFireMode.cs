@@ -18,7 +18,7 @@ public class AutoFireMode : MonoBehaviour
         }
         else
         {
-
+            
         }
 
     }
@@ -216,7 +216,7 @@ public class AutoFireMode : MonoBehaviour
     private bool IsBlock(int x, int y)
     {
         //return !CoreGame.Instance.opponent.remainOctiles.Contains(new Vector2Int(y, x));
-        return !CoreGame.Instance.opponent.remainOctiles.Contains(new Vector2Int(y, x)) && !CoreGame.Instance.curDirHitList.Contains(new Vector2Int(x, y));
+        return CoreGame.Instance.opponent.octiles[y][x].Attacked && !CoreGame.Instance.curDirHitList.Contains(new Vector2Int(x, y));
     }
 
     private bool IsInBoard(int x, int y)

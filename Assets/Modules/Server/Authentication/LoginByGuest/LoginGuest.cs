@@ -8,8 +8,8 @@ namespace Authentication
 {
     public class LoginGuest : ISocialAuth
     {
-        public const long TOKEN_EXPIRED_TIME = 1 * 24 * 60 * 60 * 1000;
-        public const string SECRET_KEY = "WeDonate10000$HzieKL";
+        private const long TOKEN_EXPIRED_TIME = 1 * 24 * 60 * 60 * 1000;
+        private const string SECRET_KEY = "WeDonate10000$HzieKL";
         private string GenerateTokenDeviceId(string deviceId)
         {
             long expiredTime = (DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() + TOKEN_EXPIRED_TIME) / 1000;

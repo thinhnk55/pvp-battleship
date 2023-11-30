@@ -366,15 +366,18 @@ public class CoreGame : SingletonMono<CoreGame>
             }
             else
             {
-                if (opponent.remainOctiles.Count >= 0)
+                DOVirtual.DelayedCall(Octile.timeAttackAnim+0.1f, () =>
                 {
-                    //Vector2Int? vector2Int = AutoFire();
-                    //WSClientHandler.AttackOpponent(CoreGame.roomId, vector2Int.Value.x, vector2Int.Value.y);
+                    if (opponent.remainOctiles.Count >= 0)
+                    {
+                        //Vector2Int? vector2Int = AutoFire();
+                        //WSClientHandler.AttackOpponent(CoreGame.roomId, vector2Int.Value.x, vector2Int.Value.y);
 
-                    //Debug.Log(vector2Int);
+                        //Debug.Log(vector2Int);
 
-                    autoFireMode.Fire();
-                }
+                        autoFireMode.Fire();
+                    }
+                });
             }
         }
         else
