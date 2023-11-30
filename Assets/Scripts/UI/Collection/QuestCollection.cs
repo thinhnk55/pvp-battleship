@@ -5,6 +5,7 @@ using Server;
 using SimpleJSON;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class QuestCollection : CardCollectionBase<QuestInfo>
@@ -79,21 +80,49 @@ public class QuestCollection : CardCollectionBase<QuestInfo>
                 });
             }
         }
-        if (infos.Count < 3)
+
+        try
         {
-            infos.Add(new QuestInfo()
+            var sortedInfos = infos
+                .OrderByDescending(info => info.Progress / info.Require < 1)
+                .ThenByDescending(info => (float)info.Progress / info.Require)
+                .ToList();
+            if (sortedInfos.Count < 3)
             {
-                Id = -1,
-                Require = 0,
-                Progress = 0,
-                Reward = 0,
-                Description = "",
-                Obtained = false,
-                OnCollect = null,
-                OnChange = null
-            });
+                sortedInfos.Add(new QuestInfo()
+                {
+                    Id = -1,
+                    Require = 0,
+                    Progress = 0,
+                    Reward = 0,
+                    Description = "",
+                    Obtained = false,
+                    OnCollect = null,
+                    OnChange = null
+                });
+            }
+            BuildUIs(sortedInfos);
         }
-        BuildUIs(infos);
+        catch (Exception ex)
+        {
+            if (infos.Count < 3)
+            {
+                infos.Add(new QuestInfo()
+                {
+                    Id = -1,
+                    Require = 0,
+                    Progress = 0,
+                    Reward = 0,
+                    Description = "",
+                    Obtained = false,
+                    OnCollect = null,
+                    OnChange = null
+                });
+            }
+            BuildUIs(infos);
+            Debug.LogError("An exception occurred: " + ex.Message);
+        }
+
     }
 
     private void RequestChangeQuest(int index)

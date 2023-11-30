@@ -1,6 +1,8 @@
 using FirebaseIntegration;
 using Framework;
 using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 
 public class SeasonQuestCollection : CardCollectionBase<QuestInfo>
 {
@@ -60,7 +62,22 @@ public class SeasonQuestCollection : CardCollectionBase<QuestInfo>
 
             });
         }
-        BuildUIs(infos);
+        
+        try 
+        {
+            var sortedInfos = infos
+                .OrderByDescending(info => info.Progress / info.Require < 1)
+                .ThenByDescending(info => (float)info.Progress / info.Require)
+                .ToList();
+            BuildUIs(sortedInfos);  
+        }
+        catch(System.Exception ex)
+        {
+            BuildUIs(infos);
+            Debug.LogError("An exception occurred: " + ex.Message);
+        }
+        
+
     }
     public override void BuildUIs(List<QuestInfo> infos)
     {
