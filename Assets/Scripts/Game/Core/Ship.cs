@@ -196,6 +196,10 @@ public class Ship : CacheMonoBehaviour
     {
         if (CoreGame.reconnect == null)
             Messenger.Broadcast(GameEvent.SHIP_DESTROY, this);
+        else
+        {
+            Messenger.Broadcast(GameEvent.SHIP_DESTROY_INIT, this);
+        }
         isDestroyed = true;
         shipRenderer.sprite = destroyedSprite;
         board.ships.Remove(this);

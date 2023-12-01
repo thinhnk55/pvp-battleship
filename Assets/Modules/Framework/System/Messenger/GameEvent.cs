@@ -6,6 +6,7 @@
         LUCKYSHOT_FIRE,
         SELECT_ACHIEVEMENT,
         SHIP_DESTROY,
+        SHIP_DESTROY_INIT,
         SHIP_HIT,
         GAME_END,
         REWARD_ADS_INFO,

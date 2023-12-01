@@ -172,6 +172,7 @@ public class CoreGame : SingletonMono<CoreGame>
         Messenger.AddListener<Ship>(GameEvent.SHIP_DESTROY, Instance.ShipDestroy);
         if (reconnect != null)
         {
+            Messenger.AddListener<Ship>(GameEvent.SHIP_DESTROY_INIT, Instance.ShipDestroy);
             Instance.Reconnect(reconnect);
         }
     }
@@ -207,6 +208,7 @@ public class CoreGame : SingletonMono<CoreGame>
         ServerMessenger.RemoveListener<JSONNode>(ServerResponse._QUIT_SEARCH, Instance.QuitSearch);
         Messenger.RemoveListener<Ship>(GameEvent.SHIP_HIT, Instance.ShipHit);
         Messenger.RemoveListener<Ship>(GameEvent.SHIP_DESTROY, Instance.ShipDestroy);
+        Messenger.RemoveListener<Ship>(GameEvent.SHIP_DESTROY_INIT, Instance.ShipDestroy);
         Debug.Log("Destroyed");
         base.OnDestroy();
     }
@@ -350,6 +352,7 @@ public class CoreGame : SingletonMono<CoreGame>
     }
     void StartTurn()
     {
+        reconnect = null;
         Instance.ingameUI.SetActive(true);
         if (Instance.playerTurn)
         {
@@ -1039,6 +1042,15 @@ public class CoreGame : SingletonMono<CoreGame>
             {
                 for (int j = 0; j < boardOpponent[i].Count; j++)
                 {
+                    if (int.Parse(boardOpponent[i][j]) != 0)
+                    {
+                        Instance.opponent.remainOctiles.Remove(new Vector2Int(i, j));
+                        if (int.Parse(boardOpponent[i][j]) == 1)
+                        {
+                            Instance.curDirHitList.Add(new Vector2Int(i, j));
+                        }
+                    }
+
                     if (int.Parse(boardOpponent[i][j]) == 2)
                     {
                         Instance.opponent.octiles[j][i].BeingAttacked(false);
