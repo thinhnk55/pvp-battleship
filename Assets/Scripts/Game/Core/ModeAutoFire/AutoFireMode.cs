@@ -18,7 +18,9 @@ public class AutoFireMode : MonoBehaviour
         }
         else
         {
-            
+            CoreGame.Instance.curDirHitList.Clear();
+            firePoint = CoreGame.Instance.opponent.remainOctiles.GetRandom();
+            WSClientHandler.AttackOpponent(CoreGame.roomId, firePoint.Value.x, firePoint.Value.y);
         }
 
     }
@@ -42,11 +44,21 @@ public class AutoFireMode : MonoBehaviour
 
             if (point1.x == point2.x)
             {
-                return FindPointWithCollum(point1);
+                if(Mathf.Abs(point1.y - point2.y) == 1)
+                {
+                    return FindPointWithCollum(point1);
+                }
+            }
+            else if(point1.y == point2.y)
+            {
+                if (Mathf.Abs(point1.x - point2.x) == 1)
+                {
+                    return FindPointWithRow(point1);
+                }
             }
             else
             {
-                return FindPointWithRow(point1);
+                return null;
             }
         }
         return null;
