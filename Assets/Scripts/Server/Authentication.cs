@@ -1,7 +1,6 @@
 using Framework;
 using Server;
 using SimpleJSON;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Authentication
@@ -122,7 +121,7 @@ namespace Authentication
             }
             else
             {
-                Debug.Log(res);
+                PDebug.Log(res);
 
             }
         }

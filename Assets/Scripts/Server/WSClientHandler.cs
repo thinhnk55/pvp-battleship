@@ -18,7 +18,7 @@ public class WSClientHandler : Framework.Singleton<WSClientHandler>
     {
         WSClient.Instance.OnConnect += () =>
         {
-            Debug.Log("Onconnect");
+            PDebug.Log("Onconnect");
             ServerMessenger.AddListener<JSONNode>(ServerResponse._CONFIG, GetConfig);
             ServerMessenger.AddListener<JSONNode>(ServerResponse._CONFIG_SHOP, GetConfigShop);
             ServerMessenger.AddListener<JSONNode>(ServerResponse._CONFIG_ACHIEVEMENT, GetConfigAchievement);
@@ -250,7 +250,7 @@ public class WSClientHandler : Framework.Singleton<WSClientHandler>
         }
         catch (Exception e)
         {
-            Debug.Log(e.ToString());
+            PDebug.Log(e.ToString());
         }
         // luckyshot
         Timer<LuckyShot>.Instance.TriggerInterval_Sec = data["d"]["lucky_shot"]["rocket_restore_period"].AsInt / 1000;
@@ -343,7 +343,7 @@ public class WSClientHandler : Framework.Singleton<WSClientHandler>
                 {
                     GameData.Player.AchievementProgress[_i] += (nValue - oValue);
                 }
-                Debug.Log("Achievement Progress _ " + type + "_" + GameData.Player.AchievementProgress[_i]);
+                PDebug.Log("Achievement Progress _ " + type + "_" + GameData.Player.AchievementProgress[_i]);
                 int nextMilestone = 0;
                 for (int j = 0; j < GameData.AchievementConfig[type].AchivementUnits.Length; j++)
                 {
@@ -1067,7 +1067,7 @@ public class WSClientHandler : Framework.Singleton<WSClientHandler>
 
         if (ServerData.IsTutorialComplete)
         {
-            GameData.Tutorial = new List<int>() { 1, 1, 1, 1, 1};
+            GameData.Tutorial = new List<int>() { 1, 1, 1, 1, 1 };
         }
         JSONNode json = data["d"]["b"];
 

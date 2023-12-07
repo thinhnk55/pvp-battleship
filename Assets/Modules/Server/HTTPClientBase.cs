@@ -1,20 +1,18 @@
+using Framework;
 using System.Collections;
 using System.Collections.Generic;
-using System.Net;
 using System.Text;
 using UnityEngine;
 using UnityEngine.Networking;
-using Framework;
-using Server;
 
-public class HTTPClientBase 
+public class HTTPClientBase
 {
 
     static public IEnumerator Get(string url, Callback<string> callback, List<KeyValuePair<string, string>> headers = null)
     {
         using UnityWebRequest webRequest = UnityWebRequest.Get(url);
-        
-        if(headers != null)
+
+        if (headers != null)
         {
             foreach (var kvp in headers)
             {
@@ -22,7 +20,7 @@ public class HTTPClientBase
             }
         }
 
-        Debug.Log(url);
+        PDebug.Log(url);
 
         yield return webRequest.SendWebRequest();
 
@@ -30,11 +28,11 @@ public class HTTPClientBase
         {
             string response = webRequest.downloadHandler.text;
             callback?.Invoke(response);
-            Debug.Log("Response: " + response);
+            PDebug.Log("Response: {0}", response);
         }
         else
         {
-            Debug.LogError("Error: " + webRequest.error);
+            PDebug.LogError("Error: {0}", webRequest.error);
         }
     }
 
@@ -44,7 +42,7 @@ public class HTTPClientBase
         byte[] bodyRaw = UTF8Encoding.UTF8.GetBytes(data);
         using UnityWebRequest webRequest = new(url, "POST");
 
-        if(headers != null)
+        if (headers != null)
         {
             foreach (var kvp in headers)
             {
@@ -67,7 +65,7 @@ public class HTTPClientBase
         {
             Debug.LogError("Error: " + webRequest.error);
         }
-        
+
     }
 
 }

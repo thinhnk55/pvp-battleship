@@ -300,7 +300,7 @@ public class Ship : CacheMonoBehaviour
             return;
         int x = (int)((leanFinger.GetLastWorldPosition(0).x - CoreGame.Instance.player.transform.position.x + CoreGame.Instance.player.width / 2) / CoreGame.Instance.player.cellWidth);
         int y = (int)((leanFinger.GetLastWorldPosition(0).y - CoreGame.Instance.player.transform.position.y + CoreGame.Instance.player.height / 2) / CoreGame.Instance.player.cellHieght);
-        Debug.Log("fingerup");
+        PDebug.Log("fingerup");
         CheckAndAssignShip(CoreGame.Instance.player, x, y, true);
     }
     public bool CheckAndAssignShip(Board board, int x, int y, bool assignBackup, bool isRotate = false)
@@ -460,14 +460,14 @@ public class Ship : CacheMonoBehaviour
 
                         if (CheckAndAssignShip(CoreGame.Instance.player, x + i, y + j, false, true))
                         {
-                            Debug.Log("Find" + i + "_" + j);
+                            PDebug.Log("Find" + i + "_" + j);
                             return;
                         }
                         OnSelected(null, leanFinger);
 
                         if (CheckAndAssignShip(CoreGame.Instance.player, x + j, y + i, false, true))
                         {
-                            Debug.Log("Find" + i + "_" + j);
+                            PDebug.Log("Find" + i + "_" + j);
 
                             return;
                         }
@@ -475,7 +475,7 @@ public class Ship : CacheMonoBehaviour
 
                         if (CheckAndAssignShip(CoreGame.Instance.player, x - i, y - j, false, true))
                         {
-                            Debug.Log("Find" + i + "_" + j);
+                            PDebug.Log("Find" + i + "_" + j);
 
                             return;
                         }
@@ -483,7 +483,7 @@ public class Ship : CacheMonoBehaviour
 
                         if (CheckAndAssignShip(CoreGame.Instance.player, x - j, y - i, false, true))
                         {
-                            Debug.Log("Find" + i + "_" + j);
+                            PDebug.Log("Find" + i + "_" + j);
 
                             return;
                         }
@@ -491,7 +491,7 @@ public class Ship : CacheMonoBehaviour
 
                         if (CheckAndAssignShip(CoreGame.Instance.player, x + i, y - j, false, true))
                         {
-                            Debug.Log("Find" + i + "_" + j);
+                            PDebug.Log("Find" + i + "_" + j);
 
                             return;
                         }
@@ -499,7 +499,7 @@ public class Ship : CacheMonoBehaviour
 
                         if (CheckAndAssignShip(CoreGame.Instance.player, x + j, y - i, false, true))
                         {
-                            Debug.Log("Find" + i + "_" + j);
+                            PDebug.Log("Find" + i + "_" + j);
 
                             return;
                         }
@@ -507,7 +507,7 @@ public class Ship : CacheMonoBehaviour
 
                         if (CheckAndAssignShip(CoreGame.Instance.player, x - i, y + j, false, true))
                         {
-                            Debug.Log("Find" + i + "_" + j);
+                            PDebug.Log("Find" + i + "_" + j);
 
                             return;
                         }
@@ -515,7 +515,7 @@ public class Ship : CacheMonoBehaviour
 
                         if (CheckAndAssignShip(CoreGame.Instance.player, x - j, y + i, false, true))
                         {
-                            Debug.Log("Find" + i + "_" + j);
+                            PDebug.Log("Find" + i + "_" + j);
 
                             return;
                         }
@@ -523,11 +523,11 @@ public class Ship : CacheMonoBehaviour
                 }
                 OnSelected(null, leanFinger);
                 CheckAndAssignShip(CoreGame.Instance.player, x, y, false, true);
-                Debug.Log("NotFind");
+                PDebug.Log("NotFind");
             }
             else
             {
-                Debug.Log("Assigned");
+                PDebug.Log("Assigned");
             }
         }
 

@@ -51,17 +51,17 @@ namespace Framework
                 Product product = Instance.m_StoreController.products.WithID(bundleID);
                 if (product != null && product.availableToPurchase)
                 {
-                    Debug.Log(string.Format("Purchasing product asychronously: '{0}'", product.definition.id));
+                    PDebug.Log(string.Format("Purchasing product asychronously: '{0}'", product.definition.id));
                     Instance.m_StoreController.InitiatePurchase(product);
                 }
                 else
                 {
-                    Debug.Log("BuyProductID: FAIL. Product is not found or unavailable :" + bundleID);
+                    PDebug.Log("BuyProductID: FAIL. Product is not found or unavailable :" + bundleID);
                 }
             }
             else
             {
-                Debug.Log("BuyProductID FAIL. Not initialized.");
+                PDebug.Log("BuyProductID FAIL. Not initialized.");
             }
         }
         public static void ConfirmPendingPurchase()
@@ -71,18 +71,18 @@ namespace Framework
                 Product product = Instance.m_StoreController.products.WithID(Instance._currentBundleId);
                 if (product != null && product.availableToPurchase)
                 {
-                    Debug.Log(string.Format("Purchased product successfully: '{0}'", product.definition.id));
+                    PDebug.Log(string.Format("Purchased product successfully: '{0}'", product.definition.id));
                     Instance.m_StoreController.ConfirmPendingPurchase(product);
                     IAPData.PendingProducts.Remove(product);
                 }
                 else
                 {
-                    Debug.Log("BuyProductID: FAIL. Product is not found or unavailable :" + Instance._currentBundleId);
+                    PDebug.Log("BuyProductID: FAIL. Product is not found or unavailable :" + Instance._currentBundleId);
                 }
             }
             else
             {
-                Debug.Log("BuyProductID FAIL. Not initialized.");
+                PDebug.Log("BuyProductID FAIL. Not initialized.");
             }
         }
         // Restore purchases previously made by this customer. Some platforms automatically restore purchases, like Google. 
@@ -99,24 +99,24 @@ namespace Framework
             // If we are running on an Apple device ... 
             if (Application.platform == RuntimePlatform.IPhonePlayer || Application.platform == RuntimePlatform.OSXPlayer)
             {
-                Debug.Log("RestorePurchases started ...");
+                PDebug.Log("RestorePurchases started ...");
                 // Fetch the Apple store-specific subsystem.
                 var apple = m_StoreExtensionProvider.GetExtension<IAppleExtensions>();
                 apple.RestoreTransactions((result, message) =>
                 {
                     if (!result)
                     {
-                        Debug.Log("RestorePurchases continuing: " + message + ". If no further messages, no purchases available to restore.");
+                        PDebug.Log("RestorePurchases continuing: " + message + ". If no further messages, no purchases available to restore.");
                     }
                     else
                     {
-                        Debug.Log("RestorePurchases Successfully");
+                        PDebug.Log("RestorePurchases Successfully");
                     }
                 });
             }
             else
             {
-                Debug.Log("RestorePurchases FAIL. Not supported on this platform. Current = " + Application.platform);
+                PDebug.Log("RestorePurchases FAIL. Not supported on this platform. Current = " + Application.platform);
             }
         }
 
@@ -131,7 +131,7 @@ namespace Framework
         {
             if (String.Equals(args.purchasedProduct.definition.id, _currentBundleId, StringComparison.Ordinal))
             {
-                Debug.Log(string.Format("ProcessPurchase: PASS. Product: '{0}'", args.purchasedProduct.definition.id));
+                PDebug.Log(string.Format("ProcessPurchase: PASS. Product: '{0}'", args.purchasedProduct.definition.id));
                 purchaseAction?.Invoke(true, args.purchasedProduct);
                 return PurchaseProcessingResult.Pending;
             }
@@ -139,29 +139,29 @@ namespace Framework
             {
                 purchaseAction?.Invoke(false, args.purchasedProduct);
                 IAPData.PendingProducts.Remove(args.purchasedProduct);
-                Debug.Log(string.Format("ProcessPurchase: FAIL. Unrecognized product: '{0}'", args.purchasedProduct.definition.id));
+                PDebug.Log(string.Format("ProcessPurchase: FAIL. Unrecognized product: '{0}'", args.purchasedProduct.definition.id));
                 return PurchaseProcessingResult.Complete;
             }
         }
         public void OnInitializeFailed(InitializationFailureReason error)
         {
-            Debug.Log("OnInitializeFailed InitializationFailureReason:" + error);
+            PDebug.Log("OnInitializeFailed InitializationFailureReason:" + error);
         }
 
         public void OnInitializeFailed(InitializationFailureReason error, string message)
         {
-            Debug.Log(string.Format("Purchase Failed: Product: '{0}', {1}", error.ToString(), message));
+            PDebug.Log(string.Format("Purchase Failed: Product: '{0}', {1}", error.ToString(), message));
         }
 
         public void OnPurchaseFailed(Product product, PurchaseFailureDescription failureDescription)
         {
-            Debug.Log(string.Format("Purchase Failed: Product: '{0}', {1}", product.definition.storeSpecificId, failureDescription));
+            PDebug.Log(string.Format("Purchase Failed: Product: '{0}', {1}", product.definition.storeSpecificId, failureDescription));
             purchaseAction?.Invoke(false, product);
         }
 
         public void OnPurchaseFailed(Product product, PurchaseFailureReason failureReason)
         {
-            Debug.Log(string.Format("Purchase Failed: Product: '{0}', {1}", product.definition.storeSpecificId, failureReason));
+            PDebug.Log(string.Format("Purchase Failed: Product: '{0}', {1}", product.definition.storeSpecificId, failureReason));
             purchaseAction?.Invoke(false, product);
         }
     }

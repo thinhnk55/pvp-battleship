@@ -25,9 +25,9 @@ public class PVEStageCollection : CardCollectionBase<StageInfo>
 
     public void OnStageChange(int o, int n)
     {
-        if(n<1)
+        if (n < 1)
         {
-            if(n<o) // replay
+            if (n < o) // replay
             {
                 ((PVEStageCard)cards[o - 1]).id.color = Color.white;
             }
@@ -35,12 +35,12 @@ public class PVEStageCollection : CardCollectionBase<StageInfo>
             return;
         }
         currentStageIndicator.gameObject.SetActive(true);
-        Debug.Log("Move to card " + n);
-        currentStageIndicator.transform.parent = cards[n-1].transform;
+        PDebug.Log("Move to card " + n);
+        currentStageIndicator.transform.parent = cards[n - 1].transform;
         currentStageIndicator.anchoredPosition3D = new Vector3(0, 0, 0);
         if (o >= 1)
         {
-            ((PVEStageCard)cards[o-1]).id.color = Color.white;
+            ((PVEStageCard)cards[o - 1]).id.color = Color.white;
         }
         ((PVEStageCard)cards[n - 1]).id.color = Color.yellow;
     }

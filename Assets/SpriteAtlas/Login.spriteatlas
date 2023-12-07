@@ -1,0 +1,93 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Login
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings:
+    - serializedVersion: 3
+      m_BuildTarget: DefaultTexturePlatform
+      m_MaxTextureSize: 4096
+      m_ResizeAlgorithm: 0
+      m_TextureFormat: -1
+      m_TextureCompression: 1
+      m_CompressionQuality: 50
+      m_CrunchedCompression: 1
+      m_AllowsAlphaSplitting: 0
+      m_Overridden: 0
+      m_AndroidETC2FallbackOverride: 0
+      m_ForceMaximumCompressionQuality_BC6H_BC7: 0
+    packingSettings:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 1
+      enableTightPacking: 0
+      enableAlphaDilation: 0
+    secondaryTextureSettings: {}
+    variantMultiplier: 1
+    packables:
+    - {fileID: 102900000, guid: c07e934515d37b843a2971263219689d, type: 3}
+    bindAsDefault: 1
+    isAtlasV2: 0
+    cachedData: {fileID: 0}
+    packedSpriteRenderDataKeys:
+    - bd9323109c270a44495fb143476c64be: 21300000
+    - dc7ffbc38fed5224f8b04225513af7ee: 21300000
+    - ff6752141a6267146910aca8821e7bef: 21300000
+    - 8e2d612460bc5cc4dbdc49a00c4337f4: 21300000
+    - e1b4bce5757a5c746a429092ba8154ac: 21300000
+    - cc7e28072b291a94095ba3fa0e94319b: 21300000
+    - 5c38bf371f623e24f8fb784e88c525a6: 21300000
+    - 847aa4685f8ca9541913b817621d6e7e: 21300000
+    - 6a0de8687c54b5941b0ae503471e95dd: 21300000
+    - 9313437831be2414d9a6580f62065474: 21300000
+    - b0f164abe8f9caa408a90dd6f506cb18: 21300000
+    - 35d014bd84ec19646a3de4f076a7425a: 21300000
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: bd9323109c270a44495fb143476c64be, type: 3}
+  - {fileID: 21300000, guid: dc7ffbc38fed5224f8b04225513af7ee, type: 3}
+  - {fileID: 21300000, guid: ff6752141a6267146910aca8821e7bef, type: 3}
+  - {fileID: 21300000, guid: 8e2d612460bc5cc4dbdc49a00c4337f4, type: 3}
+  - {fileID: 21300000, guid: e1b4bce5757a5c746a429092ba8154ac, type: 3}
+  - {fileID: 21300000, guid: cc7e28072b291a94095ba3fa0e94319b, type: 3}
+  - {fileID: 21300000, guid: 5c38bf371f623e24f8fb784e88c525a6, type: 3}
+  - {fileID: 21300000, guid: 847aa4685f8ca9541913b817621d6e7e, type: 3}
+  - {fileID: 21300000, guid: 6a0de8687c54b5941b0ae503471e95dd, type: 3}
+  - {fileID: 21300000, guid: 9313437831be2414d9a6580f62065474, type: 3}
+  - {fileID: 21300000, guid: b0f164abe8f9caa408a90dd6f506cb18, type: 3}
+  - {fileID: 21300000, guid: 35d014bd84ec19646a3de4f076a7425a, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - BT_google
+  - BG_logi
+  - BT_facebook
+  - rd_2
+  - board_1
+  - Loading_2
+  - board_2
+  - board_3
+  - logo_game
+  - Loading_1
+  - rd_1
+  - BT_apple
+  m_RenderDataMap: {}
+  m_Tag: Login
+  m_IsVariant: 0

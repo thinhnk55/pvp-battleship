@@ -140,7 +140,7 @@ public class CoreGame : SingletonMono<CoreGame>
         Instance.shipsPlayer.Reverse();
         if (GameData.Player.BattleField != null)
         {
-            Instance.player.battleFieldSprite.sprite = SpriteFactory.BattleFields[GameData.Player.BattleField.Data];
+            Instance.player.battleFieldSprite.sprite = SpriteFactory.BattleFieldAtlas.GetSprite("battle_field_" + GameData.Player.BattleField.Data);
         }
         Instance.shipsOpponent = shipListOpponent.GetComponentsInChildren<Ship>().ToList();
         Instance.stateMachine = new StateMachine<GameState>();
@@ -209,7 +209,6 @@ public class CoreGame : SingletonMono<CoreGame>
         Messenger.RemoveListener<Ship>(GameEvent.SHIP_HIT, Instance.ShipHit);
         Messenger.RemoveListener<Ship>(GameEvent.SHIP_DESTROY, Instance.ShipDestroy);
         Messenger.RemoveListener<Ship>(GameEvent.SHIP_DESTROY_INIT, Instance.ShipDestroy);
-        Debug.Log("Destroyed");
         base.OnDestroy();
     }
 
@@ -339,7 +338,7 @@ public class CoreGame : SingletonMono<CoreGame>
         Instance.searchUI.gameObject.SetActive(true);
         Instance.shipListPlayer.SetActive(false);
         Instance.searchUI.opponentProfile.UpdateUIs();
-        Instance.opponent.battleFieldSprite.sprite = SpriteFactory.BattleFields[GameData.Opponent.BattleField.Data];
+        Instance.opponent.battleFieldSprite.sprite = SpriteFactory.BattleFieldAtlas.GetSprite("battle_field_" + GameData.Opponent.BattleField.Data);
         DOVirtual.DelayedCall(3, () => { Instance.stateMachine.CurrentState = GameState.Turn; });
     }
     void UpdateSearchRematch()
@@ -356,7 +355,7 @@ public class CoreGame : SingletonMono<CoreGame>
         Instance.ingameUI.SetActive(true);
         if (Instance.playerTurn)
         {
-            Debug.Log("Player Turn");
+            PDebug.Log("Player Turn");
             Instance.turnImage.sprite = SpriteFactory.PlayerTurn;
             if (GameData.Tutorial[4] == 0 && Bot.Instance.CountShotPlayer < 4)
             {
@@ -369,7 +368,7 @@ public class CoreGame : SingletonMono<CoreGame>
             }
             else
             {
-                DOVirtual.DelayedCall(Octile.timeAttackAnim+0.1f, () =>
+                DOVirtual.DelayedCall(Octile.timeAttackAnim + 0.1f, () =>
                 {
                     if (opponent.remainOctiles.Count >= 0)
                     {
@@ -385,7 +384,7 @@ public class CoreGame : SingletonMono<CoreGame>
         }
         else
         {
-            Debug.Log("Opponent Turn");
+            PDebug.Log("Opponent Turn");
             Instance.turnImage.sprite = SpriteFactory.OpponentTurn;
         }
     }
@@ -506,7 +505,7 @@ public class CoreGame : SingletonMono<CoreGame>
     {
         if (curHit.HasValue)
         {
-                return FindNear(curHit.Value.x, curHit.Value.y).Value;
+            return FindNear(curHit.Value.x, curHit.Value.y).Value;
         }
         else
         {
@@ -534,10 +533,10 @@ public class CoreGame : SingletonMono<CoreGame>
                 {
                     if (curDirHitList.Contains(new Vector2Int(posFire.x, posFire.y)))
                     {
-                        Debug.Log("Attacked Ship");
+                        PDebug.Log("Attacked Ship");
                         continue;
                     }
-                    Debug.Log("Attacked Miss");
+                    PDebug.Log("Attacked Miss");
                     break;
                 }
                 return posFire;
@@ -556,10 +555,10 @@ public class CoreGame : SingletonMono<CoreGame>
                 {
                     if (curDirHitList.Contains(new Vector2Int(posFire.x, posFire.y)))
                     {
-                        Debug.Log("Attacked Ship");
+                        PDebug.Log("Attacked Ship");
                         continue;
                     }
-                    Debug.Log("Attacked Miss");
+                    PDebug.Log("Attacked Miss");
                     break;
                 }
                 return posFire;
@@ -605,7 +604,7 @@ public class CoreGame : SingletonMono<CoreGame>
             }
             if (firePos == null)
             {
-                Debug.Log("Not found");
+                PDebug.Log("Not found");
             }
             return firePos;
         }
@@ -678,7 +677,7 @@ public class CoreGame : SingletonMono<CoreGame>
         {
             playerChair = 0;
         }
-        Debug.Log(DataAuth.AuthData.userId + "_" + int.Parse(json["d"]["p1"]["u"]) + "_" + int.Parse(json["d"]["p2"]["u"]));
+        PDebug.Log(DataAuth.AuthData.userId + "_" + int.Parse(json["d"]["p1"]["u"]) + "_" + int.Parse(json["d"]["p2"]["u"]));
         bet = int.Parse(json["d"]["t"]);
 
         if (GameData.Tutorial[4] == 1)
@@ -694,7 +693,7 @@ public class CoreGame : SingletonMono<CoreGame>
         Instance.searchUI.opponentProfile.UpdateUIs();
         Instance.searchUI.icon.gameObject.SetActive(true);
         Instance.searchUI.amount.gameObject.SetActive(true);
-        Instance.opponent.battleFieldSprite.sprite = SpriteFactory.BattleFields[GameData.Opponent.BattleField.Data];
+        Instance.opponent.battleFieldSprite.sprite = SpriteFactory.BattleFieldAtlas.GetSprite("battle_field_" + GameData.Opponent.BattleField.Data);
         Instance.opponentProfile.UpdateUIs();
         CoinVFX.CoinVfx(Instance.searchUI.tresure.transform, Instance.searchUI.avatar1.transform.position, Instance.searchUI.avatar2.transform.position);
         AnalyticsHelper.SpendVirtualCurrency(PConsumableType.BERRY.ToString().ToLower(), "classic" + bet.ToString());
@@ -706,7 +705,7 @@ public class CoreGame : SingletonMono<CoreGame>
         timeInit = json["d"]["c"].AsInt;
         Instance.TurnTime = timeInit;
         Instance.playerTurn = int.Parse(json["d"]["f"]) == playerChair;
-        Debug.Log(json["d"]["f"].AsInt + "_" + playerChair);
+        PDebug.Log(json["d"]["f"].AsInt + "_" + playerChair);
         if (Instance.stateMachine.CurrentState == GameState.PreRematch)
         {
             Instance.stateMachine.CurrentState = GameState.SearchRematch;
@@ -816,7 +815,7 @@ public class CoreGame : SingletonMono<CoreGame>
                     Instance.EndGame(json);
                     break;
                 case 5:
-                    Debug.Log("Miss turn");
+                    PDebug.Log("Miss turn");
                     Instance.EndGame(json);
                     break;
                 case 6:
@@ -825,7 +824,7 @@ public class CoreGame : SingletonMono<CoreGame>
                 default:
                     break;
             }
-            if (status <=3 )
+            if (status <= 3)
             {
                 Instance.stateMachine.CurrentState = GameState.Turn;
             }
@@ -865,7 +864,7 @@ public class CoreGame : SingletonMono<CoreGame>
         DOVirtual.DelayedCall(4, () =>
         {
             MusicType.END.PlayMusic();
-            Debug.Log("End");
+            PDebug.Log("End");
             Instance.stateMachine.CurrentState = GameState.Out;
             Instance.ingameUI.SetActive(false);
             Instance.postUI.gameObject.SetActive(true);
@@ -916,7 +915,7 @@ public class CoreGame : SingletonMono<CoreGame>
         Instance.buttonRematch.enabled = false;
         if (rematch)
         {
-            Debug.Log("out rematch");
+            PDebug.Log("out rematch");
             rematch = false;
             if (Instance.stateMachine.CurrentState == GameState.PreRematch || Instance.stateMachine.CurrentState == GameState.SearchRematch)
             {
@@ -989,7 +988,7 @@ public class CoreGame : SingletonMono<CoreGame>
             }
             //Debug.Log("Consecutive :" + consecutiveKill + "Max " + consecutiveKillMax.Data);
             Instance.searchUI.opponentProfile.UpdateUIs();
-            Instance.opponent.battleFieldSprite.sprite = SpriteFactory.BattleFields[GameData.Opponent.BattleField.Data];
+            Instance.opponent.battleFieldSprite.sprite = SpriteFactory.BattleFieldAtlas.GetSprite("battle_field_" + GameData.Opponent.BattleField.Data);
             for (int i = 0; i < data["s"].Count; i++)
             {
                 Ship ship = Instance.shipsPlayer.Find((ship) =>
@@ -1075,7 +1074,7 @@ public class CoreGame : SingletonMono<CoreGame>
         }
         catch (System.Exception e)
         {
-            Debug.Log(e);
+            PDebug.Log(e);
         }
 
     }

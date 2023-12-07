@@ -1,6 +1,4 @@
 using Framework;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -24,13 +22,13 @@ public class PVEBetCard : CardBase<PVEBetInfo>
         Button?.onClick.RemoveAllListeners();
         Button?.onClick.AddListener(() =>
         {
-            Debug.Log("Onclick");
+            PDebug.Log("Onclick");
             info.onclick?.Invoke();
         });
 
         if (PVEData.TypeBoard != -1 && PVEData.IsDeadPlayer.Data == false) // Old game
         {
-            if(info.id != PVEData.TypeBoard) // Not current bet pve
+            if (info.id != PVEData.TypeBoard) // Not current bet pve
             {
                 lockImgae.SetAlpha(1);
                 Button.gameObject.SetActive(false);

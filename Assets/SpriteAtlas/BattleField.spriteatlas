@@ -1,0 +1,204 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: BattleField
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings:
+    - serializedVersion: 3
+      m_BuildTarget: DefaultTexturePlatform
+      m_MaxTextureSize: 4096
+      m_ResizeAlgorithm: 0
+      m_TextureFormat: -1
+      m_TextureCompression: 1
+      m_CompressionQuality: 50
+      m_CrunchedCompression: 1
+      m_AllowsAlphaSplitting: 0
+      m_Overridden: 0
+      m_AndroidETC2FallbackOverride: 0
+      m_ForceMaximumCompressionQuality_BC6H_BC7: 0
+    packingSettings:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 1
+      enableTightPacking: 0
+      enableAlphaDilation: 0
+    secondaryTextureSettings: {}
+    variantMultiplier: 1
+    packables:
+    - {fileID: 102900000, guid: 9bb601f1acd350942962c1883f17e475, type: 3}
+    bindAsDefault: 1
+    isAtlasV2: 0
+    cachedData: {fileID: 0}
+    packedSpriteRenderDataKeys:
+    - d2f0e74054a868b4e9a4ee36e857f8cf: 21300000
+    - 87189ea0918b429419736c5567149838: 21300000
+    - b3995d3162f12c34b98976c342adbba9: 21300000
+    - 299e2232a699afd438252d53d1981905: 1313690686233733104
+    - db6e45427a87cc34e9acfed1bd1aafac: 21300000
+    - 5ea4729201a6dfc4e85dd4e9973dc9c5: 21300000
+    - c969fde3e30e5a9449673142b2f65fbf: 21300000
+    - 19ff8214923dd614ab16bd5d608f8f07: 21300000
+    - 492208642f1e16b4fadaf9a3f31d124d: 21300000
+    - 5956f6655d412bc4794aa855bffaf8d6: 21300000
+    - 07171c85368665d4290286add50b648b: 21300000
+    - 40ad6b9560bc41b419bc1c03f7307b3c: 21300000
+    - a8ac17b5c2cce3742976f466217cac9b: 21300000
+    - 96d781c520f5d244d97238bcc45a0855: 21300000
+    - 782025e55b97e574c9938c0f5cdd6fec: 21300000
+    - 0819d136700d72440ad5fbfc014e8888: -4660966644090972687
+    - b61c6f7721016f5499a93a8ac272885e: 21300000
+    - 16edc9e74e30d984c879479aa93fabcc: 21300000
+    - 36d50fe74d011d54eb4f07c2625b7bbf: 21300000
+    - 0caf1628949bb584fabe0ff7eeed1cdf: 21300000
+    - 59eeaad8c410e3243b0d6fa6be0b2982: 21300000
+    - 8e64de39e0f82954b8761196199b9583: 21300000
+    - 9257de895355e0d4798a4444bbf2e8d6: 21300000
+    - 1ee82ca9de4e7f44d8466777f8ab36eb: 21300000
+    - 85cacdb95d6d6734a807e83ba52b792c: 21300000
+    - d90d3bc9c7a27814596057b733e3e7b0: 21300000
+    - 53f38ee99cc7ff44691b3936f29ba7d7: 21300000
+    - 10da202a446970e44ab92fae0db145d4: 21300000
+    - bf7d4b2a1974d3a418575716017ccb0f: 21300000
+    - 85e5984a3c1fe52438f34ba8ffe5c5e5: 21300000
+    - 0cec6d8a884ad894fa1c9c3b222ec7df: 21300000
+    - e6a49dfa5a27275468a64356f2e5325d: 21300000
+    - 0ba0227b892f38a4683f00121a831984: 21300000
+    - 1f6533bb4b71f8343ae003b7af46771e: 21300000
+    - 9b7859fb2b86f5d448d7ca1eea7b070b: 21300000
+    - 580afc3c0bf65344bbbb54993402761b: 21300000
+    - a1a68f6c632fef740bb5637dfb4a460f: 21300000
+    - 1cedb15d28bbaf14299b1e517eaac11b: 21300000
+    - 441ce78d01b1b864a9ea4acf392598c4: 21300000
+    - 950992cdc21385a45a9aead56d89e358: 21300000
+    - b400cdfdcfb6200468ff24fa6776731d: 21300000
+    - a23cad2efece6a541880a57bb01573ae: 21300000
+    - fa75a15ee9c10e2448198cbe132e3236: 21300000
+    - 382b9c5e5420c7a4f96af3e35dccc35d: 21300000
+    - d8c7378ee335eb1458eca0310f09d56b: 21300000
+    - 71826ebefb9c3894f9e58306c642f846: 21300000
+    - 619370ee1ed8925458bb39fb8f873403: 21300000
+    - 616f451f9206ad246b495c68dc749150: 21300000
+    - 7648d3ffb86e1074f8cc79cd3f65923f: 21300000
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: d2f0e74054a868b4e9a4ee36e857f8cf, type: 3}
+  - {fileID: 21300000, guid: 87189ea0918b429419736c5567149838, type: 3}
+  - {fileID: 21300000, guid: b3995d3162f12c34b98976c342adbba9, type: 3}
+  - {fileID: 1313690686233733104, guid: 299e2232a699afd438252d53d1981905, type: 3}
+  - {fileID: 21300000, guid: db6e45427a87cc34e9acfed1bd1aafac, type: 3}
+  - {fileID: 21300000, guid: 5ea4729201a6dfc4e85dd4e9973dc9c5, type: 3}
+  - {fileID: 21300000, guid: c969fde3e30e5a9449673142b2f65fbf, type: 3}
+  - {fileID: 21300000, guid: 19ff8214923dd614ab16bd5d608f8f07, type: 3}
+  - {fileID: 21300000, guid: 492208642f1e16b4fadaf9a3f31d124d, type: 3}
+  - {fileID: 21300000, guid: 5956f6655d412bc4794aa855bffaf8d6, type: 3}
+  - {fileID: 21300000, guid: 07171c85368665d4290286add50b648b, type: 3}
+  - {fileID: 21300000, guid: 40ad6b9560bc41b419bc1c03f7307b3c, type: 3}
+  - {fileID: 21300000, guid: a8ac17b5c2cce3742976f466217cac9b, type: 3}
+  - {fileID: 21300000, guid: 96d781c520f5d244d97238bcc45a0855, type: 3}
+  - {fileID: 21300000, guid: 782025e55b97e574c9938c0f5cdd6fec, type: 3}
+  - {fileID: -4660966644090972687, guid: 0819d136700d72440ad5fbfc014e8888, type: 3}
+  - {fileID: 21300000, guid: b61c6f7721016f5499a93a8ac272885e, type: 3}
+  - {fileID: 21300000, guid: 16edc9e74e30d984c879479aa93fabcc, type: 3}
+  - {fileID: 21300000, guid: 36d50fe74d011d54eb4f07c2625b7bbf, type: 3}
+  - {fileID: 21300000, guid: 0caf1628949bb584fabe0ff7eeed1cdf, type: 3}
+  - {fileID: 21300000, guid: 59eeaad8c410e3243b0d6fa6be0b2982, type: 3}
+  - {fileID: 21300000, guid: 8e64de39e0f82954b8761196199b9583, type: 3}
+  - {fileID: 21300000, guid: 9257de895355e0d4798a4444bbf2e8d6, type: 3}
+  - {fileID: 21300000, guid: 1ee82ca9de4e7f44d8466777f8ab36eb, type: 3}
+  - {fileID: 21300000, guid: 85cacdb95d6d6734a807e83ba52b792c, type: 3}
+  - {fileID: 21300000, guid: d90d3bc9c7a27814596057b733e3e7b0, type: 3}
+  - {fileID: 21300000, guid: 53f38ee99cc7ff44691b3936f29ba7d7, type: 3}
+  - {fileID: 21300000, guid: 10da202a446970e44ab92fae0db145d4, type: 3}
+  - {fileID: 21300000, guid: bf7d4b2a1974d3a418575716017ccb0f, type: 3}
+  - {fileID: 21300000, guid: 85e5984a3c1fe52438f34ba8ffe5c5e5, type: 3}
+  - {fileID: 21300000, guid: 0cec6d8a884ad894fa1c9c3b222ec7df, type: 3}
+  - {fileID: 21300000, guid: e6a49dfa5a27275468a64356f2e5325d, type: 3}
+  - {fileID: 21300000, guid: 0ba0227b892f38a4683f00121a831984, type: 3}
+  - {fileID: 21300000, guid: 1f6533bb4b71f8343ae003b7af46771e, type: 3}
+  - {fileID: 21300000, guid: 9b7859fb2b86f5d448d7ca1eea7b070b, type: 3}
+  - {fileID: 21300000, guid: 580afc3c0bf65344bbbb54993402761b, type: 3}
+  - {fileID: 21300000, guid: a1a68f6c632fef740bb5637dfb4a460f, type: 3}
+  - {fileID: 21300000, guid: 1cedb15d28bbaf14299b1e517eaac11b, type: 3}
+  - {fileID: 21300000, guid: 441ce78d01b1b864a9ea4acf392598c4, type: 3}
+  - {fileID: 21300000, guid: 950992cdc21385a45a9aead56d89e358, type: 3}
+  - {fileID: 21300000, guid: b400cdfdcfb6200468ff24fa6776731d, type: 3}
+  - {fileID: 21300000, guid: a23cad2efece6a541880a57bb01573ae, type: 3}
+  - {fileID: 21300000, guid: fa75a15ee9c10e2448198cbe132e3236, type: 3}
+  - {fileID: 21300000, guid: 382b9c5e5420c7a4f96af3e35dccc35d, type: 3}
+  - {fileID: 21300000, guid: d8c7378ee335eb1458eca0310f09d56b, type: 3}
+  - {fileID: 21300000, guid: 71826ebefb9c3894f9e58306c642f846, type: 3}
+  - {fileID: 21300000, guid: 619370ee1ed8925458bb39fb8f873403, type: 3}
+  - {fileID: 21300000, guid: 616f451f9206ad246b495c68dc749150, type: 3}
+  - {fileID: 21300000, guid: 7648d3ffb86e1074f8cc79cd3f65923f, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - battle_field_6
+  - BTF_11
+  - battle_field_11
+  - BTF_0_0
+  - battle_field_board_2
+  - battle_field_13
+  - BTF_22
+  - battle_field_17
+  - battle_field_12
+  - BTF_9
+  - battle_field_15
+  - BTF_16
+  - battle_field_16
+  - battle_field_4
+  - battle_field_1
+  - BTF_5_0
+  - battle_field_2
+  - BTF_8
+  - battle_field_0
+  - BTF_20
+  - battle_field_board_1
+  - battle_field_3
+  - BTF_6
+  - battle_field_board_3
+  - BTF_10
+  - battle_field_18
+  - battle_field_5
+  - battle_field_20
+  - BTF_4
+  - battle_field_10
+  - BTF_18
+  - battle_field_19
+  - battle_field_8
+  - battle_field_22
+  - battle_field_9
+  - BTF_19
+  - BTF_7
+  - BTF_12
+  - BTF_1
+  - BTF_14
+  - BTF_13
+  - BTF_17
+  - BTF_21
+  - BTF_3
+  - battle_field_21
+  - battle_field_7
+  - BTF_15
+  - battle_field_14
+  - BTF_2
+  m_RenderDataMap: {}
+  m_Tag: BattleField
+  m_IsVariant: 0

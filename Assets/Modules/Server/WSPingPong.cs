@@ -33,7 +33,7 @@ namespace Server
             if ((!WSClient.Instance.ws.IsAlive) || Application.internetReachability == NetworkReachability.NotReachable)
             {
                 Messenger.Broadcast(GameEvent.LostConnection);
-                Debug.Log("Ping failed");
+                PDebug.Log("Ping failed");
                 WSClient.Instance.Disconnect(true);
                 return;
             }

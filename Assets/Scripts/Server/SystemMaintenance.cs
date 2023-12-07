@@ -57,7 +57,7 @@ public class SystemMaintenance : SingletonMono<SystemMaintenance>
             {
                 if (success)
                 {
-                    Debug.Log("Quit");
+                    PDebug.Log("Quit");
                     Application.Quit();
                 }
             });

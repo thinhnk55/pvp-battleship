@@ -1,4 +1,5 @@
 ﻿using FirebaseIntegration;
+using Framework;
 using Server;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -71,7 +72,7 @@ public class LoadingScene : SingletonMono<LoadingScene>
 
     public void LoadScene(string sceneName)
     {
-        Debug.Log("Load " + sceneName);
+        PDebug.Log("Load " + sceneName);
         if (SceneManager.sceneCount >= 2)
         {
             try
@@ -83,7 +84,7 @@ public class LoadingScene : SingletonMono<LoadingScene>
             }
             catch (System.Exception e)
             {
-                Debug.Log(e.Message);
+                PDebug.Log(e.Message);
             }
         }
         asynScene = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);

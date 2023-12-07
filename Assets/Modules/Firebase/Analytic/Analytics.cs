@@ -1,6 +1,6 @@
 using Firebase.Analytics;
+using Framework;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace FirebaseIntegration
 {
@@ -35,7 +35,7 @@ namespace FirebaseIntegration
                 i++;
             }
             Firebase.Analytics.FirebaseAnalytics.LogEvent(@event, parameters);
-            Debug.Log(@event);
+            PDebug.Log(@event);
         }
     }
 }

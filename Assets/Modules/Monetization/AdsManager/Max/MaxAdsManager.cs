@@ -1,6 +1,5 @@
 using Framework;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace Monetization
 {
@@ -10,7 +9,7 @@ namespace Monetization
         {
             MaxSdk.SetSdkKey(MonetizationConfig.SdkKey);
             MaxSdk.InitializeSdk();
-            Debug.Log("Initialize SDK");
+            PDebug.Log("Initialize SDK");
         }
 
         public override void InitializeSDKEventOnInitialized()
@@ -21,12 +20,12 @@ namespace Monetization
                 //InitializeBannerAds();
                 //InitializeInterstitialAds();
                 InitializeRewardedAds();            // Load reward Ads
-                Debug.Log("InitializeRewardedAds");
+                PDebug.Log("InitializeRewardedAds");
                 foreach (KeyValuePair<RewardType, string> kvp in AdsData.AdsUnitIdMap)
                 {
                     LoadAds(kvp.Value, AdsType.Reward);
                 }
-                Debug.Log("LoadAds");
+                PDebug.Log("LoadAds");
             };
         }
 

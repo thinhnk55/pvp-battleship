@@ -53,18 +53,18 @@ public class AchievementCollection : CardCollectionBase<AchievementInfo>
             {
                 if (!resource)
                 {
-                    Debug.Log("Resource null");
+                    PDebug.Log("Resource null");
                 }
                 else if (!previewCard)
                 {
-                    Debug.Log("previewCard null");
+                    PDebug.Log("previewCard null");
 
                 }
                 else if (previewCard.Button)
                 {
-                    Debug.Log("previewCard.Button null");
+                    PDebug.Log("previewCard.Button null");
                 }
-                Debug.Log(e);
+                PDebug.Log(e);
             }
             AchievementInfo info = GameData.AchievementConfig[(AchievementType)int.Parse(json["d"]["a"])];
             GameData.Player.AchievementObtained[int.Parse(json["d"]["a"])] = int.Parse(json["d"]["l"]) + 1;

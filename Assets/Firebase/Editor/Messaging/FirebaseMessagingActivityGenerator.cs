@@ -121,7 +121,7 @@ namespace Firebase.Messaging.Editor
   };
         private readonly string BaseActivityClass = "UnityPlayerActivity";
 #if UNITY_2023_1_OR_NEWER
-  private readonly string BaseGameActivityClass = "UnityPlayerGameActivity";
+        private readonly string BaseGameActivityClass = "UnityPlayerGameActivity";
 #endif
 
         private readonly string GeneratedFileTag = "FirebaseMessagingActivityGenerated";
@@ -143,10 +143,11 @@ namespace Firebase.Messaging.Editor
             // Determine what the contents of the generated file should be.
             string baseClass = BaseActivityClass;
 #if UNITY_2023_1_OR_NEWER
-    // If using the new GameActivity logic, we want to generate with that base class.
-    if (PlayerSettings.Android.applicationEntry.HasFlag(AndroidApplicationEntry.GameActivity)) {
-      baseClass = BaseGameActivityClass;
-    }
+            // If using the new GameActivity logic, we want to generate with that base class.
+            if (PlayerSettings.Android.applicationEntry.HasFlag(AndroidApplicationEntry.GameActivity))
+            {
+                baseClass = BaseGameActivityClass;
+            }
 #endif
             string fileContents = System.String.Format(System.String.Join("\n", ActivityClassContents), baseClass);
 

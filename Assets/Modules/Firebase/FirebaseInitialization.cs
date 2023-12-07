@@ -1,8 +1,8 @@
 using Firebase;
 using Firebase.Crashlytics;
 using Firebase.Extensions;
+using Framework;
 using System.Threading.Tasks;
-using UnityEngine;
 namespace FirebaseIntegration
 {
     public class FirebaseInitialization
@@ -21,11 +21,11 @@ namespace FirebaseIntegration
                     Crashlytics.ReportUncaughtExceptionsAsFatal = true;
                     initialized = true;
                     OnInitialized?.Invoke();
-                    Debug.Log("Firebase Initialize successfully");
+                    PDebug.Log("Firebase Initialize successfully");
                 }
                 else
                 {
-                    Debug.LogError(System.String.Format("Could not resolve all Firebase dependencies: {0}", dependencyStatus));
+                    PDebug.LogError(System.String.Format("Could not resolve all Firebase dependencies: {0}", dependencyStatus));
                     initialized = false;
                 }
             });

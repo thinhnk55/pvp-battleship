@@ -66,7 +66,7 @@
 				{
 					"directoryIndex" : 1,
 					"id" : "swappywrapper::@7e25bd1f32ce224db4e9",
-					"jsonFile" : "target-swappywrapper-RelWithDebInfo-a3bb21754317bc9d642d.json",
+					"jsonFile" : "target-swappywrapper-RelWithDebInfo-87795242f4708c057010.json",
 					"name" : "swappywrapper",
 					"projectIndex" : 1
 				}
@@ -76,7 +76,7 @@
 	"kind" : "codemodel",
 	"paths" : 
 	{
-		"build" : "D:/Unity/Repo/BattleShip/pvp-battleship/.utmp/RelWithDebInfo/6s3k4434/arm64-v8a",
+		"build" : "D:/Unity/Repo/BattleShip/pvp-battleship/.utmp/RelWithDebInfo/6s3k4434/armeabi-v7a",
 		"source" : "D:/Unity/Repo/BattleShip/pvp-battleship/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/src/main/cpp"
 	},
 	"version" : 

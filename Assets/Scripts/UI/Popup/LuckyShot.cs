@@ -135,7 +135,7 @@ public class LuckyShot : SingletonMono<LuckyShot>
                     TextMeshProUGUI text = (TextMeshProUGUI)ObjectPoolManager.SpawnObject<TextBase>(PrefabFactory.TextPrefab, Instance.shots[indexShot].transform.position + Vector3.up / 2, null, true).text;
                     text.text = amount.ToString();
                     text.fontSize = 36f;
-                    Debug.Log(Instance.shots[indexShot].transform.position);
+                    PDebug.Log(Instance.shots[indexShot].transform.position);
                     text.transform.DOMoveY(Instance.shots[indexShot].transform.position.y + 1.5f, 1f).OnComplete(() =>
                     {
                         text.gameObject.SetActive(false);
@@ -159,7 +159,7 @@ public class LuckyShot : SingletonMono<LuckyShot>
             }
             for (int i = 0; i < newValue - oldValue; i++)
             {
-                Debug.Log("New Rocket");
+                PDebug.Log("New Rocket");
                 //
                 Instance.rockets[oldValue + i].SetSprite(rocket);
             }

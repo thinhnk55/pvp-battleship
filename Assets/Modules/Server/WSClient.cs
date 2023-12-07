@@ -20,7 +20,7 @@ namespace Server
 
         public void Connect(int userId, string token)
         {
-            Debug.Log("Connect");
+            PDebug.Log("Connect");
             ws = new WebSocket(ServerConfig.WebSocketURL + "?id=" + userId + "&token=" + token);
             ws.OnOpen += OnOpen;
             //ws = new WebSocket(ServerConfig.WebSocketURL + "?id="+ 12 + "&token=" + "7lnyeclvtjlk49en9b63dsx8e6q5tqyi");
@@ -30,14 +30,14 @@ namespace Server
         {
             if (unlisten)
             {
-                Debug.Log("Unlisten");
+                PDebug.Log("Unlisten");
                 OnDisconnect?.Invoke();
             }
             ws.Close();
         }
         public void OnOpen(object sender, EventArgs e)
         {
-            Debug.Log("Open " + ((WebSocket)sender).Url);
+            PDebug.Log("Open " + ((WebSocket)sender).Url);
             ServerMessenger.AddListener<JSONNode>(ServerResponse.CheckLoginConnection, CheckLoginConnection);
             Messenger.AddListener(GameEvent.LostConnection, OnLostConnection);
             ws.OnMessage += OnMessage;
@@ -49,16 +49,16 @@ namespace Server
         {
             MainThreadDispatcher.ExecuteOnMainThread(() =>
             {
-                Debug.Log("Close " + ((WebSocket)sender).Url + " : " + e.Reason + " - " + e.Code);
+                PDebug.Log("Close " + ((WebSocket)sender).Url + " : " + e.Reason + " - " + e.Code);
                 if (e.Code != 1005 && e.Code != 1000)
                 {
                     Messenger.Broadcast(GameEvent.LostConnection);
                     OnDisconnect?.Invoke();
-                    Debug.Log("Network shutdown unintentionally");
+                    PDebug.Log("Network shutdown unintentionally");
                 }
                 else
                 {
-                    Debug.Log("Close websocket connection manually");
+                    PDebug.Log("Close websocket connection manually");
                 }
                 ServerMessenger.RemoveListener<JSONNode>(ServerResponse.CheckLoginConnection, CheckLoginConnection);
                 Messenger.RemoveListener(GameEvent.LostConnection, OnLostConnection);
@@ -79,11 +79,11 @@ namespace Server
                     if (json != null)
                     {
                         ws.Send(json.ToString());
-                        Debug.Log($"<color=#FFA500>{(ServerRequest)json["id"].AsInt} - {json}</color>");
+                        PDebug.Log("{0}-{1}", (Color.yellow + Color.red) / 2, (ServerRequest)json["id"].AsInt, json);
                     }
                     else
                     {
-                        Debug.LogError("Json null");
+                        PDebug.LogError("Json null");
                     }
                 }
                 else
@@ -94,7 +94,7 @@ namespace Server
             }
             catch (Exception e)
             {
-                Debug.Log(e);
+                PDebug.Log(e);
             }
 
         }
@@ -109,7 +109,7 @@ namespace Server
                     ServerResponse id = (ServerResponse)int.Parse(idJson);
                     if (ServerMessenger.eventTable.ContainsKey(id))
                     {
-                        Debug.Log($"<color=yellow>{id} - {e.Data}</color>");
+                        PDebug.Log("{0}-{1}", Color.yellow, id, e.Data);
                         ServerMessenger.Broadcast(id, JSON.Parse(e.Data));
                     }
                 }
@@ -119,7 +119,7 @@ namespace Server
         {
             MainThreadDispatcher.ExecuteOnMainThread(() =>
             {
-                Debug.Log("Error : " + e.Exception);
+                PDebug.Log("Error : " + e.Exception);
             });
         }
         /// <summary>

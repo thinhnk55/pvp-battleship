@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.U2D;
 
 namespace Framework
 {
@@ -33,6 +34,7 @@ namespace Framework
         [SerializeField] private Sprite[] frames; public static Sprite[] Frames { get { return Instance.frames; } }
         [SerializeField] private Sprite[] tailframes; public static Sprite[] Tailframes { get { return Instance.tailframes; } }
         [SerializeField] private Sprite[] battleFields; public static Sprite[] BattleFields { get { return Instance.battleFields; } }
+        [SerializeField] private SpriteAtlas battleFieldAtlas; public static SpriteAtlas BattleFieldAtlas { get { return Instance.battleFieldAtlas; } }
         [SerializeField] private ListSprite[] resourceIcons; public static ListSprite[] ResourceIcons { get { return Instance.resourceIcons; } }
         [SerializeField] private Sprite unKnowmAvatar; public static Sprite Unknown { get { return Instance.unKnowmAvatar; } }
         [SerializeField] private Sprite x; public static Sprite X { get { return Instance.x; } }

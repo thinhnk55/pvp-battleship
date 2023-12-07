@@ -21,7 +21,7 @@ namespace Framework
             if (!tasks.IsNullOrEmpty())
                 for (int i = 0; i < tasks.Length; i++)
                 {
-                    Debug.Log(i);
+                    PDebug.Log(i);
                     if (tasks[i] != null && tasks[i].IsCompletedSuccessfully)
                     {
                         p++;

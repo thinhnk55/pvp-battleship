@@ -87,14 +87,14 @@ public class Gift : CacheMonoBehaviour
             if (confirm)
             {
                 //Get beri
-                Debug.Log("GetX1");
+                PDebug.Log("GetX1");
                 if (Timer<Gift>.Instance.TriggersFromBegin >= 1)
                     WSClientHandler.GetGift();
             }
             else
             {
                 //Watch ads done => Get x3beri
-                Debug.Log("X3");
+                PDebug.Log("X3");
                 AdsManager.ShowRewardAds(null, AdsData.AdsUnitIdMap[RewardType.Get_X2DailyGift]);
             }
         });

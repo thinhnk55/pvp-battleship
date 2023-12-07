@@ -2,7 +2,6 @@ using DG.Tweening;
 using Framework;
 using SimpleJSON;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Bot : SingletonMono<Bot>
@@ -48,17 +47,17 @@ public class Bot : SingletonMono<Bot>
 
     private void EndTurn(JSONNode json)
     {
-        if(countShotPlayer == 4)
+        if (countShotPlayer == 4)
         {
             return;
         }
 
-        if(CoreGame.Instance.playerTurn == true)
+        if (CoreGame.Instance.playerTurn == true)
         {
             JSONNode jsonNode = new JSONClass();
             jsonNode = JSONNode.Parse(GameConfig.ListEndTurnJsonTuto[countShotPlayer++]);
 
-            if(countShotPlayer == 4)
+            if (countShotPlayer == 4)
             {
                 if (ReplayTutorial == false)
                 {
@@ -76,7 +75,7 @@ public class Bot : SingletonMono<Bot>
                 }
             }
             ServerMessenger.Broadcast<JSONNode>(ServerResponse._END_TURN, jsonNode);
-            if(countShotPlayer == 4)
+            if (countShotPlayer == 4)
             {
                 ServerMessenger.Broadcast<JSONNode>(ServerResponse._GAME_DESTROY, GameConfig.GameDestroyTuto);
             }
@@ -97,7 +96,7 @@ public class Bot : SingletonMono<Bot>
                 {"e", 0.ToJson() },
                 {"d", d },
             };
-            Debug.Log(jsonEndTurn);
+            PDebug.Log(jsonEndTurn);
             ServerMessenger.Broadcast<JSONNode>(ServerResponse._END_TURN, jsonEndTurn);
         }
     }

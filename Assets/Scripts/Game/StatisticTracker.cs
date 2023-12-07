@@ -75,7 +75,7 @@ public static class StatisticTracker
     public static void AddProgress(this StatisticType statisticTypes, int progress)
     {
         quests[statisticTypes].Data = quests[statisticTypes].Data + progress;
-        Debug.Log(statisticTypes.ToString() + " progress changed " + progress);
+        PDebug.Log(statisticTypes.ToString() + " progress changed " + progress);
     }
 
     private static void OnAvatarFrameChange(HashSet<int> oValue, HashSet<int> nValue)
@@ -111,7 +111,7 @@ public static class StatisticTracker
             default:
                 break;
         }
-        Debug.Log("Consecutive track:" + nValue);
+        PDebug.Log("Consecutive track:" + nValue);
         StatisticType.SHIP_DESTROY_CONSECUTIVE_MAX.SetProgress(nValue);
     }
     private static void GameEnd(bool win)
@@ -171,7 +171,7 @@ public static class StatisticTracker
         {
             CoreGame.Instance.consecutiveKill = 0;
         }
-        Debug.Log("Current Consecutive " + CoreGame.Instance.consecutiveKill);
+        PDebug.Log("Current Consecutive " + CoreGame.Instance.consecutiveKill);
 
     }
     private static void ShipHit(Ship ship)
@@ -185,7 +185,7 @@ public static class StatisticTracker
         {
             CoreGame.Instance.consecutiveKill = 0;
         }
-        Debug.Log("Current Consecutive " + CoreGame.Instance.consecutiveKill);
+        PDebug.Log("Current Consecutive " + CoreGame.Instance.consecutiveKill);
     }
     private static void LuckyShotFire(JSONNode data)
     {

@@ -7,10 +7,7 @@ using SimpleJSON;
 //using Sirenix.OdinInspector.Editor;
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.Rendering;
 using UnityEngine.UI;
 
 public class PVE : SingletonMono<PVE>
@@ -128,7 +125,7 @@ public class PVE : SingletonMono<PVE>
         }
         else
         {
-            if(CurrentStep.Data < 5)
+            if (CurrentStep.Data < 5)
             {
                 selectShipPoint = shipPointList[2];
             }
@@ -191,7 +188,7 @@ public class PVE : SingletonMono<PVE>
     {
         for (int i = 0; i < 3; i++)
         {
-            Instance.shipPVEs[i].ShowPoint( Instance.shipPVEs[i].point.Data <= player.point.Data ? false : true);
+            Instance.shipPVEs[i].ShowPoint(Instance.shipPVEs[i].point.Data <= player.point.Data ? false : true);
         }
     }
 
@@ -316,10 +313,10 @@ public class PVE : SingletonMono<PVE>
 
     private void PlayerRevival(bool o, bool n)
     {
-        Debug.Log("PlayerRevival: "+o+"-"+n);
+        PDebug.Log("PlayerRevival: " + o + "-" + n);
         if (o == true)
         {
-            Debug.Log("Revival");
+            PDebug.Log("Revival");
             if (CurrentStep.Data > 4)
             {
                 Retreat.interactable = true;

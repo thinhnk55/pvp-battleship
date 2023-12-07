@@ -1,8 +1,5 @@
 using DG.Tweening;
 using Framework;
-using System.Collections;
-using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 
 [RequireComponent(typeof(ParticleSystem))]
@@ -53,7 +50,7 @@ public class CoinVFX : CacheMonoBehaviour
         CoinVFX coin2 = ObjectPoolManager.SpawnObject<CoinVFX>(VFXFactory.Coin, src2, target.transform);
         coin1.transform.localScale = Vector3.one;
         coin2.transform.localScale = Vector3.one;
-        Debug.Log("Coin");
+        PDebug.Log("Coin");
         coin1.target = target;
         coin2.target = target;
     }

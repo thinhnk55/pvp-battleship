@@ -1,8 +1,8 @@
-﻿using Google;
+﻿using Framework;
+using Google;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using UnityEngine;
 namespace Authentication
 {
     public class LoginGoogle : ISocialAuth
@@ -27,22 +27,22 @@ namespace Authentication
                     if (enumerator.MoveNext())
                     {
                         GoogleSignIn.SignInException error = (GoogleSignIn.SignInException)enumerator.Current;
-                        Debug.Log(error);
+                        PDebug.Log(error);
                     }
                     else
                     {
-                        Debug.Log("Error!!!!!!!!");
+                        PDebug.Log("Error!!!!!!!!");
                     }
                 }
             }
             else if (task.IsCanceled)
             {
-                Debug.Log("isCanceled!!!");
+                PDebug.Log("isCanceled!!!");
             }
             else
             {
                 idToken = task.Result.IdToken;
-                Debug.Log(task.Result.IdToken);
+                PDebug.Log(task.Result.IdToken);
                 HTTPClientAuth.LoginGoogle(task.Result.IdToken);
             }
         }
@@ -56,22 +56,22 @@ namespace Authentication
                     if (enumerator.MoveNext())
                     {
                         GoogleSignIn.SignInException error = (GoogleSignIn.SignInException)enumerator.Current;
-                        Debug.Log(error);
+                        PDebug.Log(error);
                     }
                     else
                     {
-                        Debug.Log("Error!!!!!!!!");
+                        PDebug.Log("Error!!!!!!!!");
                     }
                 }
             }
             else if (task.IsCanceled)
             {
-                Debug.Log("isCanceled!!!");
+                PDebug.Log("isCanceled!!!");
             }
             else
             {
-                Debug.Log("link google account Done");
-                Debug.Log(task.Result.IdToken);
+                PDebug.Log("link google account Done");
+                PDebug.Log(task.Result.IdToken);
                 HTTPClientAuth.LinkGoogleAccount(task.Result.IdToken);
             }
         }

@@ -1,13 +1,10 @@
 
 using Framework;
-using Monetization;
-using SimpleJSON;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace Monetization{
+namespace Monetization
+{
 
     public class ButtonShowRewardAds : ButtonBase
     {
@@ -22,7 +19,7 @@ namespace Monetization{
         protected override void Button_OnClicked()
         {
             base.Button_OnClicked();
-            Debug.Log("ShowAds");
+            PDebug.Log("ShowAds");
             ShowAds();
         }
 

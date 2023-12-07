@@ -199,7 +199,7 @@ public class DailyRewardDisplay : MonoBehaviour
         if (resource != null)
         {
             CoinVFX.CoinVfx(resource.transform, rewards[GameData.ProgressGift].transform.position, rewards[GameData.ProgressGift].transform.position);
-            Debug.Log("coinfly");
+            PDebug.Log("coinfly");
         }
         GameData.ProgressGift++;
     }
