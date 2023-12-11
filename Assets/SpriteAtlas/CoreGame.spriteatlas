@@ -69,6 +69,7 @@ SpriteAtlas:
     - de067d3454752ef488ee986a8a66bcbb: 21300000
     - 4593d8945843fd94fb952f2bfe76a76c: 21300000
     - 7bdd23a4d7b37984bab5d82cabcc3cee: 21300000
+    - 2d6fa1954edd1114c845c60ee4f0e5e7: 21300000
     - 9bfc5d768805ca044a8f11cce5c1b975: 21300000
     - 92cf46c6f2537d84c8b54c95421aefe7: 21300000
     - f5182fb786c08a44099178ba6397b3c0: 21300000
@@ -110,6 +111,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: de067d3454752ef488ee986a8a66bcbb, type: 3}
   - {fileID: 21300000, guid: 4593d8945843fd94fb952f2bfe76a76c, type: 3}
   - {fileID: 21300000, guid: 7bdd23a4d7b37984bab5d82cabcc3cee, type: 3}
+  - {fileID: 21300000, guid: 2d6fa1954edd1114c845c60ee4f0e5e7, type: 3}
   - {fileID: 21300000, guid: 9bfc5d768805ca044a8f11cce5c1b975, type: 3}
   - {fileID: 21300000, guid: 92cf46c6f2537d84c8b54c95421aefe7, type: 3}
   - {fileID: 21300000, guid: f5182fb786c08a44099178ba6397b3c0, type: 3}
@@ -150,6 +152,7 @@ SpriteAtlas:
   - img_reg
   - board_v
   - img_shipx4
+  - img_bomb1 1
   - img_shipx4_f
   - img_shipx3
   - img_coin

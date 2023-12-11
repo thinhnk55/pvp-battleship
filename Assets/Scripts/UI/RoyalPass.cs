@@ -178,7 +178,7 @@ public class RoyalPass
                 royalPass.SeasonQuestsObtained = new PDataUnit<HashSet<int>>(new HashSet<int>());
                 if (json["s"]["r"].Count > 0)
                 {
-                    royalPass.SeasonQuestsObtained.Data.AddRange(json["s"]["r"].ToListInt(true));
+                    royalPass.SeasonQuestsObtained.Data.AddRange(json["s"]["r"].ToListInt());
                 }
                 royalPass.SeasonQuestsProgress = new int[royalPass.SeasonQuests.Length]; // config come after data so init 20
                 for (int i = 0; i < royalPass.SeasonQuests.Length; i++)

@@ -66,7 +66,8 @@ public class SeasonQuestCollection : CardCollectionBase<QuestInfo>
         try 
         {
             var sortedInfos = infos
-                .OrderByDescending(info => info.Progress / info.Require < 1)
+                .OrderByDescending(info => info.Progress / info.Require == 1 && !info.Obtained)
+                .ThenByDescending(info => info.Progress / info.Require < 1)
                 .ThenByDescending(info => (float)info.Progress / info.Require)
                 .ToList();
             BuildUIs(sortedInfos);  

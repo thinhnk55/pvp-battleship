@@ -116,11 +116,8 @@ namespace Authentication
         }
         public void SignOut()
         {
-            if (idToken != null)
-            {
-                idToken = null;
-                GoogleSignIn.DefaultInstance.SignOut();
-            }
+            idToken = null;
+            GoogleSignIn.DefaultInstance.SignOut();
         }
 
         public void DisableAccount()
